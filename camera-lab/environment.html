@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>อุณหภูมิ ความชื้น รังสี</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="stabilize.html" style="min-height: 44px; display: inline-flex; align-items: center">← ระบบกันสั่น</a>
+<a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">กลับหน้าห้องแล็บ →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">การทดลอง 06</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">อุณหภูมิ ความชื้น และรังสี</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">กล้องในมือถือ กล้องวงจรปิด รถยนต์ และดาวเทียม ต้องทำงานในสภาพที่ต่างกันมาก ลองดูว่าแต่ละปัจจัยทำให้ภาพเสียอย่างไร แล้ววิศวกรแก้อย่างไร</p>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700">หน้าเลนส์</div>
+<svg viewBox="0 0 300 220" style="display: block; width: 100%; height: auto" role="img" aria-label="{{fog.label}}">
+<rect x="0" y="0" width="300" height="220" fill="#F3F6F7"></rect>
+<circle cx="150" cy="110" r="90" fill="#0F2A3A"></circle>
+<circle cx="150" cy="110" r="72" fill="#1E4A63"></circle>
+<circle cx="150" cy="110" r="48" fill="#0A6A94"></circle>
+<circle cx="130" cy="90" r="14" fill="#9FD0E6" opacity="0.7"></circle>
+<circle cx="150" cy="110" r="72" fill="#FFFFFF" opacity="{{fog.opacity}}"></circle>
+</svg>
+<div style="padding: 10px 16px 14px; font-size: 14px; line-height: 1.5"><strong style="color: {{fog.color}}">{{fog.title}}</strong><br><span style="color: #4A5D6A">{{fog.text}}</span></div>
+</div>
+<div style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap"><span style="font-weight: 700">ภาพมืด (dark frame) ปิดฝาเลนส์ 1 วินาที</span><button type="button" onClick="{{reroll}}" style="min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">สุ่มใหม่</button></div>
+<div role="img" aria-label="{{darkLabel}}" style="display: grid; grid-template-columns: repeat(40, minmax(0, 1fr)); background: #000000">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="960">
+<div style="aspect-ratio: 1; background: {{c.bg}}"></div>
+</sc-for>
+</div>
+<div style="padding: 10px 16px 14px; font-size: 13px; line-height: 1.5; color: #4A5D6A">ภาพควรดำสนิท จุดเทาคือนอยส์จากความร้อน จุดสว่างคือพิกเซลเสีย (hot pixel) จากรังสี</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="6">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: {{r.color}}">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">อุณหภูมิและความชื้น</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="en-a" style="font-size: 14px; font-weight: 600">อุณหภูมิอากาศ</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{airLabel}}</span></div>
+<input id="en-a" type="range" min="-30" max="50" step="1" value="{{air}}" onChange="{{setAir}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="en-h" style="font-size: 14px; font-weight: 600">ความชื้นสัมพัทธ์</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{rhLabel}}</span></div>
+<input id="en-h" type="range" min="10" max="100" step="1" value="{{rh}}" onChange="{{setRh}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="en-c" style="font-size: 14px; font-weight: 600">อุณหภูมิตัวกล้อง</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{camLabel}}</span></div>
+<input id="en-c" type="range" min="-30" max="80" step="1" value="{{cam}}" onChange="{{setCam}}">
+<div style="font-size: 13px; color: #4A5D6A">เช่น เพิ่งถือออกจากห้องแอร์ หรือวางกลางแดดในรถ</div>
+</div>
+<h2 style="margin: 6px 0 0; font-size: 17px; font-weight: 700">วัสดุเลนส์ (มือถือ f = 6 มม.)</h2>
+<div role="group" aria-label="วัสดุเลนส์" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{materials}}" as="m" hint-placeholder-count="3">
+<button type="button" onClick="{{m.pick}}" aria-pressed="{{m.pressed}}" style="min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 1.5px solid {{m.border}}; background: {{m.bg}}; color: {{m.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{m.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">รังสีในอวกาศ</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="en-d" style="font-size: 14px; font-weight: 600">เวลาในวงโคจร</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{daysLabel}}</span></div>
+<input id="en-d" type="range" min="0" max="1825" step="5" value="{{days}}" onChange="{{setDays}}">
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 15px"><input type="checkbox" checked="{{shield}}" onChange="{{toggleShield}}" style="width: 22px; height: 22px; accent-color: #0A6A94">มีเกราะกันรังสีรอบเซนเซอร์</label>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 15px"><input type="checkbox" checked="{{cerium}}" onChange="{{toggleCerium}}" style="width: 22px; height: 22px; accent-color: #0A6A94">ใช้แก้วผสมซีเรียม</label>
+<div style="font-size: 13px; line-height: 1.6; color: #4A5D6A">อัตราความเสียหายจากรังสีเป็นตัวเลขสมมติเพื่อแสดงแนวโน้ม ของจริงขึ้นกับวงโคจรและกิจกรรมของดวงอาทิตย์</div>
+</div>
+</div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">วิศวกรป้องกันอย่างไร</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<div style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">อุณหภูมิ</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">ไม่ให้โฟกัสเลื่อน ไม่ให้นอยส์พุ่ง</h3>
+<ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: #34495A; display: flex; flex-direction: column; gap: 6px">
+<li><strong>ออกแบบแบบ athermal:</strong> จับคู่เลนส์แก้วกับพลาสติก และเลือกวัสดุกระบอกที่ขยายตัวหักล้างกัน ให้โฟกัสคงที่</li>
+<li><strong>โฟกัสอัตโนมัติแบบวงปิด:</strong> มือถือใช้เลนส์พลาสติกซึ่งไวต่อความร้อน จึงให้ระบบ AF ชดเชยการเลื่อนตลอดเวลา</li>
+<li><strong>จัดการความร้อน:</strong> แผ่นกระจายความร้อน และลดการทำงานหรือหยุดถ่ายเมื่อร้อนเกิน</li>
+<li><strong>ทำความเย็นเซนเซอร์:</strong> กล้องดาราศาสตร์ใช้ Peltier ลดอุณหภูมิเซนเซอร์หลายสิบองศา และถ่ายภาพมืดไว้หักลบ</li>
+<li><strong>ฮีตเตอร์:</strong> กล้องนอกอาคารและในอวกาศอุ่นตัวเองให้อยู่ในช่วงที่ทำงานได้</li>
+</ul>
+</div>
+<div style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">ความชื้น</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">ไม่ให้น้ำเข้า ไม่ให้เกิดฝ้า</h3>
+<ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: #34495A; display: flex; flex-direction: column; gap: 6px">
+<li><strong>ซีลและมาตรฐาน IP:</strong> โอริง กาว และตัวเครื่องปิดผนึก เช่น IP68 กันฝุ่นและกันน้ำ</li>
+<li><strong>เติมไนโตรเจน:</strong> กล้องส่องทางไกลกันฝ้าไล่อากาศชื้นออก แล้วเติมก๊าซแห้งแทน ฝ้าจึงไม่เกิดด้านใน</li>
+<li><strong>ช่องระบายแบบเมมเบรน:</strong> ให้อากาศผ่านเพื่อปรับความดัน แต่กันหยดน้ำ และใช้สารดูดความชื้น</li>
+<li><strong>เคลือบผิว:</strong> เคลือบกันฝ้าหรือไม่ชอบน้ำที่หน้าเลนส์ และเคลือบแผงวงจร (conformal coating)</li>
+<li><strong>ฮีตเตอร์กันน้ำค้าง:</strong> อุ่นเลนส์ให้สูงกว่าจุดน้ำค้างเล็กน้อย ใช้ในกล้องโทรทรรศน์และกล้องวงจรปิด</li>
+</ul>
+</div>
+<div style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">รังสี</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">กล้องที่ต้องอยู่รอดในอวกาศ</h3>
+<ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: #34495A; display: flex; flex-direction: column; gap: 6px">
+<li><strong>ชิ้นส่วนทนรังสี (rad-hard):</strong> ออกแบบวงจรและเซนเซอร์ให้ทนความเสียหายสะสมได้มากขึ้น</li>
+<li><strong>เกราะ:</strong> โลหะรอบเซนเซอร์และอุปกรณ์ ลดอนุภาคพลังงานสูงที่เข้าถึง</li>
+<li><strong>แก้วผสมซีเรียม:</strong> แก้วธรรมดาจะค่อย ๆ กลายเป็นสีน้ำตาลเมื่อโดนรังสี ซีเรียมช่วยให้ใสนานขึ้น</li>
+<li><strong>หน่วยความจำ ECC และวงจรเฝ้าระวัง:</strong> แก้บิตที่ถูกอนุภาคพลิก และรีเซ็ตระบบเมื่อค้าง</li>
+<li><strong>ซอฟต์แวร์:</strong> ทำแผนที่พิกเซลเสียแล้วเติมค่าจากพิกเซลข้าง ๆ บางภารกิจอุ่นเซนเซอร์ (annealing) เพื่อฟื้นความเสียหายบางส่วน</li>
+</ul>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1500}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { air: 32, rh: 80, cam: 22, mat: 'plastic', days: 0, shield: false, cerium: false, seed: 3 };
+  }
+
+  setter(key) {
+    var self = this;
+    return function (e) { var o = {}; o[key] = parseFloat(e.target.value); self.setState(o); };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    // dew point (Magnus)
+    var b = 17.62, c = 243.12;
+    var g = Math.log(s.rh / 100) + b * s.air / (c + s.air);
+    var dew = c * g / (b - g);
+    var fogging = s.cam < dew;
+    var fogAmt = fogging ? Math.min(0.85, 0.25 + (dew - s.cam) * 0.08) : 0;
+    var fog = fogging
+      ? { title: 'เลนส์เป็นฝ้า', text: 'ตัวกล้องเย็นกว่าจุดน้ำค้าง ' + (dew - s.cam).toFixed(1) + ' °C ไอน้ำในอากาศจึงกลั่นตัวบนผิวเลนส์', color: '#7E3407', opacity: fogAmt.toFixed(2), label: 'หน้าเลนส์เป็นฝ้า' }
+      : { title: 'เลนส์ใส', text: 'ตัวกล้องอุ่นกว่าจุดน้ำค้าง ไอน้ำไม่กลั่นตัว', color: '#0A4F70', opacity: 0, label: 'หน้าเลนส์ใส' };
+
+    // focus shift
+    var coef = { plastic: 2.57e-4, glass: -1.98e-5, athermal: 1.5e-6 }[s.mat];
+    var dT = s.cam - 20;
+    var shift = 6000 * coef * dT;
+    var dof = 1.8 * 2.4;
+    var focusOk = Math.abs(shift) <= dof;
+
+    // dark current
+    var dark = 5 * Math.pow(2, (s.cam - 25) / 6);
+
+    // radiation
+    var hotN = Math.round(s.days * 0.05 * (s.shield ? 0.3 : 1));
+    var trans = 100 * Math.exp(-s.days / (s.cerium ? 60000 : 3000));
+
+    // dark frame
+    var a = (s.seed * 2654435761) >>> 0;
+    var rand = function () { a |= 0; a = a + 0x6D2B79F5 | 0; var q = Math.imul(a ^ a >>> 15, 1 | a); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+    var gauss = function () { var u1 = Math.max(rand(), 1e-9), u2 = rand(); return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2); };
+    var hot = {};
+    var hr = (91 >>> 0);
+    var rand2 = function () { hr |= 0; hr = hr + 0x6D2B79F5 | 0; var q = Math.imul(hr ^ hr >>> 15, 1 | hr); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+    for (var i = 0; i < hotN && i < 960; i++) hot[Math.floor(rand2() * 960)] = 0.4 + rand2() * 0.6;
+    var cells = [];
+    for (var k = 0; k < 960; k++) {
+      var e = dark + Math.sqrt(dark + 4) * gauss();
+      if (hot[k]) e += hot[k] * 400 * Math.max(0.3, dark / 5);
+      var lin = Math.max(0, Math.min(1, e / 400));
+      var v = Math.round(Math.pow(lin, 1 / 2.2) * 255);
+      cells.push({ bg: 'rgb(' + v + ',' + v + ',' + v + ')' });
+    }
+
+    var ink = '#0F2A3A', warn = '#B04A0C';
+    var readouts = [
+      { label: 'จุดน้ำค้าง', value: dew.toFixed(1) + ' °C', sub: 'ผิวที่เย็นกว่านี้จะมีหยดน้ำเกาะ', color: ink },
+      { label: 'โฟกัสเลื่อน (เทียบ 20 °C)', value: (shift >= 0 ? '+' : '') + shift.toFixed(1) + ' µm', sub: focusOk ? 'ยังอยู่ในระยะชัดลึก ±' + dof.toFixed(1) + ' µm' : 'เกินระยะชัดลึก ±' + dof.toFixed(1) + ' µm ภาพเบลอ ถ้าไม่มี AF ชดเชย', color: focusOk ? ink : warn },
+      { label: 'กระแสมืดของเซนเซอร์', value: dark >= 100 ? Math.round(dark) + ' e⁻/วินาที' : dark.toFixed(1) + ' e⁻/วินาที', sub: 'เพิ่มขึ้นราวเท่าตัวทุก 6 °C', color: dark > 40 ? warn : ink },
+      { label: 'พิกเซลเสียสะสม', value: hotN + ' จุด', sub: 'จาก 960 พิกเซลในภาพตัวอย่าง', color: hotN > 30 ? warn : ink },
+      { label: 'แสงผ่านเลนส์ได้', value: trans.toFixed(0) + '%', sub: s.cerium ? 'แก้วผสมซีเรียมคงความใส' : 'แก้วธรรมดาค่อย ๆ เป็นสีน้ำตาล', color: trans < 80 ? warn : ink },
+      { label: 'สถานะรวม', value: (fogging || !focusOk || dark > 40 || hotN > 30 || trans < 80) ? 'ภาพเสื่อม' : 'ปกติ', sub: 'ดูช่องสีส้มว่าปัจจัยไหนเป็นปัญหา', color: (fogging || !focusOk || dark > 40 || hotN > 30 || trans < 80) ? warn : ink }
+    ];
+
+    var mats = [{ id: 'plastic', name: 'พลาสติก' }, { id: 'glass', name: 'แก้ว' }, { id: 'athermal', name: 'แก้ว+พลาสติก (athermal)' }];
+
+    return {
+      fog: fog, cells: cells, readouts: readouts,
+      darkLabel: 'ภาพมืดจำลอง มีพิกเซลเสีย ' + hotN + ' จุด',
+      air: s.air, rh: s.rh, cam: s.cam, days: s.days, shield: s.shield, cerium: s.cerium,
+      airLabel: s.air + ' °C', rhLabel: s.rh + '%', camLabel: s.cam + ' °C',
+      daysLabel: s.days < 365 ? s.days + ' วัน' : (s.days / 365).toFixed(1) + ' ปี',
+      setAir: this.setter('air'), setRh: this.setter('rh'), setCam: this.setter('cam'), setDays: this.setter('days'),
+      toggleShield: function () { self.setState({ shield: !self.state.shield }); },
+      toggleCerium: function () { self.setState({ cerium: !self.state.cerium }); },
+      reroll: function () { self.setState({ seed: self.state.seed + 1 }); },
+      materials: mats.map(function (m) { var on = m.id === s.mat; return { name: m.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ mat: m.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

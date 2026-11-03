@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>ตัวจำลองคลื่นทะเล</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 780px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">OCEAN WAVE SIMULATOR</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">จำลองรูปแบบคลื่นในทะเล</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">เลือกชนิดคลื่น แล้วลองปรับความสูง ความยาวคลื่น และความลึกของน้ำ ดูว่าน้ำแต่ละจุดเคลื่อนที่อย่างไร และทำไมคลื่นแต่ละแบบจึงเร็วหรือแรงต่างกัน</p>
+</div>
+<a href="uses.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; background: #0F2A3A; color: #FFFFFF; font-weight: 600; font-size: 16px; text-decoration: none">เราใช้ประโยชน์จากคลื่นอย่างไร →</a>
+</header>
+
+<div role="group" aria-label="เลือกชนิดคลื่น" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="5">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 52px; padding: 8px 20px; border-radius: 14px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; text-align: left">
+<span>{{p.name}}</span>
+<span style="font-size: 12px; font-weight: 500; color: {{p.sub}}">{{p.en}}</span>
+</button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #E3E9EC">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-weight: 700; font-size: 18px">{{presetName}}</span>
+<span style="font-size: 13px; color: #4A5D6A">{{editedNote}}</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{status.bg}}; color: {{status.fg}}">{{status.label}}</span>
+</div>
+<button type="button" onClick="{{togglePlay}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
+</div>
+<svg viewBox="0 0 1120 440" style="display: block; width: 100%; height: auto" role="img" aria-label="{{svgLabel}}">
+<defs>
+<linearGradient id="waterFill" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#2580AD"></stop>
+<stop offset="1" stop-color="#0C3A55"></stop>
+</linearGradient>
+</defs>
+<rect x="0" y="0" width="1120" height="440" fill="#EAF3F7"></rect>
+<path d="{{waterPath}}" fill="url(#waterFill)"></path>
+<rect x="0" y="{{seabedY}}" width="1120" height="{{seabedH}}" fill="#D8C39C"></rect>
+<line x1="0" y1="{{seabedY}}" x2="1120" y2="{{seabedY}}" stroke="#A88B58" stroke-width="2" opacity="{{seabedLineOpacity}}"></line>
+<line x1="0" y1="150" x2="1120" y2="150" stroke="#0A4F70" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.35"></line>
+<path d="{{orbitPath}}" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="3 4" opacity="0.5"></path>
+<path d="{{particlePath}}" fill="#FFFFFF" stroke="#0C3A55" stroke-width="1"></path>
+<path d="{{trackPath}}" fill="#F5A15B" stroke="#FFFFFF" stroke-width="1.5"></path>
+<path d="{{surfacePath}}" fill="none" stroke="{{surfaceStroke}}" stroke-width="3" stroke-linejoin="round"></path>
+<text x="24" y="40" font-size="18" font-weight="600" fill="#0F2A3A">ทิศทางคลื่น →</text>
+<line x1="280" y1="38" x2="840" y2="38" stroke="#0F2A3A" stroke-width="1.5"></line>
+<line x1="280" y1="30" x2="280" y2="46" stroke="#0F2A3A" stroke-width="1.5"></line>
+<line x1="840" y1="30" x2="840" y2="46" stroke="#0F2A3A" stroke-width="1.5"></line>
+<text x="560" y="26" font-size="17" text-anchor="middle" fill="#0F2A3A">ความยาวคลื่น L = {{Llabel}}</text>
+<line x1="1088" y1="{{hTop}}" x2="1088" y2="{{hBot}}" stroke="#B04A0C" stroke-width="2"></line>
+<line x1="1078" y1="{{hTop}}" x2="1098" y2="{{hTop}}" stroke="#B04A0C" stroke-width="2"></line>
+<line x1="1078" y1="{{hBot}}" x2="1098" y2="{{hBot}}" stroke="#B04A0C" stroke-width="2"></line>
+<text x="1100" y="{{hLabelY}}" font-size="17" font-weight="600" text-anchor="end" fill="#8A3A08">H = {{Hlabel}}</text>
+<text x="24" y="{{depthLabelY}}" font-size="16" font-weight="600" fill="{{depthLabelFill}}">{{depthLabel}}</text>
+</svg>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; padding: 12px 18px; border-top: 1px solid #E3E9EC; font-size: 13px; color: #4A5D6A">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#FFFFFF" stroke="#0C3A55"></circle></svg>อนุภาคน้ำ</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#F5A15B" stroke="#0C3A55"></circle></svg>อนุภาคที่ติดตาม (ดูว่ามันกลับที่เดิม)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><line x1="1" y1="7" x2="25" y2="7" stroke="#4A5D6A" stroke-dasharray="3 3"></line></svg>เส้นทางวงโคจร</span>
+<span style="margin-left: auto">ภาพขยายความสูงคลื่น 4 เท่า และปรับความเร็วให้ดูง่าย</span>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="6">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 500; color: #0F2A3A">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">ปรับค่าคลื่น</h2>
+<button type="button" onClick="{{reset}}" style="min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid #D5DEE3; background: #F3F6F7; color: #0F2A3A; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer">คืนค่าเริ่มต้น</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<label for="sl-height" style="font-weight: 600; font-size: 15px">ความสูงคลื่น (H)</label>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #0A6A94">{{Hlabel}}</span>
+</div>
+<input id="sl-height" type="range" min="0.1" max="15" step="0.1" value="{{H}}" onChange="{{onH}}">
+<div style="font-size: 13px; color: #4A5D6A">วัดจากท้องคลื่นถึงยอดคลื่น</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<label for="sl-length" style="font-weight: 600; font-size: 15px">ความยาวคลื่น (L)</label>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #0A6A94">{{Llabel}}</span>
+</div>
+<input id="sl-length" type="range" min="0" max="1000" step="1" value="{{Lslider}}" onChange="{{onL}}">
+<div style="font-size: 13px; color: #4A5D6A">ระยะจากยอดคลื่นถึงยอดถัดไป (5 ม. ถึง 20,000 กม.)</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<label for="sl-depth" style="font-weight: 600; font-size: 15px">ความลึกของน้ำ (h)</label>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #0A6A94">{{hlabel}}</span>
+</div>
+<input id="sl-depth" type="range" min="0" max="1000" step="1" value="{{hslider}}" onChange="{{onDepth}}">
+<div style="font-size: 13px; color: #4A5D6A">ลองลากให้ตื้นลง แล้วดูวงโคจรของน้ำแบนลง</div>
+</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #0A6A94">{{presetEn}}</div>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{presetName}}</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">เกิดจาก</div>
+<div style="font-size: 15px; line-height: 1.65">{{info.cause}}</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">ลักษณะ</div>
+<div style="font-size: 15px; line-height: 1.65">{{info.look}}</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">คาบคลื่นทั่วไป</div>
+<div style="font-size: 15px; line-height: 1.65">{{info.period}}</div>
+</div>
+<div style="background: #EAF3F7; border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 1.65; color: #0F2A3A">{{info.fact}}</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">{{waterClass.label}}</h2>
+<span style="font-size: 13px; color: #4A5D6A">{{waterClass.en}}</span>
+</div>
+<div style="font-size: 15px; line-height: 1.65">{{waterClass.text}}</div>
+<div style="border-top: 1px solid #E3E9EC; padding-top: 10px; font-size: 14px; line-height: 1.65; color: #4A5D6A">{{status.detail}}</div>
+</div>
+</div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">สิ่งที่ควรสังเกตในภาพจำลอง</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">01</div>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">น้ำไม่ได้ไหลไปกับคลื่น</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">ดูจุดสีส้ม มันวนเป็นวงแล้วกลับมาที่เดิม สิ่งที่เดินทางไปคือพลังงาน ไม่ใช่ตัวน้ำ ขวดที่ลอยกลางทะเลจึงแค่ขึ้น-ลงอยู่กับที่</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">02</div>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">ความลึกเปลี่ยนรูปวงโคจร</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">ในน้ำลึก วงโคจรเป็นวงกลมที่เล็กลงเร็วตามความลึก ในน้ำตื้น วงโคจรถูกพื้นบีบให้เป็นวงรีแบน น้ำแกว่งไป-มาจนถึงพื้นทะเล</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">03</div>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">อะไรกำหนดความเร็วคลื่น</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">น้ำลึก: คลื่นยิ่งยาวยิ่งเร็ว (c ≈ 1.25√L) น้ำตื้น: ขึ้นกับความลึกอย่างเดียว (c ≈ √gh) สึนามิในมหาสมุทรลึก 4 กม. จึงวิ่งได้ราว 700 กม./ชม.</p>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1240}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    var p = this.presetList()[0];
+    this.state = { pid: p.id, H: p.H, L: p.L, h: p.h, t: 0, playing: !reduce };
+  }
+
+  presetList() {
+    return [
+      { id: 'wind', name: 'คลื่นลม', en: 'WIND SEA', H: 1.2, L: 30, h: 40, chop: true,
+        cause: 'ลมพัดผ่านผิวน้ำและถ่ายพลังงานให้น้ำโดยตรง ยิ่งลมแรง พัดนาน และพัดผ่านระยะทางไกล (fetch) คลื่นยิ่งสูง',
+        look: 'ยอดแหลม ขนาดไม่เท่ากัน คลื่นหลายขนาดซ้อนกันจนดูยุ่งเหยิง เพราะยังอยู่ในพื้นที่ที่ลมกำลังพัด',
+        period: 'ราว 2–8 วินาที',
+        fact: 'คลื่นที่เห็นกลางทะเลส่วนใหญ่คือคลื่นลม ถ้ายอดคลื่นชันเกิน 1 ใน 7 ของความยาวคลื่น จะแตกเป็นฟองขาว (whitecap)' },
+      { id: 'swell', name: 'คลื่นยาว (สเวลล์)', en: 'SWELL', H: 2, L: 150, h: 100, chop: false,
+        cause: 'คลื่นลมที่เดินทางออกจากพื้นที่พายุ คลื่นที่ยาวกว่าวิ่งเร็วกว่า จึงแยกตัวออกมาเรียงกันเป็นระเบียบ',
+        look: 'ลูกคลื่นกลมมน ยาว และสม่ำเสมอ เดินทางได้หลายพันกิโลเมตรโดยแทบไม่สูญเสียพลังงาน',
+        period: 'ราว 8–20 วินาที',
+        fact: 'นักโต้คลื่นชอบสเวลล์ที่สุด เพราะมาเป็นชุดสม่ำเสมอ และพาพลังงานจากพายุที่อยู่ไกลมากมาถึงชายฝั่ง' },
+      { id: 'shoal', name: 'คลื่นเข้าฝั่ง', en: 'SHOALING & BREAKING', H: 1.8, L: 60, h: 2.5, chop: false,
+        cause: 'เมื่อคลื่นเข้าสู่น้ำตื้น พื้นทะเลทำให้คลื่นช้าลง ลูกคลื่นจึงถูกบีบให้สั้นลงและสูงขึ้น (shoaling)',
+        look: 'ยอดคลื่นแหลมและชันขึ้น เมื่อสูงเกินราว 0.78 เท่าของความลึก ยอดคลื่นจะล้มลงเป็นคลื่นแตก',
+        period: 'เท่ากับตอนอยู่กลางทะเล (คาบคลื่นไม่เปลี่ยน แม้ความเร็วจะลดลง)',
+        fact: 'คลื่นแตกมี 3 แบบหลัก: ฟองไหล (spilling) บนหาดลาด, ม้วนตัว (plunging) บนหาดค่อนข้างชัน และพุ่งขึ้นหาด (surging) บนหาดที่ชันมาก' },
+      { id: 'tsunami', name: 'สึนามิ', en: 'TSUNAMI', H: 0.6, L: 200000, h: 4000, chop: false,
+        cause: 'พื้นทะเลยกตัวหรือยุบตัวฉับพลันจากแผ่นดินไหวใต้ทะเล ดินถล่ม หรือภูเขาไฟระเบิด ดันน้ำทั้งมวลให้เคลื่อนที่',
+        look: 'กลางมหาสมุทรสูงเพียงไม่กี่สิบเซนติเมตร เรือแทบไม่รู้สึก แต่ยาวหลายร้อยกิโลเมตรและเร็วพอ ๆ กับเครื่องบินไอพ่น',
+        period: 'ราว 10–60 นาที',
+        fact: 'คลื่นยาวมากจนมหาสมุทรลึก 4 กม. ยังนับเป็น “น้ำตื้น” น้ำทั้งความลึกจึงเคลื่อนไหว เมื่อถึงฝั่งจึงยกตัวสูงหลายเมตร เช่นที่ชายฝั่งอันดามันของไทยเมื่อ 26 ธ.ค. 2547' },
+      { id: 'tide', name: 'น้ำขึ้นน้ำลง', en: 'TIDE', H: 2, L: 8850000, h: 4000, chop: false,
+        cause: 'แรงโน้มถ่วงของดวงจันทร์และดวงอาทิตย์ดึงน้ำทะเลให้ป่องออก ขณะที่โลกหมุนผ่านส่วนที่ป่องนั้น',
+        look: 'เป็นคลื่นที่ยาวที่สุด ยอดคลื่นห่างกันหลายพันกิโลเมตร เราจึงเห็นเป็นระดับน้ำที่ค่อย ๆ ขึ้นและลง',
+        period: 'ราว 12 ชั่วโมง 25 นาที (บางพื้นที่ขึ้นลงวันละครั้ง)',
+        fact: 'หลายพื้นที่ในอ่าวไทยมีน้ำขึ้นน้ำลงแบบวันละครั้งหรือแบบผสม ต่างจากชายฝั่งส่วนใหญ่ของโลกที่ขึ้นลงวันละ 2 ครั้ง' }
+    ];
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  physics(H, L, h) {
+    var g = 9.81, rho = 1025;
+    var k = 2 * Math.PI / L, kh = k * h;
+    var c = Math.sqrt(g / k * Math.tanh(kh));
+    var T = L / c;
+    var n = kh > 20 ? 0.5 : 0.5 * (1 + 2 * kh / Math.sinh(2 * kh));
+    var cg = n * c;
+    var E = rho * g * H * H / 8;
+    return { k: k, kh: kh, c: c, T: T, cg: cg, E: E, P: E * cg, hL: h / L, HL: H / L, Hh: H / h };
+  }
+
+  fmtLen(m) {
+    if (m >= 100000) return Math.round(m / 1000).toLocaleString('en-US') + ' กม.';
+    if (m >= 1000) return (m / 1000).toFixed(1) + ' กม.';
+    if (m >= 10) return Math.round(m) + ' ม.';
+    return m.toFixed(1) + ' ม.';
+  }
+
+  fmtTime(s) {
+    if (s < 60) return s.toFixed(1) + ' วินาที';
+    if (s < 3600) return (s / 60).toFixed(1) + ' นาที';
+    return (s / 3600).toFixed(1) + ' ชั่วโมง';
+  }
+
+  fmtNum(v, d) {
+    return v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var presets = this.presetList();
+    var cur = presets.filter(function (p) { return p.id === s.pid; })[0] || presets[0];
+    var ph = this.physics(s.H, s.L, s.h);
+
+    var LMIN = Math.log10(5), LMAX = Math.log10(2e7);
+    var HMIN = Math.log10(0.5), HMAX = Math.log10(6000);
+
+    // ---------- drawing ----------
+    var W = 1120, Y0 = 150, LPX = 560, BOT = 440;
+    var kpx = 2 * Math.PI / LPX;
+    var amp = Math.max(4, Math.min(70, (s.H / 2) / s.L * LPX * 4));
+    var hTrue = s.h / s.L * LPX;
+    var hDraw = Math.max(hTrue, amp + 24);
+    var exaggerated = hTrue < amp + 24;
+    var Tvis = Math.max(1.4, Math.min(7, 1.2 * Math.log10(ph.T) + 1.0));
+    var w = 2 * Math.PI / Tvis, t = s.t;
+    var steep = Math.min(0.35, 0.5 * ph.k * s.H / 2 / Math.pow(Math.max(Math.tanh(ph.kh), 0.3), 3));
+    var chop = cur.chop;
+
+    var eta = function (x) {
+      var th = kpx * x - w * t;
+      var v = amp * (Math.cos(th) + steep * Math.cos(2 * th));
+      if (chop) v += amp * 0.22 * Math.cos(2.7 * kpx * x - 1.64 * w * t + 1.1) + amp * 0.12 * Math.cos(4.4 * kpx * x - 2.1 * w * t + 2.3);
+      return v;
+    };
+    var pts = [];
+    for (var x = 0; x <= W; x += 8) pts.push(x + ',' + (Y0 - eta(x)).toFixed(1));
+    var surfacePath = 'M' + pts.join(' L');
+    var waterPath = surfacePath + ' L' + W + ',' + BOT + ' L0,' + BOT + ' Z';
+
+    var f1 = function (v) { return v.toFixed(1); };
+    var ellipse = function (cx, cy, rx, ry) {
+      return 'M' + f1(cx - rx) + ',' + f1(cy) + ' a' + f1(rx) + ',' + f1(ry) + ' 0 1,0 ' + f1(2 * rx) + ',0 a' + f1(rx) + ',' + f1(ry) + ' 0 1,0 ' + f1(-2 * rx) + ',0 ';
+    };
+
+    var vis = Math.min(hDraw, 280);
+    var khv = Math.min(ph.kh, kpx * vis);
+    var fracs = [0.02, 0.3, 0.58, 0.86];
+    var orbitPath = '', particlePath = '', trackPath = '';
+    fracs.forEach(function (f, ri) {
+      var dpx = f * vis, kd = f * khv, A, B;
+      if (ph.kh > 20) { A = amp * Math.exp(-kd); B = A; }
+      else {
+        var sh = Math.sinh(ph.kh);
+        A = amp * Math.cosh(ph.kh - kd) / sh;
+        B = amp * Math.sinh(ph.kh - kd) / sh;
+      }
+      A = Math.min(A, 90); B = Math.min(B, 90);
+      for (var i = 0; i < 8; i++) {
+        var x0 = 70 + i * 140, y0 = Y0 + dpx;
+        var th = kpx * x0 - w * t;
+        var px = x0 - A * Math.sin(th), py = y0 - B * Math.cos(th);
+        if (A > 0.8) orbitPath += ellipse(x0, y0, A, Math.max(B, 0.4));
+        var r = ri === 0 ? 5.5 : 4.5;
+        var cd = ellipse(px, py, r, r);
+        if (i === 3) trackPath += cd; else particlePath += cd;
+      }
+    });
+
+    var seabedY = Y0 + hDraw;
+    var seabedVisible = seabedY < BOT;
+    var depthLabel = 'ความลึก h = ' + this.fmtLen(s.h);
+    var depthLabelY, depthLabelFill;
+    if (!seabedVisible) {
+      depthLabel += '  (พื้นทะเลอยู่ลึกกว่าภาพนี้)';
+      depthLabelY = 424; depthLabelFill = '#FFFFFF';
+    } else if (seabedY < 400) {
+      depthLabelY = seabedY + 30; depthLabelFill = '#4E3B18';
+    } else {
+      depthLabelY = seabedY - 12; depthLabelFill = '#FFFFFF';
+    }
+    if (exaggerated) depthLabel += '  (ขยายความลึกให้มองเห็น)';
+
+    // ---------- status ----------
+    var status;
+    if (ph.Hh >= 0.78) status = { label: 'คลื่นแตกตัว: น้ำตื้นเกินไป', bg: '#FCE3CF', fg: '#7E3407', breaking: true,
+      detail: 'ความสูงคลื่นเกินราว 0.78 เท่าของความลึก น้ำใต้ท้องคลื่นไม่พอรองรับ ยอดคลื่นจึงวิ่งเร็วกว่าฐานแล้วล้มลง' };
+    else if (ph.HL >= 1 / 7) status = { label: 'แตกเป็นฟองขาว: ชันเกินไป', bg: '#FCE3CF', fg: '#7E3407', breaking: true,
+      detail: 'ความชันเกิน 1 : 7 ยอดคลื่นคงรูปไม่ได้ จึงแตกเป็นฟองขาว (whitecap) แม้อยู่กลางทะเลลึก' };
+    else if (ph.HL >= 1 / 10 || ph.Hh >= 0.6) status = { label: 'ใกล้แตก', bg: '#FFF1CC', fg: '#6B4A00', breaking: false,
+      detail: 'คลื่นเริ่มชันและยอดแหลมขึ้น ถ้าสูงขึ้นหรือตื้นลงอีกเล็กน้อยจะเริ่มแตก' };
+    else status = { label: 'คลื่นคงรูป', bg: '#DDEFF6', fg: '#0A4F70', breaking: false,
+      detail: 'คลื่นยังคงรูปและเดินทางต่อไปได้ พลังงานยังไม่ถูกปล่อยออกจนกว่าจะแตกตัว' };
+
+    var waterClass;
+    if (ph.hL >= 0.5) waterClass = { label: 'น้ำลึก', en: 'Deep water',
+      text: 'ความลึกเกินครึ่งหนึ่งของความยาวคลื่น อนุภาคน้ำหมุนเป็นวงกลมที่เล็กลงอย่างรวดเร็วตามความลึก คลื่นไม่ “รู้สึก” ถึงพื้นทะเล ความเร็วขึ้นกับความยาวคลื่นเท่านั้น' };
+    else if (ph.hL >= 0.05) waterClass = { label: 'น้ำช่วงเปลี่ยนผ่าน', en: 'Intermediate depth',
+      text: 'คลื่นเริ่มสัมผัสพื้นทะเล วงโคจรของน้ำแบนลงเป็นวงรี และความเร็วคลื่นเริ่มลดลงตามความลึก' };
+    else waterClass = { label: 'น้ำตื้น', en: 'Shallow water',
+      text: 'ความลึกน้อยกว่า 1/20 ของความยาวคลื่น น้ำทั้งความลึกแกว่งไป-มาในแนวนอนจนถึงพื้น ความเร็วขึ้นกับความลึกอย่างเดียว' };
+
+    var hLtxt = ph.hL >= 10 ? this.fmtNum(ph.hL, 0) : ph.hL >= 1 ? ph.hL.toFixed(1) : ph.hL >= 0.01 ? ph.hL.toFixed(3) : ph.hL.toFixed(4);
+    var steepTxt = '1 : ' + this.fmtNum(s.L / s.H, 0);
+    var P = ph.P;
+    var Ptxt = P >= 1e6 ? (P / 1e6).toFixed(1) + ' MW/ม.' : P >= 1000 ? (P / 1000).toFixed(1) + ' kW/ม.' : Math.round(P) + ' W/ม.';
+
+    var readouts = [
+      { label: 'ความเร็วคลื่น (c)', value: ph.c.toFixed(1) + ' ม./วินาที', sub: '≈ ' + this.fmtNum(ph.c * 3.6, 0) + ' กม./ชม.' },
+      { label: 'คาบคลื่น (T)', value: this.fmtTime(ph.T), sub: 'เวลาที่ยอดคลื่นลูกถัดไปผ่านจุดเดิม' },
+      { label: 'ความชัน (H : L)', value: steepTxt, sub: 'ชันเกิน 1 : 7 คลื่นจะแตก' },
+      { label: 'ความลึก ÷ ความยาวคลื่น', value: hLtxt, sub: waterClass.label + ' (เกิน 0.5 = น้ำลึก, ต่ำกว่า 0.05 = น้ำตื้น)' },
+      { label: 'กำลังคลื่น (P)', value: Ptxt, sub: 'พลังงานต่อวินาที ต่อหน้าคลื่นกว้าง 1 ม.' },
+      { label: 'ความเร็วกลุ่มคลื่น', value: ph.cg.toFixed(1) + ' ม./วินาที', sub: 'ความเร็วที่พลังงานเดินทางจริง' }
+    ];
+
+    var presetVals = presets.map(function (p) {
+      var on = p.id === cur.id;
+      return {
+        name: p.name, en: p.en,
+        pressed: on ? 'true' : 'false',
+        bg: on ? '#0A6A94' : '#FFFFFF',
+        fg: on ? '#FFFFFF' : '#0F2A3A',
+        sub: on ? '#E1F0F7' : '#4A5D6A',
+        border: on ? '#0A6A94' : '#C9D4DA',
+        pick: function () { self.setState({ pid: p.id, H: p.H, L: p.L, h: p.h }); }
+      };
+    });
+
+    var edited = Math.abs(s.H - cur.H) > 1e-6 || Math.abs(s.L - cur.L) / cur.L > 1e-3 || Math.abs(s.h - cur.h) / cur.h > 1e-3;
+
+    return {
+      presets: presetVals,
+      presetName: cur.name,
+      presetEn: cur.en,
+      editedNote: edited ? '(ปรับค่าเอง)' : '',
+      info: { cause: cur.cause, look: cur.look, period: cur.period, fact: cur.fact },
+      status: status,
+      waterClass: waterClass,
+      readouts: readouts,
+      playLabel: s.playing ? 'หยุดชั่วคราว' : 'เล่นภาพเคลื่อนไหว',
+      togglePlay: function () { self.setState({ playing: !self.state.playing }); },
+      reset: function () { self.setState({ H: cur.H, L: cur.L, h: cur.h }); },
+      H: s.H,
+      Lslider: Math.round((Math.log10(s.L) - LMIN) / (LMAX - LMIN) * 1000),
+      hslider: Math.round((Math.log10(s.h) - HMIN) / (HMAX - HMIN) * 1000),
+      onH: function (e) { self.setState({ H: parseFloat(e.target.value) }); },
+      onL: function (e) { var v = parseFloat(e.target.value); self.setState({ L: Math.pow(10, LMIN + v / 1000 * (LMAX - LMIN)) }); },
+      onDepth: function (e) { var v = parseFloat(e.target.value); self.setState({ h: Math.pow(10, HMIN + v / 1000 * (HMAX - HMIN)) }); },
+      Hlabel: s.H.toFixed(1) + ' ม.',
+      Llabel: this.fmtLen(s.L),
+      hlabel: this.fmtLen(s.h),
+      svgLabel: 'ภาพจำลอง' + cur.name + ' สูง ' + s.H.toFixed(1) + ' เมตร ยาว ' + this.fmtLen(s.L) + ' ในน้ำลึก ' + this.fmtLen(s.h),
+      surfacePath: surfacePath,
+      waterPath: waterPath,
+      surfaceStroke: status.breaking ? '#F08A3C' : '#0A4F70',
+      orbitPath: orbitPath || 'M0,0',
+      particlePath: particlePath || 'M0,0',
+      trackPath: trackPath || 'M0,0',
+      seabedY: seabedVisible ? seabedY.toFixed(1) : BOT,
+      seabedH: seabedVisible ? (BOT - seabedY).toFixed(1) : 0,
+      seabedLineOpacity: seabedVisible ? 1 : 0,
+      hTop: (Y0 - amp).toFixed(1),
+      hBot: (Y0 + amp).toFixed(1),
+      hLabelY: Math.max(22, Y0 - amp * 1.35 - 12).toFixed(1),
+      depthLabel: depthLabel,
+      depthLabelY: depthLabelY,
+      depthLabelFill: depthLabelFill
+    };
+  }
+}
+</script>
+</body>
+</html>

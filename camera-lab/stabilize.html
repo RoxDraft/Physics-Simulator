@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>ระบบกันสั่น</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="spatial.html" style="min-height: 44px; display: inline-flex; align-items: center">← กล้องคู่และ Spatial</a>
+<a href="environment.html" style="min-height: 44px; display: inline-flex; align-items: center">ถัดไป: อุณหภูมิ ความชื้น รังสี →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">การทดลอง 05</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">ระบบกันสั่น: ฮาร์ดแวร์ (OIS) กับซอฟต์แวร์ (EIS)</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">มือคนสั่นตลอดเวลาด้วยความถี่หลายเฮิรตซ์ เปิด-ปิดระบบกันสั่นแต่ละแบบ แล้วสังเกตสองอย่างแยกกัน: ภาพ “ส่าย” ไปมา กับภาพ “เบลอ” ในแต่ละเฟรม</p>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC">
+<span style="font-weight: 700; font-size: 17px">ภาพที่กล้องบันทึก</span>
+<button type="button" onClick="{{togglePlay}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
+</div>
+<div style="background: #0F2A3A; padding: 12px">
+<svg viewBox="0 0 800 450" style="display: block; width: 100%; height: auto; border-radius: 6px; background: #E9E2D6" role="img" aria-label="ภาพจำลองฉากในห้องที่สั่นตามมือ">
+<g style="filter: blur({{blurPx}}px)" transform="{{sceneTransform}}">
+<rect x="-100" y="-100" width="1000" height="420" fill="#E9E2D6"></rect>
+<rect x="-100" y="320" width="1000" height="250" fill="#B89B74"></rect>
+<rect x="90" y="70" width="220" height="150" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="6"></rect>
+<rect x="110" y="90" width="180" height="110" fill="#0A6A94"></rect>
+<circle cx="240" cy="120" r="18" fill="#F5C77A"></circle>
+<path d="M110,200 L170,140 L220,190 L250,160 L290,200 Z" fill="#2E4B5C"></path>
+<rect x="420" y="80" width="260" height="22" fill="#0F2A3A"></rect>
+<rect x="420" y="120" width="210" height="12" fill="#4A5D6A"></rect>
+<rect x="420" y="146" width="240" height="12" fill="#4A5D6A"></rect>
+<rect x="420" y="172" width="180" height="12" fill="#4A5D6A"></rect>
+<rect x="470" y="250" width="200" height="90" fill="#7A5A3A"></rect>
+<rect x="540" y="200" width="40" height="50" fill="#B04A0C"></rect>
+<path d="M560,200 C540,160 520,150 530,120 M560,200 C575,160 600,150 590,115" fill="none" stroke="#3F6B3F" stroke-width="8" stroke-linecap="round"></path>
+</g>
+<rect x="0" y="0" width="800" height="450" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.4"></rect>
+<line x1="390" y1="225" x2="410" y2="225" stroke="#FFFFFF" stroke-width="2"></line>
+<line x1="400" y1="215" x2="400" y2="235" stroke="#FFFFFF" stroke-width="2"></line>
+</svg>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="4">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #0F2A3A">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">ระบบกันสั่น</h2>
+<label style="display: flex; align-items: flex-start; gap: 12px; min-height: 44px; cursor: pointer"><input type="checkbox" checked="{{ois}}" onChange="{{toggleOis}}" style="width: 22px; height: 22px; margin-top: 2px; accent-color: #0A6A94"><span><strong>OIS</strong> กันสั่นด้วยฮาร์ดแวร์<br><span style="font-size: 13px; color: #4A5D6A">ไจโรวัดการสั่น มอเตอร์ขยับเลนส์สวนทาง ระยะขยับจำกัด</span></span></label>
+<label style="display: flex; align-items: flex-start; gap: 12px; min-height: 44px; cursor: pointer"><input type="checkbox" checked="{{eis}}" onChange="{{toggleEis}}" style="width: 22px; height: 22px; margin-top: 2px; accent-color: #0A6A94"><span><strong>EIS</strong> กันสั่นด้วยซอฟต์แวร์<br><span style="font-size: 13px; color: #4A5D6A">ครอปขอบภาพไว้ แล้วเลื่อนกรอบตามข้อมูลไจโร</span></span></label>
+<label style="display: flex; align-items: flex-start; gap: 12px; min-height: 44px; cursor: pointer"><input type="checkbox" checked="{{walk}}" onChange="{{toggleWalk}}" style="width: 22px; height: 22px; margin-top: 2px; accent-color: #0A6A94"><span><strong>เดินไปด้วย</strong><br><span style="font-size: 13px; color: #4A5D6A">เพิ่มการโยกตัวช้า ๆ แต่แรง ตามจังหวะก้าว</span></span></label>
+<div style="display: flex; flex-direction: column; gap: 2px; border-top: 1px solid #E3E9EC; padding-top: 12px">
+<div style="display: flex; justify-content: space-between"><label for="st-a" style="font-size: 14px; font-weight: 600">ระดับมือสั่น</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{ampLabel}}</span></div>
+<input id="st-a" type="range" min="0" max="100" step="1" value="{{amp}}" onChange="{{setAmp}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="st-s" style="font-size: 14px; font-weight: 600">ความเร็วชัตเตอร์</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{shutterLabel}}</span></div>
+<input id="st-s" type="range" min="0" max="100" step="1" value="{{sv}}" onChange="{{setS}}">
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-weight: 700">เส้นทางการสั่น 2 วินาทีล่าสุด</div>
+<svg viewBox="0 0 240 240" style="display: block; width: 100%; max-width: 280px; height: auto; align-self: center" role="img" aria-label="กราฟเส้นทางการสั่นของมือเทียบกับภาพหลังกันสั่น">
+<rect x="0" y="0" width="240" height="240" rx="8" fill="#F3F6F7"></rect>
+<line x1="120" y1="0" x2="120" y2="240" stroke="#D5DEE3"></line>
+<line x1="0" y1="120" x2="240" y2="120" stroke="#D5DEE3"></line>
+<path d="{{rawTrace}}" fill="none" stroke="#9AAAB4" stroke-width="1.5"></path>
+<path d="{{finalTrace}}" fill="none" stroke="#B04A0C" stroke-width="2.5"></path>
+</svg>
+<div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: #4A5D6A"><span style="display: inline-flex; gap: 6px; align-items: center"><svg width="20" height="8" aria-hidden="true"><line x1="0" y1="4" x2="20" y2="4" stroke="#9AAAB4" stroke-width="2"></line></svg>มือสั่นจริง</span><span style="display: inline-flex; gap: 6px; align-items: center"><svg width="20" height="8" aria-hidden="true"><line x1="0" y1="4" x2="20" y2="4" stroke="#B04A0C" stroke-width="3"></line></svg>ภาพหลังกันสั่น</span></div>
+</div>
+</div>
+</div>
+
+<section style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: clamp(18px, 3vw, 28px); display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">ข้อสังเกตสำคัญ</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.75; color: #D9E8EF">ลองปิด OIS เปิดแค่ EIS แล้วปรับชัตเตอร์ให้ช้า ภาพจะนิ่งในกรอบ แต่ยังเบลอ เพราะ EIS เลื่อนภาพได้หลังถ่ายเสร็จเท่านั้น ส่วนความเบลอเกิดขึ้นแล้วขณะชัตเตอร์เปิด OIS ขยับเลนส์ระหว่างรับแสงจริง จึงลดความเบลอได้ กล้องถ่ายภาพนิ่งในที่มืดจึงพึ่ง OIS ส่วนวิดีโอใช้ทั้งสองแบบร่วมกัน (hybrid)</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">ระบบกันสั่นแต่ละแบบทำงานอย่างไร</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">ฮาร์ดแวร์</div><h3 style="margin: 0; font-size: 17px; font-weight: 700">OIS ขยับเลนส์</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">ไจโรสโคปแบบ MEMS วัดการหมุนหลายพันครั้งต่อวินาที ตัวควบคุมสั่งมอเตอร์ขดลวด (VCM) ให้เลื่อนชุดเลนส์สวนทาง มีเซนเซอร์ Hall วัดตำแหน่งเลนส์จริงเพื่อปรับแก้แบบวงปิด</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">ฮาร์ดแวร์</div><h3 style="margin: 0; font-size: 17px; font-weight: 700">Sensor-shift / IBIS</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">ขยับตัวเซนเซอร์แทนเลนส์ ใช้ได้กับทุกเลนส์ที่ใส่ กล้องมิเรอร์เลสบางรุ่นขยับได้ 5 แกน รวมถึงการหมุนรอบแกนเลนส์ ซึ่ง OIS ทั่วไปแก้ไม่ได้</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">ซอฟต์แวร์</div><h3 style="margin: 0; font-size: 17px; font-weight: 700">EIS ครอปและบิดภาพ</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">อ่านข้อมูลไจโรที่ตรงกับเวลาของแต่ละแถวพิกเซล แล้วเลื่อน หมุน และบิดภาพชดเชย ช่วยแก้อาการภาพวุ้น (rolling shutter) ด้วย แลกกับมุมภาพที่แคบลง โหมดกันสั่นแรงพิเศษครอปมากขึ้นอีก</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">กลไก</div><h3 style="margin: 0; font-size: 17px; font-weight: 700">กิมบอล 3 แกน</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">มอเตอร์ไร้แปรงถ่านสามตัวหมุนทั้งกล้องสวนการเคลื่อนที่ ใช้ในโดรน หุ่นยนต์ และไม้กันสั่นมือถือ รับการสั่นได้มากกว่า OIS หลายเท่า เพราะขยับได้หลายสิบองศา</p></div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1300}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.state = { t: 0, ois: false, eis: false, walk: false, amp: 50, sv: 40, playing: !reduce };
+    this._raw = [];
+    this._fin = [];
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing) {
+        var t = self.state.t + dt;
+        var c = self.compute(t, self.state);
+        self._raw.push(c.raw); self._fin.push(c.fin);
+        if (self._raw.length > 120) { self._raw.shift(); self._fin.shift(); }
+        self.setState({ t: t });
+      }
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  shake(t, s) {
+    var A = s.amp / 100 * 30, P = 2 * Math.PI, w = s.walk ? 1 : 0;
+    return {
+      x: A * (0.6 * Math.sin(P * 1.3 * t) + 0.35 * Math.sin(P * 4.7 * t + 1) + 0.2 * Math.sin(P * 9.1 * t + 2)) + w * 1.6 * A * Math.sin(P * 0.9 * t),
+      y: A * (0.5 * Math.sin(P * 1.1 * t + 0.5) + 0.3 * Math.sin(P * 5.3 * t + 2.2) + 0.18 * Math.sin(P * 8.3 * t + 1)) + w * 2.0 * A * Math.sin(P * 1.8 * t + 1.2)
+    };
+  }
+
+  afterOis(t, s) {
+    var sh = this.shake(t, s), R = 18;
+    if (!s.ois) return { x: sh.x, y: sh.y, sat: false };
+    var cx = Math.max(-R, Math.min(R, 0.92 * sh.x)), cy = Math.max(-R, Math.min(R, 0.92 * sh.y));
+    return { x: sh.x - cx, y: sh.y - cy, sat: Math.abs(0.92 * sh.x) > R || Math.abs(0.92 * sh.y) > R };
+  }
+
+  compute(t, s) {
+    var raw = this.shake(t, s);
+    var o = this.afterOis(t, s);
+    var fin = { x: o.x, y: o.y };
+    if (s.eis) {
+      var lag = this.afterOis(t - 0.017, s), M = 40;
+      fin.x = o.x - Math.max(-M, Math.min(M, lag.x));
+      fin.y = o.y - Math.max(-M, Math.min(M, lag.y));
+    }
+    var dt = 0.004, o2 = this.afterOis(t + dt, s);
+    var vel = Math.sqrt(Math.pow(o2.x - o.x, 2) + Math.pow(o2.y - o.y, 2)) / dt;
+    return { raw: raw, fin: fin, vel: vel, sat: o.sat };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var c = this.compute(s.t, s);
+    var shutter = Math.pow(10, -3 + s.sv / 100 * 2.4);
+    var blur = Math.min(24, c.vel * shutter);
+    var tr = 'translate(' + c.fin.x.toFixed(1) + ' ' + c.fin.y.toFixed(1) + ')';
+    if (s.eis) tr = 'translate(400 225) scale(1.1) translate(-400 -225) ' + tr;
+
+    var trace = function (arr) {
+      if (!arr.length) return 'M120,120';
+      return 'M' + arr.map(function (p) { return (120 + p.x * 1.5).toFixed(1) + ',' + (120 + p.y * 1.5).toFixed(1); }).join(' L');
+    };
+    var rms = function (arr) {
+      if (!arr.length) return 0;
+      var sum = 0; arr.forEach(function (p) { sum += p.x * p.x + p.y * p.y; });
+      return Math.sqrt(sum / arr.length);
+    };
+    var rRaw = rms(this._raw), rFin = rms(this._fin);
+    var cut = rRaw > 0.1 ? Math.max(0, (1 - rFin / rRaw) * 100) : 0;
+
+    var readouts = [
+      { label: 'ภาพส่ายเฉลี่ย', value: rFin.toFixed(1) + ' px', sub: rRaw > 0.1 ? 'ลดลง ' + cut.toFixed(0) + '% จากมือสั่นจริง' : 'มือนิ่ง' },
+      { label: 'ภาพเบลอในเฟรมนี้', value: blur.toFixed(1) + ' px', sub: blur < 1 ? 'คมชัด' : blur < 4 ? 'เบลอเล็กน้อย' : 'เบลอชัด ลองเปิด OIS หรือใช้ชัตเตอร์เร็วขึ้น' },
+      { label: 'มุมภาพที่เสียไป', value: s.eis ? '≈ 17%' : '0%', sub: s.eis ? 'EIS ครอปขอบภาพ 10% ต่อด้าน' : 'ได้มุมภาพเต็ม' },
+      { label: 'สถานะ OIS', value: !s.ois ? 'ปิด' : c.sat ? 'สุดระยะ' : 'ทำงาน', sub: !s.ois ? '' : c.sat ? 'การสั่นแรงเกินที่เลนส์ขยับได้ ส่วนที่เกินหลุดไป' : 'ชดเชยได้ทัน' }
+    ];
+
+    return {
+      blurPx: blur.toFixed(2), sceneTransform: tr,
+      rawTrace: trace(this._raw), finalTrace: trace(this._fin),
+      readouts: readouts,
+      ois: s.ois, eis: s.eis, walk: s.walk, amp: s.amp, sv: s.sv,
+      ampLabel: s.amp === 0 ? 'นิ่ง' : s.amp < 35 ? 'น้อย' : s.amp < 70 ? 'ปานกลาง' : 'มาก',
+      shutterLabel: shutter >= 0.1 ? shutter.toFixed(2) + ' วินาที' : '1/' + Math.round(1 / shutter) + ' วินาที',
+      playLabel: s.playing ? 'หยุดชั่วคราว' : 'เล่นภาพเคลื่อนไหว',
+      togglePlay: function () { self.setState({ playing: !self.state.playing }); },
+      toggleOis: function () { self._raw = []; self._fin = []; self.setState({ ois: !self.state.ois }); },
+      toggleEis: function () { self._raw = []; self._fin = []; self.setState({ eis: !self.state.eis }); },
+      toggleWalk: function () { self._raw = []; self._fin = []; self.setState({ walk: !self.state.walk }); },
+      setAmp: function (e) { self.setState({ amp: parseFloat(e.target.value) }); },
+      setS: function (e) { self.setState({ sv: parseFloat(e.target.value) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -12,7 +12,7 @@
 <style>
 body{margin:0;background:#F3F6F7}
 a{color:#0A6A94}a:hover{color:#074E6E}
-a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
 </style>
 </helmet>
 <div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
@@ -27,47 +27,180 @@ a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
 <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; font-size: 16px; text-decoration: none">← กลับไปที่ตัวจำลอง</a>
 </header>
 
+<div style="position: sticky; top: 64px; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 10px 16px">
+<span style="font-size: 15px; color: #34495A">ภาพทุกช่องเคลื่อนไหวตามหลักการทำงานจริง (ทำให้ง่ายลง ไม่ตามสเกล)</span>
+<div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+<button type="button" onClick="{{togglePlay}}" aria-pressed="{{playPressed}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: {{playBg}}; color: {{playFg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
+<button type="button" onClick="{{slower}}" style="min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-family: inherit; font-size: 14px; cursor: pointer">ช้าลง</button>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #0A6A94; min-width: 44px; text-align: center">{{speedLabel}}</span>
+<button type="button" onClick="{{faster}}" style="min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-family: inherit; font-size: 14px; cursor: pointer">เร็วขึ้น</button>
+</div>
+</div>
+
 <div style="display: flex; flex-wrap: wrap; gap: 16px">
-<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<svg viewBox="0 0 240 140" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="ภาพเคลื่อนไหว: ทุ่นลอยขึ้นลงตามคลื่น ขับเครื่องกำเนิดไฟฟ้าใต้น้ำ ส่งไฟฟ้าไปบ้านบนฝั่ง">
+<path d="{{s1.sea}}" fill="#2580AD"></path>
+<rect x="0" y="132" width="240" height="8" fill="#D8C39C"></rect>
+<path d="M165,82 L240,70 L240,140 L150,140 Z" fill="#D8C39C"></path>
+<rect x="196" y="52" width="30" height="20" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></rect>
+<path d="M192,54 L211,38 L230,54" fill="none" stroke="#0F2A3A" stroke-width="2"></path>
+<circle cx="211" cy="62" r="5" fill="#F5C77A" opacity="{{s1.bulb}}"></circle>
+<circle cx="211" cy="62" r="11" fill="#F5C77A" opacity="{{s1.glow}}"></circle>
+<path d="M80,126 L172,126 L204,72" fill="none" stroke="#F5A15B" stroke-width="2.5" stroke-dasharray="6 6" stroke-dashoffset="{{s1.dash}}"></path>
+<line x1="70" y1="{{s1.tetherY}}" x2="70" y2="118" stroke="#0F2A3A" stroke-width="2"></line>
+<rect x="58" y="118" width="24" height="14" rx="2" fill="#0F2A3A"></rect>
+<rect x="58" y="{{s1.buoyY}}" width="24" height="12" rx="5" fill="#F08A3C" stroke="#0F2A3A" stroke-width="1.5"></rect>
+</svg>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">01 · พลังงาน</div>
 <h2 style="margin: 0; font-size: 19px; font-weight: 700">ผลิตไฟฟ้าจากพลังงานคลื่น</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">คลื่นเป็นพลังงานหมุนเวียนที่หนาแน่นกว่าลมและแสงแดด และพยากรณ์ล่วงหน้าได้หลายวัน เพราะสเวลล์เดินทางมาจากพายุที่อยู่ไกล การประเมินที่มักถูกอ้างถึงให้ศักยภาพทั่วโลกราว 2 เทราวัตต์</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ในภาพ: หลอดไฟสว่างมากเมื่อทุ่นเคลื่อนที่เร็ว และหรี่ลงที่ยอดและท้องคลื่นที่ทุ่นหยุดชั่วขณะ</p>
 </div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+</div>
+
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<svg viewBox="0 0 240 140" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="ภาพเคลื่อนไหว: ทุ่นขับปั๊มอัดน้ำทะเลผ่านเยื่อกรอง ได้น้ำจืดลงถัง และน้ำเค็มเข้มข้นกลับสู่ทะเล">
+<path d="{{s2.sea}}" fill="#2580AD"></path>
+<rect x="0" y="132" width="240" height="8" fill="#D8C39C"></rect>
+<path d="M140,74 L240,64 L240,140 L130,140 Z" fill="#D8C39C"></path>
+<path d="M60,121 L150,121 L165,108" fill="none" stroke="#4A5D6A" stroke-width="5" stroke-linejoin="round"></path>
+<path d="M168,114 L150,128 L130,128" fill="none" stroke="#9AAAB4" stroke-width="3"></path>
+<rect x="160" y="92" width="36" height="22" rx="3" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></rect>
+<line x1="178" y1="94" x2="178" y2="112" stroke="#0A6A94" stroke-width="2" stroke-dasharray="3 2"></line>
+<line x1="196" y1="103" x2="208" y2="103" stroke="#4A5D6A" stroke-width="3"></line>
+<rect x="208" y="70" width="24" height="40" rx="2" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></rect>
+<rect x="210" y="{{s2.tankY}}" width="20" height="{{s2.tankH}}" fill="#9FD0E6"></rect>
+<path d="{{s2.press}}" fill="#FFFFFF"></path>
+<path d="{{s2.fresh}}" fill="#9FD0E6" stroke="#0A6A94" stroke-width="0.8"></path>
+<path d="{{s2.brine}}" fill="#9AAAB4"></path>
+<line x1="50" y1="{{s2.tetherY}}" x2="50" y2="{{s2.rodY}}" stroke="#0F2A3A" stroke-width="2"></line>
+<rect x="40" y="108" width="20" height="24" rx="2" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></rect>
+<rect x="42" y="{{s2.rodY}}" width="16" height="5" fill="#0F2A3A"></rect>
+<rect x="38" y="{{s2.buoyY}}" width="24" height="12" rx="5" fill="#F08A3C" stroke="#0F2A3A" stroke-width="1.5"></rect>
+</svg>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">02 · น้ำจืด</div>
 <h2 style="margin: 0; font-size: 19px; font-weight: 700">ผลิตน้ำจืดจากน้ำทะเล</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">มีโครงการต้นแบบที่ใช้แรงดันจากคลื่นขับระบบกรองน้ำทะเล (reverse osmosis) โดยตรง ไม่ต้องแปลงเป็นไฟฟ้าก่อน เหมาะกับเกาะและชุมชนชายฝั่งที่ขาดน้ำจืด</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ในภาพ: น้ำทะเลถูกอัดผ่านเยื่อกรอง (เส้นประ) น้ำจืดสีฟ้าไหลลงถัง ส่วนน้ำเค็มเข้มข้นสีเทาไหลกลับทะเล</p>
 </div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+</div>
+
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<svg viewBox="0 0 240 140" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="ภาพเคลื่อนไหว: นักโต้คลื่นไถลบนหน้าคลื่นที่เคลื่อนเข้าหาฝั่ง">
+<circle cx="200" cy="28" r="12" fill="#F5C77A"></circle>
+<path d="{{s3.sea}}" fill="#2580AD"></path>
+<path d="{{s3.foam}}" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"></path>
+<rect x="0" y="128" width="240" height="12" fill="#D8C39C"></rect>
+<g transform="{{s3.surfer}}">
+<ellipse cx="0" cy="0" rx="13" ry="2.6" fill="#F08A3C" stroke="#0F2A3A" stroke-width="1"></ellipse>
+<path d="M-3,-2 L-1,-10 L3,-17 M-1,-10 L4,-3 M3,-15 L-5,-13 M3,-15 L10,-17" fill="none" stroke="#0F2A3A" stroke-width="2.2" stroke-linecap="round"></path>
+<circle cx="4" cy="-20" r="3" fill="#0F2A3A"></circle>
+</g>
+</svg>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">03 · ท่องเที่ยว</div>
 <h2 style="margin: 0; font-size: 19px; font-weight: 700">กีฬาทางน้ำและการท่องเที่ยว</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">การโต้คลื่น บอดี้บอร์ด และวินด์เซิร์ฟพึ่งพาสเวลล์ที่มาเป็นชุดสม่ำเสมอ ชายหาดที่มีคลื่นดีกลายเป็นแหล่งรายได้ของชุมชน ตั้งแต่ร้านเช่าบอร์ดไปจนถึงโรงเรียนสอนเซิร์ฟ</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ในภาพ: นักโต้คลื่นอยู่บนหน้าคลื่นที่ชัน แรงโน้มถ่วงดึงลงตามความลาด ขณะที่คลื่นยกตัวไปข้างหน้าด้วยความเร็วเท่ากัน</p>
 </div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+</div>
+
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<svg viewBox="0 0 240 140" style="display: block; width: 100%; height: auto; background: #CFE6F0" role="img" aria-label="ภาพเคลื่อนไหวมุมบน: คลื่นเข้าหาฝั่งเป็นมุมเฉียง เม็ดทรายถูกพาขึ้นหาดเฉียงแล้วไหลกลับตรง จึงเคลื่อนไปตามแนวชายฝั่งแบบซิกแซก">
+<path d="{{s4.crests}}" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"></path>
+<path d="{{s4.beach}}" fill="#E9D8B4"></path>
+<path d="{{s4.trail}}" fill="none" stroke="#B89B74" stroke-width="1.5" stroke-dasharray="3 3"></path>
+<circle cx="{{s4.gx}}" cy="{{s4.gy}}" r="4.5" fill="#B04A0C" stroke="#FFFFFF" stroke-width="1.5"></circle>
+<path d="M150,132 L200,132 M192,127 L200,132 L192,137" fill="none" stroke="#7E3407" stroke-width="2"></path>
+</svg>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">04 · ชายฝั่ง</div>
 <h2 style="margin: 0; font-size: 19px; font-weight: 700">สร้างและหล่อเลี้ยงชายหาด</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">คลื่นพัดพาทรายขึ้น-ลงหาด และพาไปตามแนวชายฝั่ง (longshore drift) จนเกิดหาดทราย สันทราย และแหลม การเข้าใจกระบวนการนี้ช่วยวางแผนแก้ปัญหาการกัดเซาะชายฝั่ง</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ในภาพ (มองจากด้านบน): น้ำซัดขึ้นหาดตามทิศคลื่นที่เฉียง แต่ไหลกลับตรงตามความลาด เม็ดทรายสีส้มจึงขยับไปทางขวาทีละนิด</p>
 </div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+</div>
+
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<svg viewBox="0 0 240 140" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="ภาพเคลื่อนไหว: คลื่นแตกตีฟองอากาศลงไปในน้ำ แพลงก์ตอนลอยวนอยู่ในน้ำที่ถูกกวน">
+<path d="{{s5.sea}}" fill="#2580AD"></path>
+<path d="{{s5.foam}}" fill="#FFFFFF" opacity="0.85"></path>
+<path d="{{s5.bubbles}}" fill="none" stroke="#FFFFFF" stroke-width="1.3"></path>
+<path d="{{s5.plankton}}" fill="#8FD18B"></path>
+<rect x="0" y="128" width="240" height="12" fill="#D8C39C"></rect>
+<path d="M170,128 L172,112 L176,120 L180,106 L184,118 L188,110 L190,128 Z" fill="#F08A3C"></path>
+<path d="M30,128 C30,118 36,114 40,120 C44,110 52,114 50,128 Z" fill="#E07A9B"></path>
+</svg>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">05 · ระบบนิเวศ</div>
 <h2 style="margin: 0; font-size: 19px; font-weight: 700">เติมออกซิเจนและผสมสารอาหาร</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">คลื่นแตกตีอากาศลงไปในน้ำ เพิ่มออกซิเจนและการแลกเปลี่ยนก๊าซกับบรรยากาศ การกวนของคลื่นยังผสมสารอาหารให้แพลงก์ตอน ปะการัง และสัตว์ชายฝั่ง</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ในภาพ: ฟองอากาศถูกดันลงไปใต้ผิวน้ำแล้วลอยกลับขึ้น ระหว่างนั้นออกซิเจนละลายเข้าสู่น้ำ</p>
 </div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+</div>
+
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<svg viewBox="0 0 240 140" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="ภาพเคลื่อนไหว: เขื่อนกันคลื่นรับคลื่นใหญ่ด้านนอก เรือในท่าด้านในโคลงเพียงเล็กน้อย">
+<path d="{{s6.seaOut}}" fill="#2580AD"></path>
+<path d="{{s6.seaIn}}" fill="#2580AD"></path>
+<path d="M114,140 L122,46 L140,46 L148,140 Z" fill="#9AAAB4" stroke="#4A5D6A" stroke-width="2"></path>
+<path d="M118,70 l6,-4 l6,4 l6,-4 l6,4" fill="none" stroke="#4A5D6A" stroke-width="1.5"></path>
+<rect x="0" y="132" width="240" height="8" fill="#D8C39C"></rect>
+<g transform="{{s6.boatOut}}"><path d="M-16,-2 L16,-2 L11,6 L-11,6 Z" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="1.5"></path><path d="M0,-2 L0,-22 L11,-6 Z" fill="#F08A3C" stroke="#0F2A3A" stroke-width="1.2"></path></g>
+<g transform="{{s6.boatIn}}"><path d="M-16,-2 L16,-2 L11,6 L-11,6 Z" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="1.5"></path><rect x="-6" y="-10" width="12" height="8" fill="#0A6A94"></rect></g>
+<line x1="222" y1="40" x2="222" y2="132" stroke="#4A5D6A" stroke-width="3"></line>
+</svg>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">06 · วิศวกรรม</div>
 <h2 style="margin: 0; font-size: 19px; font-weight: 700">ออกแบบท่าเรือและโครงสร้างในทะเล</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">ข้อมูลความสูงและคาบคลื่นใช้กำหนดขนาดเขื่อนกันคลื่น ท่าเรือ แท่นขุดเจาะ และฟาร์มกังหันลมนอกชายฝั่ง รวมถึงวางเส้นทางเดินเรือให้ปลอดภัยและประหยัดเชื้อเพลิง</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ในภาพ: เขื่อนกันคลื่นสะท้อนและสลายพลังงานคลื่น เรือด้านนอกโคลงแรง ส่วนเรือในท่าแทบนิ่ง</p>
 </div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+</div>
+
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<svg viewBox="0 0 240 140" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="ภาพเคลื่อนไหว: คลื่นสึนามิผ่านเซนเซอร์วัดความดันที่พื้นทะเล ทุ่นส่งสัญญาณผ่านดาวเทียม แล้วสัญญาณเตือนบนฝั่งกะพริบ">
+<path d="{{s7.sea}}" fill="#1E5E82"></path>
+<rect x="0" y="130" width="240" height="10" fill="#D8C39C"></rect>
+<path d="M212,40 L240,34 L240,140 L200,140 Z" fill="#D8C39C"></path>
+<line x1="226" y1="42" x2="226" y2="22" stroke="#0F2A3A" stroke-width="2"></line>
+<circle cx="226" cy="18" r="6" fill="{{s7.lamp}}" stroke="#0F2A3A" stroke-width="1.5"></circle>
+<g transform="translate(176 14)"><rect x="-6" y="-4" width="12" height="8" fill="#0F2A3A"></rect><rect x="-20" y="-2" width="12" height="4" fill="#0A6A94"></rect><rect x="8" y="-2" width="12" height="4" fill="#0A6A94"></rect></g>
+<path d="M120,{{s7.buoyTop}} L176,18 L224,16" fill="none" stroke="#F08A3C" stroke-width="2" stroke-dasharray="4 4" stroke-dashoffset="{{s7.dash}}" opacity="{{s7.signal}}"></path>
+<line x1="120" y1="{{s7.buoyY}}" x2="120" y2="122" stroke="#FFFFFF" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.6"></line>
+<circle cx="120" cy="124" r="{{s7.ringR}}" fill="none" stroke="#F5C77A" stroke-width="2" opacity="{{s7.ringO}}"></circle>
+<rect x="113" y="122" width="14" height="8" rx="2" fill="#F5C77A" stroke="#0F2A3A" stroke-width="1.2"></rect>
+<rect x="113" y="{{s7.buoyY}}" width="14" height="9" rx="3" fill="#F08A3C" stroke="#0F2A3A" stroke-width="1.5"></rect>
+</svg>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">07 · เตือนภัย</div>
 <h2 style="margin: 0; font-size: 19px; font-weight: 700">พยากรณ์พายุและเตือนภัยสึนามิ</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">สเวลล์มักมาถึงชายฝั่งก่อนพายุ จึงเป็นสัญญาณล่วงหน้า ส่วนทุ่นเตือนภัยสึนามิวัดความดันน้ำที่พื้นทะเล ตรวจจับระดับน้ำที่เปลี่ยนเพียงไม่กี่เซนติเมตรกลางมหาสมุทรได้</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ในภาพ: เมื่อคลื่นสึนามิผ่าน เซนเซอร์พื้นทะเลวัดความดันที่เพิ่มขึ้น ทุ่นส่งข้อมูลผ่านดาวเทียม แล้วหอเตือนภัยบนฝั่งเริ่มกะพริบ ก่อนคลื่นจะมาถึง</p>
 </div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+</div>
+
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+<svg viewBox="0 0 240 140" style="display: block; width: 100%; height: auto; background: #CFE6F0" role="img" aria-label="ภาพเคลื่อนไหวมุมบน: สเวลล์เดินทางผ่านเกาะ หักเหโค้งรอบเกาะและสะท้อนกลับ เรือแคนูอ่านรูปแบบนี้เพื่อหาเกาะ">
+<path d="{{s8.swell}}" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"></path>
+<path d="{{s8.bent}}" fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity="0.8"></path>
+<path d="{{s8.reflect}}" fill="none" stroke="#0A6A94" stroke-width="1.4" opacity="{{s8.reflectO}}"></path>
+<circle cx="150" cy="70" r="20" fill="#E9D8B4"></circle>
+<circle cx="150" cy="70" r="11" fill="#3F6B3F"></circle>
+<g transform="{{s8.canoe}}"><path d="M-12,0 Q0,-5 12,0 Q0,5 -12,0 Z" fill="#7A5A3A"></path><line x1="-4" y1="-6" x2="-4" y2="6" stroke="#0F2A3A" stroke-width="1.2"></line></g>
+</svg>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">08 · นำทาง</div>
 <h2 style="margin: 0; font-size: 19px; font-weight: 700">อ่านคลื่นเพื่อนำทาง</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">นักเดินเรือชาวโพลินีเซียในอดีตสังเกตรูปแบบสเวลล์ที่สะท้อนและหักเหรอบเกาะ เพื่อหาทิศทางและตำแหน่งของเกาะที่ยังมองไม่เห็น โดยไม่ต้องใช้เข็มทิศ</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ในภาพ (มองจากด้านบน): สเวลล์สีขาวโค้งอ้อมเกาะ ส่วนคลื่นสะท้อนสีน้ำเงินกระจายออกมาด้านหน้า เรือแคนูรับรู้ได้จากการโคลงที่เปลี่ยนไป</p>
 </div>
+</div>
+
 </div>
 
 <section style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
@@ -77,56 +210,64 @@ a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
 <div style="display: flex; flex-wrap: wrap; gap: 14px">
 
 <div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
-<svg viewBox="0 0 240 120" style="width: 100%; height: auto; display: block" role="img" aria-label="แผนภาพคอลัมน์น้ำแกว่ง">
-<path d="M0,78 Q20,66 40,78 T80,78 T120,78 T160,78 T200,78 T240,78 L240,120 L0,120 Z" fill="#CFE6F0"></path>
-<path d="M120,120 L120,40 L200,40 L200,120" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
-<path d="M120,104 L120,40" stroke="#F3F6F7" stroke-width="0"></path>
-<line x1="160" y1="40" x2="160" y2="16" stroke="#0A6A94" stroke-width="3"></line>
-<circle cx="160" cy="12" r="9" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></circle>
-<path d="M146,64 L160,52 L174,64" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
-<line x1="125" y1="72" x2="195" y2="72" stroke="#0A6A94" stroke-width="2" stroke-dasharray="4 4"></line>
+<svg viewBox="0 0 240 140" style="width: 100%; height: auto; display: block; border-radius: 8px; background: #F3F6F7" role="img" aria-label="แผนภาพคอลัมน์น้ำแกว่ง">
+<path d="{{a.sea}}" fill="#9FD0E6"></path>
+<rect x="124" y="{{a.inY}}" width="72" height="{{a.inH}}" fill="#9FD0E6"></rect>
+<rect x="0" y="130" width="240" height="10" fill="#D8C39C"></rect>
+<path d="M120,104 L120,40 L148,40 L148,22 M172,22 L172,40 L200,40 L200,130" fill="none" stroke="#0F2A3A" stroke-width="4"></path>
+<g transform="translate(160 16)"><g transform="{{a.rot}}"><path d="M-12,0 L12,0 M0,-12 L0,12" stroke="#B04A0C" stroke-width="3" stroke-linecap="round"></path></g><circle cx="0" cy="0" r="3" fill="#0F2A3A"></circle></g>
+<path d="{{a.arrow}}" fill="none" stroke="#0A6A94" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 <h3 style="margin: 0; font-size: 17px; font-weight: 700">คอลัมน์น้ำแกว่ง (OWC)</h3>
 <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">คลื่นดันน้ำในห้องปิดให้ขึ้น-ลง อากาศด้านบนถูกอัดและดูดสลับกัน ไหลผ่านกังหันอากาศที่หมุนทางเดียว มักสร้างเป็นส่วนหนึ่งของเขื่อนกันคลื่น</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">สังเกต: ลูกศรอากาศกลับทิศทุกครึ่งคาบ แต่กังหัน Wells หมุนทางเดียวตลอด</p>
 </div>
 
 <div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
-<svg viewBox="0 0 240 120" style="width: 100%; height: auto; display: block" role="img" aria-label="แผนภาพทุ่นลอยดูดซับพลังงาน">
-<path d="M0,44 Q30,28 60,44 T120,44 T180,44 T240,44 L240,120 L0,120 Z" fill="#CFE6F0"></path>
-<ellipse cx="120" cy="40" rx="30" ry="12" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="3"></ellipse>
-<line x1="120" y1="52" x2="120" y2="96" stroke="#0A6A94" stroke-width="3"></line>
-<rect x="104" y="96" width="32" height="20" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></rect>
-<path d="M166,22 L166,58 M158,30 L166,22 L174,30 M158,50 L166,58 L174,50" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<svg viewBox="0 0 240 140" style="width: 100%; height: auto; display: block; border-radius: 8px; background: #F3F6F7" role="img" aria-label="แผนภาพทุ่นลอยดูดซับพลังงาน">
+<path d="{{b.sea}}" fill="#9FD0E6"></path>
+<rect x="0" y="130" width="240" height="10" fill="#D8C39C"></rect>
+<line x1="120" y1="{{b.rodTop}}" x2="120" y2="100" stroke="#0A6A94" stroke-width="3"></line>
+<rect x="110" y="98" width="20" height="32" rx="2" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></rect>
+<rect x="112" y="{{b.piston}}" width="16" height="5" fill="#0A6A94"></rect>
+<g transform="translate(160 116)"><circle cx="0" cy="0" r="11" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></circle><g transform="{{b.rot}}"><path d="M0,-9 L0,9 M-9,0 L9,0" stroke="#B04A0C" stroke-width="2.5"></path></g></g>
+<line x1="130" y1="116" x2="149" y2="116" stroke="#0F2A3A" stroke-width="2"></line>
+<ellipse cx="120" cy="{{b.buoyY}}" rx="30" ry="11" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="3"></ellipse>
 </svg>
 <h3 style="margin: 0; font-size: 17px; font-weight: 700">ทุ่นลอยดูดซับ (Point absorber)</h3>
 <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">ทุ่นลอยขึ้น-ลงตามคลื่น ดึงสายหรือแกนที่ยึดกับพื้นทะเล ขับเครื่องกำเนิดไฟฟ้าหรือปั๊มไฮดรอลิก ติดตั้งเป็นกลุ่มได้หลายตัว</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">สังเกต: ลูกสูบในกระบอกเลื่อนตามทุ่น และเฟืองเครื่องกำเนิดไฟฟ้าหมุนไป-กลับตามการขึ้นลง</p>
 </div>
 
 <div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
-<svg viewBox="0 0 240 120" style="width: 100%; height: auto; display: block" role="img" aria-label="แผนภาพแผ่นโยกใต้น้ำ">
-<path d="M0,30 Q30,18 60,30 T120,30 T180,30 T240,30 L240,112 L0,112 Z" fill="#CFE6F0"></path>
-<rect x="0" y="108" width="240" height="12" fill="#D8C39C"></rect>
-<rect x="114" y="40" width="12" height="66" rx="3" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="3"></rect>
-<circle cx="120" cy="106" r="6" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></circle>
-<path d="M88,58 Q120,40 152,58" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
-<path d="M144,50 L152,58 L142,62 M96,50 L88,58 L98,62" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<svg viewBox="0 0 240 140" style="width: 100%; height: auto; display: block; border-radius: 8px; background: #F3F6F7" role="img" aria-label="แผนภาพแผ่นโยกใต้น้ำ">
+<path d="{{c.sea}}" fill="#9FD0E6"></path>
+<path d="{{c.dots}}" fill="#FFFFFF" stroke="#0A6A94" stroke-width="0.8"></path>
+<rect x="0" y="112" width="240" height="28" fill="#D8C39C"></rect>
+<line x1="{{c.pistonX}}" y1="{{c.pistonY}}" x2="176" y2="112" stroke="#0F2A3A" stroke-width="3"></line>
+<g transform="{{c.flap}}"><rect x="-6" y="-66" width="12" height="66" rx="3" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="3"></rect></g>
+<circle cx="120" cy="112" r="6" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></circle>
 </svg>
 <h3 style="margin: 0; font-size: 17px; font-weight: 700">แผ่นโยกใต้น้ำ (Oscillating surge)</h3>
 <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">แผ่นบานพับติดพื้นทะเลในน้ำตื้นโยกไป-มาตามการแกว่งแนวนอนของน้ำ ตรงกับวงโคจรแบนที่เห็นในตัวจำลองเมื่อน้ำตื้น</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">สังเกต: จุดน้ำแกว่งไป-มาในแนวนอน ดันแผ่นให้โยก แล้วแผ่นอัดกระบอกไฮดรอลิกที่ยึดกับพื้น</p>
 </div>
 
 <div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
-<svg viewBox="0 0 240 120" style="width: 100%; height: auto; display: block" role="img" aria-label="แผนภาพระบบน้ำล้นข้ามสันกั้น">
-<path d="M0,72 Q20,58 40,72 T80,72 L80,120 L0,120 Z" fill="#CFE6F0"></path>
-<path d="M80,104 L150,44 L150,104" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
-<path d="M150,44 L230,44 L230,104 L150,104" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
-<rect x="153" y="58" width="74" height="44" fill="#CFE6F0"></rect>
-<path d="M96,70 Q120,30 160,52" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
-<path d="M150,46 L160,52 L150,58" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
-<circle cx="190" cy="112" r="7" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></circle>
+<svg viewBox="0 0 240 140" style="width: 100%; height: auto; display: block; border-radius: 8px; background: #F3F6F7" role="img" aria-label="แผนภาพระบบน้ำล้นข้ามสันกั้น">
+<path d="{{d.sea}}" fill="#9FD0E6"></path>
+<path d="{{d.runup}}" fill="#9FD0E6"></path>
+<rect x="153" y="{{d.resY}}" width="74" height="{{d.resH}}" fill="#9FD0E6"></rect>
+<path d="{{d.drops}}" fill="#9FD0E6" stroke="#0A6A94" stroke-width="0.6"></path>
+<path d="M80,104 L150,44 L150,104 M150,44 L230,44 L230,104 L150,104" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<path d="M190,104 L190,120" fill="none" stroke="#4A5D6A" stroke-width="5"></path>
+<path d="{{d.flow}}" fill="#9FD0E6" stroke="#0A6A94" stroke-width="0.6"></path>
+<rect x="0" y="130" width="240" height="10" fill="#D8C39C"></rect>
+<g transform="translate(190 124)"><circle cx="0" cy="0" r="7" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></circle><g transform="{{d.rot}}"><path d="M0,-6 L0,6 M-6,0 L6,0" stroke="#B04A0C" stroke-width="2"></path></g></g>
 </svg>
 <h3 style="margin: 0; font-size: 17px; font-weight: 700">น้ำล้นข้ามสันกั้น (Overtopping)</h3>
 <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">ทางลาดพาคลื่นซัดน้ำขึ้นไปเก็บในอ่างที่สูงกว่าระดับทะเล แล้วปล่อยน้ำไหลกลับผ่านกังหันน้ำ คล้ายเขื่อนผลิตไฟฟ้าขนาดเล็ก</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">สังเกต: คลื่นซัดเป็นจังหวะ แต่อ่างเก็บน้ำช่วยให้น้ำไหลผ่านกังหันสม่ำเสมอ กังหันจึงหมุนต่อเนื่อง</p>
 </div>
 
 </div>
@@ -146,7 +287,7 @@ a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
 </aside>
 </section>
 
-<section style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: clamp(20px, 3vw, 32px); display: flex; flex-direction: column; gap: 18px">
+<section style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: clamp(18px, 3vw, 32px); display: flex; flex-direction: column; gap: 18px">
 <h2 style="margin: 0; font-size: 26px; font-weight: 700">คลื่นกับประเทศไทย</h2>
 <div style="display: flex; flex-wrap: wrap; gap: 24px">
 <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 6px">
@@ -167,10 +308,216 @@ a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
 </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1560}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1900}}'>
 class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.state = { t: 0, playing: !reduce, speed: 1 };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing) self.setState({ t: self.state.t + dt * self.state.speed });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
   renderVals() {
-    return {};
+    var self = this, s = this.state, T = s.t;
+    var PI = Math.PI, w = 2 * PI / 3;
+    var f1 = function (v) { return v.toFixed(1); };
+    // surface elevation of a wave travelling to the right
+    var eta = function (x, A, L, ph) { return A * Math.sin(2 * PI * x / L - w * T + (ph || 0)); };
+    var line = function (x0, x1, base, A, L, ph) {
+      var p = [];
+      for (var x = x0; x <= x1 + 0.01; x += 4) p.push(f1(x) + ',' + f1(base - eta(x, A, L, ph)));
+      return 'M' + p.join(' L');
+    };
+    var sea = function (x0, x1, base, A, L, yb, ph) { return line(x0, x1, base, A, L, ph) + ' L' + x1 + ',' + yb + ' L' + x0 + ',' + yb + ' Z'; };
+    var dots = function (pts) {
+      return pts.map(function (q) { var r = q[2]; return 'M' + f1(q[0] - r) + ',' + f1(q[1]) + ' a' + r + ',' + r + ' 0 1,0 ' + (2 * r) + ',0 a' + r + ',' + r + ' 0 1,0 ' + (-2 * r) + ',0 '; }).join('') || 'M0,0';
+    };
+    var along = function (pts, f) {
+      var segs = [], tot = 0;
+      for (var i = 1; i < pts.length; i++) { var d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); segs.push(d); tot += d; }
+      var target = f * tot;
+      for (var j = 0; j < segs.length; j++) {
+        if (target <= segs[j]) { var u = target / segs[j]; return [pts[j][0] + (pts[j + 1][0] - pts[j][0]) * u, pts[j][1] + (pts[j + 1][1] - pts[j][1]) * u]; }
+        target -= segs[j];
+      }
+      return pts[pts.length - 1];
+    };
+    var frac = function (v) { return v - Math.floor(v); };
+
+    // 1 energy
+    var e1 = eta(70, 7, 110), v1 = Math.abs(Math.cos(2 * PI * 70 / 110 - w * T));
+    var s1 = {
+      sea: sea(0, 170, 80, 7, 110, 140), buoyY: f1(80 - e1 - 7), tetherY: f1(80 - e1 + 5),
+      bulb: (0.35 + 0.65 * v1).toFixed(2), glow: (0.45 * v1).toFixed(2), dash: f1(-T * 30)
+    };
+
+    // 2 fresh water
+    var e2 = eta(50, 7, 110), v2 = Math.abs(Math.cos(2 * PI * 50 / 110 - w * T));
+    var pressPts = [], freshPts = [], brinePts = [];
+    var pipe = [[60, 121], [150, 121], [165, 108]];
+    var flowPh = T * 0.32 + 0.05 * Math.sin(w * T);
+    for (var i = 0; i < 7; i++) { var q = along(pipe, frac(flowPh + i / 7)); pressPts.push([q[0], q[1], 1.6]); }
+    for (var j = 0; j < 3; j++) { var q2 = along([[196, 103], [210, 103]], frac(T * 0.6 + j / 3)); freshPts.push([q2[0], q2[1], 1.8]); }
+    for (var k = 0; k < 4; k++) { var q3 = along([[168, 114], [150, 128], [130, 128]], frac(T * 0.4 + k / 4)); brinePts.push([q3[0], q3[1], 1.6]); }
+    var lvl = frac(T * 0.04);
+    var s2 = {
+      sea: sea(0, 150, 70, 7, 110, 140), buoyY: f1(70 - e2 - 7), tetherY: f1(70 - e2 + 5),
+      rodY: f1(116 - e2 * 0.6), press: dots(pressPts), fresh: dots(freshPts), brine: dots(brinePts),
+      tankY: f1(108 - 36 * lvl), tankH: f1(36 * lvl + 0.01)
+    };
+    void v2;
+
+    // 3 surfing: a breaking wave crest that travels toward the shore
+    var xc = frac(T * 0.14) * 330 - 50;
+    var surf = function (x) {
+      var d = x - xc, h = d > 0 ? Math.exp(-Math.pow(d / 14, 2)) : Math.exp(-Math.pow(d / 38, 2));
+      return 84 - 3 * Math.sin(2 * PI * x / 60 - w * T) - 30 * h;
+    };
+    var sp = [];
+    for (var x3 = 0; x3 <= 240; x3 += 3) sp.push(x3 + ',' + f1(surf(x3)));
+    var sx = xc + 8, sy = surf(sx), slope = (surf(sx + 2) - surf(sx - 2)) / 4;
+    var s3 = {
+      sea: 'M' + sp.join(' L') + ' L240,140 L0,140 Z',
+      foam: 'M' + f1(xc - 4) + ',' + f1(surf(xc - 4)) + ' Q' + f1(xc + 6) + ',' + f1(surf(xc) - 8) + ' ' + f1(xc + 14) + ',' + f1(surf(xc + 14)),
+      surfer: 'translate(' + f1(sx) + ' ' + f1(sy - 2) + ') rotate(' + f1(Math.atan(slope) * 180 / PI) + ')'
+    };
+
+    // 4 longshore drift, seen from above
+    var shore = function (x) { return 92 + 4 * Math.sin(w * T + x / 30); };
+    var cr = [];
+    for (var c = 0; c < 6; c++) {
+      var y0 = frac(T * 0.12 + c / 6) * 120 - 40;
+      var xEnd = 240, yEnd = y0 + 0.3 * 240;
+      if (yEnd > 90) { xEnd = (90 - y0) / 0.3; yEnd = 90; }
+      if (xEnd > 4) cr.push('M0,' + f1(y0) + ' L' + f1(xEnd) + ',' + f1(yEnd));
+    }
+    var bp = [];
+    for (var xb = 0; xb <= 240; xb += 6) bp.push(xb + ',' + f1(shore(xb)));
+    var cyc = Math.floor(T / 2.4), ff = frac(T / 2.4), stepX = 14, bx = 16 + ((cyc * stepX) % 196);
+    var gx = ff < 0.5 ? bx + stepX * (ff / 0.5) : bx + stepX;
+    var gy = ff < 0.5 ? 100 + 20 * Math.sin(PI / 2 * ff / 0.5) : 120 - 20 * ((ff - 0.5) / 0.5);
+    var tr = [];
+    for (var z = 0; z < 15; z++) tr.push('M' + (16 + z * stepX) + ',100 L' + (16 + (z + 1) * stepX) + ',120 L' + (16 + (z + 1) * stepX) + ',100');
+    var s4 = { crests: cr.join(' ') || 'M0,0', beach: 'M' + bp.join(' L') + ' L240,140 L0,140 Z', trail: tr.join(' '), gx: f1(gx), gy: f1(gy) };
+
+    // 5 ecosystem: bubbles and plankton
+    var bub = [], pl = [];
+    for (var b = 0; b < 12; b++) {
+      var p5 = frac(T * 0.3 + b / 12);
+      bub.push([30 + b * 15 + 4 * Math.sin(T * 2 + b), 56 + 48 * Math.sin(PI * p5), 1.5 + 2.2 * (1 - p5)]);
+    }
+    for (var pk = 0; pk < 9; pk++) pl.push([26 + ((pk * 23) % 190) + 9 * Math.cos(T * 0.7 + pk), 92 + 14 * Math.sin(T * 0.55 + pk * 1.3), 2.4]);
+    var fx = 60 + 6 * Math.sin(w * T);
+    var s5 = {
+      sea: sea(0, 240, 52, 5, 100, 140), bubbles: dots(bub), plankton: dots(pl),
+      foam: 'M' + f1(fx - 30) + ',' + f1(52 - eta(fx - 30, 5, 100)) + ' Q' + f1(fx) + ',30 ' + f1(fx + 22) + ',' + f1(56 - eta(fx + 22, 5, 100)) + ' Q' + f1(fx + 4) + ',46 ' + f1(fx - 30) + ',' + f1(56 - eta(fx - 30, 5, 100)) + ' Z'
+    };
+
+    // 6 breakwater
+    var boat = function (x, A, L) {
+      var y = 72 - eta(x, A, L), sl = (eta(x + 2, A, L) - eta(x - 2, A, L)) / 4;
+      return 'translate(' + x + ' ' + f1(y - 3) + ') rotate(' + f1(-Math.atan(sl) * 180 / PI) + ')';
+    };
+    var s6 = { seaOut: sea(0, 122, 72, 10, 80, 140), seaIn: sea(140, 222, 72, 1.5, 80, 140, 1.2), boatOut: boat(56, 10, 80), boatIn: boat(186, 1.5, 80) };
+
+    // 7 tsunami warning
+    var xp = frac(T * 0.1) * 340 - 60;
+    var surf7 = function (x) { return 44 - 1.5 * Math.sin(2 * PI * x / 40 - w * T) - 9 * Math.exp(-Math.pow((x - xp) / 28, 2)); };
+    var s7p = [];
+    for (var x7 = 0; x7 <= 212; x7 += 4) s7p.push(x7 + ',' + f1(surf7(x7)));
+    var near = Math.abs(xp - 120) < 40, alerted = xp > 105 && xp < 280;
+    var by = surf7(120);
+    var s7 = {
+      sea: 'M' + s7p.join(' L') + ' L212,140 L0,140 Z', buoyY: f1(by - 6), buoyTop: f1(by - 6),
+      ringR: f1(near ? 6 + (40 - Math.abs(xp - 120)) * 0.35 : 4), ringO: near ? 0.9 : 0,
+      signal: alerted ? 1 : 0, dash: f1(-T * 40),
+      lamp: alerted && Math.floor(T * 4) % 2 === 0 ? '#F08A3C' : '#FFFFFF'
+    };
+
+    // 8 navigation around an island, seen from above
+    var sw = [], bent = [], refl = [];
+    for (var n = 0; n < 9; n++) {
+      var xs = frac(T * 0.07 + n / 9) * 252 - 6;
+      if (xs > 128 && xs < 196) sw.push('M' + f1(xs) + ',0 L' + f1(xs) + ',46 M' + f1(xs) + ',94 L' + f1(xs) + ',140');
+      else sw.push('M' + f1(xs) + ',0 L' + f1(xs) + ',140');
+      if (xs > 150 && xs < 240) {
+        var r = xs - 150 + 20;
+        bent.push('M' + f1(150 + r * Math.cos(-0.9)) + ',' + f1(70 + r * Math.sin(-0.9)) + ' A' + f1(r) + ',' + f1(r) + ' 0 0,1 ' + f1(150 + r * Math.cos(0.9)) + ',' + f1(70 + r * Math.sin(0.9)));
+      }
+    }
+    var rr = 22 + frac(T * 0.2) * 50;
+    refl.push('M' + f1(150 + rr * Math.cos(PI - 0.8)) + ',' + f1(70 - rr * Math.sin(PI - 0.8)) + ' A' + f1(rr) + ',' + f1(rr) + ' 0 0,0 ' + f1(150 + rr * Math.cos(PI + 0.8)) + ',' + f1(70 - rr * Math.sin(PI + 0.8)));
+    var cf = frac(T * 0.035), cpos = along([[16, 126], [70, 112], [112, 96]], cf);
+    var s8 = {
+      swell: sw.join(' '), bent: bent.join(' ') || 'M0,0', reflect: refl.join(' '), reflectO: (1 - frac(T * 0.2)).toFixed(2),
+      canoe: 'translate(' + f1(cpos[0]) + ' ' + f1(cpos[1] + 1.5 * Math.sin(w * T * 1.3)) + ') rotate(' + f1(-18 + 6 * Math.sin(w * T)) + ')'
+    };
+
+    // A oscillating water column
+    var inside = 82 - 11 * Math.sin(w * T - 0.7), dIn = -11 * w * Math.cos(w * T - 0.7);
+    var up = dIn < 0;
+    var a = {
+      sea: sea(0, 120, 82, 8, 90, 130), inY: f1(inside), inH: f1(130 - inside),
+      rot: 'rotate(' + f1(T * 260) + ')',
+      arrow: up ? 'M160,52 L160,30 M153,37 L160,30 L167,37' : 'M160,30 L160,52 M153,45 L160,52 L167,45'
+    };
+
+    // B point absorber: rack and pinion turns with the heave
+    var eb = eta(120, 9, 120);
+    var b2 = { sea: sea(0, 240, 52, 9, 120, 130), buoyY: f1(52 - eb), rodTop: f1(52 - eb + 8), piston: f1(108 - eb * 0.9), rot: 'rotate(' + f1(-eb * 14) + ')' };
+
+    // C oscillating surge flap
+    var th = 24 * Math.sin(w * T), thr = th * PI / 180;
+    var cd = [];
+    for (var cx = 0; cx < 6; cx++) for (var cy = 0; cy < 2; cy++) cd.push([24 + cx * 40 + 12 * Math.sin(w * T + cx * 0.3), 62 + cy * 26, 2.2]);
+    var c2 = {
+      sea: sea(0, 240, 40, 4, 160, 112), dots: dots(cd), flap: 'translate(120 112) rotate(' + f1(th) + ')',
+      pistonX: f1(120 + 30 * Math.sin(thr)), pistonY: f1(112 - 30 * Math.cos(thr))
+    };
+
+    // D overtopping
+    var ph = frac(T / 3), run = Math.max(0, Math.sin(2 * PI * ph));
+    var rx = 80 + 70 * run * 0.95, ry = 104 - 60 * run * 0.95;
+    var drops = [];
+    if (run > 0.8) for (var dd = 0; dd < 5; dd++) drops.push([152 + dd * 4 + (run - 0.8) * 60, 44 + (run - 0.8) * 90 * (1 + dd * 0.2), 2]);
+    var flow = [];
+    for (var fl = 0; fl < 3; fl++) { var qf = along([[190, 104], [190, 118]], frac(T * 0.8 + fl / 3)); flow.push([qf[0], qf[1], 1.6]); }
+    var level = 70 + 3 * Math.sin(2 * PI * ph - 1.4);
+    var d2 = {
+      sea: sea(0, 80, 104, 5, 60, 130), runup: 'M80,104 L' + f1(rx) + ',' + f1(ry) + ' L' + f1(rx - 6) + ',' + f1(ry + 6) + ' L72,108 Z',
+      resY: f1(level), resH: f1(104 - level), drops: dots(drops), flow: dots(flow), rot: 'rotate(' + f1(T * 220) + ')'
+    };
+
+    return {
+      s1: s1, s2: s2, s3: s3, s4: s4, s5: s5, s6: s6, s7: s7, s8: s8, a: a, b: b2, c: c2, d: d2,
+      playLabel: s.playing ? 'หยุดภาพเคลื่อนไหว' : 'เล่นภาพเคลื่อนไหว',
+      playPressed: s.playing ? 'true' : 'false',
+      playBg: s.playing ? '#0A6A94' : '#FFFFFF', playFg: s.playing ? '#FFFFFF' : '#0A6A94',
+      speedLabel: s.speed + '×',
+      togglePlay: function () { self.setState({ playing: !self.state.playing }); },
+      slower: function () { self.setState({ speed: Math.max(0.25, self.state.speed / 2) }); },
+      faster: function () { self.setState({ speed: Math.min(4, self.state.speed * 2) }); }
+    };
   }
 }
 </script>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sources and access</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">Sources</span><a class="ps-lang" href="../../camera-lab/sources.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">← Back to the Camera Lab</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">CAMERA LAB · SOURCES</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Sources and access</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">The Camera Lab uses optics and sensor physics that are published in textbooks and standards, but most details of real devices, such as each brand’s algorithms, are not public. This page shows which numbers come from which source and which are our own estimates.</p>
+</header>
+<div role="group" aria-label="Filter by access" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>Used for:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>Access:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">Links checked in November 2026. If you find an error or a better source, please let us know on the project’s GitHub.</p>
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "OpenStax University Physics Volume 3, Chapter 2: Geometric Optics", "used": "Thin-lens equation, magnification, microscope and telescope", "access": "Open textbook, CC BY 4.0 licence", "url": "https://openstax.org/books/university-physics-volume-3/pages/2-introduction"}, {"title": "EMVA 1288 standard for camera and sensor characterisation", "used": "Photon noise model, SNR, full-well capacity and dark current", "access": "Open standard, free to download", "url": "https://www.emva.org/standards-technology/emva-1288/"}, {"title": "US Patent 3,971,065 (Bayer, 1976)", "used": "The Bayer colour filter in the ISP steps", "access": "Patents are published openly", "url": "https://patents.google.com/patent/US3971065A"}, {"title": "ITU-T H.265 (HEVC), including the MV-HEVC multiview extension", "used": "Storing both views of a Spatial video in one file", "access": "The standard can be downloaded free from the ITU", "url": "https://www.itu.int/rec/T-REC-H.265"}, {"title": "Apple Developer Documentation", "used": "How Spatial photos and videos are recorded with two cameras", "access": "Developer documentation is open to read, but does not include the ISP’s internal details", "url": "https://developer.apple.com/documentation/"}, {"title": "OpenCV Documentation: camera calibration and stereo", "used": "Image rectification and depth from disparity", "access": "Open-source software and documentation, Apache 2.0 licence", "url": "https://docs.opencv.org/"}, {"title": "NASA Mars 2020 Perseverance", "used": "The rover’s paired navigation and hazard-avoidance cameras", "access": "Open data", "url": "https://science.nasa.gov/mission/mars-2020-perseverance/"}, {"title": "Alduchov, O. A. & Eskridge, R. E. (1996). Journal of Applied Meteorology", "used": "The Magnus formula for the dew point and lens fogging", "access": "The article is free to read on the American Meteorological Society website", "url": "https://journals.ametsoc.org/"}, {"title": "NASA Electronic Parts and Packaging Program (NEPP)", "used": "Radiation effects on sensors and electronics in space", "access": "Most reports are open to read", "url": "https://nepp.nasa.gov/"}, {"title": "Image sensor format (Wikipedia)", "used": "Standard sensor sizes, e.g. 1/1.3″, 1-inch, APS-C, full frame", "access": "Open encyclopedia, CC BY-SA; check against the original sources cited in the article", "url": "https://en.wikipedia.org/wiki/Image_sensor_format"}], "restricted": [{"title": "ISO 2720 and ISO 12232", "used": "The light-meter calibration constant (K = 12.5) and the definition of ISO speed", "access": "ISO standards must be purchased", "url": "https://www.iso.org/"}, {"title": "Hecht, E. Optics, and Hartley, R. & Zisserman, A. Multiple View Geometry", "used": "Reference textbooks for optics and 3D vision", "access": "Books: must be bought or borrowed from a library", "url": ""}, {"title": "Manufacturers’ sensor datasheets", "used": "Pixel size, full-well capacity and read noise", "access": "Usually given only to customers who sign a non-disclosure agreement (NDA)", "url": ""}, {"title": "Radiation-resistant cerium-doped glass from glass makers such as SCHOTT", "used": "Ordinary glass turning brown under radiation", "access": "General information is on the website; detailed test values must be requested from the manufacturer", "url": "https://www.schott.com/"}], "none": [{"title": "Each brand’s ISP algorithms (noise reduction, HDR, use of AI)", "used": "The 7 ISP steps in experiment 03", "access": "Not published; this page uses a simplified generic pipeline", "url": ""}, {"title": "Lens and sensor specs of each phone model", "used": "Real focal length 6.9 mm, sensor diagonal 12.4 mm, 48/12-megapixel resolution", "access": "Manufacturers don’t publish everything; we use representative values close to real devices, not the specs of any model", "url": ""}, {"title": "Manufacturers’ stabilisation control loops", "used": "OIS compensates 92%, moves at most 18 px, and EIS crops 10% per side", "access": "Not published; we use an assumed model", "url": ""}, {"title": "Stereo baselines of phones, cars and rovers", "used": "The B values in experiment 04", "access": "Approximate values for comparison, not the specs of any model", "url": ""}, {"title": "Radiation damage rates and loss of lens transmission", "used": "Accumulated hot pixels and light transmission in experiment 06", "access": "Made-up numbers to show the trend; real values depend on the orbit and solar activity", "url": ""}, {"title": "Temperature coefficients of focus shift", "used": "Focus shift of plastic, glass and athermal lenses", "access": "Simplified representative values; real lenses differ by model", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'Open', title: 'Data that is available and free to use', desc: 'Anyone can check it straight away through the link', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'Restricted access', title: 'The data exists, but requires registration, payment, or is limited to certain organisations', desc: 'This data really exists, but we can only include what is published generally, or not at all because of its terms of use', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'Not publicly available', title: 'No usable data, so the simulator uses estimates', desc: 'The numbers in these parts are our own examples or assumptions to show the principle; don’t use them as real data', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' items', items: items };
+    });
+    var fl = [{ id: 'all', name: 'All' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

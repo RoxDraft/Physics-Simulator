@@ -8,6 +8,14 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PY="python3 tools/dc2html.py"
+
+# generated sources: the Sources pages and the Plate Tectonics map data
+python3 tools/gen_sources.py >/dev/null
+python3 - <<'PYEOF'
+t = open("data/plate-tectonics/Main.template.html", encoding="utf-8").read()
+d = open("data/plate-tectonics/data.js", encoding="utf-8").read().strip()
+open("src/plate-tectonics/Main.dc.html", "w", encoding="utf-8").write(t.replace("/*@DATA*/", d))
+PYEOF
 EN=(--lang en --dict tools/i18n/en.json --runtime ../../shared/dc-runtime.js)
 
 # page <src> <thai-out> <english-out> <thai crumbs...> -- <english crumbs...>
@@ -21,13 +29,16 @@ page() {
 }
 
 # ---------- Ocean Wave Simulator ----------
-RENAMES=(--rename Main.dc.html=index.html --rename Uses.dc.html=uses.html)
+RENAMES=(--rename Main.dc.html=index.html --rename Uses.dc.html=uses.html --rename Sources.dc.html=sources.html)
 page src/ocean-waves/Main.dc.html ocean-waves/index.html ocean-waves/index.html \
   "หน้าหลัก=../index.html" "Ocean Wave Simulator=" -- \
   "Home=../index.html" "Ocean Wave Simulator="
 page src/ocean-waves/Uses.dc.html ocean-waves/uses.html ocean-waves/uses.html \
   "หน้าหลัก=../index.html" "Ocean Wave Simulator=index.html" "ประโยชน์ของคลื่นทะเล=" -- \
   "Home=../index.html" "Ocean Wave Simulator=index.html" "Uses of ocean waves="
+page src/ocean-waves/Sources.dc.html ocean-waves/sources.html ocean-waves/sources.html \
+  "หน้าหลัก=../index.html" "Ocean Wave Simulator=index.html" "แหล่งข้อมูล=" -- \
+  "Home=../index.html" "Ocean Wave Simulator=index.html" "Sources="
 
 # ---------- Camera Lab ----------
 ORDER=(Lens Sensor Fusion Spatial Stabilize Environment)
@@ -41,7 +52,7 @@ declare -A ENT=(
   [Fusion]="03 Multi-camera and ISP"       [Spatial]="04 Stereo cameras and Spatial"
   [Stabilize]="05 Stabilisation"           [Environment]="06 Temperature, humidity, radiation"
 )
-RENAMES=(--rename Main.dc.html=index.html)
+RENAMES=(--rename Main.dc.html=index.html --rename Sources.dc.html=sources.html)
 for n in "${ORDER[@]}"; do RENAMES+=(--rename "$n.dc.html=${n,,}.html"); done
 
 page src/camera-lab/Main.dc.html camera-lab/index.html camera-lab/index.html \
@@ -51,6 +62,23 @@ for n in "${ORDER[@]}"; do
     "หน้าหลัก=../index.html" "Camera Lab=index.html" "${TH[$n]}=" -- \
     "Home=../index.html" "Camera Lab=index.html" "${ENT[$n]}="
 done
+page src/camera-lab/Sources.dc.html camera-lab/sources.html camera-lab/sources.html \
+  "หน้าหลัก=../index.html" "Camera Lab=index.html" "แหล่งข้อมูล=" -- \
+  "Home=../index.html" "Camera Lab=index.html" "Sources="
+
+# ---------- Plate Tectonics Lab ----------
+RENAMES=(--rename Main.dc.html=index.html --rename Physics.dc.html=physics.html --rename Safety.dc.html=safety.html --rename Sources.dc.html=sources.html)
+page src/plate-tectonics/Main.dc.html plate-tectonics/index.html plate-tectonics/index.html \
+  "หน้าหลัก=../index.html" "Plate Tectonics Lab=" -- "Home=../index.html" "Plate Tectonics Lab="
+page src/plate-tectonics/Physics.dc.html plate-tectonics/physics.html plate-tectonics/physics.html \
+  "หน้าหลัก=../index.html" "Plate Tectonics Lab=index.html" "ฟิสิกส์ของแผ่นดินไหว=" -- \
+  "Home=../index.html" "Plate Tectonics Lab=index.html" "Earthquake physics="
+page src/plate-tectonics/Safety.dc.html plate-tectonics/safety.html plate-tectonics/safety.html \
+  "หน้าหลัก=../index.html" "Plate Tectonics Lab=index.html" "การรับมือและความปลอดภัย=" -- \
+  "Home=../index.html" "Plate Tectonics Lab=index.html" "Response and safety="
+page src/plate-tectonics/Sources.dc.html plate-tectonics/sources.html plate-tectonics/sources.html \
+  "หน้าหลัก=../index.html" "Plate Tectonics Lab=index.html" "แหล่งข้อมูล=" -- \
+  "Home=../index.html" "Plate Tectonics Lab=index.html" "Sources="
 
 # ---------- English landing page ----------
 $PY index.html en/index.html --plain --lang en --dict tools/i18n/en.json \

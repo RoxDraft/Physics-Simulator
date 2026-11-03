@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แหล่งข้อมูลและการเข้าถึง</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="Main.dc.html" style="min-height: 44px; display: inline-flex; align-items: center">← กลับไปที่ห้องแล็บกล้อง</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">CAMERA LAB · แหล่งข้อมูล</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">แหล่งข้อมูลและการเข้าถึง</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">ห้องแล็บกล้องใช้หลักทัศนศาสตร์และฟิสิกส์ของเซนเซอร์ที่เปิดเผยในตำราและมาตรฐาน แต่รายละเอียดของอุปกรณ์จริง เช่น อัลกอริทึมของแต่ละแบรนด์ ส่วนใหญ่ไม่เปิดเผย หน้านี้บอกว่าตัวเลขใดมาจากแหล่งใด และตัวเลขใดเป็นค่าประมาณของเรา</p>
+</header>
+<div role="group" aria-label="กรองตามการเข้าถึง" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>ใช้กับ:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>การเข้าถึง:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">ตรวจสอบลิงก์เมื่อเดือนพฤศจิกายน 2569 ถ้าพบข้อมูลผิดหรือมีแหล่งที่ดีกว่า แจ้งได้ใน GitHub ของโปรเจกต์</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "OpenStax University Physics Volume 3 บทที่ 2 ทัศนศาสตร์เชิงเรขาคณิต", "used": "สมการเลนส์บาง กำลังขยาย กล้องจุลทรรศน์ และกล้องโทรทรรศน์", "access": "ตำราเปิด สัญญาอนุญาต CC BY 4.0", "url": "https://openstax.org/books/university-physics-volume-3/pages/2-introduction"}, {"title": "EMVA 1288 มาตรฐานการวัดคุณภาพกล้องและเซนเซอร์", "used": "แบบจำลองนอยส์โฟตอน SNR ความจุพิกเซล และกระแสมืด", "access": "มาตรฐานเปิด ดาวน์โหลดได้ฟรี", "url": "https://www.emva.org/standards-technology/emva-1288/"}, {"title": "สิทธิบัตรสหรัฐฯ 3,971,065 (Bayer, 1976)", "used": "ฟิลเตอร์สีแบบ Bayer ในขั้นตอน ISP", "access": "สิทธิบัตรเผยแพร่ต่อสาธารณะ", "url": "https://patents.google.com/patent/US3971065A"}, {"title": "ITU-T H.265 (HEVC) รวมส่วนขยายหลายมุมมอง MV-HEVC", "used": "การเก็บวิดีโอ Spatial สองมุมในไฟล์เดียว", "access": "ดาวน์โหลดเอกสารมาตรฐานได้ฟรีจาก ITU", "url": "https://www.itu.int/rec/T-REC-H.265"}, {"title": "Apple Developer Documentation", "used": "หลักการบันทึกภาพและวิดีโอ Spatial ด้วยกล้องสองตัว", "access": "เอกสารสำหรับนักพัฒนาเปิดให้อ่าน แต่ไม่รวมรายละเอียดภายในของ ISP", "url": "https://developer.apple.com/documentation/"}, {"title": "OpenCV Documentation: camera calibration และ stereo", "used": "การจัดแนวภาพ (rectification) และการหาความลึกจาก disparity", "access": "ซอฟต์แวร์และเอกสารเปิด สัญญาอนุญาต Apache 2.0", "url": "https://docs.opencv.org/"}, {"title": "NASA Mars 2020 Perseverance", "used": "กล้องนำทางและกล้องหลบอันตรายแบบคู่ของยานสำรวจ", "access": "ข้อมูลเปิด", "url": "https://science.nasa.gov/mission/mars-2020-perseverance/"}, {"title": "Alduchov, O. A. & Eskridge, R. E. (1996). Journal of Applied Meteorology", "used": "สูตร Magnus สำหรับคำนวณจุดน้ำค้างและการเกิดฝ้าบนเลนส์", "access": "บทความเปิดให้อ่านบนเว็บไซต์ของ American Meteorological Society", "url": "https://journals.ametsoc.org/"}, {"title": "NASA Electronic Parts and Packaging Program (NEPP)", "used": "ผลของรังสีต่อเซนเซอร์และอุปกรณ์อิเล็กทรอนิกส์ในอวกาศ", "access": "รายงานส่วนใหญ่เปิดให้อ่าน", "url": "https://nepp.nasa.gov/"}, {"title": "Image sensor format (Wikipedia)", "used": "ขนาดเซนเซอร์มาตรฐาน เช่น 1/1.3″, 1 นิ้ว, APS-C, ฟูลเฟรม", "access": "สารานุกรมเปิด CC BY-SA ควรตรวจกับแหล่งต้นทางที่อ้างในบทความ", "url": "https://en.wikipedia.org/wiki/Image_sensor_format"}], "restricted": [{"title": "ISO 2720 และ ISO 12232", "used": "ค่าคงที่ของเครื่องวัดแสง (K = 12.5) และนิยามความไวแสง ISO", "access": "มาตรฐาน ISO ต้องซื้อเอกสาร", "url": "https://www.iso.org/"}, {"title": "Hecht, E. Optics และ Hartley, R. & Zisserman, A. Multiple View Geometry", "used": "ตำราอ้างอิงทัศนศาสตร์และการมองเห็นสามมิติ", "access": "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด", "url": ""}, {"title": "เอกสารข้อมูลจำเพาะ (datasheet) ของเซนเซอร์จากผู้ผลิต", "used": "ขนาดพิกเซล ความจุพิกเซล นอยส์จากวงจรอ่าน", "access": "มักให้เฉพาะลูกค้าที่ลงนามสัญญารักษาความลับ (NDA)", "url": ""}, {"title": "แก้วทนรังสีผสมซีเรียมของผู้ผลิตแก้ว เช่น SCHOTT", "used": "การที่แก้วธรรมดาเป็นสีน้ำตาลเมื่อโดนรังสี", "access": "มีข้อมูลทั่วไปบนเว็บไซต์ ค่าทดสอบละเอียดต้องขอจากผู้ผลิต", "url": "https://www.schott.com/"}], "none": [{"title": "อัลกอริทึม ISP ของแต่ละแบรนด์ (ลดนอยส์ HDR การใช้ AI)", "used": "ขั้นตอน ISP 7 ขั้นในการทดลอง 03", "access": "ไม่เปิดเผย หน้านี้ใช้ขั้นตอนทั่วไปแบบง่าย", "url": ""}, {"title": "สเปกเลนส์และเซนเซอร์ของโทรศัพท์แต่ละรุ่น", "used": "ทางยาวโฟกัสจริง 6.9 มม. เส้นทแยงเซนเซอร์ 12.4 มม. ความละเอียด 48/12 ล้านพิกเซล", "access": "ผู้ผลิตเปิดเผยไม่ครบ ใช้ค่าตัวอย่างที่ใกล้เคียงของจริง ไม่ใช่สเปกรุ่นใด", "url": ""}, {"title": "ลูปควบคุมกันสั่นของผู้ผลิต", "used": "OIS ชดเชย 92% ขยับได้สูงสุด 18 px และ EIS ครอป 10% ต่อด้าน", "access": "ไม่เปิดเผย ใช้แบบจำลองสมมติ", "url": ""}, {"title": "ระยะห่างเลนส์คู่ของมือถือ รถยนต์ และยานสำรวจ", "used": "ค่า B ในการทดลอง 04", "access": "ใช้ค่าประมาณเพื่อเปรียบเทียบ ไม่ใช่สเปกรุ่นใด", "url": ""}, {"title": "อัตราความเสียหายจากรังสีและการลดลงของแสงผ่านเลนส์", "used": "พิกเซลเสียสะสมและเปอร์เซ็นต์แสงผ่านในการทดลอง 06", "access": "เป็นตัวเลขสมมติเพื่อแสดงแนวโน้ม ของจริงขึ้นกับวงโคจรและกิจกรรมของดวงอาทิตย์", "url": ""}, {"title": "ค่าสัมประสิทธิ์โฟกัสเลื่อนตามอุณหภูมิ", "used": "โฟกัสเลื่อนของเลนส์พลาสติก แก้ว และแบบ athermal", "access": "ใช้ค่าตัวแทนแบบง่าย เลนส์จริงแต่ละรุ่นต่างกัน", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'เปิดเผย', title: 'ข้อมูลที่หาได้และใช้ได้ฟรี', desc: 'ใครก็ตรวจสอบได้ทันทีผ่านลิงก์', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'จำกัดการเข้าถึง', title: 'มีข้อมูลอยู่ แต่ต้องลงทะเบียน ซื้อ หรือเฉพาะหน่วยงาน', desc: 'ข้อมูลเหล่านี้มีอยู่จริง แต่เราใส่ได้แค่ส่วนที่เผยแพร่ทั่วไป หรือไม่ได้ใส่เลยเพราะเงื่อนไขการใช้งาน', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'ไม่มีข้อมูลเปิดเผย', title: 'ไม่มีข้อมูลที่ใช้ได้ ตัวจำลองจึงใช้ค่าประมาณ', desc: 'ตัวเลขในส่วนเหล่านี้เป็นค่าตัวอย่างหรือสมมติของเรา เพื่อให้เห็นหลักการ ไม่ควรนำไปใช้เป็นข้อมูลจริง', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' รายการ', items: items };
+    });
+    var fl = [{ id: 'all', name: 'ทั้งหมด' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

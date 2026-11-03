@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แหล่งข้อมูลและการเข้าถึง</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><a href="index.html">Plate Tectonics Lab</a><span aria-hidden="true">›</span><span aria-current="page">แหล่งข้อมูล</span><a class="ps-lang" href="../en/plate-tectonics/sources.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="เปลี่ยนเป็นภาษาอังกฤษ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>English</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">← กลับไปที่แผนที่และสถิติ</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">PLATE TECTONICS LAB · แหล่งข้อมูล</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">แหล่งข้อมูลและการเข้าถึง</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">แผนที่และกราฟคำนวณจากข้อมูลเปิดของ USGS, Smithsonian และ Natural Earth ด้วยสคริปต์ในโฟลเดอร์ data/plate-tectonics ของ repo ข้อมูลความสูญเสียบางชุดจำกัดการเข้าถึง และบางค่าในตัวจำลองเป็นค่าประมาณเพื่อการเรียนรู้</p>
+</header>
+<div role="group" aria-label="กรองตามการเข้าถึง" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>ใช้กับ:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>การเข้าถึง:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">ตรวจสอบลิงก์เมื่อเดือนพฤศจิกายน 2569 ถ้าพบข้อมูลผิดหรือมีแหล่งที่ดีกว่า แจ้งได้ใน GitHub ของโปรเจกต์</p>
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "USGS ANSS Comprehensive Earthquake Catalog (ComCat)", "used": "แผ่นดินไหว M 5.5 ขึ้นไป ปี 1965–2016 จำนวน 23,412 เหตุการณ์ บนแผนที่และในกราฟรายประเทศ (ใช้สำเนา earthquakes-23k.csv จาก github.com/plotly/datasets)", "access": "ข้อมูลรัฐบาลสหรัฐฯ เป็นสาธารณสมบัติ", "url": "https://earthquake.usgs.gov/earthquakes/search/"}, {"title": "Smithsonian Institution Global Volcanism Program", "used": "ภูเขาไฟยุคโฮโลซีน 1,571 ลูก และภูเขาไฟที่ปะทุตั้งแต่ปี 1964 (ใช้สำเนา volcano_db.csv จาก github.com/plotly/datasets ซึ่งเป็นรายชื่อรุ่นเก่า ฐานข้อมูลปัจจุบันมีรายละเอียดมากกว่า)", "access": "ใช้ได้ฟรีโดยอ้างอิงแหล่งที่มา", "url": "https://volcano.si.edu/"}, {"title": "Bird, P. (2003). An updated digital model of plate boundaries (PB2002)", "used": "เส้นรอยต่อแผ่นเปลือกโลกและเขตมุดตัวบนแผนที่ (GeoJSON โดย Hugo Ahlenius)", "access": "สัญญาอนุญาต Open Data Commons Attribution", "url": "https://github.com/fraxen/tectonicplates"}, {"title": "Natural Earth", "used": "รูปร่างแผ่นดินและพรมแดนประเทศ ใช้ผ่านแพ็กเกจ world-atlas", "access": "สาธารณสมบัติ", "url": "https://www.naturalearthdata.com/"}, {"title": "USGS Earthquake Hazards Program: Lists, Maps, and Statistics", "used": "จำนวนแผ่นดินไหวเฉลี่ยต่อปี และตารางเปรียบเทียบขนาดกับความรุนแรงเมอร์คัลลี", "access": "สาธารณสมบัติ", "url": "https://www.usgs.gov/programs/earthquake-hazards/lists-maps-and-statistics"}, {"title": "NOAA NCEI Natural Hazards Data", "used": "จำนวนผู้เสียชีวิตโดยประมาณของเหตุการณ์ในอดีต", "access": "ข้อมูลเปิด", "url": "https://www.ncei.noaa.gov/products/natural-hazards"}, {"title": "ราชกิจจานุเบกษา", "used": "กฎกระทรวงว่าด้วยการต้านทานแรงสั่นสะเทือนของแผ่นดินไหว พ.ศ. 2564", "access": "เปิดให้อ่านฟรี", "url": "https://ratchakitcha.soc.go.th/"}, {"title": "กรมโยธาธิการและผังเมือง", "used": "มาตรฐาน มยผ. 1301/1302-61 การออกแบบอาคารต้านทานการสั่นสะเทือนของแผ่นดินไหว", "access": "ดาวน์โหลดได้จากหน่วยงาน", "url": "https://www.dpt.go.th/"}, {"title": "กรมอุตุนิยมวิทยา ศูนย์เฝ้าระวังแผ่นดินไหว", "used": "แผ่นดินไหวในไทย เช่น แม่ลาว เชียงราย 2557", "access": "ข้อมูลเปิดบนเว็บไซต์", "url": "https://earthquake.tmd.go.th/"}, {"title": "Earthquake Country Alliance และ Ready.gov", "used": "หลัก “หมอบ ป้อง เกาะ” และการเตรียมตัวก่อนเกิดแผ่นดินไหว", "access": "ข้อมูลเปิด", "url": "https://www.earthquakecountry.org/dropcoverholdon/"}, {"title": "ShakeAlert (USGS) และหน่วยงานอุตุนิยมวิทยาญี่ปุ่น (JMA)", "used": "หลักการเตือนภัยแผ่นดินไหวล่วงหน้า", "access": "ข้อมูลเปิด", "url": "https://www.shakealert.org/"}, {"title": "EarthScope Consortium (เดิม IRIS และ UNAVCO)", "used": "เครือข่ายเครื่องวัดแผ่นดินไหวและสถานี GNSS", "access": "ข้อมูลส่วนใหญ่เปิดให้ดาวน์โหลด", "url": "https://www.earthscope.org/"}, {"title": "Copernicus Data Space (Sentinel-1, Sentinel-2, Sentinel-5P)", "used": "ภาพเรดาร์ InSAR ภาพถ่ายเชิงแสง และข้อมูลก๊าซภูเขาไฟ", "access": "ข้อมูลเปิด ใช้ได้ฟรี", "url": "https://dataspace.copernicus.eu/"}, {"title": "NISAR (NASA–ISRO) และ GRACE-FO", "used": "เรดาร์ติดตามการเคลื่อนตัวของพื้นผิว และการเปลี่ยนแปลงแรงโน้มถ่วง", "access": "นโยบายเปิดข้อมูล", "url": "https://nisar.jpl.nasa.gov/"}, {"title": "Eos (AGU): Magnitude 8.8 earthquake strikes western Pacific", "used": "แผ่นดินไหวคัมชัตคา กรกฎาคม 2568", "access": "บทความข่าววิทยาศาสตร์ อ่านได้ฟรี", "url": "https://eos.org/research-and-developments/magnitude-8-8-earthquake-strikes-western-pacific"}, {"title": "Yeni Şafak และ Izvestia (รายงานข่าว)", "used": "ผู้เสียชีวิตในเมียนมามากกว่า 3,700 คน และอย่างน้อย 86 คนที่ตึกถล่มในกรุงเทพฯ (รายงาน พ.ค. 2568)", "access": "ข่าวเปิดให้อ่าน ตัวเลขอาจปรับภายหลัง ควรตรวจกับรายงานทางการล่าสุด", "url": "https://iz.ru/en/1881049/2025-05-04/bangkok-death-toll-collapse-building-due-earthquake-has-increased-86"}], "restricted": [{"title": "EM-DAT ฐานข้อมูลภัยพิบัติระหว่างประเทศ (CRED, UCLouvain)", "used": "สถิติผู้เสียชีวิตและความเสียหายรายประเทศ ซึ่งเป็นแหล่งที่ใช้กันมากที่สุด", "access": "ต้องลงทะเบียน ใช้ฟรีเฉพาะงานไม่แสวงกำไร ห้ามเผยแพร่ข้อมูลดิบต่อ งานเชิงพาณิชย์ต้องซื้อสิทธิ์ เราจึงไม่ได้ใส่ข้อมูลชุดนี้ในหน้า", "url": "https://doc.emdat.be/docs/legal/terms-of-use/"}, {"title": "ข้อมูลสถานีตรวจวัดของ CTBTO (International Monitoring System)", "used": "คลื่นไหวสะเทือนและคลื่นเสียงความถี่ต่ำจากทั่วโลก", "access": "เฉพาะรัฐภาคีและนักวิจัยที่ได้รับอนุญาต", "url": "https://www.ctbto.org/"}, {"title": "มาตรฐานอาคารต่างประเทศ: ASCE 7, Eurocode 8, NZS 1170.5, NCh433 และอื่น ๆ", "used": "ตารางมาตรฐานอาคารในหน้าการรับมือ", "access": "ส่วนใหญ่ต้องซื้อเอกสารมาตรฐาน เราสรุปเฉพาะข้อมูลทั่วไปที่เผยแพร่", "url": ""}, {"title": "NIED ญี่ปุ่น: K-NET, KiK-net, S-net", "used": "ข้อมูลความเร่งแรงสั่นและเครือข่ายเคเบิลใต้ทะเล", "access": "ต้องลงทะเบียนก่อนดาวน์โหลด", "url": "https://www.bosai.go.jp/e/"}, {"title": "ภาพถ่ายดาวเทียมความละเอียดสูงเชิงพาณิชย์", "used": "การประเมินความเสียหายรายอาคารหลังภัยพิบัติ", "access": "ต้องซื้อจากบริษัทผู้ให้บริการ หน่วยงานภัยพิบัติขอใช้ผ่าน International Charter ได้", "url": "https://disasterscharter.org/"}, {"title": "แบบจำลองความเสี่ยงภัยพิบัติเชิงพาณิชย์ของบริษัทประกันภัย", "used": "การประเมินความเสียหายทางเศรษฐกิจล่วงหน้า", "access": "เป็นทรัพย์สินทางปัญญาของบริษัท ไม่เปิดเผย", "url": ""}, {"title": "Wells, D. L. & Coppersmith, K. J. (1994). Bulletin of the Seismological Society of America", "used": "สูตรความยาวรอยแตกโดยประมาณจากขนาดแผ่นดินไหว", "access": "บทความวารสาร อาจต้องสมัครสมาชิก", "url": ""}], "none": [{"title": "การนับแผ่นดินไหวรายประเทศ", "used": "กราฟสถิติรายประเทศ", "access": "วิธีของเราเอง: นับตามประเทศที่จุดศูนย์กลางอยู่ภายใน หรือมีแผ่นดินห่างไม่เกิน 300 กม. ไม่ใช่สถิติทางการของประเทศใด", "url": ""}, {"title": "แผ่นดินไหวหลังปี 2016 บนแผนที่", "used": "จุดแผ่นดินไหวบนแผนที่", "access": "ชุดข้อมูลที่ใช้สิ้นสุดปี 2016 เหตุการณ์หลังจากนั้นเพิ่มเฉพาะเหตุการณ์สำคัญด้วยมือ", "url": ""}, {"title": "จำนวนผู้เสียชีวิตบางเหตุการณ์", "used": "การ์ดเหตุการณ์สำคัญ", "access": "ยังไม่มีตัวเลขที่ตรงกัน เช่น เฮติ 2010 วัลดิเวีย 1960 และตัมโบรา 1815 เราจึงแสดงเป็นช่วงหรือค่าประมาณ", "url": ""}, {"title": "คาบการสั่นของดินและอาคาร", "used": "ตัวจำลองการสั่นพ้อง: ดิน 0.3 / 0.7 / 1.5 วินาที และกฎ 0.1 วินาทีต่อชั้น", "access": "เป็นค่าตัวอย่างเพื่อการเรียนรู้ ข้อมูลโครงสร้างและผลตรวจสอบของอาคารรายหลังโดยทั่วไปไม่เปิดเผยต่อสาธารณะ", "url": ""}, {"title": "เวลาประมวลผลของระบบเตือนภัย", "used": "ตัวจำลองเวลาเตือนภัยล่วงหน้า: สถานีห่าง 10 กม. ประมวลผล 4 วินาที", "access": "เป็นค่าสมมติ ระบบจริงแต่ละประเทศต่างกันและไม่เปิดเผยรายละเอียดทั้งหมด", "url": ""}, {"title": "ความเร็วคลื่น P และ S", "used": "การหาจุดศูนย์กลาง: 6.0 และ 3.5 กม./วินาที", "access": "เป็นค่าเฉลี่ยในเปลือกโลก ความเร็วจริงเปลี่ยนตามชนิดหินและความลึก", "url": ""}, {"title": "ข้อมูลดิบจากเซนเซอร์ในโทรศัพท์มือถือ", "used": "การ์ดเซนเซอร์ในหน้าการรับมือ", "access": "ไม่เปิดเผย ผู้ให้บริการเก็บเป็นข้อมูลภายใน", "url": ""}, {"title": "ความเร็วแผ่นเปลือกโลกและสเกลเวลาในภาพเคลื่อนไหว", "used": "หน้าฟิสิกส์ของแผ่นดินไหว", "access": "ใช้ช่วงค่าทั่วไป 1–15 ซม./ปี ไม่ใช่การวัดของรอยต่อใดรอยต่อหนึ่ง", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'เปิดเผย', title: 'ข้อมูลที่หาได้และใช้ได้ฟรี', desc: 'ใครก็ตรวจสอบได้ทันทีผ่านลิงก์', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'จำกัดการเข้าถึง', title: 'มีข้อมูลอยู่ แต่ต้องลงทะเบียน ซื้อ หรือเฉพาะหน่วยงาน', desc: 'ข้อมูลเหล่านี้มีอยู่จริง แต่เราใส่ได้แค่ส่วนที่เผยแพร่ทั่วไป หรือไม่ได้ใส่เลยเพราะเงื่อนไขการใช้งาน', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'ไม่มีข้อมูลเปิดเผย', title: 'ไม่มีข้อมูลที่ใช้ได้ ตัวจำลองจึงใช้ค่าประมาณ', desc: 'ตัวเลขในส่วนเหล่านี้เป็นค่าตัวอย่างหรือสมมติของเรา เพื่อให้เห็นหลักการ ไม่ควรนำไปใช้เป็นข้อมูลจริง', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' รายการ', items: items };
+    });
+    var fl = [{ id: 'all', name: 'ทั้งหมด' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

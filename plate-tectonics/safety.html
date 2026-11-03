@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>การรับมือและมาตรฐานความปลอดภัย</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><a href="index.html">Plate Tectonics Lab</a><span aria-hidden="true">›</span><span aria-current="page">การรับมือและความปลอดภัย</span><a class="ps-lang" href="../en/plate-tectonics/safety.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="เปลี่ยนเป็นภาษาอังกฤษ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>English</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="physics.html" style="min-height: 44px; display: inline-flex; align-items: center">← ฟิสิกส์ของแผ่นดินไหว</a>
+<a href="sources.html" style="min-height: 44px; display: inline-flex; align-items: center">ถัดไป: แหล่งข้อมูล →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">การรับมือและความปลอดภัย</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">รับมือแผ่นดินไหวแต่ละขนาด และสร้างอาคารให้รอด</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">ขนาด (magnitude) บอกพลังงานที่จุดกำเนิด แต่ความเสียหายขึ้นกับ “ความรุนแรง” (intensity) ที่แต่ละพื้นที่รู้สึก ซึ่งขึ้นกับระยะทาง ความลึก ชนิดดิน และคุณภาพอาคาร หน้านี้สรุปแผนรับมือพื้นฐาน จำลองการโยกของอาคาร และเทียบมาตรฐานของแต่ละประเทศ</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">1. แผนรับมือพื้นฐานตามขนาด</h2>
+<div role="group" aria-label="เลือกช่วงขนาด" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{bands}}" as="b" hint-placeholder-count="6">
+<button type="button" onClick="{{b.pick}}" aria-pressed="{{b.pressed}}" style="min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1.5px solid {{b.border}}; background: {{b.bg}}; color: {{b.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; cursor: pointer">{{b.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<div style="flex: 1 1 300px; background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">ใกล้จุดศูนย์กลางมักรู้สึก</div>
+<div style="font-size: 22px; font-weight: 700">{{band.title}}</div>
+<div style="display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #2E5468; padding-top: 8px; font-size: 15px"><span style="color: #D9E8EF">ความรุนแรงเมอร์คัลลีโดยทั่วไป</span><strong>{{band.mmi}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #2E5468; padding-top: 8px; font-size: 15px"><span style="color: #D9E8EF">ทั้งโลกเกิดราว</span><strong>{{band.freq}}</strong></div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">{{band.feel}}</p>
+</div>
+<div style="flex: 2 1 520px; display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0A6A94">ระหว่างสั่น</h3>
+<sc-for list="{{band.during}}" as="x" hint-placeholder-count="3"><div style="font-size: 14px; line-height: 1.6">• {{x}}</div></sc-for>
+</div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0A6A94">หลังสั่น</h3>
+<sc-for list="{{band.after}}" as="x" hint-placeholder-count="3"><div style="font-size: 14px; line-height: 1.6">• {{x}}</div></sc-for>
+</div>
+<div style="flex: 1 1 220px; background: {{band.coastBg}}; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #7E3407">ถ้าอยู่ใกล้ชายฝั่ง</h3>
+<div style="font-size: 14px; line-height: 1.6">{{band.coast}}</div>
+</div>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700">เตรียมไว้ก่อน (ทุกขนาด)</h3>
+<div style="font-size: 14px; line-height: 1.7; color: #34495A">ยึดตู้และชั้นวางสูงกับผนัง · กระเป๋าฉุกเฉิน: น้ำและอาหารอย่างน้อย 3 วัน ไฟฉาย ยาประจำตัว สำเนาเอกสาร แบตเตอรี่สำรอง · กำหนดจุดนัดพบของครอบครัว · รู้เส้นทางอพยพและจุดปลอดภัยในอาคาร</div>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700">หมอบ ป้อง เกาะ (Drop, Cover, Hold On)</h3>
+<div style="font-size: 14px; line-height: 1.7; color: #34495A">หมอบลงกับพื้นก่อนจะถูกแรงสั่นเหวี่ยงล้ม · ป้องศีรษะและคอ หรือมุดใต้โต๊ะที่แข็งแรง · เกาะไว้จนกว่าจะหยุดสั่น อย่าวิ่งออกนอกอาคารขณะสั่น เพราะของตกจากด้านนอกเป็นอันตรายมาก</div>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700">ติดตามข้อมูลในไทย</h3>
+<div style="font-size: 14px; line-height: 1.7; color: #34495A">กรมอุตุนิยมวิทยา (ศูนย์เฝ้าระวังแผ่นดินไหว) สายด่วน 1182 · กรมป้องกันและบรรเทาสาธารณภัย สายด่วน 1784 · ฟังประกาศจากหน่วยงานรัฐ และระวังข่าวลือ</div>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ความรุนแรงที่ระบุเป็นค่าทั่วไปใกล้จุดศูนย์กลางตามตารางเปรียบเทียบของ USGS พื้นที่ห่างออกไปจะรู้สึกเบากว่า แต่ดินอ่อนหนาอาจขยายแรงสั่นได้ แผนนี้เป็นคำแนะนำพื้นฐาน ให้ปฏิบัติตามประกาศของหน่วยงานในพื้นที่เป็นหลัก</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">2. ทำไมอาคารบางหลังโยกแรงกว่า: การสั่นพ้อง</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 900px">อาคารทุกหลังมี “คาบธรรมชาติ” ประมาณ 0.1 วินาทีต่อชั้น ถ้าพื้นดินสั่นด้วยคาบใกล้เคียงกัน อาคารจะโยกแรงขึ้นมาก (สั่นพ้อง) ดินอ่อนหนาสั่นด้วยคาบยาว จึงอันตรายต่ออาคารสูง ลองปรับจำนวนชั้น ชนิดดิน และระบบป้องกัน</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{bd.bg}}; color: {{bd.fg}}">{{bd.badge}}</span>
+<button type="button" onClick="{{togglePlay}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: {{playBg}}; color: {{playFg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
+</div>
+<svg viewBox="0 0 600 380" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="{{bd.aria}}">
+<g transform="{{bd.ground}}">
+<rect x="-20" y="330" width="640" height="60" fill="{{bd.soil}}"></rect>
+<path d="{{bd.isoPads}}" fill="#0A6A94"></path>
+<path d="{{bd.building}}" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="{{bd.floors}}" fill="none" stroke="#9AAAB4" stroke-width="1"></path>
+<path d="{{bd.windows}}" fill="#9FD0E6"></path>
+</g>
+<text x="16" y="28" font-size="15" fill="#0F2A3A" font-weight="600">{{bd.title}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sf-n" style="font-size: 14px; font-weight: 600">จำนวนชั้น</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{nLabel}}</span></div>
+<input id="sf-n" type="range" min="1" max="60" step="1" value="{{n}}" onChange="{{setN}}">
+</div>
+<div style="font-size: 14px; font-weight: 600">ชนิดดิน (คาบการสั่นของพื้นดิน)</div>
+<div role="group" aria-label="ชนิดดิน" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{soils}}" as="x" hint-placeholder-count="3">
+<button type="button" onClick="{{x.pick}}" aria-pressed="{{x.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{x.border}}; background: {{x.bg}}; color: {{x.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; align-items: center"><span>{{x.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">{{x.tLabel}}</span></button>
+</sc-for>
+</div>
+<div style="font-size: 14px; font-weight: 600">ระบบป้องกัน</div>
+<div role="group" aria-label="ระบบป้องกัน" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{prots}}" as="x" hint-placeholder-count="3">
+<button type="button" onClick="{{x.pick}}" aria-pressed="{{x.pressed}}" style="min-height: 44px; padding: 0 12px; border-radius: 999px; border: 1.5px solid {{x.border}}; background: {{x.bg}}; color: {{x.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{x.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{bd.rows}}" as="r" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px; border-bottom: 1px solid #E3E9EC; padding-bottom: 6px"><span>{{r.k}}</span><strong style="font-family: 'IBM Plex Mono', monospace">{{r.v}}</strong></div>
+</sc-for>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">{{bd.note}}</p>
+<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #4A5D6A">แบบจำลองมวล-สปริงหนึ่งชั้นอิสระ: ตัวขยาย = 1 ÷ √((1 − r²)² + (2ζr)²) โดย r = คาบอาคาร ÷ คาบพื้นดิน คาบดินเป็นค่าตัวอย่างเพื่อการเรียนรู้ ไม่ใช่ค่าตรวจวัดของพื้นที่ใด</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">3. มาตรฐานอาคารต้านแผ่นดินไหวในประเทศต่าง ๆ</h2>
+<div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px">
+<div role="table" aria-label="มาตรฐานอาคารต้านแผ่นดินไหว" style="min-width: 760px; display: flex; flex-direction: column; font-size: 14px">
+<div role="row" style="display: grid; grid-template-columns: 150px minmax(0, 1.2fr) minmax(0, 1.6fr); gap: 16px; padding: 12px 14px; background: #F3F6F7; font-weight: 700"><span role="columnheader">ประเทศ/ภูมิภาค</span><span role="columnheader">มาตรฐานหลัก</span><span role="columnheader">จุดสำคัญ</span></div>
+<sc-for list="{{codes}}" as="c" hint-placeholder-count="9">
+<div role="row" style="display: grid; grid-template-columns: 150px minmax(0, 1.2fr) minmax(0, 1.6fr); gap: 16px; padding: 12px 14px; border-top: 1px solid #E3E9EC; background: {{c.bg}}"><span role="cell" style="font-weight: 700">{{c.c}}</span><span role="cell" style="line-height: 1.6">{{c.code}}</span><span role="cell" style="line-height: 1.6; color: #34495A">{{c.note}}</span></div>
+</sc-for>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">มาตรฐานมีอยู่ไม่ได้แปลว่าอาคารทุกหลังปลอดภัย อาคารเก่าที่สร้างก่อนมาตรฐานบังคับ และการก่อสร้างที่ไม่เป็นไปตามแบบ เป็นสาเหตุหลักของความสูญเสียในหลายเหตุการณ์ บางมาตรฐานต้องซื้อเอกสาร ดูรายละเอียดการเข้าถึงในหน้าแหล่งข้อมูล</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">4. เซนเซอร์ภาคพื้นดินและดาวเทียมที่เฝ้าดูโลก</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 900px">ไม่มีเซนเซอร์ชนิดเดียวที่เห็นทุกอย่าง เครื่องวัดบนพื้นดินเร็วและละเอียดเฉพาะจุด ดาวเทียมเห็นภาพกว้างทั่วโลกแต่ช้ากว่า ระบบเตือนภัยจริงจึงใช้ร่วมกัน ป้ายสีบอกว่าข้อมูลเปิดเผยให้คนทั่วไปใช้ได้หรือไม่</p>
+<div role="group" aria-label="เลือกกลุ่มเซนเซอร์" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{sTabs}}" as="t" hint-placeholder-count="2">
+<button type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{t.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{sensors}}" as="x" hint-placeholder-count="8">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px"><h3 style="margin: 0; font-size: 16px; font-weight: 700">{{x.name}}</h3><span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: {{x.tagBg}}; color: {{x.tagFg}}; white-space: nowrap">{{x.tag}}</span></div>
+<div style="font-size: 14px; line-height: 1.6; color: #34495A"><strong>วัด:</strong> {{x.what}}</div>
+<div style="font-size: 14px; line-height: 1.6; color: #34495A"><strong>ช่วยอย่างไร:</strong> {{x.use}}</div>
+<div style="font-size: 13px; line-height: 1.6; color: #4A5D6A">{{x.ex}}</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2800}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.state = { band: 4, n: 15, soil: 'soft', prot: 'none', t: 0, playing: !reduce, sTab: 'ground' };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  bandList() {
+    var drop = 'หมอบ ป้อง เกาะ อยู่ห่างกระจกและของที่อาจล้ม';
+    return [
+      { name: 'M < 4', title: 'แทบไม่รู้สึก ถึงรู้สึกได้เล็กน้อย', mmi: 'I–III', freq: 'มากกว่าแสนครั้ง/ปี', feel: 'ส่วนใหญ่มีแต่เครื่องมือที่วัดได้ คนที่อยู่นิ่ง ๆ หรือชั้นบนของอาคารอาจรู้สึกเหมือนรถบรรทุกแล่นผ่าน', during: ['ไม่ต้องทำอะไรเป็นพิเศษ', 'สังเกตว่าของในบ้านจุดไหนสั่นง่าย'], after: ['ใช้โอกาสนี้ทบทวนแผนของครอบครัว', 'ตรวจสอบข่าวจากกรมอุตุนิยมวิทยา'], coast: 'ไม่ก่อให้เกิดสึนามิ', coastBg: '#FFFFFF' },
+      { name: 'M 4–4.9', title: 'รู้สึกได้ ของในบ้านสั่น', mmi: 'IV–V', freq: '≈ 13,000 ครั้ง/ปี', feel: 'ประตู หน้าต่าง และจานชามสั่น ของวางไม่มั่นคงอาจตก ความเสียหายต่ออาคารมีน้อย', during: [drop, 'ถ้าอยู่บนเตียง ให้อยู่บนเตียงและใช้หมอนป้องศีรษะ'], after: ['ตรวจรอยร้าวและกลิ่นแก๊สรั่ว', 'เตรียมรับอาฟเตอร์ช็อกขนาดเล็ก'], coast: 'โดยทั่วไปไม่ก่อให้เกิดสึนามิ', coastBg: '#FFFFFF' },
+      { name: 'M 5–5.9', title: 'ของตกหล่น อาคารไม่แข็งแรงเสียหาย', mmi: 'VI–VII', freq: '≈ 1,300 ครั้ง/ปี', feel: 'ยืนลำบาก เฟอร์นิเจอร์เคลื่อน ผนังปูนและอาคารที่ออกแบบไม่ดีอาจร้าวหรือพังบางส่วน', during: [drop, 'อย่าวิ่งออกนอกอาคารขณะสั่น อย่าใช้ลิฟต์', 'ถ้าอยู่กลางแจ้ง ให้ออกห่างจากอาคาร เสาไฟ และป้าย'], after: ['ปิดแก๊สและไฟฟ้าถ้าสงสัยว่ามีความเสียหาย', 'ออกจากอาคารที่ร้าวหนักทางบันได', 'ระวังอาฟเตอร์ช็อก'], coast: 'ถ้าเกิดใต้ทะเลอาจมีสึนามิขนาดเล็กในพื้นที่ ติดตามประกาศ', coastBg: '#FFFFFF' },
+      { name: 'M 6–6.9', title: 'เสียหายหนักใกล้จุดศูนย์กลาง', mmi: 'VII–IX', freq: '≈ 130 ครั้ง/ปี', feel: 'อาคารทั่วไปเสียหายมาก อาคารเก่าพังได้ ดินถล่มในพื้นที่ภูเขา ถนนและท่อแตก', during: [drop, 'ถ้าขับรถ ให้ชะลอและจอดห่างจากสะพาน ทางยกระดับ และสายไฟ'], after: ['หยิบกระเป๋าฉุกเฉินและไปจุดนัดพบ', 'ห้ามเข้าอาคารที่เสียหายจนกว่าวิศวกรตรวจ', 'ใช้ข้อความแทนการโทร เพื่อไม่ให้เครือข่ายล่ม'], coast: 'ถ้ารู้สึกสั่นแรงที่ชายฝั่ง ให้ขึ้นที่สูงทันที ไม่ต้องรอประกาศ', coastBg: '#FFF1CC' },
+      { name: 'M 7–7.9', title: 'เสียหายวงกว้างหลายร้อยกิโลเมตร', mmi: 'VIII ขึ้นไป', freq: '≈ 15 ครั้ง/ปี', feel: 'อาคารจำนวนมากเสียหายหนัก รู้สึกได้ไกลหลายร้อยกิโลเมตร อาคารสูงบนดินอ่อนที่อยู่ไกลอาจโยกนานหลายนาที เช่นกรุงเทพฯ เมื่อปี 2568', during: [drop, 'ในอาคารสูง อยู่ห่างหน้าต่าง อย่าใช้ลิฟต์และบันไดขณะสั่น'], after: ['ออกจากอาคารทางบันไดเมื่อหยุดสั่น', 'เตรียมรับอาฟเตอร์ช็อกใหญ่ได้หลายวันถึงหลายสัปดาห์', 'ติดตามประกาศจากหน่วยงานรัฐเท่านั้น'], coast: 'ถ้าสั่นแรงหรือนานเกิน 20 วินาที ให้อพยพขึ้นที่สูงหรือไกลจากชายฝั่งทันที น้ำทะเลลดลงผิดปกติคือสัญญาณเตือนสึนามิ', coastBg: '#FCE3CF' },
+      { name: 'M 8+', title: 'ทำลายล้างวงกว้าง สึนามิข้ามมหาสมุทร', mmi: 'IX–XII', freq: '≈ 1 ครั้ง/ปี', feel: 'ความเสียหายรุนแรงในพื้นที่กว้างมาก แผ่นดินยกหรือยุบหลายเมตร สึนามิเดินทางข้ามมหาสมุทรได้หลายชั่วโมง', during: [drop, 'การสั่นอาจนานหลายนาที เกาะไว้จนกว่าจะหยุด'], after: ['อพยพตามเส้นทางที่กำหนด', 'อยู่ที่สูงอย่างน้อยหลายชั่วโมง เพราะสึนามิมาหลายระลอก และระลอกแรกมักไม่ใช่ระลอกใหญ่ที่สุด', 'ช่วยเหลือผู้อื่นเมื่อปลอดภัยแล้ว'], coast: 'อพยพทันทีโดยไม่ต้องรอประกาศ ไปที่สูงอย่างน้อย 10–20 เมตร หรือเข้าไปในแผ่นดินลึก ห้ามลงไปดูคลื่นที่ชายหาด', coastBg: '#FCE3CF' }
+    ];
+  }
+
+  renderVals() {
+    var self = this, s = this.state, PI = Math.PI, T = s.t;
+    var f1 = function (v) { return v.toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    var BL = this.bandList(), band = BL[s.band];
+
+    // building resonance
+    var soils = [
+      { id: 'rock', name: 'หินแข็ง', tg: 0.3, color: '#9AAAB4' },
+      { id: 'stiff', name: 'ดินแข็งปานกลาง', tg: 0.7, color: '#B89B74' },
+      { id: 'soft', name: 'ดินอ่อนหนา (เช่น แอ่งกรุงเทพฯ)', tg: 1.5, color: '#8A7253' }
+    ];
+    var prots = [{ id: 'none', name: 'ไม่มี' }, { id: 'damp', name: 'ตัวหน่วงการสั่น' }, { id: 'iso', name: 'ฐานแยกแรงสั่น' }];
+    var S = soils.filter(function (x) { return x.id === s.soil; })[0];
+    var Tn = 0.1 * s.n, zeta = 0.05;
+    if (s.prot === 'damp') zeta = 0.15;
+    if (s.prot === 'iso') { Tn = Math.max(Tn, 2.5); zeta = 0.15; }
+    var r = Tn / S.tg;
+    var daf = 1 / Math.sqrt(Math.pow(1 - r * r, 2) + Math.pow(2 * zeta * r, 2));
+    var w = 2 * PI / S.tg, slow = 0.6; // slow the animation a little so it can be followed
+    var g = 6 * Math.sin(w * T * slow);
+    var top = Math.max(-150, Math.min(150, 6 * daf * Math.sin(w * T * slow - Math.atan2(2 * zeta * r, 1 - r * r))));
+    var H = Math.min(300, 14 + s.n * 5), bw = Math.max(50, Math.min(120, 40 + s.n * 1.4)), x0 = 300 - bw / 2, yb = 330 - (s.prot === 'iso' ? 8 : 0);
+    var base = s.prot === 'iso' ? g * 0.25 : 0;
+    var shape = function (h) { return base + (top - base) * Math.pow(h / H, 1.2); };
+    var pts = [];
+    pts.push(f1(x0 + base) + ',' + yb);
+    for (var i = 0; i <= 10; i++) { var h = H * i / 10; pts.push(f1(x0 + shape(h)) + ',' + f1(yb - h)); }
+    for (var j = 10; j >= 0; j--) { var h2 = H * j / 10; pts.push(f1(x0 + bw + shape(h2)) + ',' + f1(yb - h2)); }
+    var fl = '', win = '';
+    var floorsShown = Math.min(s.n, 30), fh = H / floorsShown;
+    for (var k = 1; k < floorsShown; k++) { var hh = fh * k, dx = shape(hh); fl += 'M' + f1(x0 + dx) + ',' + f1(yb - hh) + ' h' + f1(bw); }
+    for (var m = 0; m < floorsShown; m++) {
+      var hm = fh * (m + 0.5), dxm = shape(hm);
+      for (var c = 0; c < 3; c++) win += 'M' + f1(x0 + dxm + bw * (0.15 + c * 0.27)) + ',' + f1(yb - hm - fh * 0.2) + ' h' + f1(bw * 0.16) + ' v' + f1(Math.max(1.5, fh * 0.4)) + ' h' + f1(-bw * 0.16) + ' Z';
+    }
+    var iso = s.prot === 'iso' ? 'M' + f1(x0 + 6) + ',322 h16 v8 h-16 Z M' + f1(x0 + bw / 2 - 8) + ',322 h16 v8 h-16 Z M' + f1(x0 + bw - 22) + ',322 h16 v8 h-16 Z' : 'M0,0';
+    var res = r > 0.8 && r < 1.25 && s.prot !== 'iso';
+    var bd = {
+      ground: 'translate(' + f1(g) + ' 0)', soil: S.color, building: 'M' + pts.join(' L') + ' Z', floors: fl || 'M0,0', windows: win || 'M0,0', isoPads: iso,
+      title: s.n + ' ชั้น บน' + S.name,
+      badge: s.prot === 'iso' ? 'ฐานแยกแรงสั่นช่วยลดแรงที่ส่งเข้าอาคาร' : res ? 'เสี่ยงสั่นพ้อง: คาบอาคารใกล้คาบพื้นดิน' : daf > 1.5 ? 'โยกมากกว่าพื้นดิน' : 'โยกไม่มาก',
+      bg: res ? '#FCE3CF' : '#DDEFF6', fg: res ? '#7E3407' : '#0A4F70',
+      rows: [
+        { k: 'คาบธรรมชาติอาคาร', v: Tn.toFixed(2) + ' วินาที' },
+        { k: 'คาบการสั่นของพื้นดิน', v: S.tg.toFixed(1) + ' วินาที' },
+        { k: 'อัตราส่วน r', v: r.toFixed(2) },
+        { k: 'ยอดอาคารโยกมากกว่าพื้นดิน', v: daf.toFixed(1) + ' เท่า' }
+      ],
+      note: s.prot === 'iso' ? 'ฐานยางและแผ่นเลื่อนทำให้คาบของอาคารยาวขึ้นมาก (≈ 2.5 วินาที) และดูดซับพลังงาน ตัวอาคารจึงเคลื่อนไปพร้อมกันช้า ๆ แทนที่จะบิดงอ ใช้กับโรงพยาบาลและอาคารสำคัญ' : s.prot === 'damp' ? 'ตัวหน่วงการสั่น (เช่น หนืดหรือมวลหน่วงบนยอดอาคาร) เปลี่ยนพลังงานการสั่นเป็นความร้อน ช่วยลดการโยกโดยเฉพาะตอนสั่นพ้อง' : res ? 'คาบอาคารใกล้คาบพื้นดิน แรงสั่นจึงถูกขยายหลายเท่า ลองเปลี่ยนจำนวนชั้นหรือชนิดดิน จะเห็นว่าอาคารที่สูงต่างกันได้รับผลต่างกัน' : 'ลองหาจำนวนชั้นที่ทำให้คาบอาคารเท่ากับคาบพื้นดิน แล้วดูว่าการโยกเพิ่มขึ้นเท่าไร',
+      aria: 'อาคาร ' + s.n + ' ชั้น บน' + S.name + ' ยอดอาคารโยกมากกว่าพื้นดิน ' + daf.toFixed(1) + ' เท่า'
+    };
+
+    var codes = [
+      { c: 'ไทย', code: 'กฎกระทรวงการรับน้ำหนัก ความต้านทาน ความคงทนของอาคาร… ต้านทานแรงสั่นสะเทือนของแผ่นดินไหว พ.ศ. 2564 · มาตรฐาน มยผ. 1301/1302-61 (กรมโยธาธิการและผังเมือง)', note: 'ครอบคลุม 43 จังหวัด แบ่ง 3 บริเวณ (14, 17 รวมกรุงเทพฯ และ 12 จังหวัด) บังคับกับอาคารบางประเภท เช่น โรงเรียน โรงพยาบาล อาคารสาธารณะ ที่สูงตั้งแต่ 15 ม. ในบริเวณ 1–2 และ 10 ม. ในบริเวณ 3 จากเดิม 22 จังหวัด (2550) และ 10 จังหวัด (2540)', bg: '#F3FAFD' },
+      { c: 'ญี่ปุ่น', code: 'Building Standard Law (มาตรฐานใหม่ปี 1981 “ชินไทชิน” และปรับปรุงปี 2000)', note: 'อาคารต้องไม่พังในแผ่นดินไหวรุนแรงมาก อาคารที่สร้างหลังปี 1981 เสียหายน้อยกว่าอาคารเก่ามากในเหตุการณ์โกเบ 1995', bg: '#FFFFFF' },
+      { c: 'สหรัฐอเมริกา', code: 'ASCE 7 และ International Building Code (IBC)', note: 'ใช้แผนที่ความเสี่ยงภัยแผ่นดินไหวของ USGS ระดับการออกแบบขึ้นกับความสำคัญของอาคารและชนิดดิน', bg: '#FFFFFF' },
+      { c: 'ชิลี', code: 'NCh433', note: 'เข้มงวดและบังคับใช้จริง เป็นเหตุผลสำคัญที่แผ่นดินไหว M 8.8 ปี 2010 มีผู้เสียชีวิตน้อยเมื่อเทียบกับขนาด', bg: '#FFFFFF' },
+      { c: 'นิวซีแลนด์', code: 'NZS 1170.5', note: 'เป็นผู้บุกเบิกฐานแยกแรงสั่นสะเทือนตั้งแต่ทศวรรษ 1970', bg: '#FFFFFF' },
+      { c: 'สหภาพยุโรป', code: 'Eurocode 8 (EN 1998)', note: 'แต่ละประเทศกำหนดค่าความเสี่ยงของตัวเองผ่านภาคผนวกแห่งชาติ', bg: '#FFFFFF' },
+      { c: 'จีน', code: 'GB 50011', note: 'ปรับปรุงหลังแผ่นดินไหวเวิ่นชวน 2008 โดยเพิ่มข้อกำหนดของอาคารเรียน', bg: '#FFFFFF' },
+      { c: 'อินโดนีเซีย', code: 'SNI 1726', note: 'ประเทศที่มีแผ่นดินไหวขนาด 6 ขึ้นไปมากที่สุดในข้อมูลของหน้านี้', bg: '#FFFFFF' },
+      { c: 'อินเดีย', code: 'IS 1893', note: 'แบ่งประเทศเป็นเขตความเสี่ยง พื้นที่ตามแนวหิมาลัยมีความเสี่ยงสูงสุด', bg: '#FFFFFF' }
+    ];
+
+    var open = { tag: 'ข้อมูลเปิดเผย', tagBg: '#DDEFF6', tagFg: '#0A4F70' };
+    var part = { tag: 'เปิดบางส่วน', tagBg: '#FFF1CC', tagFg: '#6B4A00' };
+    var closed = { tag: 'ไม่เปิดเผย / จำกัด', tagBg: '#FCE3CF', tagFg: '#7E3407' };
+    var mk = function (o, t) { o.tag = t.tag; o.tagBg = t.tagBg; o.tagFg = t.tagFg; return o; };
+    var ground = [
+      mk({ name: 'เครือข่ายเครื่องวัดแผ่นดินไหว (seismometer)', what: 'การสั่นของพื้นดินละเอียดระดับนาโนเมตร', use: 'หาตำแหน่ง ขนาด และความลึกของแผ่นดินไหวภายในไม่กี่นาที', ex: 'เช่น Global Seismographic Network ผ่าน EarthScope (เดิม IRIS) และเครือข่ายของกรมอุตุนิยมวิทยา บางประเทศไม่เปิดข้อมูลแบบเรียลไทม์' }, part),
+      mk({ name: 'เครื่องวัดความเร่งแรงสั่น (strong-motion)', what: 'ความเร่งของพื้นดินและอาคารขณะสั่นแรง', use: 'บอกว่าอาคารได้รับแรงเท่าไร ใช้ปรับปรุงมาตรฐานอาคาร', ex: 'เช่น เครือข่าย K-NET และ KiK-net ของญี่ปุ่น (เปิดให้ดาวน์โหลดเมื่อลงทะเบียน)' }, part),
+      mk({ name: 'สถานี GNSS ภาคพื้นดิน', what: 'ตำแหน่งของพื้นดินละเอียดระดับมิลลิเมตร', use: 'วัดว่าแผ่นเปลือกโลกเคลื่อนเท่าไรต่อปี และความเค้นสะสมที่รอยเลื่อนไหน', ex: 'เช่น GEONET ของญี่ปุ่น (ราว 1,300 สถานี) และเครือข่ายของ EarthScope' }, open),
+      mk({ name: 'ทุ่นและเซนเซอร์ความดันใต้ทะเล (DART)', what: 'ความดันน้ำที่พื้นทะเล ซึ่งเปลี่ยนตามความสูงของน้ำเหนือเซนเซอร์', use: 'ยืนยันว่ามีสึนามิเกิดขึ้นจริงก่อนถึงฝั่ง', ex: 'NOAA เปิดข้อมูลผ่าน National Data Buoy Center มีทุ่นในมหาสมุทรอินเดียรวมถึงทะเลอันดามันด้วย' }, open),
+      mk({ name: 'สถานีวัดระดับน้ำทะเลชายฝั่ง', what: 'ระดับน้ำทะเลทุกนาที', use: 'ติดตามสึนามิเมื่อเข้าใกล้ฝั่ง และใช้สร้างแบบจำลอง', ex: 'IOC Sea Level Monitoring Facility รวบรวมข้อมูลจากทั่วโลก' }, open),
+      mk({ name: 'เครือข่ายเคเบิลใต้ทะเล', what: 'แผ่นดินไหวและความดันน้ำตรงเหนือเขตมุดตัว', use: 'ตรวจจับได้เร็วกว่าสถานีบนบกหลายสิบวินาที', ex: 'เช่น S-net และ DONET ของญี่ปุ่น' }, part),
+      mk({ name: 'โทรศัพท์มือถือ', what: 'เซนเซอร์ความเร่งในเครื่องหลายล้านเครื่อง', use: 'ทำหน้าที่เป็นเครือข่ายเตือนภัยขนาดใหญ่ในพื้นที่ที่มีสถานีน้อย', ex: 'เช่น ระบบเตือนแผ่นดินไหวของ Android ข้อมูลดิบจากเครื่องผู้ใช้ไม่เปิดเผย' }, closed),
+      mk({ name: 'สถานีตรวจวัดของ CTBTO', what: 'คลื่นไหวสะเทือน คลื่นเสียงความถี่ต่ำ และกัมมันตรังสี เพื่อตรวจการทดลองนิวเคลียร์', use: 'ข้อมูลยังช่วยเตือนสึนามิให้บางประเทศได้', ex: 'ข้อมูลจำกัดเฉพาะรัฐภาคีและนักวิจัยที่ได้รับอนุญาต' }, closed)
+    ];
+    var space = [
+      mk({ name: 'ดาวเทียมนำทาง GNSS', what: 'สัญญาณเวลาและตำแหน่งให้สถานี GNSS บนพื้นดิน', use: 'ทำให้วัดการเคลื่อนตัวระดับมิลลิเมตรได้ทั่วโลก', ex: 'GPS, Galileo, BeiDou, GLONASS สัญญาณพลเรือนใช้ได้ฟรี สัญญาณทางทหารเข้ารหัส' }, part),
+      mk({ name: 'เรดาร์ InSAR', what: 'การเปลี่ยนระยะของพื้นผิวโลกระดับเซนติเมตรถึงมิลลิเมตร เทียบภาพเรดาร์สองช่วงเวลา', use: 'เห็นว่าพื้นดินเลื่อนหรือยุบตัวเท่าไรหลังแผ่นดินไหว และภูเขาไฟพองตัวก่อนปะทุ', ex: 'Sentinel-1 ของ ESA (ข้อมูลฟรี) · NISAR ของ NASA–ISRO (นโยบายเปิดข้อมูล) · ALOS-2 ของ JAXA (บางส่วนเชิงพาณิชย์)' }, part),
+      mk({ name: 'ดาวเทียมวัดแรงโน้มถ่วง', what: 'การเปลี่ยนแปลงของมวลใต้ผิวโลก', use: 'เห็นการเปลี่ยนแปลงของมวลหลังแผ่นดินไหวขนาดใหญ่มาก เช่น สุมาตรา 2004 และโทโฮกุ 2011', ex: 'GRACE-FO ของ NASA และ GFZ (ข้อมูลเปิด)' }, open),
+      mk({ name: 'ภาพถ่ายดาวเทียมเชิงแสง', what: 'ภาพพื้นผิวโลก', use: 'ประเมินความเสียหาย ดินถล่ม และพื้นที่น้ำท่วมหลังภัยพิบัติ', ex: 'Landsat และ Sentinel-2 ใช้ฟรีที่ความละเอียด 10–30 ม. ภาพความละเอียดสูงเชิงพาณิชย์ต้องซื้อ แต่ International Charter ให้หน่วยงานภัยพิบัติใช้ได้' }, part),
+      mk({ name: 'ดาวเทียมตรวจความร้อนและก๊าซภูเขาไฟ', what: 'จุดความร้อนและก๊าซซัลเฟอร์ไดออกไซด์', use: 'เตือนว่าภูเขาไฟเริ่มปะทุ และติดตามกลุ่มเถ้าที่อันตรายต่อเครื่องบิน', ex: 'MODIS และ VIIRS · TROPOMI บน Sentinel-5P (ข้อมูลเปิด)' }, open),
+      mk({ name: 'ดาวเทียมสื่อสาร', what: 'ไม่ได้วัดเอง แต่ส่งต่อข้อมูล', use: 'ส่งข้อมูลจากทุ่น DART และสถานีห่างไกล และกระจายคำเตือน', ex: 'เช่น เครือข่ายดาวเทียม Iridium และ GOES' }, part)
+    ];
+    var sTab = [{ id: 'ground', name: 'ภาคพื้นดินและใต้ทะเล' }, { id: 'space', name: 'ดาวเทียม' }];
+
+    return {
+      bands: BL.map(function (b, i) { var p = pill(i === s.band); return { name: b.name, pressed: i === s.band ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ band: i }); } }; }),
+      band: band,
+      n: s.n, nLabel: s.n + ' ชั้น', setN: function (e) { self.setState({ n: parseInt(e.target.value, 10) }); },
+      soils: soils.map(function (x) { var p = pill(x.id === s.soil); return { name: x.name, tLabel: x.tg.toFixed(1) + ' s', pressed: x.id === s.soil ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ soil: x.id }); } }; }),
+      prots: prots.map(function (x) { var p = pill(x.id === s.prot); return { name: x.name, pressed: x.id === s.prot ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ prot: x.id }); } }; }),
+      bd: bd,
+      playLabel: s.playing ? 'หยุดชั่วคราว' : 'เล่นภาพเคลื่อนไหว', playBg: s.playing ? '#0A6A94' : '#FFFFFF', playFg: s.playing ? '#FFFFFF' : '#0A6A94',
+      togglePlay: function () { self.setState({ playing: !self.state.playing }); },
+      codes: codes,
+      sTabs: sTab.map(function (x) { var p = pill(x.id === s.sTab); return { name: x.name, pressed: x.id === s.sTab ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ sTab: x.id }); } }; }),
+      sensors: s.sTab === 'ground' ? ground : space
+    };
+  }
+}
+</script>
+</body>
+</html>

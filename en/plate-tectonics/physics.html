@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Earthquake physics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Plate Tectonics Lab</a><span aria-hidden="true">›</span><span aria-current="page">Earthquake physics</span><a class="ps-lang" href="../../plate-tectonics/physics.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">← Map and statistics</a>
+<a href="safety.html" style="min-height: 44px; display: inline-flex; align-items: center">Next: response and safety standards →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">Earthquake physics</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">How plates move and how earthquakes happen</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Tectonic plates move about as slowly as your fingernails grow, but they never stop. Stress builds up at the boundaries until the rock breaks, and the energy released travels as seismic waves. This page simulates everything from plate motion to locating the epicentre and the early-warning time.</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">1. Three kinds of plate boundary</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 600px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC">
+<div role="group" aria-label="Boundary type" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{btypes}}" as="b" hint-placeholder-count="3">
+<button type="button" onClick="{{b.pick}}" aria-pressed="{{b.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{b.border}}; background: {{b.bg}}; color: {{b.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{b.name}}</button>
+</sc-for>
+</div>
+<button type="button" onClick="{{togglePlay}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: {{playBg}}; color: {{playFg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
+</div>
+
+<sc-if value="{{isDiv}}" hint-placeholder-val="{{ true }}">
+<svg viewBox="0 0 600 260" style="display: block; width: 100%; height: auto; background: #DCEBF2" role="img" aria-label="Cross-section: a mid-ocean ridge where two plates spread apart; magma rises to form new seafloor, leaving symmetrical stripes of reversed magnetism on both sides">
+<rect x="0" y="0" width="600" height="70" fill="#9FD0E6"></rect>
+<path d="{{dv.stripes}}" fill="#0F2A3A"></path>
+<path d="{{dv.stripesLight}}" fill="#6E8796"></path>
+<path d="M0,70 L285,70 L300,62 L315,70 L600,70" fill="none" stroke="#0F2A3A" stroke-width="1.5"></path>
+<rect x="0" y="110" width="600" height="150" fill="#E9B98A"></rect>
+<path d="M240,260 Q300,150 360,260 Z" fill="#F08A3C" opacity="0.8"></path>
+<path d="{{dv.magma}}" fill="#F5C77A"></path>
+<path d="{{dv.arrows}}" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+<text x="300" y="30" font-size="15" text-anchor="middle" fill="#0F2A3A" font-weight="600">Mid-ocean ridge</text>
+<text x="20" y="200" font-size="14" fill="#7E3407">Mantle: hot and slowly flowing</text>
+</svg>
+</sc-if>
+
+<sc-if value="{{isSub}}" hint-placeholder-val="{{ false }}">
+<svg viewBox="0 0 600 260" style="display: block; width: 100%; height: auto; background: #E9B98A" role="img" aria-label="Cross-section: an oceanic plate dives beneath a continental plate, forming a trench, earthquakes along the sinking slab and volcanoes on the continent">
+<rect x="0" y="0" width="600" height="60" fill="#DCEBF2"></rect>
+<rect x="0" y="40" width="330" height="20" fill="#9FD0E6"></rect>
+<path d="M0,60 L330,60 L330,80 L0,80 Z" fill="#0F2A3A"></path>
+<path d="M330,60 L600,240 L600,262 L322,80 Z" fill="#0F2A3A"></path>
+<path d="M0,70 L326,70 L600,252" fill="none" stroke="#9FD0E6" stroke-width="2" stroke-dasharray="10 14" stroke-dashoffset="{{sb.dash}}"></path>
+<path d="M330,60 L370,40 L600,40 L600,150 L560,170 L340,80 Z" fill="#7A5A3A"></path>
+<path d="M455,40 L475,8 L495,40 Z" fill="#5C4129"></path>
+<path d="{{sb.plume}}" fill="#9AAAB4" opacity="{{sb.plumeO}}"></path>
+<path d="M475,40 Q470,90 478,140" fill="none" stroke="#F08A3C" stroke-width="3" opacity="0.7"></path>
+<path d="{{sb.quakes}}" fill="#F5C77A" stroke="#7E3407" stroke-width="1"></path>
+<text x="330" y="100" font-size="13" text-anchor="middle" fill="#FFFFFF">Trench</text>
+<text x="120" y="54" font-size="14" fill="#0F2A3A" font-weight="600">Oceanic plate →</text>
+<text x="510" y="70" font-size="14" fill="#FFFFFF" font-weight="600">Continental plate</text>
+<text x="20" y="200" font-size="14" fill="#7E3407">Yellow dots = earthquakes along the sinking slab</text>
+</svg>
+</sc-if>
+
+<sc-if value="{{isTra}}" hint-placeholder-val="{{ false }}">
+<svg viewBox="0 0 600 260" style="display: block; width: 100%; height: auto; background: #E5DCC8" role="img" aria-label="Top-down view: a strike-slip fault; a fence crossing the fault slowly bends as stress builds, then snaps back the moment an earthquake strikes">
+<rect x="0" y="0" width="600" height="130" fill="#D9CDB4"></rect>
+<rect x="0" y="130" width="600" height="130" fill="#E5DCC8"></rect>
+<line x1="0" y1="130" x2="600" y2="130" stroke="#7E3407" stroke-width="3" stroke-dasharray="12 6"></line>
+<path d="{{tf.roadUp}}" fill="none" stroke="#4A5D6A" stroke-width="6"></path>
+<path d="{{tf.roadDown}}" fill="none" stroke="#4A5D6A" stroke-width="6"></path>
+<path d="{{tf.fence}}" fill="none" stroke="#B04A0C" stroke-width="3"></path>
+<circle cx="{{tf.fx}}" cy="130" r="{{tf.flashR}}" fill="#F5C77A" opacity="{{tf.flashO}}"></circle>
+<path d="M60,40 L140,40 M128,32 L140,40 L128,48" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<path d="M540,220 L460,220 M472,212 L460,220 L472,228" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<text x="20" y="122" font-size="14" fill="#7E3407" font-weight="600">Fault (locked until it breaks)</text>
+</svg>
+<div style="padding: 10px 16px; display: flex; flex-direction: column; gap: 4px; border-top: 1px solid #E3E9EC">
+<div style="display: flex; justify-content: space-between; font-size: 14px"><span>Stress stored in the rock</span><span style="font-family: 'IBM Plex Mono', monospace">{{tf.strainPct}}</span></div>
+<div style="height: 12px; background: #EEF2F4; border-radius: 6px; overflow: hidden"><div style="height: 12px; width: {{tf.strainW}}; background: {{tf.strainColor}}"></div></div>
+</div>
+</sc-if>
+
+<div style="padding: 14px 16px; border-top: 1px solid #E3E9EC; display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ph-v" style="font-size: 14px; font-weight: 600">Plate speed</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{vLabel}}</span></div>
+<input id="ph-v" type="range" min="1" max="15" step="0.5" value="{{v}}" onChange="{{setV}}">
+<div style="font-size: 13px; color: #4A5D6A">Animation: 1 second on screen ≈ 1 million years (the transform fault uses a shorter time scale so you can see the cycle)</div>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{bi.en}}</div>
+<div style="font-size: 21px; font-weight: 700">{{bi.title}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">{{bi.text}}</p>
+<div style="font-size: 14px; line-height: 1.6; color: #FFC79A">Examples: {{bi.examples}}</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Plate movement in 1 year</span><strong style="font-family: 'IBM Plex Mono', monospace">{{mv.y1}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>In a human lifetime (80 years)</span><strong style="font-family: 'IBM Plex Mono', monospace">{{mv.y80}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>In 1 million years</span><strong style="font-family: 'IBM Plex Mono', monospace">{{mv.m1}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>{{mv.extraK}}</span><strong style="font-family: 'IBM Plex Mono', monospace">{{mv.extraV}}</strong></div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">{{mv.note}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">2. Seismic waves and locating the epicentre</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 900px">P (primary) waves travel faster than S (secondary) waves, so a station farther away sees a longer gap between P and S. That gap gives the distance, and with 3 stations you can draw circles and find where they cross. Tap the area to move the epicentre, then press the button to trigger an earthquake.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 600px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px">t = {{sw.clock}}</span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button type="button" onClick="{{quakeGo}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #B04A0C; background: #B04A0C; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Trigger an earthquake</button>
+<button type="button" onClick="{{quakePause}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{sw.pauseLabel}}</button>
+</div>
+</div>
+<svg viewBox="0 0 600 360" style="display: block; width: 100%; height: auto; background: #F3EFE6" role="img" aria-label="{{sw.aria}}">
+<rect x="0" y="0" width="600" height="360" fill="#F3EFE6" onClick="{{placeEpi}}" style="cursor: crosshair"></rect>
+<path d="M0,300 C120,280 200,330 330,300 S520,250 600,270" fill="none" stroke="#D5C8AE" stroke-width="2"></path>
+<path d="M40,0 C90,120 60,220 140,360" fill="none" stroke="#D5C8AE" stroke-width="2"></path>
+<circle cx="{{sw.ex}}" cy="{{sw.ey}}" r="{{sw.rP}}" fill="none" stroke="#0A6A94" stroke-width="2.5" opacity="{{sw.waveO}}"></circle>
+<circle cx="{{sw.ex}}" cy="{{sw.ey}}" r="{{sw.rS}}" fill="none" stroke="#B04A0C" stroke-width="3.5" opacity="{{sw.waveO}}"></circle>
+<sc-for list="{{sw.stations}}" as="st" hint-placeholder-count="3">
+<circle cx="{{st.x}}" cy="{{st.y}}" r="{{st.dist}}" fill="none" stroke="#4A5D6A" stroke-width="1.5" stroke-dasharray="6 5" opacity="{{st.circleO}}"></circle>
+<path d="{{st.tri}}" fill="{{st.fill}}" stroke="#0F2A3A" stroke-width="1.5"></path>
+<text x="{{st.x}}" y="{{st.ly}}" font-size="14" text-anchor="middle" fill="#0F2A3A" font-weight="600">{{st.name}}</text>
+</sc-for>
+<path d="{{sw.star}}" fill="#F5C77A" stroke="#B04A0C" stroke-width="2"></path>
+<text x="12" y="350" font-size="13" fill="#4A5D6A">Scale: 1 unit ≈ 1 km · area 600 × 360 km</text>
+</svg>
+<div style="padding: 12px 16px; border-top: 1px solid #E3E9EC; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 14px; font-weight: 600">Waves recorded at each station (seismograms)</div>
+<sc-for list="{{sw.stations}}" as="st" hint-placeholder-count="3">
+<div style="display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px; align-items: center">
+<span style="font-weight: 700; font-size: 14px">{{st.name}}</span>
+<svg viewBox="0 0 600 60" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: #FBFCFD; border: 1px solid #E3E9EC; border-radius: 6px" role="img" aria-label="{{st.traceAria}}">
+<line x1="{{st.pX}}" y1="0" x2="{{st.pX}}" y2="60" stroke="#0A6A94" stroke-width="1.5" stroke-dasharray="3 3" opacity="{{st.pO}}"></line>
+<line x1="{{st.sX}}" y1="0" x2="{{st.sX}}" y2="60" stroke="#B04A0C" stroke-width="1.5" stroke-dasharray="3 3" opacity="{{st.sO}}"></line>
+<path d="{{st.trace}}" fill="none" stroke="#0F2A3A" stroke-width="1.2"></path>
+</svg>
+</div>
+</sc-for>
+<div style="display: flex; gap: 16px; font-size: 13px; color: #4A5D6A; flex-wrap: wrap"><span style="color: #0A6A94">Blue dashed line = P wave arrives</span><span style="color: #B04A0C">Orange dashed line = S wave arrives</span><span>Time axis 0–120 s</span></div>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ph-m" style="font-size: 14px; font-weight: 600">Magnitude (Mw)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{mwLabel}}</span></div>
+<input id="ph-m" type="range" min="3" max="8" step="0.1" value="{{mw}}" onChange="{{setMw}}">
+</div>
+<div style="font-size: 14px; line-height: 1.6; color: #34495A">P wave ≈ 6.0 km/s · S wave ≈ 3.5 km/s (crustal averages)</div>
+<div role="table" aria-label="Distance from each station" style="display: flex; flex-direction: column; font-size: 14px">
+<div role="row" style="display: grid; grid-template-columns: 60px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 6px 4px; border-bottom: 1px solid #E3E9EC; color: #4A5D6A; font-weight: 600"><span role="columnheader">Station</span><span role="columnheader">S − P</span><span role="columnheader">Computed distance</span></div>
+<sc-for list="{{sw.stations}}" as="st" hint-placeholder-count="3">
+<div role="row" style="display: grid; grid-template-columns: 60px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 6px 4px"><span role="cell" style="font-weight: 700">{{st.name}}</span><span role="cell" style="font-family: 'IBM Plex Mono', monospace">{{st.spLabel}}</span><span role="cell" style="font-family: 'IBM Plex Mono', monospace">{{st.dLabel}}</span></div>
+</sc-for>
+</div>
+<div style="background: #EAF3F7; border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 1.65">Distance = (S − P) × 8.4 km/s, because 1 ÷ (1/3.5 − 1/6.0) ≈ 8.4 · {{sw.result}}</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+<div style="flex: 1 1 480px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">3. Earthquake size and energy</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ph-e" style="font-size: 14px; font-weight: 600">Moment magnitude (Mw)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{en.mLabel}}</span></div>
+<input id="ph-e" type="range" min="2" max="9.5" step="0.1" value="{{en.m}}" onChange="{{setEm}}">
+</div>
+<sc-for list="{{en.rows}}" as="r" hint-placeholder-count="6">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px; border-top: 1px solid #E3E9EC; padding-top: 8px"><span>{{r.k}}</span><strong style="font-family: 'IBM Plex Mono', monospace; text-align: right">{{r.v}}</strong></div>
+</sc-for>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; color: #4A5D6A">Energy compared with the Hiroshima bomb (about 15 kilotons), log scale</div>
+<div style="height: 16px; background: #EEF2F4; border-radius: 8px; overflow: hidden"><div style="height: 16px; width: {{en.barW}}; background: #B04A0C"></div></div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.65; color: #4A5D6A">Formulas: energy log₁₀E = 1.5Mw + 4.8 (joules) · approximate rupture length from Wells &amp; Coppersmith (1994) · “Richter” is the original scale for nearby earthquakes; most agencies now use moment magnitude (Mw), based on the rupture area times the slip</p>
+</div>
+
+<div style="flex: 1 1 480px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">4. How many seconds of early warning?</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #34495A">Warning systems detect the P wave at stations near the epicentre, estimate the magnitude, then send an alert that travels faster than the damaging S wave. The farther the city, the more time to prepare.</p>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ph-d" style="font-size: 14px; font-weight: 600">City distance from the epicentre</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{ew.dLabel}}</span></div>
+<input id="ph-d" type="range" min="5" max="1000" step="5" value="{{ew.d}}" onChange="{{setEwD}}">
+</div>
+<svg viewBox="0 0 500 90" style="display: block; width: 100%; height: auto" role="img" aria-label="{{ew.aria}}">
+<line x1="10" y1="45" x2="490" y2="45" stroke="#C9D4DA" stroke-width="2"></line>
+<rect x="{{ew.alertX}}" y="35" width="{{ew.warnW}}" height="20" fill="#DDEFF6"></rect>
+<circle cx="10" cy="45" r="6" fill="#0F2A3A"></circle>
+<line x1="{{ew.pX}}" y1="20" x2="{{ew.pX}}" y2="70" stroke="#0A6A94" stroke-width="2"></line>
+<line x1="{{ew.alertX}}" y1="20" x2="{{ew.alertX}}" y2="70" stroke="#0F2A3A" stroke-width="2" stroke-dasharray="4 3"></line>
+<line x1="{{ew.sX}}" y1="20" x2="{{ew.sX}}" y2="70" stroke="#B04A0C" stroke-width="3"></line>
+<text x="10" y="84" font-size="12" fill="#4A5D6A">0 s</text>
+<text x="{{ew.pX}}" y="14" font-size="12" text-anchor="middle" fill="#0A6A94">P</text>
+<text x="{{ew.alertX}}" y="84" font-size="12" text-anchor="middle" fill="#0F2A3A">Alert</text>
+<text x="{{ew.sX}}" y="14" font-size="12" text-anchor="middle" fill="#B04A0C">S</text>
+</svg>
+<sc-for list="{{ew.rows}}" as="r" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px; border-top: 1px solid #E3E9EC; padding-top: 8px"><span>{{r.k}}</span><strong style="font-family: 'IBM Plex Mono', monospace; text-align: right">{{r.v}}</strong></div>
+</sc-for>
+<div style="background: {{ew.bg}}; border-radius: 10px; padding: 12px 14px; font-size: 15px; line-height: 1.65; color: {{ew.fg}}">{{ew.advice}}</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.65; color: #4A5D6A">Assumptions: the first station is 10 km from the epicentre, and processing and sending the alert takes 4 seconds. Real systems such as Japan’s and ShakeAlert in the USA vary in timing and accuracy with station density.</p>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2300}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.state = {
+      btype: 'div', v: 4, t: 0, playing: !reduce,
+      tf: { slip: 0, strain: 0, quakes: 0, flash: 0 },
+      ex: 330, ey: 170, qt: -1, qRun: false, mw: 6.5,
+      em: 7, ewD: 120
+    };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      var st = self.state, patch = {};
+      if (st.playing) {
+        patch.t = st.t + dt;
+        if (st.btype === 'tra') {
+          var tf = { slip: st.tf.slip, strain: st.tf.strain, quakes: st.tf.quakes, flash: Math.max(0, st.tf.flash - dt) };
+          tf.strain += st.v * 4 * dt;
+          if (tf.strain >= 60) { tf.slip += tf.strain; tf.strain = 0; tf.quakes += 1; tf.flash = 0.8; }
+          if (tf.slip > 220) tf.slip = 0;
+          patch.tf = tf;
+        }
+      }
+      if (st.qRun && st.qt >= 0) { patch.qt = Math.min(130, st.qt + dt * 20); if (patch.qt >= 130) patch.qRun = false; }
+      if (patch.t !== undefined || patch.qt !== undefined) self.setState(patch);
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  renderVals() {
+    var self = this, s = this.state, T = s.t, PI = Math.PI;
+    var f1 = function (v) { return v.toFixed(1); };
+    var frac = function (v) { return v - Math.floor(v); };
+    var rect = function (x, y, w, h) { return 'M' + f1(x) + ',' + f1(y) + ' h' + f1(w) + ' v' + f1(h) + ' h' + f1(-w) + ' Z'; };
+    var dots = function (pts) { return pts.map(function (q) { var r = q[2]; return 'M' + f1(q[0] - r) + ',' + f1(q[1]) + ' a' + r + ',' + r + ' 0 1,0 ' + (2 * r) + ',0 a' + r + ',' + r + ' 0 1,0 ' + (-2 * r) + ',0 '; }).join('') || 'M0,0'; };
+
+    // ---------- 1. boundaries ----------
+    var vpx = s.v * 2.2; // px per second on screen
+    // divergent: magnetic stripes created at the ridge and carried outward
+    var dark = '', light = '', W = 14 / Math.max(0.6, s.v / 4) * 2.2 * s.v / 2.2; // stripe width follows speed
+    var period = 2.2;
+    var kMax = Math.floor(T / period), kMin = Math.max(0, Math.floor((T - 300 / vpx) / period) - 1);
+    for (var kk = kMin; kk <= kMax; kk++) {
+      var o1 = Math.max(0, vpx * (T - (kk + 1) * period)), o2 = Math.min(300, vpx * (T - kk * period));
+      if (o2 <= o1) continue;
+      var piece = rect(300 + o1, 70, o2 - o1, 40) + rect(300 - o2, 70, o2 - o1, 40);
+      if (kk % 2) dark += piece; else light += piece;
+    }
+    var blobs = [];
+    for (var b = 0; b < 6; b++) { var p = frac(T * 0.25 + b / 6); blobs.push([300 + 18 * Math.sin(b * 2 + T), 250 - p * 140, 4 + 3 * (1 - p)]); }
+    var aOff = frac(T * 0.5) * 30;
+    var dv = {
+      stripes: dark || 'M0,0', stripesLight: light || 'M0,0', magma: dots(blobs),
+      arrows: 'M' + f1(240 - aOff) + ',90 L' + f1(200 - aOff) + ',90 M' + f1(210 - aOff) + ',82 L' + f1(200 - aOff) + ',90 L' + f1(210 - aOff) + ',98 M' + f1(360 + aOff) + ',90 L' + f1(400 + aOff) + ',90 M' + f1(390 + aOff) + ',82 L' + f1(400 + aOff) + ',90 L' + f1(390 + aOff) + ',98'
+    };
+    // subduction: dashes travel along the slab; quakes flash along the interface
+    var qs = [], bucket = Math.floor(T * 3);
+    for (var q = 0; q < 4; q++) {
+      var seed = Math.sin((bucket + q * 17) * 12.9898) * 43758.5453, u = frac(seed);
+      var age = frac(T * 3) / 3;
+      var xq = 340 + u * 230, yq = 70 + (xq - 330) * (180 / 270) + 4;
+      qs.push([xq, yq, 3 + 4 * (1 - age * 3)]);
+    }
+    var er = frac(T / 4), pl = er < 0.5 ? er / 0.5 : 0;
+    var sb = {
+      dash: f1(-T * vpx * 3), quakes: dots(qs),
+      plume: pl > 0 ? 'M475,8 C' + f1(455 - 30 * pl) + ',' + f1(-10 - 30 * pl) + ' ' + f1(495 + 30 * pl) + ',' + f1(-20 - 30 * pl) + ' 475,8 Z' : 'M0,0',
+      plumeO: (0.9 - 0.6 * pl).toFixed(2)
+    };
+    // transform: elastic rebound
+    var TF = s.tf, half = TF.slip / 2, e = TF.strain;
+    var fenceUp = [], fenceDn = [];
+    for (var yy = 10; yy <= 130; yy += 5) fenceUp.push(f1(300 + half + (e / 2) * Math.tanh((130 - yy) / 30)) + ',' + yy);
+    for (var y2 = 130; y2 <= 250; y2 += 5) fenceDn.push(f1(300 - half - (e / 2) * Math.tanh((y2 - 130) / 30)) + ',' + y2);
+    var tfv = {
+      fence: 'M' + fenceUp.join(' L') + ' M' + fenceDn.join(' L'),
+      roadUp: 'M' + f1(200 + half + e / 2) + ',0 L' + f1(200 + half + e / 2 * Math.tanh(1)) + ',130',
+      roadDown: 'M' + f1(200 - half - e / 2 * Math.tanh(1)) + ',130 L' + f1(200 - half - e / 2) + ',260',
+      fx: f1(300), flashR: f1(10 + (0.8 - TF.flash) * 80), flashO: (TF.flash / 0.8 * 0.8).toFixed(2),
+      strainPct: Math.round(e / 60 * 100) + '%', strainW: (e / 60 * 100).toFixed(1) + '%', strainColor: e > 45 ? '#B04A0C' : '#F08A3C'
+    };
+
+    var info = {
+      div: { en: 'DIVERGENT', title: 'Spreading apart', text: 'Hot magma rises at the mid-ocean ridge and cools into new crust. Earth’s magnetic field flips from time to time, so the cooling rock records alternating magnetic stripes, symmetrical on both sides, which is key evidence for seafloor spreading. Earthquakes here are usually shallow and not very large.', examples: 'The Mid-Atlantic Ridge, Iceland, the East African Rift' },
+      sub: { en: 'CONVERGENT · SUBDUCTION', title: 'Subduction (collision)', text: 'The denser oceanic plate dives beneath the other plate. The boundary locks and then breaks from time to time, causing the largest earthquakes on Earth (M 9 and above) and tsunamis. Water carried down makes the mantle melt into magma, forming a line of volcanoes parallel to the trench.', examples: 'The Japan Trench, the Sunda subduction zone (Sumatra–Andaman), the Andes, Cascadia' },
+      tra: { en: 'TRANSFORM', title: 'Sliding past', text: 'Two plates slide past each other horizontally. The fault is locked, so the rock on both sides slowly bends and stores energy like a spring. When the strength of the rock is exceeded it snaps back at once (elastic rebound theory), offsetting any fence or road that crosses it.', examples: 'San Andreas Fault, USA · North Anatolian Fault, Türkiye · Sagaing Fault, Myanmar' }
+    }[s.btype];
+    var cmY = s.v;
+    var mv = {
+      y1: cmY.toFixed(1) + ' cm', y80: (cmY * 80 / 100).toFixed(1) + ' m', m1: (cmY * 1e6 / 1e5).toFixed(0) + ' km',
+      extraK: s.btype === 'tra' ? 'Earthquakes in the animation' : 'Compared with fingernail growth',
+      extraV: s.btype === 'tra' ? TF.quakes + ' ' : '≈ 3–4 cm/year',
+      note: s.btype === 'tra' ? 'Here 1 second on screen stands for decades to centuries. Real faults build up stress for hundreds of years before a big rupture.' : 'Most real plates move between 1 and 10 cm a year; parts of the East Pacific Rise exceed 15 cm a year.'
+    };
+    var bt = [{ id: 'div', name: 'Spreading' }, { id: 'sub', name: 'Subduction' }, { id: 'tra', name: 'Transform' }];
+
+    // ---------- 2. seismic waves ----------
+    var VP = 6.0, VS = 3.5, ex = s.ex, ey = s.ey, qt = s.qt;
+    var names = ['A', 'B', 'C'], pos = [[100, 80], [500, 110], [260, 320]];
+    var amp0 = Math.pow(10, 0.5 * (s.mw - 5));
+    var stations = pos.map(function (p, i) {
+      var d = Math.hypot(p[0] - ex, p[1] - ey), tp = d / VP, ts = d / VS;
+      var a = Math.min(26, amp0 * 60 / Math.max(d, 15));
+      var pts = [];
+      if (qt >= 0) {
+        for (var tt = 0; tt <= Math.min(qt, 120); tt += 0.25) {
+          var yv = 0.6 * Math.sin(tt * 37.1 + i) ;
+          if (tt > tp) yv += a * 0.35 * Math.exp(-(tt - tp) / 6) * Math.sin(2 * PI * 1.6 * tt);
+          if (tt > ts) yv += a * Math.exp(-(tt - ts) / 12) * Math.sin(2 * PI * 0.7 * tt + 0.5);
+          pts.push(f1(tt * 5) + ',' + f1(30 - Math.max(-29, Math.min(29, yv))));
+        }
+      }
+      var got = qt >= ts, gotP = qt >= tp;
+      var sp = ts - tp, dist = sp * 8.4;
+      return {
+        name: names[i], x: p[0], y: p[1], ly: p[1] - 14,
+        tri: 'M' + p[0] + ',' + (p[1] - 9) + ' L' + (p[0] + 8) + ',' + (p[1] + 6) + ' L' + (p[0] - 8) + ',' + (p[1] + 6) + ' Z',
+        fill: got ? '#B04A0C' : gotP ? '#0A6A94' : '#FFFFFF',
+        trace: pts.length ? 'M' + pts.join(' L') : 'M0,30 L600,30',
+        pX: f1(tp * 5), sX: f1(ts * 5), pO: gotP ? 1 : 0, sO: got ? 1 : 0,
+        dist: f1(got ? dist : 0), circleO: got ? 0.9 : 0,
+        spLabel: got ? sp.toFixed(1) + ' s' : '…', dLabel: got ? dist.toFixed(0) + ' km' : '…',
+        traceAria: 'Waves at station ' + names[i] + (got ? ' — S − P gap ' + sp.toFixed(1) + ' s' : ' — no S wave yet'),
+        got: got
+      };
+    });
+    var all = stations.every(function (x) { return x.got; });
+    var starP = [];
+    for (var j = 0; j < 10; j++) { var ang = -PI / 2 + j * PI / 5, rr = j % 2 ? 4.5 : 10; starP.push(f1(ex + rr * Math.cos(ang)) + ',' + f1(ey + rr * Math.sin(ang))); }
+    var sw = {
+      ex: ex, ey: ey, rP: f1(qt >= 0 ? VP * qt : 0), rS: f1(qt >= 0 ? VS * qt : 0), waveO: qt >= 0 && qt < 130 ? 0.85 : 0,
+      stations: stations, star: 'M' + starP.join(' L') + ' Z',
+      clock: qt >= 0 ? qt.toFixed(1) + ' s' : 'Ready', pauseLabel: s.qRun ? 'Pause' : 'Resume',
+      result: all ? 'The three circles cross at the epicentre (star)' : 'Waiting for the S wave to reach all 3 stations',
+      aria: 'Simulated map: an earthquake epicentre and 3 recording stations' + (all ? ' ; the distance circles cross at the epicentre' : '')
+    };
+
+    // ---------- 3. magnitude & energy ----------
+    var M = s.em, E = Math.pow(10, 1.5 * M + 4.8), tnt = E / 4.184e9, hiro = 6.3e13;
+    var L = Math.pow(10, 0.59 * M - 2.44);
+    var freq = M >= 8 ? '≈ 1 per year' : M >= 7 ? '≈ 15 per year' : M >= 6 ? '≈ 134 per year' : M >= 5 ? '≈ 1,300 per year' : M >= 4 ? '≈ 13,000 per year' : M >= 3 ? '≈ 130,000 per year' : 'Hundreds of thousands per year';
+    var fmtE = function (x) { var ex2 = Math.floor(Math.log10(x)); return (x / Math.pow(10, ex2)).toFixed(1) + ' × 10^' + ex2; };
+    var fmtT = function (t) { return t >= 1e6 ? (t / 1e6).toFixed(t >= 1e7 ? 0 : 1) + ' million tonnes' : t >= 1e3 ? (t / 1e3).toFixed(1) + ' thousand tonnes' : t.toFixed(t < 1 ? 3 : 1) + ' tonnes'; };
+    var en = {
+      m: M, mLabel: M.toFixed(1),
+      rows: [
+        { k: 'Energy released', v: fmtE(E) + ' J' },
+        { k: 'TNT equivalent', v: fmtT(tnt) },
+        { k: 'Compared with the Hiroshima bomb', v: E / hiro >= 1 ? '≈ ' + Math.round(E / hiro).toLocaleString('en-US') + ' bombs' : '≈ ' + (E / hiro * 100).toFixed(2) + '% of one bomb' },
+        { k: 'Compared with one magnitude lower', v: '≈ 32× the energy · 10× the amplitude' },
+        { k: 'Approximate rupture length', v: L >= 1 ? L.toFixed(L >= 100 ? 0 : 1) + ' km' : (L * 1000).toFixed(0) + ' m' },
+        { k: 'Worldwide frequency at this size', v: freq }
+      ],
+      barW: Math.max(1, Math.min(100, (Math.log10(E / hiro) + 6) / 14 * 100)).toFixed(1) + '%'
+    };
+
+    // ---------- 4. early warning ----------
+    var d = s.ewD, tP = d / VP, tS = d / VS, tAlert = 10 / VP + 4, warn = Math.max(0, tS - tAlert);
+    var span = Math.max(tS * 1.1, 20), sc = 480 / span;
+    var ew = {
+      d: d, dLabel: d + ' km', pX: f1(10 + tP * sc), sX: f1(10 + tS * sc), alertX: f1(10 + Math.min(tAlert, tS) * sc), warnW: f1(warn * sc),
+      rows: [
+        { k: 'P wave arrives', v: tP.toFixed(1) + ' s' },
+        { k: 'Alert sent', v: tAlert.toFixed(1) + ' s' },
+        { k: 'S wave (strong shaking) arrives', v: tS.toFixed(1) + ' s' },
+        { k: 'Time to prepare', v: warn.toFixed(0) + ' s' }
+      ],
+      bg: warn < 1 ? '#FCE3CF' : '#DDEFF6', fg: warn < 1 ? '#7E3407' : '#0A4F70',
+      advice: warn < 1 ? 'You are in the “blind zone” near the epicentre: the damaging waves arrive before the alert, so protection depends on strong buildings and drills.' : warn < 10 ? 'A few seconds: enough to drop, cover and hold on, stop high-speed trains and open lift doors at the nearest floor.' : warn < 60 ? 'Tens of seconds: enough to stop machinery, pause surgery and move people out of danger.' : 'More than a minute, but shaking at this distance is usually much weaker, except where soft soil amplifies long-period waves, as in Bangkok in 2025.',
+      aria: 'Timeline: P wave ' + tP.toFixed(1) + ' s, alert ' + tAlert.toFixed(1) + ' s, S wave ' + tS.toFixed(1) + ' s'
+    };
+
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+    return {
+      btypes: bt.map(function (x) { var p2 = pill(x.id === s.btype); return { name: x.name, pressed: x.id === s.btype ? 'true' : 'false', bg: p2.bg, fg: p2.fg, border: p2.border, pick: function () { self.setState({ btype: x.id }); } }; }),
+      isDiv: s.btype === 'div', isSub: s.btype === 'sub', isTra: s.btype === 'tra',
+      dv: dv, sb: sb, tf: tfv, bi: info, mv: mv,
+      v: s.v, vLabel: s.v.toFixed(1) + ' cm/year', setV: function (ev) { self.setState({ v: parseFloat(ev.target.value) }); },
+      playLabel: s.playing ? 'Pause' : 'Play animation', playBg: s.playing ? '#0A6A94' : '#FFFFFF', playFg: s.playing ? '#FFFFFF' : '#0A6A94',
+      togglePlay: function () { self.setState({ playing: !self.state.playing }); },
+      sw: sw, mw: s.mw, mwLabel: s.mw.toFixed(1), setMw: function (ev) { self.setState({ mw: parseFloat(ev.target.value) }); },
+      quakeGo: function () { self.setState({ qt: 0, qRun: true }); },
+      quakePause: function () { if (self.state.qt >= 0 && self.state.qt < 130) self.setState({ qRun: !self.state.qRun }); },
+      placeEpi: function (ev) {
+        var r = ev.currentTarget.getBoundingClientRect();
+        self.setState({ ex: Math.round((ev.clientX - r.left) / r.width * 600), ey: Math.round((ev.clientY - r.top) / r.height * 360), qt: -1, qRun: false });
+      },
+      en: en, setEm: function (ev) { self.setState({ em: parseFloat(ev.target.value) }); },
+      ew: ew, setEwD: function (ev) { self.setState({ ewD: parseFloat(ev.target.value) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

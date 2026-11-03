@@ -38,6 +38,7 @@ Open `index.html` in a browser (or enable GitHub Pages: Settings → Pages → D
 | Folder | Simulator | Pages |
 |---|---|---|
 | [`ocean-waves/`](ocean-waves/index.html) | **Ocean Wave Simulator** — wind sea, swell, shoaling/breaking, tsunami and tide. Water-particle orbits, wave speed, period and power from the linear dispersion relation, plus how we use ocean waves (wave energy converters, coastlines, warning systems). | 2 |
+| [`plate-tectonics/`](plate-tectonics/index.html) | **Plate Tectonics Lab** — world map of plate boundaries, M ≥ 7 earthquakes (USGS, 1965–2016) and active volcanoes (Smithsonian GVP), statistics by country, plate-boundary animations, seismic waves and epicentre location, early-warning time, response plans by magnitude, building resonance, seismic codes, and ground/satellite sensors. | 4 |
 | [`camera-lab/`](camera-lab/index.html) | **Camera Lab** — six experiments: thin-lens ray diagram (phone camera, microscope, telescope), photon shot noise vs. light level and sensor size, multi-camera zoom and the ISP pipeline, stereo depth and Spatial Photo/Video, OIS vs. EIS stabilisation, and temperature / humidity / radiation effects. | 7 |
 
 ```
@@ -50,6 +51,8 @@ src/                  canvas sources (.dc.html) for every page
 tools/build.sh        rebuilds all pages from src/ in Thai and English (home bar + language button)
 tools/i18n/en.json    English text for every Thai string; the build stops if one is missing
 en/                   English versions of every page (generated)
+data/plate-tectonics/ open datasets → map data script, with provenance notes
+tools/gen_sources.py  the Sources page of every simulator (open / restricted / estimated)
 tools/dc2html.py      converts one canvas artboard into a page here
 ```
 
@@ -64,5 +67,7 @@ bash tools/build.sh
 ```
 
 To add a new simulator, put its `.dc.html` files in `src/<name>/` and add a block for it in `tools/build.sh`.
+
+Every simulator has a **Sources** page listing which data is openly available, which exists but has restricted access, and which values are our own estimates.
 
 The models are simplified for learning (thin lenses, linear wave theory, photon shot noise). Device figures are representative examples, not the specs of any particular model.

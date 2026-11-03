@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Response and safety standards</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Plate Tectonics Lab</a><span aria-hidden="true">›</span><span aria-current="page">Response and safety</span><a class="ps-lang" href="../../plate-tectonics/safety.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="physics.html" style="min-height: 44px; display: inline-flex; align-items: center">← Earthquake physics</a>
+<a href="sources.html" style="min-height: 44px; display: inline-flex; align-items: center">Next: sources →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">Response and safety</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Responding to each size of earthquake, and building to survive</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Magnitude describes the energy at the source, but damage depends on the intensity each place feels, which depends on distance, depth, soil type and building quality. This page sums up basic response plans, simulates how buildings sway, and compares each country’s standards.</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">1. Basic response plans by magnitude</h2>
+<div role="group" aria-label="Choose a magnitude range" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{bands}}" as="b" hint-placeholder-count="6">
+<button type="button" onClick="{{b.pick}}" aria-pressed="{{b.pressed}}" style="min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1.5px solid {{b.border}}; background: {{b.bg}}; color: {{b.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; cursor: pointer">{{b.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<div style="flex: 1 1 300px; background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">Near the epicentre it typically feels like</div>
+<div style="font-size: 22px; font-weight: 700">{{band.title}}</div>
+<div style="display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #2E5468; padding-top: 8px; font-size: 15px"><span style="color: #D9E8EF">Typical Mercalli intensity</span><strong>{{band.mmi}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #2E5468; padding-top: 8px; font-size: 15px"><span style="color: #D9E8EF">Worldwide, about</span><strong>{{band.freq}}</strong></div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">{{band.feel}}</p>
+</div>
+<div style="flex: 2 1 520px; display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0A6A94">During shaking</h3>
+<sc-for list="{{band.during}}" as="x" hint-placeholder-count="3"><div style="font-size: 14px; line-height: 1.6">• {{x}}</div></sc-for>
+</div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #0A6A94">After shaking</h3>
+<sc-for list="{{band.after}}" as="x" hint-placeholder-count="3"><div style="font-size: 14px; line-height: 1.6">• {{x}}</div></sc-for>
+</div>
+<div style="flex: 1 1 220px; background: {{band.coastBg}}; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #7E3407">If you are near the coast</h3>
+<div style="font-size: 14px; line-height: 1.6">{{band.coast}}</div>
+</div>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700">Prepare in advance (any size)</h3>
+<div style="font-size: 14px; line-height: 1.7; color: #34495A">Fix tall cupboards and shelves to the wall · Emergency bag: water and food for at least 3 days, torch, regular medicines, copies of documents, power bank · Agree a family meeting point · Know the evacuation routes and safe spots in the building</div>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700">Drop, Cover, Hold On</h3>
+<div style="font-size: 14px; line-height: 1.7; color: #34495A">Drop to the floor before the shaking knocks you down · Cover your head and neck, or get under a sturdy table · Hold on until the shaking stops. Don’t run outside while it shakes: falling debris outside is very dangerous</div>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 700">Following updates in Thailand</h3>
+<div style="font-size: 14px; line-height: 1.7; color: #34495A">Thai Meteorological Department (Earthquake Observation Center) hotline 1182 · Department of Disaster Prevention and Mitigation hotline 1784 · Listen to official announcements and beware of rumours</div>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">The intensities shown are typical values near the epicentre from the USGS comparison table. Places farther away feel less, but thick soft soil can amplify the shaking. This is basic guidance: always follow your local authorities’ announcements first.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">2. Why some buildings sway more: resonance</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 900px">Every building has a natural period of roughly 0.1 seconds per storey. If the ground shakes with a similar period, the building sways much harder (resonance). Thick soft soil shakes with a long period, which is dangerous for tall buildings. Try changing the number of floors, the soil type and the protection system.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{bd.bg}}; color: {{bd.fg}}">{{bd.badge}}</span>
+<button type="button" onClick="{{togglePlay}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: {{playBg}}; color: {{playFg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
+</div>
+<svg viewBox="0 0 600 380" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="{{bd.aria}}">
+<g transform="{{bd.ground}}">
+<rect x="-20" y="330" width="640" height="60" fill="{{bd.soil}}"></rect>
+<path d="{{bd.isoPads}}" fill="#0A6A94"></path>
+<path d="{{bd.building}}" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="{{bd.floors}}" fill="none" stroke="#9AAAB4" stroke-width="1"></path>
+<path d="{{bd.windows}}" fill="#9FD0E6"></path>
+</g>
+<text x="16" y="28" font-size="15" fill="#0F2A3A" font-weight="600">{{bd.title}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sf-n" style="font-size: 14px; font-weight: 600">Number of floors</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{nLabel}}</span></div>
+<input id="sf-n" type="range" min="1" max="60" step="1" value="{{n}}" onChange="{{setN}}">
+</div>
+<div style="font-size: 14px; font-weight: 600">Soil type (ground shaking period)</div>
+<div role="group" aria-label="Soil type" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{soils}}" as="x" hint-placeholder-count="3">
+<button type="button" onClick="{{x.pick}}" aria-pressed="{{x.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{x.border}}; background: {{x.bg}}; color: {{x.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; align-items: center"><span>{{x.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">{{x.tLabel}}</span></button>
+</sc-for>
+</div>
+<div style="font-size: 14px; font-weight: 600">Protection</div>
+<div role="group" aria-label="Protection" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{prots}}" as="x" hint-placeholder-count="3">
+<button type="button" onClick="{{x.pick}}" aria-pressed="{{x.pressed}}" style="min-height: 44px; padding: 0 12px; border-radius: 999px; border: 1.5px solid {{x.border}}; background: {{x.bg}}; color: {{x.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{x.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{bd.rows}}" as="r" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px; border-bottom: 1px solid #E3E9EC; padding-bottom: 6px"><span>{{r.k}}</span><strong style="font-family: 'IBM Plex Mono', monospace">{{r.v}}</strong></div>
+</sc-for>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">{{bd.note}}</p>
+<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #4A5D6A">Single-degree-of-freedom mass–spring model: amplification = 1 ÷ √((1 − r²)² + (2ζr)²), where r = building period ÷ ground period. The soil periods are example values for learning, not measurements of any site.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">3. Seismic building standards around the world</h2>
+<div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px">
+<div role="table" aria-label="Seismic building standards" style="min-width: 760px; display: flex; flex-direction: column; font-size: 14px">
+<div role="row" style="display: grid; grid-template-columns: 150px minmax(0, 1.2fr) minmax(0, 1.6fr); gap: 16px; padding: 12px 14px; background: #F3F6F7; font-weight: 700"><span role="columnheader">Country/region</span><span role="columnheader">Main standard</span><span role="columnheader">Key points</span></div>
+<sc-for list="{{codes}}" as="c" hint-placeholder-count="9">
+<div role="row" style="display: grid; grid-template-columns: 150px minmax(0, 1.2fr) minmax(0, 1.6fr); gap: 16px; padding: 12px 14px; border-top: 1px solid #E3E9EC; background: {{c.bg}}"><span role="cell" style="font-weight: 700">{{c.c}}</span><span role="cell" style="line-height: 1.6">{{c.code}}</span><span role="cell" style="line-height: 1.6; color: #34495A">{{c.note}}</span></div>
+</sc-for>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">Having a standard doesn’t mean every building is safe. Old buildings from before the standards were enforced, and construction that doesn’t follow the design, are the main causes of losses in many events. Some standards must be purchased; see access details on the sources page.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">4. Ground and satellite sensors watching the Earth</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 900px">No single sensor sees everything. Ground instruments are fast and precise at one spot, while satellites see wide areas worldwide but more slowly, so real warning systems combine them. The coloured tags show whether the data is open to the public.</p>
+<div role="group" aria-label="Choose a sensor group" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{sTabs}}" as="t" hint-placeholder-count="2">
+<button type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{t.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{sensors}}" as="x" hint-placeholder-count="8">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px"><h3 style="margin: 0; font-size: 16px; font-weight: 700">{{x.name}}</h3><span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: {{x.tagBg}}; color: {{x.tagFg}}; white-space: nowrap">{{x.tag}}</span></div>
+<div style="font-size: 14px; line-height: 1.6; color: #34495A"><strong>Measures:</strong> {{x.what}}</div>
+<div style="font-size: 14px; line-height: 1.6; color: #34495A"><strong>How it helps:</strong> {{x.use}}</div>
+<div style="font-size: 13px; line-height: 1.6; color: #4A5D6A">{{x.ex}}</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2800}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.state = { band: 4, n: 15, soil: 'soft', prot: 'none', t: 0, playing: !reduce, sTab: 'ground' };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  bandList() {
+    var drop = 'Drop, cover and hold on, away from glass and things that could fall';
+    return [
+      { name: 'M < 4', title: 'Barely felt, or felt slightly', mmi: 'I–III', freq: 'More than 100,000 per year', feel: 'Mostly only instruments detect it; people at rest or on upper floors may feel something like a passing truck', during: ['Nothing special to do', 'Notice which things in your home shake easily'], after: ['Use the chance to review your family plan', 'Check updates from the Thai Meteorological Department'], coast: 'Does not cause tsunamis', coastBg: '#FFFFFF' },
+      { name: 'M 4–4.9', title: 'Felt; things in the home shake', mmi: 'IV–V', freq: '≈ 13,000 per year', feel: 'Doors, windows and dishes rattle; unstable objects may fall; little damage to buildings', during: [drop, 'If you are in bed, stay there and protect your head with a pillow'], after: ['Check for cracks and the smell of leaking gas', 'Be ready for small aftershocks'], coast: 'Generally does not cause tsunamis', coastBg: '#FFFFFF' },
+      { name: 'M 5–5.9', title: 'Things fall; weak buildings are damaged', mmi: 'VI–VII', freq: '≈ 1,300 per year', feel: 'Hard to stand; furniture moves; plaster and poorly designed buildings may crack or partly collapse', during: [drop, 'Don’t run outside while it shakes, and don’t use lifts', 'If you are outdoors, move away from buildings, power poles and signs'], after: ['Turn off gas and electricity if you suspect damage', 'Leave badly cracked buildings by the stairs', 'Watch out for aftershocks'], coast: 'If it struck under the sea there may be a small local tsunami; follow announcements', coastBg: '#FFFFFF' },
+      { name: 'M 6–6.9', title: 'Heavy damage near the epicentre', mmi: 'VII–IX', freq: '≈ 130 per year', feel: 'Ordinary buildings are badly damaged and old buildings may collapse; landslides in hilly areas; roads and pipes break', during: [drop, 'If driving, slow down and stop away from bridges, flyovers and power lines'], after: ['Take your emergency bag and go to the meeting point', 'Don’t enter damaged buildings until an engineer has checked them', 'Send messages instead of calling, so the network doesn’t overload'], coast: 'If you feel strong shaking at the coast, go to high ground immediately; don’t wait for an announcement', coastBg: '#FFF1CC' },
+      { name: 'M 7–7.9', title: 'Widespread damage over hundreds of kilometres', mmi: 'VIII and above', freq: '≈ 15 per year', feel: 'Many buildings are badly damaged; it is felt hundreds of kilometres away; tall buildings on distant soft soil may sway for minutes, as in Bangkok in 2025', during: [drop, 'In tall buildings, stay away from windows; don’t use lifts or stairs while it shakes'], after: ['Leave the building by the stairs once the shaking stops', 'Be ready for large aftershocks for days to weeks', 'Follow official announcements only'], coast: 'If the shaking is strong or lasts more than 20 seconds, evacuate to high ground or away from the coast at once. An unusual drop in sea level is a tsunami warning sign.', coastBg: '#FCE3CF' },
+      { name: 'M 8+', title: 'Widespread devastation, tsunamis across oceans', mmi: 'IX–XII', freq: '≈ 1 per year', feel: 'Severe damage over a very wide area; the land rises or sinks by metres; tsunamis can cross oceans over many hours', during: [drop, 'The shaking may last several minutes; hold on until it stops'], after: ['Evacuate along the designated routes', 'Stay on high ground for at least several hours, because tsunamis come in several waves and the first is often not the biggest', 'Help others once you are safe'], coast: 'Evacuate immediately without waiting for an announcement; go at least 10–20 metres high or far inland, and never go down to the beach to watch the waves', coastBg: '#FCE3CF' }
+    ];
+  }
+
+  renderVals() {
+    var self = this, s = this.state, PI = Math.PI, T = s.t;
+    var f1 = function (v) { return v.toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    var BL = this.bandList(), band = BL[s.band];
+
+    // building resonance
+    var soils = [
+      { id: 'rock', name: 'Hard rock', tg: 0.3, color: '#9AAAB4' },
+      { id: 'stiff', name: 'Firm soil', tg: 0.7, color: '#B89B74' },
+      { id: 'soft', name: 'Thick soft soil (e.g. the Bangkok basin)', tg: 1.5, color: '#8A7253' }
+    ];
+    var prots = [{ id: 'none', name: 'None' }, { id: 'damp', name: 'Dampers' }, { id: 'iso', name: 'Base isolation' }];
+    var S = soils.filter(function (x) { return x.id === s.soil; })[0];
+    var Tn = 0.1 * s.n, zeta = 0.05;
+    if (s.prot === 'damp') zeta = 0.15;
+    if (s.prot === 'iso') { Tn = Math.max(Tn, 2.5); zeta = 0.15; }
+    var r = Tn / S.tg;
+    var daf = 1 / Math.sqrt(Math.pow(1 - r * r, 2) + Math.pow(2 * zeta * r, 2));
+    var w = 2 * PI / S.tg, slow = 0.6; // slow the animation a little so it can be followed
+    var g = 6 * Math.sin(w * T * slow);
+    var top = Math.max(-150, Math.min(150, 6 * daf * Math.sin(w * T * slow - Math.atan2(2 * zeta * r, 1 - r * r))));
+    var H = Math.min(300, 14 + s.n * 5), bw = Math.max(50, Math.min(120, 40 + s.n * 1.4)), x0 = 300 - bw / 2, yb = 330 - (s.prot === 'iso' ? 8 : 0);
+    var base = s.prot === 'iso' ? g * 0.25 : 0;
+    var shape = function (h) { return base + (top - base) * Math.pow(h / H, 1.2); };
+    var pts = [];
+    pts.push(f1(x0 + base) + ',' + yb);
+    for (var i = 0; i <= 10; i++) { var h = H * i / 10; pts.push(f1(x0 + shape(h)) + ',' + f1(yb - h)); }
+    for (var j = 10; j >= 0; j--) { var h2 = H * j / 10; pts.push(f1(x0 + bw + shape(h2)) + ',' + f1(yb - h2)); }
+    var fl = '', win = '';
+    var floorsShown = Math.min(s.n, 30), fh = H / floorsShown;
+    for (var k = 1; k < floorsShown; k++) { var hh = fh * k, dx = shape(hh); fl += 'M' + f1(x0 + dx) + ',' + f1(yb - hh) + ' h' + f1(bw); }
+    for (var m = 0; m < floorsShown; m++) {
+      var hm = fh * (m + 0.5), dxm = shape(hm);
+      for (var c = 0; c < 3; c++) win += 'M' + f1(x0 + dxm + bw * (0.15 + c * 0.27)) + ',' + f1(yb - hm - fh * 0.2) + ' h' + f1(bw * 0.16) + ' v' + f1(Math.max(1.5, fh * 0.4)) + ' h' + f1(-bw * 0.16) + ' Z';
+    }
+    var iso = s.prot === 'iso' ? 'M' + f1(x0 + 6) + ',322 h16 v8 h-16 Z M' + f1(x0 + bw / 2 - 8) + ',322 h16 v8 h-16 Z M' + f1(x0 + bw - 22) + ',322 h16 v8 h-16 Z' : 'M0,0';
+    var res = r > 0.8 && r < 1.25 && s.prot !== 'iso';
+    var bd = {
+      ground: 'translate(' + f1(g) + ' 0)', soil: S.color, building: 'M' + pts.join(' L') + ' Z', floors: fl || 'M0,0', windows: win || 'M0,0', isoPads: iso,
+      title: s.n + ' floors on ' + S.name,
+      badge: s.prot === 'iso' ? 'Base isolation reduces the force entering the building' : res ? 'Resonance risk: building period close to the ground period' : daf > 1.5 ? 'Sways more than the ground' : 'Little sway',
+      bg: res ? '#FCE3CF' : '#DDEFF6', fg: res ? '#7E3407' : '#0A4F70',
+      rows: [
+        { k: 'Building natural period', v: Tn.toFixed(2) + ' s' },
+        { k: 'Ground shaking period', v: S.tg.toFixed(1) + ' s' },
+        { k: 'Ratio r', v: r.toFixed(2) },
+        { k: 'Top sways more than the ground by', v: daf.toFixed(1) + ' ×' }
+      ],
+      note: s.prot === 'iso' ? 'Rubber bearings and sliders make the building’s period much longer (≈ 2.5 s) and absorb energy, so the building moves slowly as one piece instead of bending. Used for hospitals and critical buildings.' : s.prot === 'damp' ? 'Dampers (such as viscous dampers or a tuned mass damper at the top) turn vibration energy into heat, reducing sway, especially at resonance.' : res ? 'The building period is close to the ground period, so the shaking is amplified many times. Try changing the floors or soil type to see how buildings of different heights are affected differently.' : 'Try to find the number of floors that makes the building period equal the ground period, and see how much the sway increases.',
+      aria: 'A building with ' + s.n + ' floors on ' + S.name + ' Top sways more than the ground by ' + daf.toFixed(1) + ' ×'
+    };
+
+    var codes = [
+      { c: 'Thailand', code: 'Ministerial Regulation on load bearing, resistance and durability of buildings … against earthquake vibration, B.E. 2564 (2021) · Standard มยผ. 1301/1302-61 (Department of Public Works and Town & Country Planning)', note: 'Covers 43 provinces in 3 zones (14, 17 including Bangkok, and 12 provinces). It applies to certain building types, e.g. schools, hospitals and public buildings, 15 m or taller in zones 1–2 and 10 m or taller in zone 3. Previously 22 provinces (2007) and 10 provinces (1997).', bg: '#F3FAFD' },
+      { c: 'Japan', code: 'Building Standard Law (new seismic standard of 1981, “shin-taishin”, revised in 2000)', note: 'Buildings must not collapse in very strong earthquakes. In the 1995 Kobe earthquake, buildings built after 1981 suffered far less damage than older ones.', bg: '#FFFFFF' },
+      { c: 'United States', code: 'ASCE 7 and the International Building Code (IBC)', note: 'Uses USGS seismic hazard maps; design levels depend on the building’s importance and soil type.', bg: '#FFFFFF' },
+      { c: 'Chile', code: 'NCh433', note: 'Strict and actually enforced, a key reason the M 8.8 earthquake of 2010 caused relatively few deaths for its size.', bg: '#FFFFFF' },
+      { c: 'New Zealand', code: 'NZS 1170.5', note: 'A pioneer of seismic base isolation since the 1970s.', bg: '#FFFFFF' },
+      { c: 'European Union', code: 'Eurocode 8 (EN 1998)', note: 'Each country sets its own hazard values through a national annex.', bg: '#FFFFFF' },
+      { c: 'China', code: 'GB 50011', note: 'Revised after the 2008 Wenchuan earthquake with stronger requirements for school buildings.', bg: '#FFFFFF' },
+      { c: 'Indonesia', code: 'SNI 1726', note: 'The country with the most magnitude 6+ earthquakes in this page’s data.', bg: '#FFFFFF' },
+      { c: 'India', code: 'IS 1893', note: 'Divides the country into risk zones; areas along the Himalayas have the highest risk.', bg: '#FFFFFF' }
+    ];
+
+    var open = { tag: 'Open data', tagBg: '#DDEFF6', tagFg: '#0A4F70' };
+    var part = { tag: 'Partly open', tagBg: '#FFF1CC', tagFg: '#6B4A00' };
+    var closed = { tag: 'Not public / restricted', tagBg: '#FCE3CF', tagFg: '#7E3407' };
+    var mk = function (o, t) { o.tag = t.tag; o.tagBg = t.tagBg; o.tagFg = t.tagFg; return o; };
+    var ground = [
+      mk({ name: 'Seismometer networks', what: 'Ground motion down to nanometres', use: 'Locate earthquakes and find their size and depth within minutes', ex: 'e.g. the Global Seismographic Network via EarthScope (formerly IRIS) and the Thai Meteorological Department’s network. Some countries don’t release real-time data.' }, part),
+      mk({ name: 'Strong-motion accelerometers', what: 'Acceleration of the ground and buildings during strong shaking', use: 'Show how much force buildings actually received, used to improve building standards', ex: 'e.g. Japan’s K-NET and KiK-net networks (downloadable after registration)' }, part),
+      mk({ name: 'Ground GNSS stations', what: 'Ground position to the millimetre', use: 'Measure how fast plates move each year and where stress is building on faults', ex: 'e.g. Japan’s GEONET (about 1,300 stations) and EarthScope’s networks' }, open),
+      mk({ name: 'Seafloor pressure sensors and buoys (DART)', what: 'Water pressure on the seabed, which changes with the height of water above the sensor', use: 'Confirm a tsunami is real before it reaches the coast', ex: 'NOAA publishes the data through the National Data Buoy Center; there are buoys in the Indian Ocean, including the Andaman Sea.' }, open),
+      mk({ name: 'Coastal tide gauges', what: 'Sea level every minute', use: 'Track tsunamis as they approach the coast, and feed models', ex: 'The IOC Sea Level Monitoring Facility collects data from around the world' }, open),
+      mk({ name: 'Seafloor cable networks', what: 'Earthquakes and water pressure directly above subduction zones', use: 'Detect events tens of seconds earlier than stations on land', ex: 'e.g. Japan’s S-net and DONET' }, part),
+      mk({ name: 'Mobile phones', what: 'Accelerometers in millions of phones', use: 'Act as a huge warning network in areas with few stations', ex: 'e.g. the Android Earthquake Alerts System; raw data from users’ phones is not published' }, closed),
+      mk({ name: 'CTBTO monitoring stations', what: 'Seismic waves, infrasound and radioactivity, to detect nuclear tests', use: 'The data also helps some countries with tsunami warnings', ex: 'Data is limited to member states and authorised researchers' }, closed)
+    ];
+    var space = [
+      mk({ name: 'GNSS navigation satellites', what: 'Timing and position signals for GNSS ground stations', use: 'Make millimetre-level motion measurements possible worldwide', ex: 'GPS, Galileo, BeiDou, GLONASS: civilian signals are free, military signals are encrypted' }, part),
+      mk({ name: 'InSAR radar', what: 'Changes in the distance to Earth’s surface at centimetre to millimetre level, comparing radar images from two times', use: 'Shows how much the ground shifted or sank after an earthquake, and volcanoes swelling before eruption', ex: 'ESA’s Sentinel-1 (free data) · NASA–ISRO’s NISAR (open data policy) · JAXA’s ALOS-2 (partly commercial)' }, part),
+      mk({ name: 'Gravity satellites', what: 'Changes in mass beneath the surface', use: 'Detect mass changes after very large earthquakes, such as Sumatra 2004 and Tōhoku 2011', ex: 'GRACE-FO by NASA and GFZ (open data)' }, open),
+      mk({ name: 'Optical satellite imagery', what: 'Images of Earth’s surface', use: 'Assess damage, landslides and flooding after disasters', ex: 'Landsat and Sentinel-2 are free at 10–30 m resolution; high-resolution commercial imagery must be bought, but the International Charter makes it available to disaster agencies' }, part),
+      mk({ name: 'Heat and volcanic gas satellites', what: 'Hot spots and sulphur dioxide', use: 'Warn that a volcano has started erupting, and track ash clouds that endanger aircraft', ex: 'MODIS and VIIRS · TROPOMI on Sentinel-5P (open data)' }, open),
+      mk({ name: 'Communication satellites', what: 'They don’t measure anything themselves, but relay data', use: 'Relay data from DART buoys and remote stations, and spread warnings', ex: 'e.g. the Iridium and GOES satellite networks' }, part)
+    ];
+    var sTab = [{ id: 'ground', name: 'Ground and seafloor' }, { id: 'space', name: 'Satellites' }];
+
+    return {
+      bands: BL.map(function (b, i) { var p = pill(i === s.band); return { name: b.name, pressed: i === s.band ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ band: i }); } }; }),
+      band: band,
+      n: s.n, nLabel: s.n + ' floors', setN: function (e) { self.setState({ n: parseInt(e.target.value, 10) }); },
+      soils: soils.map(function (x) { var p = pill(x.id === s.soil); return { name: x.name, tLabel: x.tg.toFixed(1) + ' s', pressed: x.id === s.soil ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ soil: x.id }); } }; }),
+      prots: prots.map(function (x) { var p = pill(x.id === s.prot); return { name: x.name, pressed: x.id === s.prot ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ prot: x.id }); } }; }),
+      bd: bd,
+      playLabel: s.playing ? 'Pause' : 'Play animation', playBg: s.playing ? '#0A6A94' : '#FFFFFF', playFg: s.playing ? '#FFFFFF' : '#0A6A94',
+      togglePlay: function () { self.setState({ playing: !self.state.playing }); },
+      codes: codes,
+      sTabs: sTab.map(function (x) { var p = pill(x.id === s.sTab); return { name: x.name, pressed: x.id === s.sTab ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ sTab: x.id }); } }; }),
+      sensors: s.sTab === 'ground' ? ground : space
+    };
+  }
+}
+</script>
+</body>
+</html>

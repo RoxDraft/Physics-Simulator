@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ocean wave simulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><span aria-current="page">Ocean Wave Simulator</span><a class="ps-lang" href="../../ocean-waves/index.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 780px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">OCEAN WAVE SIMULATOR</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">Simulating ocean wave patterns</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Choose a wave type, then adjust its height, wavelength and the water depth. See how the water at each point moves, and why each kind of wave travels at a different speed with different power.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="uses.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; background: #0F2A3A; color: #FFFFFF; font-weight: 600; font-size: 16px; text-decoration: none">How we use ocean waves →</a>
+<a href="sources.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; font-size: 16px; text-decoration: none">Sources</a>
+</div>
+</header>
+
+<div role="group" aria-label="Choose a wave type" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="5">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 52px; padding: 8px 20px; border-radius: 14px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; text-align: left">
+<span>{{p.name}}</span>
+<span style="font-size: 12px; font-weight: 500; color: {{p.sub}}">{{p.en}}</span>
+</button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #E3E9EC">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-weight: 700; font-size: 18px">{{presetName}}</span>
+<span style="font-size: 13px; color: #4A5D6A">{{editedNote}}</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{status.bg}}; color: {{status.fg}}">{{status.label}}</span>
+</div>
+<button type="button" onClick="{{togglePlay}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
+</div>
+<svg viewBox="0 0 1120 440" style="display: block; width: 100%; height: auto" role="img" aria-label="{{svgLabel}}">
+<defs>
+<linearGradient id="waterFill" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#2580AD"></stop>
+<stop offset="1" stop-color="#0C3A55"></stop>
+</linearGradient>
+</defs>
+<rect x="0" y="0" width="1120" height="440" fill="#EAF3F7"></rect>
+<path d="{{waterPath}}" fill="url(#waterFill)"></path>
+<rect x="0" y="{{seabedY}}" width="1120" height="{{seabedH}}" fill="#D8C39C"></rect>
+<line x1="0" y1="{{seabedY}}" x2="1120" y2="{{seabedY}}" stroke="#A88B58" stroke-width="2" opacity="{{seabedLineOpacity}}"></line>
+<line x1="0" y1="150" x2="1120" y2="150" stroke="#0A4F70" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.35"></line>
+<path d="{{orbitPath}}" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="3 4" opacity="0.5"></path>
+<path d="{{particlePath}}" fill="#FFFFFF" stroke="#0C3A55" stroke-width="1"></path>
+<path d="{{trackPath}}" fill="#F5A15B" stroke="#FFFFFF" stroke-width="1.5"></path>
+<path d="{{surfacePath}}" fill="none" stroke="{{surfaceStroke}}" stroke-width="3" stroke-linejoin="round"></path>
+<text x="24" y="40" font-size="18" font-weight="600" fill="#0F2A3A">Wave direction →</text>
+<line x1="280" y1="38" x2="840" y2="38" stroke="#0F2A3A" stroke-width="1.5"></line>
+<line x1="280" y1="30" x2="280" y2="46" stroke="#0F2A3A" stroke-width="1.5"></line>
+<line x1="840" y1="30" x2="840" y2="46" stroke="#0F2A3A" stroke-width="1.5"></line>
+<text x="560" y="26" font-size="17" text-anchor="middle" fill="#0F2A3A">Wavelength L = {{Llabel}}</text>
+<line x1="1088" y1="{{hTop}}" x2="1088" y2="{{hBot}}" stroke="#B04A0C" stroke-width="2"></line>
+<line x1="1078" y1="{{hTop}}" x2="1098" y2="{{hTop}}" stroke="#B04A0C" stroke-width="2"></line>
+<line x1="1078" y1="{{hBot}}" x2="1098" y2="{{hBot}}" stroke="#B04A0C" stroke-width="2"></line>
+<text x="1100" y="{{hLabelY}}" font-size="17" font-weight="600" text-anchor="end" fill="#8A3A08">H = {{Hlabel}}</text>
+<text x="24" y="{{depthLabelY}}" font-size="16" font-weight="600" fill="{{depthLabelFill}}">{{depthLabel}}</text>
+</svg>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; padding: 12px 18px; border-top: 1px solid #E3E9EC; font-size: 13px; color: #4A5D6A">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#FFFFFF" stroke="#0C3A55"></circle></svg>Water particle</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#F5A15B" stroke="#0C3A55"></circle></svg>Tracked particle (watch it return to where it started)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><line x1="1" y1="7" x2="25" y2="7" stroke="#4A5D6A" stroke-dasharray="3 3"></line></svg>Orbit path</span>
+<span style="margin-left: auto">Wave height drawn 4× larger and speed adjusted for easy viewing</span>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="6">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 500; color: #0F2A3A">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Wave settings</h2>
+<button type="button" onClick="{{reset}}" style="min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid #D5DEE3; background: #F3F6F7; color: #0F2A3A; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Reset</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<label for="sl-height" style="font-weight: 600; font-size: 15px">Wave height (H)</label>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #0A6A94">{{Hlabel}}</span>
+</div>
+<input id="sl-height" type="range" min="0.1" max="15" step="0.1" value="{{H}}" onChange="{{onH}}">
+<div style="font-size: 13px; color: #4A5D6A">Measured from trough to crest</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<label for="sl-length" style="font-weight: 600; font-size: 15px">Wavelength (L)</label>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #0A6A94">{{Llabel}}</span>
+</div>
+<input id="sl-length" type="range" min="0" max="1000" step="1" value="{{Lslider}}" onChange="{{onL}}">
+<div style="font-size: 13px; color: #4A5D6A">Distance from one crest to the next (5 m to 20,000 km)</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<label for="sl-depth" style="font-weight: 600; font-size: 15px">Water depth (h)</label>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #0A6A94">{{hlabel}}</span>
+</div>
+<input id="sl-depth" type="range" min="0" max="1000" step="1" value="{{hslider}}" onChange="{{onDepth}}">
+<div style="font-size: 13px; color: #4A5D6A">Drag it shallower and watch the water orbits flatten</div>
+</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #0A6A94">{{presetEn}}</div>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{presetName}}</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">Caused by</div>
+<div style="font-size: 15px; line-height: 1.65">{{info.cause}}</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">What it looks like</div>
+<div style="font-size: 15px; line-height: 1.65">{{info.look}}</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">Typical period</div>
+<div style="font-size: 15px; line-height: 1.65">{{info.period}}</div>
+</div>
+<div style="background: #EAF3F7; border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 1.65; color: #0F2A3A">{{info.fact}}</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">{{waterClass.label}}</h2>
+<span style="font-size: 13px; color: #4A5D6A">{{waterClass.en}}</span>
+</div>
+<div style="font-size: 15px; line-height: 1.65">{{waterClass.text}}</div>
+<div style="border-top: 1px solid #E3E9EC; padding-top: 10px; font-size: 14px; line-height: 1.65; color: #4A5D6A">{{status.detail}}</div>
+</div>
+</div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">What to notice in the simulation</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">01</div>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">The water doesn’t travel with the wave</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Watch the orange dot: it loops round and comes back to where it started. What travels is energy, not water, which is why a bottle floating at sea just bobs up and down in place.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">02</div>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">Depth changes the shape of the orbit</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">In deep water the orbits are circles that shrink quickly with depth. In shallow water the seabed squashes them into flat ellipses, and the water sloshes back and forth all the way to the bottom.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">03</div>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">What sets the wave speed</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Deep water: longer waves are faster (c ≈ 1.25√L). Shallow water: speed depends only on depth (c ≈ √gh). That’s why a tsunami in a 4 km deep ocean travels at about 700 km/h.</p>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1240}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    var p = this.presetList()[0];
+    this.state = { pid: p.id, H: p.H, L: p.L, h: p.h, t: 0, playing: !reduce };
+  }
+
+  presetList() {
+    return [
+      { id: 'wind', name: 'Wind waves', en: 'WIND SEA', H: 1.2, L: 30, h: 40, chop: true,
+        cause: 'Wind blowing over the surface hands its energy directly to the water. The stronger the wind, the longer it blows and the farther it blows across the water (the fetch), the higher the waves.',
+        look: 'Peaked crests of uneven size, many wave sizes piled on top of each other so it looks messy, because they are still inside the area where the wind is blowing.',
+        period: 'About 2–8 s',
+        fact: 'Most waves you see out at sea are wind waves. If a crest gets steeper than 1/7 of the wavelength, it breaks into whitecaps.' },
+      { id: 'swell', name: 'Swell', en: 'SWELL', H: 2, L: 150, h: 100, chop: false,
+        cause: 'Wind waves that have travelled out of the storm area. Longer waves travel faster, so they sort themselves into orderly rows.',
+        look: 'Rounded, long and regular waves that can travel thousands of kilometres with hardly any loss of energy.',
+        period: 'About 8–20 s',
+        fact: 'Surfers love swell most, because it arrives in regular sets and brings energy from storms very far away to the coast.' },
+      { id: 'shoal', name: 'Shoaling waves', en: 'SHOALING & BREAKING', H: 1.8, L: 60, h: 2.5, chop: false,
+        cause: 'As waves enter shallow water, the seabed slows them down, so each wave is squeezed shorter and taller (shoaling).',
+        look: 'Crests get sharper and steeper. Once the height exceeds about 0.78 × the depth, the crest topples over and the wave breaks.',
+        period: 'Same as out at sea (the period doesn’t change, even though the speed drops)',
+        fact: 'There are 3 main types of breaker: spilling on gently sloping beaches, plunging on fairly steep beaches, and surging on very steep beaches.' },
+      { id: 'tsunami', name: 'Tsunami', en: 'TSUNAMI', H: 0.6, L: 200000, h: 4000, chop: false,
+        cause: 'The seabed suddenly lifts or drops in an undersea earthquake, landslide or volcanic eruption, pushing the entire water column into motion.',
+        look: 'Out in the ocean it is only a few tens of centimetres high and ships barely notice it, but it is hundreds of kilometres long and about as fast as a jet airliner.',
+        period: 'About 10–60 min',
+        fact: 'It is so long that even a 4 km deep ocean counts as “shallow water”, so the whole depth of water moves. When it reaches the coast it rises several metres high, as on Thailand’s Andaman coast on 26 December 2004.' },
+      { id: 'tide', name: 'Tide', en: 'TIDE', H: 2, L: 8850000, h: 4000, chop: false,
+        cause: 'The gravity of the Moon and Sun pulls the ocean into bulges while the Earth rotates through them.',
+        look: 'The longest wave of all: crests are thousands of kilometres apart, so we see it as the water level slowly rising and falling.',
+        period: 'About 12 h 25 min (some places have one tide a day)',
+        fact: 'Many parts of the Gulf of Thailand have one tide a day or a mixed tide, unlike most of the world’s coasts, which have two a day.' }
+    ];
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  physics(H, L, h) {
+    var g = 9.81, rho = 1025;
+    var k = 2 * Math.PI / L, kh = k * h;
+    var c = Math.sqrt(g / k * Math.tanh(kh));
+    var T = L / c;
+    var n = kh > 20 ? 0.5 : 0.5 * (1 + 2 * kh / Math.sinh(2 * kh));
+    var cg = n * c;
+    var E = rho * g * H * H / 8;
+    return { k: k, kh: kh, c: c, T: T, cg: cg, E: E, P: E * cg, hL: h / L, HL: H / L, Hh: H / h };
+  }
+
+  fmtLen(m) {
+    if (m >= 100000) return Math.round(m / 1000).toLocaleString('en-US') + ' km';
+    if (m >= 1000) return (m / 1000).toFixed(1) + ' km';
+    if (m >= 10) return Math.round(m) + ' m';
+    return m.toFixed(1) + ' m';
+  }
+
+  fmtTime(s) {
+    if (s < 60) return s.toFixed(1) + ' s';
+    if (s < 3600) return (s / 60).toFixed(1) + ' min';
+    return (s / 3600).toFixed(1) + ' h';
+  }
+
+  fmtNum(v, d) {
+    return v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var presets = this.presetList();
+    var cur = presets.filter(function (p) { return p.id === s.pid; })[0] || presets[0];
+    var ph = this.physics(s.H, s.L, s.h);
+
+    var LMIN = Math.log10(5), LMAX = Math.log10(2e7);
+    var HMIN = Math.log10(0.5), HMAX = Math.log10(6000);
+
+    // ---------- drawing ----------
+    var W = 1120, Y0 = 150, LPX = 560, BOT = 440;
+    var kpx = 2 * Math.PI / LPX;
+    var amp = Math.max(4, Math.min(70, (s.H / 2) / s.L * LPX * 4));
+    var hTrue = s.h / s.L * LPX;
+    var hDraw = Math.max(hTrue, amp + 24);
+    var exaggerated = hTrue < amp + 24;
+    var Tvis = Math.max(1.4, Math.min(7, 1.2 * Math.log10(ph.T) + 1.0));
+    var w = 2 * Math.PI / Tvis, t = s.t;
+    var steep = Math.min(0.35, 0.5 * ph.k * s.H / 2 / Math.pow(Math.max(Math.tanh(ph.kh), 0.3), 3));
+    var chop = cur.chop;
+
+    var eta = function (x) {
+      var th = kpx * x - w * t;
+      var v = amp * (Math.cos(th) + steep * Math.cos(2 * th));
+      if (chop) v += amp * 0.22 * Math.cos(2.7 * kpx * x - 1.64 * w * t + 1.1) + amp * 0.12 * Math.cos(4.4 * kpx * x - 2.1 * w * t + 2.3);
+      return v;
+    };
+    var pts = [];
+    for (var x = 0; x <= W; x += 8) pts.push(x + ',' + (Y0 - eta(x)).toFixed(1));
+    var surfacePath = 'M' + pts.join(' L');
+    var waterPath = surfacePath + ' L' + W + ',' + BOT + ' L0,' + BOT + ' Z';
+
+    var f1 = function (v) { return v.toFixed(1); };
+    var ellipse = function (cx, cy, rx, ry) {
+      return 'M' + f1(cx - rx) + ',' + f1(cy) + ' a' + f1(rx) + ',' + f1(ry) + ' 0 1,0 ' + f1(2 * rx) + ',0 a' + f1(rx) + ',' + f1(ry) + ' 0 1,0 ' + f1(-2 * rx) + ',0 ';
+    };
+
+    var vis = Math.min(hDraw, 280);
+    var khv = Math.min(ph.kh, kpx * vis);
+    var fracs = [0.02, 0.3, 0.58, 0.86];
+    var orbitPath = '', particlePath = '', trackPath = '';
+    fracs.forEach(function (f, ri) {
+      var dpx = f * vis, kd = f * khv, A, B;
+      if (ph.kh > 20) { A = amp * Math.exp(-kd); B = A; }
+      else {
+        var sh = Math.sinh(ph.kh);
+        A = amp * Math.cosh(ph.kh - kd) / sh;
+        B = amp * Math.sinh(ph.kh - kd) / sh;
+      }
+      A = Math.min(A, 90); B = Math.min(B, 90);
+      for (var i = 0; i < 8; i++) {
+        var x0 = 70 + i * 140, y0 = Y0 + dpx;
+        var th = kpx * x0 - w * t;
+        var px = x0 - A * Math.sin(th), py = y0 - B * Math.cos(th);
+        if (A > 0.8) orbitPath += ellipse(x0, y0, A, Math.max(B, 0.4));
+        var r = ri === 0 ? 5.5 : 4.5;
+        var cd = ellipse(px, py, r, r);
+        if (i === 3) trackPath += cd; else particlePath += cd;
+      }
+    });
+
+    var seabedY = Y0 + hDraw;
+    var seabedVisible = seabedY < BOT;
+    var depthLabel = 'Depth h = ' + this.fmtLen(s.h);
+    var depthLabelY, depthLabelFill;
+    if (!seabedVisible) {
+      depthLabel += '  (seabed is deeper than this view)';
+      depthLabelY = 424; depthLabelFill = '#FFFFFF';
+    } else if (seabedY < 400) {
+      depthLabelY = seabedY + 30; depthLabelFill = '#4E3B18';
+    } else {
+      depthLabelY = seabedY - 12; depthLabelFill = '#FFFFFF';
+    }
+    if (exaggerated) depthLabel += '  (depth exaggerated to be visible)';
+
+    // ---------- status ----------
+    var status;
+    if (ph.Hh >= 0.78) status = { label: 'Breaking: water too shallow', bg: '#FCE3CF', fg: '#7E3407', breaking: true,
+      detail: 'The wave height exceeds about 0.78 × the depth. There isn’t enough water under the trough to support it, so the crest runs ahead of its base and topples over.' };
+    else if (ph.HL >= 1 / 7) status = { label: 'Whitecapping: too steep', bg: '#FCE3CF', fg: '#7E3407', breaking: true,
+      detail: 'Steepness exceeds 1 : 7, so the crest can’t hold its shape and breaks into whitecaps, even in deep water.' };
+    else if (ph.HL >= 1 / 10 || ph.Hh >= 0.6) status = { label: 'Close to breaking', bg: '#FFF1CC', fg: '#6B4A00', breaking: false,
+      detail: 'The wave is getting steep and the crest sharper. A little higher or shallower and it will start to break.' };
+    else status = { label: 'Stable wave', bg: '#DDEFF6', fg: '#0A4F70', breaking: false,
+      detail: 'The wave keeps its shape and travels on. Its energy isn’t released until it breaks.' };
+
+    var waterClass;
+    if (ph.hL >= 0.5) waterClass = { label: 'Deep water', en: 'Deep water',
+      text: 'The depth is more than half the wavelength. Water particles move in circles that shrink quickly with depth. The wave doesn’t “feel” the seabed, and its speed depends only on wavelength.' };
+    else if (ph.hL >= 0.05) waterClass = { label: 'Intermediate depth', en: 'Intermediate depth',
+      text: 'The wave starts to feel the seabed. Water orbits flatten into ellipses, and wave speed starts to drop with depth.' };
+    else waterClass = { label: 'Shallow water', en: 'Shallow water',
+      text: 'The depth is less than 1/20 of the wavelength. The whole water column sloshes back and forth horizontally down to the bottom, and speed depends only on depth.' };
+
+    var hLtxt = ph.hL >= 10 ? this.fmtNum(ph.hL, 0) : ph.hL >= 1 ? ph.hL.toFixed(1) : ph.hL >= 0.01 ? ph.hL.toFixed(3) : ph.hL.toFixed(4);
+    var steepTxt = '1 : ' + this.fmtNum(s.L / s.H, 0);
+    var P = ph.P;
+    var Ptxt = P >= 1e6 ? (P / 1e6).toFixed(1) + ' MW/m' : P >= 1000 ? (P / 1000).toFixed(1) + ' kW/m' : Math.round(P) + ' W/m';
+
+    var readouts = [
+      { label: 'Wave speed (c)', value: ph.c.toFixed(1) + ' m/s', sub: '≈ ' + this.fmtNum(ph.c * 3.6, 0) + ' km/h' },
+      { label: 'Wave period (T)', value: this.fmtTime(ph.T), sub: 'Time for the next crest to pass the same point' },
+      { label: 'Steepness (H : L)', value: steepTxt, sub: 'Steeper than 1 : 7 and the wave breaks' },
+      { label: 'Depth ÷ wavelength', value: hLtxt, sub: waterClass.label + ' (over 0.5 = deep, under 0.05 = shallow)' },
+      { label: 'Wave power (P)', value: Ptxt, sub: 'Energy per second, per 1 m of wave front' },
+      { label: 'Group velocity', value: ph.cg.toFixed(1) + ' m/s', sub: 'The speed at which the energy actually travels' }
+    ];
+
+    var presetVals = presets.map(function (p) {
+      var on = p.id === cur.id;
+      return {
+        name: p.name, en: p.en,
+        pressed: on ? 'true' : 'false',
+        bg: on ? '#0A6A94' : '#FFFFFF',
+        fg: on ? '#FFFFFF' : '#0F2A3A',
+        sub: on ? '#E1F0F7' : '#4A5D6A',
+        border: on ? '#0A6A94' : '#C9D4DA',
+        pick: function () { self.setState({ pid: p.id, H: p.H, L: p.L, h: p.h }); }
+      };
+    });
+
+    var edited = Math.abs(s.H - cur.H) > 1e-6 || Math.abs(s.L - cur.L) / cur.L > 1e-3 || Math.abs(s.h - cur.h) / cur.h > 1e-3;
+
+    return {
+      presets: presetVals,
+      presetName: cur.name,
+      presetEn: cur.en,
+      editedNote: edited ? '(custom values)' : '',
+      info: { cause: cur.cause, look: cur.look, period: cur.period, fact: cur.fact },
+      status: status,
+      waterClass: waterClass,
+      readouts: readouts,
+      playLabel: s.playing ? 'Pause' : 'Play animation',
+      togglePlay: function () { self.setState({ playing: !self.state.playing }); },
+      reset: function () { self.setState({ H: cur.H, L: cur.L, h: cur.h }); },
+      H: s.H,
+      Lslider: Math.round((Math.log10(s.L) - LMIN) / (LMAX - LMIN) * 1000),
+      hslider: Math.round((Math.log10(s.h) - HMIN) / (HMAX - HMIN) * 1000),
+      onH: function (e) { self.setState({ H: parseFloat(e.target.value) }); },
+      onL: function (e) { var v = parseFloat(e.target.value); self.setState({ L: Math.pow(10, LMIN + v / 1000 * (LMAX - LMIN)) }); },
+      onDepth: function (e) { var v = parseFloat(e.target.value); self.setState({ h: Math.pow(10, HMIN + v / 1000 * (HMAX - HMIN)) }); },
+      Hlabel: s.H.toFixed(1) + ' m',
+      Llabel: this.fmtLen(s.L),
+      hlabel: this.fmtLen(s.h),
+      svgLabel: 'Simulation: ' + cur.name + ' height ' + s.H.toFixed(1) + ' m, length ' + this.fmtLen(s.L) + ' in water depth ' + this.fmtLen(s.h),
+      surfacePath: surfacePath,
+      waterPath: waterPath,
+      surfaceStroke: status.breaking ? '#F08A3C' : '#0A4F70',
+      orbitPath: orbitPath || 'M0,0',
+      particlePath: particlePath || 'M0,0',
+      trackPath: trackPath || 'M0,0',
+      seabedY: seabedVisible ? seabedY.toFixed(1) : BOT,
+      seabedH: seabedVisible ? (BOT - seabedY).toFixed(1) : 0,
+      seabedLineOpacity: seabedVisible ? 1 : 0,
+      hTop: (Y0 - amp).toFixed(1),
+      hBot: (Y0 + amp).toFixed(1),
+      hLabelY: Math.max(22, Y0 - amp * 1.35 - 12).toFixed(1),
+      depthLabel: depthLabel,
+      depthLabelY: depthLabelY,
+      depthLabelFill: depthLabelFill
+    };
+  }
+}
+</script>
+</body>
+</html>

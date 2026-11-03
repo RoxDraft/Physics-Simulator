@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แหล่งข้อมูลและการเข้าถึง</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="Main.dc.html" style="min-height: 44px; display: inline-flex; align-items: center">← กลับไปที่ตัวจำลองคลื่น</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">OCEAN WAVE SIMULATOR · แหล่งข้อมูล</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">แหล่งข้อมูลและการเข้าถึง</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">ตัวจำลองคลื่นใช้ทฤษฎีคลื่นเชิงเส้นที่เป็นมาตรฐานทางวิศวกรรมชายฝั่ง ส่วนตัวอย่างการใช้ประโยชน์อ้างอิงจากหน่วยงานและโครงการจริง ภาพเคลื่อนไหวเป็นการจำลองหลักการ ไม่ใช่ข้อมูลจากอุปกรณ์จริง</p>
+</header>
+<div role="group" aria-label="กรองตามการเข้าถึง" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>ใช้กับ:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>การเข้าถึง:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">ตรวจสอบลิงก์เมื่อเดือนพฤศจิกายน 2569 ถ้าพบข้อมูลผิดหรือมีแหล่งที่ดีกว่า แจ้งได้ใน GitHub ของโปรเจกต์</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "Coastal Engineering Manual (EM 1110-2-1100), US Army Corps of Engineers", "used": "สมการ dispersion ความเร็วคลื่น คาบ ความเร็วกลุ่ม กำลังคลื่น และเกณฑ์คลื่นแตก", "access": "เอกสารรัฐบาลสหรัฐฯ เป็นสาธารณสมบัติ ดาวน์โหลดได้ฟรี", "url": "https://www.publications.usace.army.mil/"}, {"title": "OpenStax University Physics Volume 1 บทที่ 16 คลื่น", "used": "พื้นฐานคลื่น ความยาวคลื่น คาบ และพลังงาน", "access": "ตำราเปิด สัญญาอนุญาต CC BY 4.0", "url": "https://openstax.org/books/university-physics-volume-1/pages/16-introduction"}, {"title": "NOAA National Data Buoy Center และ DART", "used": "การทำงานของทุ่นเตือนภัยสึนามิ และข้อมูลคลื่นจริงจากทุ่น", "access": "ข้อมูลเปิด ใช้ได้ฟรี", "url": "https://www.ndbc.noaa.gov/"}, {"title": "European Marine Energy Centre (EMEC)", "used": "หลักการของเครื่องแปลงพลังงานคลื่นทั้ง 4 แบบ", "access": "ข้อมูลทั่วไปเปิดให้อ่านบนเว็บไซต์", "url": "https://www.emec.org.uk/"}, {"title": "Ocean Energy Systems (IEA Technology Collaboration Programme)", "used": "สถานะเทคโนโลยีพลังงานคลื่นและโครงการต้นแบบ", "access": "รายงานส่วนใหญ่ดาวน์โหลดได้ฟรี", "url": "https://www.ocean-energy-systems.org/"}, {"title": "กรมอุทกศาสตร์ กองทัพเรือ", "used": "ลักษณะน้ำขึ้นน้ำลงในอ่าวไทย", "access": "ตารางน้ำขึ้นน้ำลงเผยแพร่ต่อสาธารณะ", "url": "https://www.hydro.navy.mi.th/"}, {"title": "กรมป้องกันและบรรเทาสาธารณภัย", "used": "ระบบเตือนภัยสึนามิและหอเตือนภัยตามแนวชายฝั่งอันดามัน", "access": "ข้อมูลเปิดบนเว็บไซต์หน่วยงาน", "url": "https://www.disaster.go.th/"}, {"title": "Polynesian Voyaging Society", "used": "การอ่านสเวลล์เพื่อนำทางแบบโพลินีเซีย", "access": "ข้อมูลเปิดบนเว็บไซต์", "url": "https://www.hokulea.com/"}], "restricted": [{"title": "Gunn, K. & Stock-Williams, C. (2012). Quantifying the global wave power resource. Renewable Energy 44", "used": "ตัวเลขศักยภาพพลังงานคลื่นทั่วโลกราว 2 เทราวัตต์", "access": "บทความวารสาร ต้องสมัครสมาชิกหรือซื้อบทความ", "url": ""}, {"title": "Dean, R. G. & Dalrymple, R. A. Water Wave Mechanics for Engineers and Scientists", "used": "ตำราอ้างอิงทฤษฎีคลื่นเชิงเส้นและคลื่นแตก", "access": "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด", "url": ""}, {"title": "ข้อมูลการทดสอบในทะเลของเครื่องแปลงพลังงานคลื่นแต่ละบริษัท", "used": "ประสิทธิภาพจริงของอุปกรณ์", "access": "ส่วนใหญ่เป็นข้อมูลภายในบริษัท เปิดเผยเพียงบางส่วนในรายงานโครงการ", "url": ""}], "none": [{"title": "การเคลื่อนไหวในภาพตัวอย่างการใช้ประโยชน์ 8 แบบ และเครื่องแปลงพลังงาน 4 แบบ", "used": "ความเร็ว ระยะ จังหวะ และการหน่วงเวลาในภาพ", "access": "ใช้ค่าและสัดส่วนสมมติเพื่อแสดงหลักการ ไม่ตามสเกลจริง", "url": ""}, {"title": "ค่าเริ่มต้นของคลื่นแต่ละชนิด", "used": "ความสูง ความยาว และความลึกเริ่มต้นของคลื่นลม สเวลล์ คลื่นเข้าฝั่ง สึนามิ และน้ำขึ้นน้ำลง", "access": "เป็นค่าตัวอย่างทั่วไป ไม่ใช่การวัดจากเหตุการณ์ใดเหตุการณ์หนึ่ง", "url": ""}, {"title": "ภาพหน้าตัดคลื่นในตัวจำลอง", "used": "ความสูงคลื่นที่วาด และความเร็วของภาพเคลื่อนไหว", "access": "ขยายความสูง 4 เท่าและปรับความเร็วให้มองเห็นง่าย ตัวเลขในช่องผลลัพธ์คำนวณจากค่าจริง", "url": ""}, {"title": "สูตรกำลังคลื่นแบบคร่าว ๆ P ≈ 0.5 H² T", "used": "ช่องคำนวณพลังงานคลื่น", "access": "สูตรจริงใช้ความสูงคลื่นนัยสำคัญ (Hs) และคาบพลังงาน (Te) ของทะเลจริงที่มีคลื่นหลายขนาด หน้านี้ใช้คลื่นลูกเดียวเพื่อความง่าย", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'เปิดเผย', title: 'ข้อมูลที่หาได้และใช้ได้ฟรี', desc: 'ใครก็ตรวจสอบได้ทันทีผ่านลิงก์', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'จำกัดการเข้าถึง', title: 'มีข้อมูลอยู่ แต่ต้องลงทะเบียน ซื้อ หรือเฉพาะหน่วยงาน', desc: 'ข้อมูลเหล่านี้มีอยู่จริง แต่เราใส่ได้แค่ส่วนที่เผยแพร่ทั่วไป หรือไม่ได้ใส่เลยเพราะเงื่อนไขการใช้งาน', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'ไม่มีข้อมูลเปิดเผย', title: 'ไม่มีข้อมูลที่ใช้ได้ ตัวจำลองจึงใช้ค่าประมาณ', desc: 'ตัวเลขในส่วนเหล่านี้เป็นค่าตัวอย่างหรือสมมติของเรา เพื่อให้เห็นหลักการ ไม่ควรนำไปใช้เป็นข้อมูลจริง', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' รายการ', items: items };
+    });
+    var fl = [{ id: 'all', name: 'ทั้งหมด' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

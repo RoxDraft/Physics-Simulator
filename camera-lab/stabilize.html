@@ -23,10 +23,12 @@ a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A
 .ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
 .ps-bar .ps-home:hover{background:#163A4F}
 .ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
 </style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
 </head>
 <body>
-<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">05 ระบบกันสั่น</span></nav>
+<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">05 ระบบกันสั่น</span><a class="ps-lang" href="../en/camera-lab/stabilize.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="เปลี่ยนเป็นภาษาอังกฤษ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>English</a></nav>
 <div id="dc-root"></div>
 <template id="dc-template">
 <div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sources and access</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Plate Tectonics Lab</a><span aria-hidden="true">›</span><span aria-current="page">Sources</span><a class="ps-lang" href="../../plate-tectonics/sources.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">← Back to the map and statistics</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">PLATE TECTONICS LAB · SOURCES</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Sources and access</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">The map and charts are computed from open USGS, Smithsonian and Natural Earth data with the scripts in the repo’s data/plate-tectonics folder. Some loss data has restricted access, and some values in the simulators are estimates for learning.</p>
+</header>
+<div role="group" aria-label="Filter by access" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>Used for:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>Access:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">Links checked in November 2026. If you find an error or a better source, please let us know on the project’s GitHub.</p>
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "USGS ANSS Comprehensive Earthquake Catalog (ComCat)", "used": "Earthquakes of M 5.5 and above, 1965–2016, 23,412 events, on the map and in the country charts (using the copy earthquakes-23k.csv from github.com/plotly/datasets)", "access": "US government data in the public domain", "url": "https://earthquake.usgs.gov/earthquakes/search/"}, {"title": "Smithsonian Institution Global Volcanism Program", "used": "1,571 Holocene volcanoes and those that have erupted since 1964 (using the copy volcano_db.csv from github.com/plotly/datasets, an older version of the list; the current database is more detailed)", "access": "Free to use with attribution", "url": "https://volcano.si.edu/"}, {"title": "Bird, P. (2003). An updated digital model of plate boundaries (PB2002)", "used": "Plate boundary lines and subduction zones on the map (GeoJSON by Hugo Ahlenius)", "access": "Open Data Commons Attribution licence", "url": "https://github.com/fraxen/tectonicplates"}, {"title": "Natural Earth", "used": "Land shapes and country borders, via the world-atlas package", "access": "Public domain", "url": "https://www.naturalearthdata.com/"}, {"title": "USGS Earthquake Hazards Program: Lists, Maps, and Statistics", "used": "Average number of earthquakes per year, and the table comparing magnitude with Mercalli intensity", "access": "Public domain", "url": "https://www.usgs.gov/programs/earthquake-hazards/lists-maps-and-statistics"}, {"title": "NOAA NCEI Natural Hazards Data", "used": "Approximate deaths in past events", "access": "Open data", "url": "https://www.ncei.noaa.gov/products/natural-hazards"}, {"title": "Royal Thai Government Gazette", "used": "Ministerial Regulation on resistance to earthquake vibration, B.E. 2564 (2021)", "access": "Free to read", "url": "https://ratchakitcha.soc.go.th/"}, {"title": "Department of Public Works and Town & Country Planning", "used": "Standard มยผ. 1301/1302-61 for the design of buildings to resist earthquake vibration", "access": "Downloadable from the agency", "url": "https://www.dpt.go.th/"}, {"title": "Thai Meteorological Department, Earthquake Observation Center", "used": "Earthquakes in Thailand, e.g. Mae Lao, Chiang Rai, 2014", "access": "Open information on the website", "url": "https://earthquake.tmd.go.th/"}, {"title": "Earthquake Country Alliance and Ready.gov", "used": "The “Drop, Cover, Hold On” guidance and preparing before an earthquake", "access": "Open data", "url": "https://www.earthquakecountry.org/dropcoverholdon/"}, {"title": "ShakeAlert (USGS) and the Japan Meteorological Agency (JMA)", "used": "How earthquake early warning works", "access": "Open data", "url": "https://www.shakealert.org/"}, {"title": "EarthScope Consortium (formerly IRIS and UNAVCO)", "used": "Seismometer networks and GNSS stations", "access": "Most data is open to download", "url": "https://www.earthscope.org/"}, {"title": "Copernicus Data Space (Sentinel-1, Sentinel-2, Sentinel-5P)", "used": "InSAR radar images, optical imagery and volcanic gas data", "access": "Open data, free to use", "url": "https://dataspace.copernicus.eu/"}, {"title": "NISAR (NASA–ISRO) and GRACE-FO", "used": "Radar tracking of surface motion, and changes in gravity", "access": "Open data policy", "url": "https://nisar.jpl.nasa.gov/"}, {"title": "Eos (AGU): Magnitude 8.8 earthquake strikes western Pacific", "used": "The Kamchatka earthquake, July 2025", "access": "Science news article, free to read", "url": "https://eos.org/research-and-developments/magnitude-8-8-earthquake-strikes-western-pacific"}, {"title": "Yeni Şafak and Izvestia (news reports)", "used": "More than 3,700 deaths in Myanmar, and at least 86 at the collapsed building in Bangkok (reported May 2025)", "access": "News, free to read; the figures may be revised later, so check the latest official reports", "url": "https://iz.ru/en/1881049/2025-05-04/bangkok-death-toll-collapse-building-due-earthquake-has-increased-86"}], "restricted": [{"title": "EM-DAT, the International Disaster Database (CRED, UCLouvain)", "used": "Death and damage statistics by country, the most widely used source", "access": "Requires registration; free only for non-profit use; raw data may not be redistributed; commercial use requires a licence. That is why we did not include this dataset on the page.", "url": "https://doc.emdat.be/docs/legal/terms-of-use/"}, {"title": "CTBTO monitoring station data (International Monitoring System)", "used": "Seismic waves and infrasound from around the world", "access": "Only for member states and authorised researchers", "url": "https://www.ctbto.org/"}, {"title": "Foreign building standards: ASCE 7, Eurocode 8, NZS 1170.5, NCh433 and others", "used": "The building standards table on the response page", "access": "Most must be purchased; we summarise only general published information", "url": ""}, {"title": "NIED Japan: K-NET, KiK-net, S-net", "used": "Strong-motion data and seafloor cable networks", "access": "Registration required before download", "url": "https://www.bosai.go.jp/e/"}, {"title": "Commercial high-resolution satellite imagery", "used": "Building-by-building damage assessment after disasters", "access": "Must be bought from providers; disaster agencies can request it through the International Charter", "url": "https://disasterscharter.org/"}, {"title": "Insurers’ commercial catastrophe risk models", "used": "Estimating economic losses in advance", "access": "Company intellectual property, not published", "url": ""}, {"title": "Wells, D. L. & Coppersmith, K. J. (1994). Bulletin of the Seismological Society of America", "used": "The formula for approximate rupture length from magnitude", "access": "Journal article; may require a subscription", "url": ""}], "none": [{"title": "Counting earthquakes by country", "used": "The country statistics charts", "access": "Our own method: counted for the country the epicentre is inside, or whose land is within 300 km; not official statistics of any country", "url": ""}, {"title": "Earthquakes after 2016 on the map", "used": "Earthquake dots on the map", "access": "The dataset used ends in 2016; later events are added by hand only for key events", "url": ""}, {"title": "Death tolls for some events", "used": "The key event cards", "access": "Figures still disagree, e.g. Haiti 2010, Valdivia 1960 and Tambora 1815, so we show a range or an estimate", "url": ""}, {"title": "Natural periods of soil and buildings", "used": "The resonance simulator: soil 0.3 / 0.7 / 1.5 s and the rule of 0.1 s per floor", "access": "Example values for learning; structural data and inspection results for individual buildings are generally not public", "url": ""}, {"title": "Processing time of warning systems", "used": "The early-warning simulator: station 10 km away, 4 s processing", "access": "Assumed values; real systems differ between countries and don’t publish every detail", "url": ""}, {"title": "P and S wave speeds", "used": "Locating the epicentre: 6.0 and 3.5 km/s", "access": "Crustal averages; real speeds vary with rock type and depth", "url": ""}, {"title": "Raw data from phone sensors", "used": "The sensor cards on the response page", "access": "Not public; providers keep it as internal data", "url": ""}, {"title": "Plate speeds and the time scale in the animations", "used": "The earthquake physics page", "access": "Uses a typical range of 1–15 cm/year, not a measurement of any particular boundary", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'Open', title: 'Data that is available and free to use', desc: 'Anyone can check it straight away through the link', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'Restricted access', title: 'The data exists, but requires registration, payment, or is limited to certain organisations', desc: 'This data really exists, but we can only include what is published generally, or not at all because of its terms of use', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'Not publicly available', title: 'No usable data, so the simulator uses estimates', desc: 'The numbers in these parts are our own examples or assumptions to show the principle; don’t use them as real data', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' items', items: items };
+    });
+    var fl = [{ id: 'all', name: 'All' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

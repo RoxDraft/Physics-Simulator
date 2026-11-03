@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แผ่นเปลือกโลก แผ่นดินไหว ภูเขาไฟ</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 860px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">PLATE TECTONICS LAB</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">แผ่นเปลือกโลก แผ่นดินไหว และภูเขาไฟ</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">แผนที่โลกแบบคร่าว ๆ จากข้อมูลจริง: แนวรอยต่อแผ่นเปลือกโลก แผ่นดินไหวขนาด 7 ขึ้นไปช่วงปี 1965–2016 และภูเขาไฟที่ปะทุตั้งแต่ปี 1964 กดจุดบนแผนที่เพื่อดูรายละเอียด หรือกดชื่อประเทศในกราฟเพื่อไฮไลต์</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="Physics.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border-radius: 999px; background: #0F2A3A; color: #FFFFFF; font-weight: 600; text-decoration: none">ฟิสิกส์ของแผ่นดินไหว →</a>
+<a href="Safety.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; text-decoration: none">การรับมือและมาตรฐานความปลอดภัย →</a>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 12px 16px; border-bottom: 1px solid #E3E9EC">
+<label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; font-size: 14px"><input type="checkbox" checked="{{showPlates}}" onChange="{{tPlates}}" style="width: 20px; height: 20px; accent-color: #0A6A94">รอยต่อแผ่นเปลือกโลก</label>
+<label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; font-size: 14px"><input type="checkbox" checked="{{showQuakes}}" onChange="{{tQuakes}}" style="width: 20px; height: 20px; accent-color: #0A6A94">แผ่นดินไหว</label>
+<label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; font-size: 14px"><input type="checkbox" checked="{{showVolc}}" onChange="{{tVolc}}" style="width: 20px; height: 20px; accent-color: #0A6A94">ภูเขาไฟ</label>
+<label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; font-size: 14px"><input type="checkbox" checked="{{showEvents}}" onChange="{{tEvents}}" style="width: 20px; height: 20px; accent-color: #0A6A94">เหตุการณ์สำคัญ</label>
+<div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 0">
+<div style="display: flex; justify-content: space-between; font-size: 13px"><label for="pt-m" style="font-weight: 600">แสดงแผ่นดินไหวขนาดตั้งแต่</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">M {{minMLabel}}</span></div>
+<input id="pt-m" type="range" min="7" max="9" step="0.1" value="{{minM}}" onChange="{{setMinM}}">
+</div>
+</div>
+<div role="group" aria-label="ซูมไปยังภูมิภาค" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC">
+<sc-for list="{{zooms}}" as="z" hint-placeholder-count="5">
+<button type="button" onClick="{{z.pick}}" aria-pressed="{{z.pressed}}" style="min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid {{z.border}}; background: {{z.bg}}; color: {{z.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{z.name}}</button>
+</sc-for>
+</div>
+<svg viewBox="{{viewBox}}" style="display: block; width: 100%; height: auto; background: #CFE6F0" role="img" aria-label="{{mapLabel}}">
+<path d="{{landD}}" fill="#F3EFE6" stroke="#B9CCD6" stroke-width="0.6" vector-effect="non-scaling-stroke"></path>
+<sc-if value="{{showPlates}}" hint-placeholder-val="{{ true }}">
+<path d="{{otherD}}" fill="none" stroke="#4A5D6A" stroke-width="1.2" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"></path>
+<path d="{{subD}}" fill="none" stroke="#0F2A3A" stroke-width="2.4" vector-effect="non-scaling-stroke"></path>
+</sc-if>
+<sc-for list="{{quakes}}" as="q" hint-placeholder-count="0">
+<circle cx="{{q.x}}" cy="{{q.y}}" r="{{q.r}}" fill="{{q.fill}}" fill-opacity="{{q.op}}" stroke="{{q.stroke}}" stroke-width="{{q.sw}}" vector-effect="non-scaling-stroke" onClick="{{q.pick}}" style="cursor: pointer"></circle>
+</sc-for>
+<sc-for list="{{volcs}}" as="v" hint-placeholder-count="0">
+<path d="{{v.d}}" fill="#8B1E3F" fill-opacity="{{v.op}}" stroke="{{v.stroke}}" stroke-width="{{v.sw}}" vector-effect="non-scaling-stroke" onClick="{{v.pick}}" style="cursor: pointer"></path>
+</sc-for>
+<sc-for list="{{events}}" as="e" hint-placeholder-count="0">
+<path d="{{e.d}}" fill="#FFFFFF" stroke="{{e.stroke}}" stroke-width="{{e.sw}}" vector-effect="non-scaling-stroke" onClick="{{e.pick}}" style="cursor: pointer"></path>
+</sc-for>
+</svg>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 10px 16px; font-size: 13px; color: #4A5D6A; border-top: 1px solid #E3E9EC">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="26" height="10" aria-hidden="true"><line x1="0" y1="5" x2="26" y2="5" stroke="#0F2A3A" stroke-width="2.4"></line></svg>เขตมุดตัว</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="26" height="10" aria-hidden="true"><line x1="0" y1="5" x2="26" y2="5" stroke="#4A5D6A" stroke-width="1.2" stroke-dasharray="4 3"></line></svg>รอยต่ออื่น (แยกตัว / เลื่อนผ่าน)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="40" height="14" aria-hidden="true"><circle cx="5" cy="7" r="3" fill="#F5C77A"></circle><circle cx="17" cy="7" r="4.5" fill="#F08A3C"></circle><circle cx="32" cy="7" r="6" fill="#B04A0C"></circle></svg>M 7–7.4 / 7.5–7.9 / 8+</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><path d="M7,1 L13,12 L1,12 Z" fill="#8B1E3F"></path></svg>ภูเขาไฟ</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><path d="M7,0 L9,5 L14,5 L10,8.5 L11.5,14 L7,10.8 L2.5,14 L4,8.5 L0,5 L5,5 Z" fill="#FFFFFF" stroke="#0F2A3A"></path></svg>เหตุการณ์สำคัญ</span>
+<span>{{countLabel}}</span>
+</div>
+</div>
+
+<aside style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{info.kind}}</div>
+<div style="font-size: 21px; font-weight: 700; line-height: 1.35">{{info.title}}</div>
+<sc-for list="{{info.rows}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px; border-top: 1px solid #2E5468; padding-top: 8px"><span style="color: #D9E8EF">{{r.k}}</span><strong style="text-align: right">{{r.v}}</strong></div>
+</sc-for>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF; white-space: pre-line">{{info.text}}</p>
+<div style="font-size: 12px; color: #9FD0E6">{{info.src}}</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">ประเทศไทยอยู่ตรงไหน</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #34495A">ไทยอยู่บนแผ่นยูเรเซีย ห่างจากเขตมุดตัวซุนดา (ทะเลอันดามัน–สุมาตรา) และรอยเลื่อนสะกายในเมียนมา ภาคเหนือและภาคตะวันตกมีรอยเลื่อนมีพลังหลายแนว ส่วนกรุงเทพฯ แม้อยู่ไกล แต่ดินอ่อนขยายการสั่นจากแผ่นดินไหวที่อยู่ไกลได้ ดังเช่นเหตุการณ์ปี 2568</p>
+<button type="button" onClick="{{zoomSEA}}" style="align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">ซูมไปเอเชียตะวันออกเฉียงใต้</button>
+</div>
+</aside>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">สถิติรายประเทศ</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A; max-width: 900px">นับจากข้อมูลจริงของ USGS และ Smithsonian ด้วยสคริปต์ในโฟลเดอร์ data ของ repo แผ่นดินไหวในทะเลนับให้ประเทศที่มีแผ่นดินอยู่ห่างไม่เกิน 300 กม. (วิธีนับของเราเอง ไม่ใช่สถิติทางการ) กดชื่อประเทศเพื่อไฮไลต์บนแผนที่</p>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+
+<div style="flex: 1 1 400px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">แผ่นดินไหวขนาด 6 ขึ้นไป ปี 1965–2016</h3>
+<div style="display: flex; gap: 14px; font-size: 13px; color: #4A5D6A; flex-wrap: wrap"><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 14px; height: 10px; background: #9FC3D6; display: inline-block"></span>M 6–6.9</span><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 14px; height: 10px; background: #B04A0C; display: inline-block"></span>M 7 ขึ้นไป</span></div>
+<sc-for list="{{qBars}}" as="b" hint-placeholder-count="12">
+<button type="button" onClick="{{b.pick}}" aria-pressed="{{b.pressed}}" style="display: grid; grid-template-columns: 130px minmax(0, 1fr) 70px; gap: 10px; align-items: center; min-height: 32px; padding: 2px 6px; border: none; border-radius: 6px; background: {{b.bg}}; font-family: inherit; font-size: 14px; color: #0F2A3A; cursor: pointer; text-align: left">
+<span style="font-weight: {{b.weight}}">{{b.name}}</span>
+<span style="display: flex; height: 14px; border-radius: 4px; overflow: hidden; background: #EEF2F4"><span style="width: {{b.w6}}; background: #9FC3D6"></span><span style="width: {{b.w7}}; background: #B04A0C"></span></span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: right">{{b.label}}</span>
+</button>
+</sc-for>
+</div>
+
+<div style="flex: 1 1 400px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">จำนวนภูเขาไฟยุคโฮโลซีน (1 หมื่นปีล่าสุด)</h3>
+<div style="display: flex; gap: 14px; font-size: 13px; color: #4A5D6A; flex-wrap: wrap"><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 14px; height: 10px; background: #D9B8C4; display: inline-block"></span>ทั้งหมด</span><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 14px; height: 10px; background: #8B1E3F; display: inline-block"></span>ปะทุตั้งแต่ปี 1964</span></div>
+<sc-for list="{{vBars}}" as="b" hint-placeholder-count="12">
+<button type="button" onClick="{{b.pick}}" aria-pressed="{{b.pressed}}" style="display: grid; grid-template-columns: 130px minmax(0, 1fr) 70px; gap: 10px; align-items: center; min-height: 32px; padding: 2px 6px; border: none; border-radius: 6px; background: {{b.bg}}; font-family: inherit; font-size: 14px; color: #0F2A3A; cursor: pointer; text-align: left">
+<span style="font-weight: {{b.weight}}">{{b.name}}</span>
+<span style="display: flex; height: 14px; border-radius: 4px; overflow: hidden; background: #EEF2F4"><span style="width: {{b.wr}}; background: #8B1E3F"></span><span style="width: {{b.wa}}; background: #D9B8C4"></span></span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: right">{{b.label}}</span>
+</button>
+</sc-for>
+</div>
+
+<div style="flex: 1 1 400px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">ไทยและเพื่อนบ้าน (M 6 ขึ้นไป ปี 1965–2016)</h3>
+<sc-for list="{{seaBars}}" as="b" hint-placeholder-count="6">
+<button type="button" onClick="{{b.pick}}" aria-pressed="{{b.pressed}}" style="display: grid; grid-template-columns: 130px minmax(0, 1fr) 90px; gap: 10px; align-items: center; min-height: 32px; padding: 2px 6px; border: none; border-radius: 6px; background: {{b.bg}}; font-family: inherit; font-size: 14px; color: #0F2A3A; cursor: pointer; text-align: left">
+<span style="font-weight: {{b.weight}}">{{b.name}}</span>
+<span style="display: flex; height: 14px; border-radius: 4px; overflow: hidden; background: #EEF2F4"><span style="width: {{b.w6}}; background: #9FC3D6"></span><span style="width: {{b.w7}}; background: #B04A0C"></span></span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: right">{{b.label}}</span>
+</button>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ตัวเลขหลังจำนวนคือขนาดใหญ่ที่สุดในช่วงนี้ แผ่นดินไหวที่ไทยรู้สึกแรงที่สุดหลายครั้งเกิดนอกประเทศ เช่น สุมาตรา 2547 และเมียนมา 2568 (หลังช่วงข้อมูลนี้)</p>
+</div>
+
+<div style="flex: 1 1 400px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">ทั้งโลกเกิดแผ่นดินไหวปีละกี่ครั้ง (ค่าเฉลี่ย)</h3>
+<sc-for list="{{perYear}}" as="b" hint-placeholder-count="6">
+<div style="display: grid; grid-template-columns: 90px minmax(0, 1fr) 90px; gap: 10px; align-items: center; min-height: 28px; font-size: 14px">
+<span>{{b.name}}</span>
+<span style="display: flex; height: 14px; border-radius: 4px; overflow: hidden; background: #EEF2F4"><span style="width: {{b.w}}; background: #0A6A94"></span></span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: right">{{b.label}}</span>
+</div>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">แท่งกราฟใช้สเกลลอการิทึม เพราะขนาดเล็กลง 1 ระดับ จำนวนครั้งเพิ่มขึ้นราว 10 เท่า (กฎกูเทนเบิร์ก–ริกเตอร์) ตัวเลขจากตารางสถิติของ USGS ขนาด 3–4.9 เป็นค่าประมาณ</p>
+</div>
+
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">เหตุการณ์สำคัญที่ควรรู้</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{eventCards}}" as="c" hint-placeholder-count="12">
+<button type="button" onClick="{{c.pick}}" style="flex: 1 1 280px; text-align: left; background: #FFFFFF; border: 1.5px solid {{c.border}}; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; font-family: inherit; color: #0F2A3A; cursor: pointer">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">{{c.tag}}</span>
+<span style="font-size: 16px; font-weight: 700">{{c.title}}</span>
+<span style="font-size: 14px; line-height: 1.6; color: #34495A">{{c.short}}</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+<p style="margin: 0; flex: 1 1 420px; font-size: 15px; line-height: 1.7; color: #34495A">ข้อมูลทุกชุดในหน้านี้มีที่มา บางชุดเปิดเผยให้ใช้ได้ฟรี บางชุดจำกัดการเข้าถึง และบางส่วนเป็นค่าประมาณของเราเอง ดูรายละเอียดทั้งหมดได้ที่หน้าแหล่งข้อมูล</p>
+<a href="Sources.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; background: #0A6A94; color: #FFFFFF; font-weight: 600; text-decoration: none">แหล่งข้อมูลและการเข้าถึง →</a>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2400}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { showPlates: true, showQuakes: true, showVolc: true, showEvents: true, minM: 7, zoom: 'world', sel: { kind: 'none' }, hl: null };
+    /*@DATA*/
+    this.D = DATA;
+  }
+
+  thName(n) {
+    var T = {
+      'open ocean': 'กลางมหาสมุทร (ห่างฝั่งเกิน 300 กม.)', 'Afghanistan': 'อัฟกานิสถาน', 'Algeria': 'แอลจีเรีย', 'Antarctica': 'แอนตาร์กติกา', 'Argentina': 'อาร์เจนตินา',
+      'Bolivia': 'โบลิเวีย', 'Brazil': 'บราซิล', 'Cameroon': 'แคเมอรูน', 'Canada': 'แคนาดา', 'Cape Verde': 'กาบูเวร์ดี', 'Chile': 'ชิลี', 'China': 'จีน',
+      'Colombia': 'โคลอมเบีย', 'Comoros': 'คอโมโรส', 'Congo, DRC': 'คองโก (DRC)', 'Costa Rica': 'คอสตาริกา', 'Djibouti': 'จิบูตี', 'Ecuador': 'เอกวาดอร์',
+      'El Salvador': 'เอลซัลวาดอร์', 'Ethiopia': 'เอธิโอเปีย', 'Fiji': 'ฟีจี', 'Georgia': 'จอร์เจีย', 'Greece': 'กรีซ', 'Guadeloupe': 'กวาเดอลูป',
+      'Guatemala': 'กัวเตมาลา', 'Haiti': 'เฮติ', 'Heard I. & McDonald Is.': 'เกาะเฮิร์ดและหมู่เกาะแมกดอนัลด์', 'Honduras': 'ฮอนดูรัส', 'Iceland': 'ไอซ์แลนด์',
+      'India': 'อินเดีย', 'Indian Ocean': 'มหาสมุทรอินเดีย', 'Indonesia': 'อินโดนีเซีย', 'Iran': 'อิหร่าน', 'Italy': 'อิตาลี', 'Jan Mayen': 'ยานไมเอน',
+      'Japan': 'ญี่ปุ่น', 'Kyrgyzstan': 'คีร์กีซสถาน', 'Mexico': 'เม็กซิโก', 'Mongolia': 'มองโกเลีย', 'Montserrat': 'มอนต์เซอร์รัต', 'Mozambique': 'โมซัมบิก',
+      'Myanmar': 'เมียนมา', 'Nepal': 'เนปาล', 'Netherlands': 'เนเธอร์แลนด์ (แคริบเบียน)', 'New Caledonia': 'นิวแคลิโดเนีย', 'New Zealand': 'นิวซีแลนด์',
+      'Nicaragua': 'นิการากัว', 'Pacific Ocean': 'มหาสมุทรแปซิฟิก', 'Pakistan': 'ปากีสถาน', 'Panama': 'ปานามา', 'Papua New Guinea': 'ปาปัวนิวกินี',
+      'Peru': 'เปรู', 'Philippines': 'ฟิลิปปินส์', 'Portugal': 'โปรตุเกส (อะซอร์ส)', 'Reunion': 'เรอูนียง', 'Romania': 'โรมาเนีย', 'Russia': 'รัสเซีย',
+      'S. Sudan': 'ซูดานใต้', 'Saudi Arabia': 'ซาอุดีอาระเบีย', 'Solomon Is.': 'หมู่เกาะโซโลมอน', 'South Africa': 'แอฟริกาใต้ (เกาะในมหาสมุทรใต้)', 'Spain': 'สเปน (หมู่เกาะคานารี)',
+      'St. Vincent & the Grenadines': 'เซนต์วินเซนต์และเกรนาดีนส์', 'Sweden': 'สวีเดน', 'Taiwan': 'ไต้หวัน', 'Tajikistan': 'ทาจิกิสถาน', 'Tanzania': 'แทนซาเนีย',
+      'Timor-Leste': 'ติมอร์-เลสเต', 'Tonga': 'ตองกา', 'Trinidad': 'ตรินิแดด', 'Turkey': 'ตุรกี', 'Turkmenistan': 'เติร์กเมนิสถาน', 'United Kingdom': 'สหราชอาณาจักร (ดินแดนโพ้นทะเล)',
+      'United States': 'สหรัฐอเมริกา', 'United States of America': 'สหรัฐอเมริกา', 'Uzbekistan': 'อุซเบกิสถาน', 'Vanuatu': 'วานูอาตู', 'Venezuela': 'เวเนซุเอลา',
+      'Thailand': 'ไทย', 'Laos': 'ลาว', 'Vietnam': 'เวียดนาม', 'Malaysia': 'มาเลเซีย', 'Cambodia': 'กัมพูชา'
+    };
+    return T[n] || n;
+  }
+
+  volcType(t) {
+    var T = { 'Stratovolcano': 'ภูเขาไฟสลับชั้น', 'Stratovolcanoes': 'ภูเขาไฟสลับชั้น', 'Shield volcano': 'ภูเขาไฟรูปโล่', 'Shield volcanoes': 'ภูเขาไฟรูปโล่', 'Caldera': 'แอ่งปล่องภูเขาไฟ (คาลเดรา)', 'Calderas': 'แอ่งปล่องภูเขาไฟ (คาลเดรา)', 'Complex volcano': 'ภูเขาไฟซับซ้อน', 'Submarine volcano': 'ภูเขาไฟใต้ทะเล', 'Submarine volcanoes': 'ภูเขาไฟใต้ทะเล', 'Pyroclastic cones': 'กรวยภูเขาไฟ', 'Volcanic field': 'ทุ่งภูเขาไฟ', 'Fissure vents': 'ปล่องแบบรอยแยก', 'Lava dome': 'โดมลาวา', 'Lava domes': 'โดมลาวา' };
+    return T[t] || t;
+  }
+
+  eventList() {
+    // [lon, lat, year, tag, title, magnitude/VEI, deaths (approx, for the bar), short, detail]
+    return [
+      { lo: -73.05, la: -38.24, kind: 'q', tag: '1960 · M 9.5', title: 'แผ่นดินไหววัลดิเวีย ชิลี', short: 'แผ่นดินไหวที่ใหญ่ที่สุดเท่าที่มีการบันทึกด้วยเครื่องมือ', detail: 'แผ่นนัซกามุดลงใต้แผ่นอเมริกาใต้ รอยเลื่อนแตกยาวราว 1,000 กม. สึนามิเดินทางข้ามแปซิฟิกไปถึงฮาวายและญี่ปุ่น', deaths: 'ราว 1,600 คน (แต่ละแหล่งประมาณต่างกันมาก)' },
+      { lo: -147.6, la: 61.0, kind: 'q', tag: '1964 · M 9.2', title: 'แผ่นดินไหวอะแลสกา สหรัฐฯ', short: 'ใหญ่ที่สุดในอเมริกาเหนือ พื้นดินยกตัวและยุบตัวหลายเมตร', detail: 'แผ่นแปซิฟิกมุดลงใต้แผ่นอเมริกาเหนือ เหตุการณ์นี้ช่วยยืนยันทฤษฎีการมุดตัวของแผ่นเปลือกโลก', deaths: 'ราว 130 คน ส่วนใหญ่จากสึนามิ' },
+      { lo: 95.98, la: 3.3, kind: 'q', tag: '2004 · M 9.1', title: 'แผ่นดินไหวและสึนามิสุมาตรา–อันดามัน', short: 'สึนามิในมหาสมุทรอินเดียถึง 14 ประเทศ รวมถึงชายฝั่งอันดามันของไทย', detail: 'แผ่นอินเดีย-ออสเตรเลียมุดลงใต้แผ่นพม่า รอยแตกยาวราว 1,300 กม. ไทยจึงตั้งระบบเตือนภัยสึนามิและหอเตือนภัยตามแนวชายฝั่ง', deaths: 'ราว 227,000 คนทั่วภูมิภาค ในไทยราว 5,400 คน' },
+      { lo: 142.37, la: 38.3, kind: 'q', tag: '2011 · M 9.1', title: 'แผ่นดินไหวโทโฮกุ ญี่ปุ่น', short: 'สึนามิสูงกว่า 30 เมตรในบางจุด และเกิดอุบัติเหตุโรงไฟฟ้านิวเคลียร์ฟุกุชิมะไดอิจิ', detail: 'ระบบเตือนภัยล่วงหน้าของญี่ปุ่นแจ้งเตือนก่อนแรงสั่นมาถึงโตเกียวหลายสิบวินาที อาคารส่วนใหญ่ที่สร้างตามมาตรฐานใหม่ไม่พัง แต่สึนามิสร้างความเสียหายมากที่สุด', deaths: 'ราว 18,000 คน (เสียชีวิตและสูญหาย)' },
+      { lo: -72.9, la: -36.1, kind: 'q', tag: '2010 · M 8.8', title: 'แผ่นดินไหวเมาเล ชิลี', short: 'ขนาดใหญ่มาก แต่ผู้เสียชีวิตน้อยกว่าเฮติที่เกิดในปีเดียวกันหลายร้อยเท่า', detail: 'ชิลีมีมาตรฐานอาคารต้านแผ่นดินไหวที่เข้มงวด เป็นตัวอย่างว่าการออกแบบอาคารสำคัญกว่าขนาดของแผ่นดินไหว', deaths: 'ราว 500 คน' },
+      { lo: 160.4, la: 52.5, kind: 'q', tag: '2025 · M 8.8', title: 'แผ่นดินไหวคัมชัตคา รัสเซีย', short: 'ใหญ่ที่สุดในโลกนับจากปี 2011 มีการเตือนสึนามิทั่วแปซิฟิก', detail: 'เกิดในเขตมุดตัวคูริล–คัมชัตคา ซึ่งเคยเกิด M 9.0 ในปี 1952 ระบบเตือนภัยสึนามิหลายประเทศสั่งอพยพชายฝั่ง', deaths: 'ความสูญเสียจำกัด เทียบกับขนาด' },
+      { lo: 95.92, la: 22.0, kind: 'q', tag: '2025 · M 7.7', title: 'แผ่นดินไหวเมียนมา (รอยเลื่อนสะกาย)', short: 'รู้สึกได้ทั่วไทย ตึกที่กำลังก่อสร้างในกรุงเทพฯ ถล่ม ห่างจุดศูนย์กลางราว 1,000 กม.', detail: 'รอยเลื่อนแบบเลื่อนผ่านแตกยาวหลายร้อยกิโลเมตร ดินอ่อนของแอ่งกรุงเทพฯ ขยายการสั่นคาบยาว ทำให้อาคารสูงโยกแรง เป็นเหตุให้ทบทวนมาตรฐานอาคารและการเตือนภัยในไทย', deaths: 'ในเมียนมามากกว่า 3,700 คน ในไทยที่ตึกถล่มอย่างน้อย 86 คน (รายงาน พ.ค. 2568)' },
+      { lo: 37.04, la: 37.17, kind: 'q', tag: '2023 · M 7.8', title: 'แผ่นดินไหวตุรกี–ซีเรีย', short: 'เกิดสองครั้งใหญ่ในวันเดียว อาคารจำนวนมากพังทลาย', detail: 'รอยเลื่อนอนาโตเลียตะวันออก (แบบเลื่อนผ่าน) อาคารจำนวนมากไม่เป็นไปตามมาตรฐานที่มีอยู่ ทำให้ความสูญเสียสูงมาก', deaths: 'มากกว่า 59,000 คน' },
+      { lo: 103.32, la: 31.0, kind: 'q', tag: '2008 · M 7.9', title: 'แผ่นดินไหวเวิ่นชวน จีน', short: 'อาคารเรียนจำนวนมากพัง นำไปสู่การปรับมาตรฐานอาคาร', detail: 'แผ่นอินเดียดันชนแผ่นยูเรเซีย ทำให้เทือกเขาหลงเหมินชานยกตัว', deaths: 'ราว 87,000 คน (เสียชีวิตและสูญหาย)' },
+      { lo: 84.73, la: 28.23, kind: 'q', tag: '2015 · M 7.8', title: 'แผ่นดินไหวกอร์ข่า เนปาล', short: 'เกิดจากแผ่นอินเดียมุดใต้เทือกเขาหิมาลัย มีหิมะถล่มบนเอเวอเรสต์', detail: 'แผ่นอินเดียเคลื่อนขึ้นเหนือราว 4–5 ซม. ต่อปี ความเค้นสะสมตามแนวหิมาลัยจึงปลดปล่อยเป็นแผ่นดินไหวใหญ่เป็นระยะ', deaths: 'ราว 9,000 คน' },
+      { lo: -72.53, la: 18.46, kind: 'q', tag: '2010 · M 7.0', title: 'แผ่นดินไหวเฮติ', short: 'ขนาดไม่ใหญ่มาก แต่ใกล้เมืองหลวงและอาคารไม่ต้านแผ่นดินไหว', detail: 'จุดศูนย์กลางตื้นและอยู่ใกล้กรุงปอร์โตแปรงซ์ ตัวเลขผู้เสียชีวิตยังเป็นที่ถกเถียง', deaths: 'ประมาณ 100,000–316,000 คน (ตัวเลขยังไม่ตรงกัน)' },
+      { lo: 99.67, la: 19.67, kind: 'q', tag: '2014 · M 6.1–6.3', title: 'แผ่นดินไหวแม่ลาว เชียงราย', short: 'หนึ่งในแผ่นดินไหวที่แรงที่สุดที่วัดได้ในประเทศไทย', detail: 'เกิดบนรอยเลื่อนพะเยา บ้าน วัด โรงเรียน และถนนเสียหายจำนวนมาก USGS รายงาน M 6.1 กรมอุตุนิยมวิทยารายงาน 6.3', deaths: 'ผู้เสียชีวิตน้อย แต่ความเสียหายต่ออาคารสูง' },
+      { lo: 118.0, la: -8.25, kind: 'v', tag: '1815 · VEI 7', title: 'ภูเขาไฟตัมโบรา อินโดนีเซีย', short: 'การปะทุที่รุนแรงที่สุดในประวัติศาสตร์ที่มีการบันทึก', detail: 'เถ้าและก๊าซกำมะถันในชั้นบรรยากาศทำให้ปี 1816 ถูกเรียกว่า “ปีที่ไม่มีฤดูร้อน” พืชผลเสียหายในหลายทวีป', deaths: 'หลายหมื่นคน รวมจากความอดอยากหลังการปะทุ' },
+      { lo: 105.42, la: -6.1, kind: 'v', tag: '1883 · VEI 6', title: 'ภูเขาไฟกรากะตัว อินโดนีเซีย', short: 'เสียงระเบิดได้ยินไกลหลายพันกิโลเมตร สึนามิถล่มชายฝั่งชวาและสุมาตรา', detail: 'คลื่นความดันอากาศเดินทางรอบโลกหลายรอบ ผู้เสียชีวิตส่วนใหญ่มาจากสึนามิ', deaths: 'ราว 36,000 คน' },
+      { lo: 120.35, la: 15.13, kind: 'v', tag: '1991 · VEI 6', title: 'ภูเขาไฟปินาตูโบ ฟิลิปปินส์', short: 'การอพยพล่วงหน้าจากการเฝ้าระวังช่วยชีวิตคนได้หลายหมื่นคน', detail: 'ละอองกำมะถันในชั้นสตราโทสเฟียร์ทำให้อุณหภูมิเฉลี่ยโลกลดลงราว 0.5 °C ในปีต่อมา', deaths: 'หลายร้อยคน ส่วนใหญ่จากหลังคาถล่มเพราะเถ้าเปียก' },
+      { lo: -175.38, la: -20.55, kind: 'v', tag: '2022', title: 'ภูเขาไฟฮุงกา ตองกา–ฮุงกา ฮาอะไป', short: 'ภูเขาไฟใต้ทะเลระเบิด คลื่นความดันอากาศวัดได้ทั่วโลก', detail: 'ส่งไอน้ำปริมาณมหาศาลขึ้นสู่ชั้นสตราโทสเฟียร์ สายเคเบิลใต้ทะเลขาด ตองกาขาดการติดต่อกับโลกภายนอกหลายวัน', deaths: 'ไม่กี่คน' },
+      { lo: -19.62, la: 63.63, kind: 'v', tag: '2010', title: 'ภูเขาไฟเอยาฟยาตลาเยอคุตล์ ไอซ์แลนด์', short: 'การปะทุขนาดกลาง แต่ทำให้เที่ยวบินในยุโรปหยุดหลายวัน', detail: 'เถ้าภูเขาไฟละเอียดเป็นอันตรายต่อเครื่องยนต์ไอพ่น ตัวอย่างว่าภูเขาไฟส่งผลกระทบไกลกว่าพื้นที่รอบ ๆ', deaths: 'ไม่มีรายงานผู้เสียชีวิตโดยตรง' },
+      { lo: -122.18, la: 46.2, kind: 'v', tag: '1980 · VEI 5', title: 'ภูเขาไฟเซนต์เฮเลนส์ สหรัฐฯ', short: 'ด้านข้างภูเขาถล่มแล้วระเบิดออกทางด้านข้าง', detail: 'เป็นการปะทุที่ได้รับการศึกษาละเอียดที่สุดครั้งหนึ่ง และเป็นที่มาของระบบเฝ้าระวังภูเขาไฟสมัยใหม่ของสหรัฐฯ', deaths: '57 คน' }
+    ];
+  }
+
+  renderVals() {
+    var self = this, s = this.state, D = this.D;
+    var zoomList = [
+      { id: 'world', name: 'ทั้งโลก', vb: [0, 0, 1000, 500] },
+      { id: 'sea', name: 'เอเชียตะวันออกเฉียงใต้', vb: [700, 170, 220, 110] },
+      { id: 'japan', name: 'ญี่ปุ่นและแปซิฟิกตะวันตก', vb: [820, 100, 160, 80] },
+      { id: 'andes', name: 'อเมริกาใต้ (แอนดีส)', vb: [240, 230, 180, 90] },
+      { id: 'hima', name: 'หิมาลัยถึงเมดิเตอร์เรเนียน', vb: [520, 90, 260, 130] }
+    ];
+    var Z = zoomList.filter(function (z) { return z.id === s.zoom; })[0] || zoomList[0];
+    var k = Math.pow(Z.vb[2] / 1000, 0.75);
+    var f1 = function (v) { return v.toFixed(1); };
+    var selQ = s.sel.kind === 'q' ? s.sel.i : -1, selV = s.sel.kind === 'v' ? s.sel.i : -1, selE = s.sel.kind === 'e' ? s.sel.i : -1;
+    var norm = function (c) { return c === 'United States of America' ? 'United States' : c; };
+    var hl = s.hl;
+
+    var quakes = [], nq = 0;
+    if (s.showQuakes) D.quakes.forEach(function (q, i) {
+      if (q[2] < s.minM - 1e-9) return;
+      nq++;
+      var on = !hl || norm(q[4]) === hl, isSel = i === selQ;
+      quakes.push({
+        x: q[0], y: q[1], r: f1((1.4 + (q[2] - 7) * 1.7) * k), fill: q[2] >= 8 ? '#B04A0C' : q[2] >= 7.5 ? '#F08A3C' : '#F5C77A',
+        op: on ? 0.85 : 0.12, stroke: isSel ? '#0F2A3A' : (hl && on ? '#0F2A3A' : '#FFFFFF'), sw: isSel ? 2.5 : 0.6,
+        pick: function () { self.setState({ sel: { kind: 'q', i: i } }); }
+      });
+    });
+    var volcs = [];
+    if (s.showVolc) D.volcanoes.forEach(function (v, i) {
+      var on = !hl || norm(v[3]) === hl, isSel = i === selV, a = 4.2 * k;
+      volcs.push({
+        d: 'M' + f1(v[0]) + ',' + f1(v[1] - a) + ' L' + f1(v[0] + a * 0.9) + ',' + f1(v[1] + a * 0.7) + ' L' + f1(v[0] - a * 0.9) + ',' + f1(v[1] + a * 0.7) + ' Z',
+        op: on ? 0.9 : 0.12, stroke: isSel ? '#F5C77A' : '#FFFFFF', sw: isSel ? 2.5 : 0.5,
+        pick: function () { self.setState({ sel: { kind: 'v', i: i } }); }
+      });
+    });
+    var EV = this.eventList();
+    var star = function (x, y, a) {
+      var p = [];
+      for (var j = 0; j < 10; j++) { var ang = -Math.PI / 2 + j * Math.PI / 5, rr = j % 2 ? a * 0.45 : a; p.push(f1(x + rr * Math.cos(ang)) + ',' + f1(y + rr * Math.sin(ang))); }
+      return 'M' + p.join(' L') + ' Z';
+    };
+    var events = [];
+    if (s.showEvents) EV.forEach(function (e, i) {
+      var x = (e.lo + 180) / 360 * 1000, y = (90 - e.la) / 180 * 500;
+      events.push({ d: star(x, y, 7 * k), stroke: i === selE ? '#B04A0C' : '#0F2A3A', sw: i === selE ? 2.5 : 1.2, pick: function () { self.setState({ sel: { kind: 'e', i: i } }); } });
+    });
+
+    // info panel
+    var info;
+    if (selQ >= 0) {
+      var q = D.quakes[selQ], E = Math.pow(10, 1.5 * q[2] + 4.8), mt = E / 4.184e15;
+      info = {
+        kind: 'แผ่นดินไหว', title: 'M ' + q[2].toFixed(1) + ' · ปี ' + q[3],
+        rows: [{ k: 'พื้นที่', v: this.thName(q[4]) }, { k: 'พลังงานโดยประมาณ', v: (E >= 1e18 ? (E / 1e18).toFixed(1) + ' × 10¹⁸ J' : (E / 1e15).toFixed(0) + ' × 10¹⁵ J') }, { k: 'เทียบเท่า TNT', v: (mt >= 1 ? mt.toFixed(1) + ' เมกะตัน' : (mt * 1000).toFixed(0) + ' กิโลตัน') }],
+        text: 'ขนาดใหญ่ขึ้น 1 ระดับ ปล่อยพลังงานมากขึ้นราว 32 เท่า ความรุนแรงที่ผู้คนรู้สึกยังขึ้นกับระยะทาง ความลึก และชนิดของดิน',
+        src: 'ข้อมูล: USGS ComCat (1965–2016) · พลังงานจาก log₁₀E = 1.5M + 4.8'
+      };
+    } else if (selV >= 0) {
+      var v = D.volcanoes[selV];
+      info = {
+        kind: 'ภูเขาไฟ', title: v[2],
+        rows: [{ k: 'ประเทศ/พื้นที่', v: this.thName(v[3]) }, { k: 'ชนิด', v: this.volcType(v[4]) }, { k: 'ความสูง', v: v[5].toLocaleString('en-US') + ' ม.' + (v[5] < 0 ? ' (ใต้ทะเล)' : '') }],
+        text: 'ปะทุครั้งล่าสุดในปี 1964 หรือหลังจากนั้น (รหัส D1 ในฐานข้อมูล) จึงยังนับว่ามีพลัง',
+        src: 'ข้อมูล: Smithsonian Global Volcanism Program'
+      };
+    } else if (selE >= 0) {
+      var e = EV[selE];
+      info = { kind: e.kind === 'q' ? 'เหตุการณ์แผ่นดินไหวสำคัญ' : 'เหตุการณ์ภูเขาไฟสำคัญ', title: e.title, rows: [{ k: 'ปีและขนาด', v: e.tag }, { k: 'ผู้เสียชีวิตโดยประมาณ', v: e.deaths }], text: e.short + '\n\n' + e.detail, src: 'ข้อมูล: USGS, NOAA NCEI, Smithsonian GVP และรายงานข่าว ดูหน้าแหล่งข้อมูล' };
+    } else {
+      info = { kind: 'วิธีใช้', title: 'กดจุดบนแผนที่', rows: [], text: 'วงกลมคือแผ่นดินไหว ยิ่งใหญ่ยิ่งรุนแรง สามเหลี่ยมคือภูเขาไฟ ดาวคือเหตุการณ์สำคัญ\n\nสังเกตว่าแผ่นดินไหวและภูเขาไฟส่วนใหญ่เรียงตัวตามรอยต่อแผ่นเปลือกโลก โดยเฉพาะ “วงแหวนแห่งไฟ” รอบมหาสมุทรแปซิฟิก', src: '' };
+    }
+
+    // charts
+    var maxQ = D.quakeStats[0][1];
+    var qBar = function (r) {
+      var c = norm(r[0]), on = hl === c;
+      return {
+        name: self.thName(r[0]), w6: ((r[1] - r[2]) / maxQ * 100).toFixed(2) + '%', w7: (r[2] / maxQ * 100).toFixed(2) + '%',
+        label: r[1] + ' / ' + r[2], bg: on ? '#EAF3F7' : 'transparent', weight: on ? 700 : 500, pressed: on ? 'true' : 'false',
+        pick: function () { self.setState({ hl: self.state.hl === c ? null : c, sel: { kind: 'none' } }); }
+      };
+    };
+    var qBars = D.quakeStats.slice(0, 12).map(qBar);
+    var seaNames = ['Myanmar', 'Laos', 'Malaysia', 'Vietnam', 'Thailand'];
+    var seaBars = seaNames.map(function (n) {
+      var r = D.quakeStats.filter(function (x) { return x[0] === n; })[0] || [n, 0, 0, 0, 0];
+      var o = qBar(r); var m30 = 30;
+      o.w6 = ((r[1] - r[2]) / m30 * 100).toFixed(2) + '%'; o.w7 = (r[2] / m30 * 100).toFixed(2) + '%';
+      o.label = r[1] + ' · max ' + (r[4] ? r[4].toFixed(1) : '–');
+      return o;
+    });
+    seaBars.push({ name: self.thName('Cambodia'), w6: '0%', w7: '0%', label: '0', bg: 'transparent', weight: 500, pressed: 'false', pick: function () {} });
+    var maxV = D.volcanoStats[0][1];
+    var vBars = D.volcanoStats.slice(0, 12).map(function (r) {
+      var c = r[0], on = hl === c;
+      return {
+        name: self.thName(r[0]), wr: (r[2] / maxV * 100).toFixed(2) + '%', wa: ((r[1] - r[2]) / maxV * 100).toFixed(2) + '%',
+        label: r[1] + ' / ' + r[2], bg: on ? '#F6E9EE' : 'transparent', weight: on ? 700 : 500, pressed: on ? 'true' : 'false',
+        pick: function () { self.setState({ hl: self.state.hl === c ? null : c, sel: { kind: 'none' } }); }
+      };
+    });
+    var py = [['M 8+', 1], ['M 7–7.9', 15], ['M 6–6.9', 134], ['M 5–5.9', 1319], ['M 4–4.9', 13000], ['M 3–3.9', 130000]];
+    var perYear = py.map(function (r) { return { name: r[0], w: (Math.log10(r[1] + 1) / Math.log10(130001) * 100).toFixed(1) + '%', label: r[1].toLocaleString('en-US') }; });
+
+    var eventCards = EV.map(function (e, i) { return { tag: e.tag, title: e.title, short: e.short, border: i === selE ? '#B04A0C' : '#D5DEE3', pick: function () { self.setState({ sel: { kind: 'e', i: i }, showEvents: true }); } }; });
+
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+    var toggle = function (key) { return function () { var o = {}; o[key] = !self.state[key]; self.setState(o); }; };
+
+    return {
+      landD: D.landD, subD: D.sub, otherD: D.other,
+      viewBox: Z.vb.join(' '), mapLabel: 'แผนที่โลก ' + Z.name + ' แสดงแผ่นดินไหว ' + nq + ' ครั้ง และภูเขาไฟ ' + volcs.length + ' ลูก',
+      quakes: quakes, volcs: volcs, events: events, info: info,
+      countLabel: 'แผ่นดินไหว ' + nq + ' · ภูเขาไฟ ' + volcs.length + (hl ? ' · ไฮไลต์: ' + this.thName(hl) : ''),
+      showPlates: s.showPlates, showQuakes: s.showQuakes, showVolc: s.showVolc, showEvents: s.showEvents,
+      tPlates: toggle('showPlates'), tQuakes: toggle('showQuakes'), tVolc: toggle('showVolc'), tEvents: toggle('showEvents'),
+      minM: s.minM, minMLabel: s.minM.toFixed(1), setMinM: function (e) { self.setState({ minM: parseFloat(e.target.value) }); },
+      zooms: zoomList.map(function (z) { var p = pill(z.id === s.zoom); return { name: z.name, pressed: z.id === s.zoom ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ zoom: z.id }); } }; }),
+      zoomSEA: function () { self.setState({ zoom: 'sea' }); },
+      qBars: qBars, vBars: vBars, seaBars: seaBars, perYear: perYear, eventCards: eventCards
+    };
+  }
+}
+</script>
+</body>
+</html>

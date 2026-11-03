@@ -1,34 +1,60 @@
 #!/usr/bin/env bash
-# Rebuild every simulator page from the canvas sources in src/.
+# Rebuild every simulator page, in Thai and English, from the canvas sources in src/.
+#   Thai pages:    ocean-waves/  camera-lab/
+#   English pages: en/index.html  en/ocean-waves/  en/camera-lab/
+# English text comes from tools/i18n/en.json; the build stops if any Thai text has
+# no translation, so add new strings there when you add or edit a page.
 # Usage: bash tools/build.sh
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PY="python3 tools/dc2html.py"
-HOME_CRUMB=(--crumb "หน้าหลัก=../index.html")
+EN=(--lang en --dict tools/i18n/en.json --runtime ../../shared/dc-runtime.js)
+
+# page <src> <thai-out> <english-out> <thai crumbs...> -- <english crumbs...>
+page() {
+  local src=$1 th=$2 en=$3; shift 3
+  local th_crumbs=() en_crumbs=()
+  while [[ $1 != -- ]]; do th_crumbs+=(--crumb "$1"); shift; done; shift
+  while [[ $# -gt 0 ]]; do en_crumbs+=(--crumb "$1"); shift; done
+  $PY "$src" "$th" "${RENAMES[@]}" "${th_crumbs[@]}" --alt "English=../en/$th"
+  $PY "$src" "en/$en" "${RENAMES[@]}" "${EN[@]}" "${en_crumbs[@]}" --alt "ไทย=../../$th"
+}
 
 # ---------- Ocean Wave Simulator ----------
-W=(--rename Main.dc.html=index.html --rename Uses.dc.html=uses.html)
-$PY src/ocean-waves/Main.dc.html ocean-waves/index.html "${W[@]}" "${HOME_CRUMB[@]}" \
-  --crumb "Ocean Wave Simulator="
-$PY src/ocean-waves/Uses.dc.html ocean-waves/uses.html "${W[@]}" "${HOME_CRUMB[@]}" \
-  --crumb "Ocean Wave Simulator=index.html" --crumb "ประโยชน์ของคลื่นทะเล="
+RENAMES=(--rename Main.dc.html=index.html --rename Uses.dc.html=uses.html)
+page src/ocean-waves/Main.dc.html ocean-waves/index.html ocean-waves/index.html \
+  "หน้าหลัก=../index.html" "Ocean Wave Simulator=" -- \
+  "Home=../index.html" "Ocean Wave Simulator="
+page src/ocean-waves/Uses.dc.html ocean-waves/uses.html ocean-waves/uses.html \
+  "หน้าหลัก=../index.html" "Ocean Wave Simulator=index.html" "ประโยชน์ของคลื่นทะเล=" -- \
+  "Home=../index.html" "Ocean Wave Simulator=index.html" "Uses of ocean waves="
 
 # ---------- Camera Lab ----------
-C=(--rename Main.dc.html=index.html)
-declare -A TITLE=(
-  [Lens]="01 เลนส์และระยะโฟกัส"
-  [Sensor]="02 แสงและเซนเซอร์"
-  [Fusion]="03 หลายกล้องและการประมวลผลภาพ"
-  [Spatial]="04 กล้องคู่และ Spatial"
-  [Stabilize]="05 ระบบกันสั่น"
-  [Environment]="06 อุณหภูมิ ความชื้น รังสี"
-)
 ORDER=(Lens Sensor Fusion Spatial Stabilize Environment)
-for n in "${ORDER[@]}"; do C+=(--rename "$n.dc.html=${n,,}.html"); done
+declare -A TH=(
+  [Lens]="01 เลนส์และระยะโฟกัส"            [Sensor]="02 แสงและเซนเซอร์"
+  [Fusion]="03 หลายกล้องและการประมวลผลภาพ"  [Spatial]="04 กล้องคู่และ Spatial"
+  [Stabilize]="05 ระบบกันสั่น"              [Environment]="06 อุณหภูมิ ความชื้น รังสี"
+)
+declare -A ENT=(
+  [Lens]="01 Lenses and focal length"      [Sensor]="02 Light and sensor"
+  [Fusion]="03 Multi-camera and ISP"       [Spatial]="04 Stereo cameras and Spatial"
+  [Stabilize]="05 Stabilisation"           [Environment]="06 Temperature, humidity, radiation"
+)
+RENAMES=(--rename Main.dc.html=index.html)
+for n in "${ORDER[@]}"; do RENAMES+=(--rename "$n.dc.html=${n,,}.html"); done
 
-$PY src/camera-lab/Main.dc.html camera-lab/index.html "${C[@]}" "${HOME_CRUMB[@]}" --crumb "Camera Lab="
+page src/camera-lab/Main.dc.html camera-lab/index.html camera-lab/index.html \
+  "หน้าหลัก=../index.html" "Camera Lab=" -- "Home=../index.html" "Camera Lab="
 for n in "${ORDER[@]}"; do
-  $PY "src/camera-lab/$n.dc.html" "camera-lab/${n,,}.html" "${C[@]}" "${HOME_CRUMB[@]}" \
-    --crumb "Camera Lab=index.html" --crumb "${TITLE[$n]}="
+  page "src/camera-lab/$n.dc.html" "camera-lab/${n,,}.html" "camera-lab/${n,,}.html" \
+    "หน้าหลัก=../index.html" "Camera Lab=index.html" "${TH[$n]}=" -- \
+    "Home=../index.html" "Camera Lab=index.html" "${ENT[$n]}="
 done
-echo "built ocean-waves/ and camera-lab/"
+
+# ---------- English landing page ----------
+$PY index.html en/index.html --plain --lang en --dict tools/i18n/en.json \
+  --replace 'href="en/index.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="Switch to English">=>href="../index.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai">' \
+  --replace '</svg>English</a>=></svg>ไทย</a>' \
+  --replace "document.documentElement.lang === 'th' && localStorage=>false && localStorage"
+echo "built Thai + English pages"

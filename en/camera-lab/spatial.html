@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stereo cameras and Spatial</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">04 Stereo cameras and Spatial</span><a class="ps-lang" href="../../camera-lab/spatial.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="fusion.html" style="min-height: 44px; display: inline-flex; align-items: center">← Multi-camera and image processing</a>
+<a href="stabilize.html" style="min-height: 44px; display: inline-flex; align-items: center">Next: stabilisation →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">Experiment 04</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Stereo cameras, 3D images and Spatial Photo/Video</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Close one eye at a time and look at your finger: it jumps back and forth, while distant things barely move. That difference is called disparity, and brains and computers use it to compute depth: Z = f × B ÷ d</p>
+</header>
+
+<div role="group" aria-label="Example stereo systems" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="5">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 52px; padding: 8px 16px; border-radius: 14px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.3">{{p.name}}<br><span style="font-size: 12px; font-weight: 500; color: {{p.sub}}">{{p.desc}}</span></button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap"><span style="font-weight: 700; font-size: 17px">Top-down view</span><span style="font-size: 13px; color: #4A5D6A">Camera spacing is exaggerated to be visible, not to scale</span></div>
+<svg viewBox="0 0 1120 440" style="display: block; width: 100%; height: auto" role="img" aria-label="{{topLabel}}">
+<rect x="0" y="0" width="1120" height="440" fill="#FBFCFD"></rect>
+<path d="M0,40 L140,20 L300,44 L460,16 L640,40 L820,22 L1000,46 L1120,30" fill="none" stroke="#9AAAB4" stroke-width="2"></path>
+<text x="16" y="70" font-size="14" fill="#4A5D6A">Very distant background (looks almost the same in both cameras)</text>
+<line x1="{{camL}}" y1="400" x2="560" y2="{{objY}}" stroke="#0A6A94" stroke-width="2"></line>
+<line x1="{{camR}}" y1="400" x2="560" y2="{{objY}}" stroke="#E07A2E" stroke-width="2"></line>
+<line x1="{{camL}}" y1="400" x2="{{camL}}" y2="30" stroke="#0A6A94" stroke-width="1" stroke-dasharray="4 6"></line>
+<line x1="{{camR}}" y1="400" x2="{{camR}}" y2="30" stroke="#E07A2E" stroke-width="1" stroke-dasharray="4 6"></line>
+<circle cx="560" cy="{{objY}}" r="14" fill="#0F2A3A"></circle>
+<text x="582" y="{{objLabelY}}" font-size="16" font-weight="600" fill="#0F2A3A">Object at Z = {{zLabel}}</text>
+<rect x="{{camLx}}" y="392" width="24" height="18" rx="3" fill="#0A6A94"></rect>
+<rect x="{{camRx}}" y="392" width="24" height="18" rx="3" fill="#B04A0C"></rect>
+<line x1="{{camL}}" y1="426" x2="{{camR}}" y2="426" stroke="#0F2A3A" stroke-width="1.5"></line>
+<text x="560" y="420" font-size="15" text-anchor="middle" fill="#0F2A3A">B = {{bLabel}}</text>
+<text x="{{camLtx}}" y="436" font-size="13" text-anchor="end" fill="#0A4F70">Left camera</text>
+<text x="{{camRtx}}" y="436" font-size="13" fill="#7E3407">Right camera</text>
+</svg>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-weight: 700; font-size: 17px">What each camera sees (1,920 pixels wide)</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #0A4F70">Left camera</div>
+<svg viewBox="0 0 400 120" style="display: block; width: 100%; height: auto; border-radius: 8px" role="img" aria-label="Image from the left camera">
+<rect x="0" y="0" width="400" height="120" fill="#DDEBF2"></rect>
+<path d="M0,60 L60,40 L120,62 L200,34 L280,58 L340,42 L400,60 L400,120 L0,120 Z" fill="#B9CCD6"></path>
+<line x1="200" y1="0" x2="200" y2="120" stroke="#4A5D6A" stroke-width="1" stroke-dasharray="3 4"></line>
+<circle cx="{{imgL}}" cy="80" r="{{objR}}" fill="#0F2A3A"></circle>
+</svg>
+</div>
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #7E3407">Right camera</div>
+<svg viewBox="0 0 400 120" style="display: block; width: 100%; height: auto; border-radius: 8px" role="img" aria-label="Image from the right camera">
+<rect x="0" y="0" width="400" height="120" fill="#DDEBF2"></rect>
+<path d="M0,60 L60,40 L120,62 L200,34 L280,58 L340,42 L400,60 L400,120 L0,120 Z" fill="#B9CCD6"></path>
+<line x1="200" y1="0" x2="200" y2="120" stroke="#4A5D6A" stroke-width="1" stroke-dasharray="3 4"></line>
+<circle cx="{{imgR}}" cy="80" r="{{objR}}" fill="#0F2A3A"></circle>
+</svg>
+</div>
+</div>
+<div style="font-size: 14px; line-height: 1.6; color: #4A5D6A">The background mountains stay in the same place in both images, but the near object shifts away from the centre line. The nearer it is, the more it shifts.</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="4">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #0F2A3A">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Controls</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sp-b" style="font-size: 14px; font-weight: 600">Camera baseline (B)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{bLabel}}</span></div>
+<input id="sp-b" type="range" min="0" max="100" step="1" value="{{bv}}" onChange="{{setB}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sp-z" style="font-size: 14px; font-weight: 600">Object distance (Z)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{zLabel}}</span></div>
+<input id="sp-z" type="range" min="0" max="100" step="1" value="{{zv}}" onChange="{{setZ}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sp-f" style="font-size: 14px; font-weight: 600">Horizontal field of view</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{fovLabel}}</span></div>
+<input id="sp-f" type="range" min="30" max="100" step="1" value="{{fov}}" onChange="{{setFov}}">
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">Result</div>
+<div style="font-size: 19px; font-weight: 700">{{verdict.title}}</div>
+<div style="font-size: 15px; line-height: 1.65; color: #D9E8EF">{{verdict.text}}</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; font-size: 14px; line-height: 1.7; color: #34495A"><strong style="color: #0F2A3A">Key rule</strong><br>Range error grows with Z². Twice as far means 4× the error. The fix is to spread the cameras farther apart (larger B) or use a zoom lens (larger f).</div>
+</div>
+</div>
+
+<section style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: clamp(18px, 3vw, 28px); display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">How a phone shoots Spatial Photo/Video with two lenses</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A">Supported iPhone models pair the main (wide) camera with the ultra-wide, shooting at the same time as the left-eye and right-eye images. You hold the phone in landscape so the two lenses sit side by side like eyes. The challenge is that the two cameras aren’t identical, so the ISP first has to turn them into a matched pair.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">1</div><div style="font-weight: 700">Capture together</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">Sync both sensors to the same moment every frame, or moving things end up in the wrong place</div></div>
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">2</div><div style="font-weight: 700">Crop to the same view</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">The ultra-wide sees much more, so it is cropped to match the main camera’s field of view (see the frames in experiment 03)</div></div>
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">3</div><div style="font-weight: 700">Match colour and light</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">The two sensors differ in colour, sharpness and noise. They must be matched, or your two eyes see conflicting images and you feel dizzy.</div></div>
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">4</div><div style="font-weight: 700">Align the images</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">Correct lens distortion and rotate the images so their pixel rows line up (rectification), leaving only the horizontal difference</div></div>
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">5</div><div style="font-weight: 700">Store both views in one file</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">Video is encoded as MV-HEVC, which stores the second eye as the difference from the first, so the file isn’t twice as big</div></div>
+<div style="flex: 1 1 180px; background: #0F2A3A; color: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #9FD0E6">6</div><div style="font-weight: 700">Show each eye its own view</div><div style="font-size: 14px; line-height: 1.6; color: #D9E8EF">A VR/MR headset sends the left image to the left eye and the right to the right eye; the brain fuses them into an image with depth</div></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #4A5D6A">Phone lenses are much closer together than human eyes (about 6.3 cm). Try “Phone stereo pair” above: depth is clear only for near objects, so phone Spatial photos suit people or things within a few metres.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">Where else is stereo vision used?</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Robots and AMRs</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">Stereo depth cameras help factory and warehouse robots avoid obstacles, locate parts and pick items from bins (bin picking)</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Cars and driver assistance</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">A camera pair behind the windscreen measures the distance to the car ahead and to pedestrians, for emergency braking and adaptive cruise control, e.g. Subaru’s EyeSight</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Mars rovers</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">Navigation and hazard-avoidance cameras come in pairs and build 3D maps of the surface, so the rover can pick its own route, since signals from Earth take many minutes</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Drones</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">Camera pairs around the body watch for trees, power lines and walls so the drone can brake or fly around them automatically</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Medicine and surgery</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">Stereo microscopes for delicate surgery and 3D endoscopes on surgical robots help surgeons judge depth</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Mapping and surveying</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">The same area is photographed from two angles by aircraft, drones or satellites (photogrammetry). The baseline is hundreds of metres to kilometres, so mountain and building heights can be measured.</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">VR/MR headsets</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">Front cameras film the real world for each eye (passthrough), and depth data places virtual objects onto real tables and walls</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Quality inspection and 3D film</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">Production lines measure part shapes; 3D film crews use two cameras on one rig with adjustable spacing for each scene</p></div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700">Other depth methods often used alongside</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px"><strong>LiDAR / ToF</strong><div style="font-size: 14px; line-height: 1.6; color: #34495A; margin-top: 4px">Fires infrared light and times its return. Works in the dark and on plain walls with no texture.</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px"><strong>Structured light</strong><div style="font-size: 14px; line-height: 1.6; color: #34495A; margin-top: 4px">Projects infrared dots or patterns onto the object and checks how they distort, e.g. face-scanning systems.</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px"><strong>Dual-pixel</strong><div style="font-size: 14px; line-height: 1.6; color: #34495A; margin-top: 4px">Splits each pixel into left and right halves: a tiny stereo pair inside one lens, used for autofocus and background separation.</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px"><strong>AI from a single image</strong><div style="font-size: 14px; line-height: 1.6; color: #34495A; margin-top: 4px">A model learns depth from object shapes and sizes. Works with one camera, but it’s an estimate, not a measurement.</div></div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1600}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { pid: 'phone', B: 20, Z: 1.5, fov: 70 };
+  }
+
+  presetList() {
+    return [
+      { id: 'phone', name: 'Phone stereo pair', desc: 'e.g. B ≈ 2 cm', B: 20, Z: 1.5, fov: 70 },
+      { id: 'eye', name: 'Human eyes', desc: 'B ≈ 6.3 cm', B: 63, Z: 3, fov: 60 },
+      { id: 'robot', name: 'Robot depth camera', desc: 'e.g. B ≈ 5 cm', B: 50, Z: 2, fov: 87 },
+      { id: 'car', name: 'Car stereo camera', desc: 'e.g. B ≈ 35 cm', B: 350, Z: 40, fov: 40 },
+      { id: 'rover', name: 'Mars rovers', desc: 'e.g. B ≈ 40 cm', B: 400, Z: 10, fov: 45 }
+    ];
+  }
+
+  fmtLen(m) {
+    if (m >= 1) return (m >= 10 ? m.toFixed(0) : m.toFixed(1)) + ' m';
+    if (m >= 0.01) return (m * 100).toFixed(m >= 0.1 ? 0 : 1) + ' cm';
+    return (m * 1000).toFixed(1) + ' mm';
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var BMIN = Math.log10(5), BMAX = Math.log10(1000), ZMIN = Math.log10(0.2), ZMAX = Math.log10(200);
+    var Bm = s.B / 1000, Z = s.Z;
+    var fpx = 960 / Math.tan(s.fov / 2 * Math.PI / 180);
+    var d = fpx * Bm / Z;
+    var dd = 0.25;
+    var err = Z * Z * dd / (fpx * Bm);
+    var z10 = 0.1 * fpx * Bm / dd;
+
+    // top view drawing
+    var half = Math.max(14, Math.min(260, 40 * Math.log10(s.B) + 10));
+    var camL = 560 - half, camR = 560 + half;
+    var objY = 380 - (Math.log10(Z / 0.2) / Math.log10(1000)) * 300;
+    var sc = 400 / 1920;
+    var imgL = 200 + Math.min(220, d / 2 * sc), imgR = 200 - Math.min(220, d / 2 * sc);
+    var objR = Math.max(4, Math.min(30, 30 / Math.sqrt(Z)));
+
+    var verdict;
+    if (d < 1) verdict = { title: 'Almost no depth visible', text: 'The two images differ by less than 1 pixel, so the system can’t separate this object from the background. Increase B or move closer.' };
+    else if (err / Z > 0.1) verdict = { title: 'Depth visible, but range isn’t accurate', text: 'There’s enough difference to feel 3D, but used to measure distance the error would exceed 10%' };
+    else if (d > 150) verdict = { title: 'Very strong depth, may overwhelm the eyes', text: 'The object is too close: the two images differ so much the eyes struggle to fuse them. In a Spatial photo this can cause eye strain.' };
+    else verdict = { title: 'Just right', text: 'A clear 3D effect and accurate enough ranging for real work' };
+
+    var readouts = [
+      { label: 'Disparity', value: d >= 10 ? d.toFixed(0) + ' px' : d.toFixed(2) + ' px', sub: 'How far the object shifts between the left and right images' },
+      { label: 'Range error', value: '± ' + this.fmtLen(err), sub: 'when pixel matching is off by 0.25 px' },
+      { label: 'Accurate to 10% out to', value: this.fmtLen(z10), sub: 'Beyond this, measurements become less reliable' },
+      { label: 'Focal length in pixels', value: Math.round(fpx) + ' px', sub: 'f in the formula Z = f × B ÷ d' }
+    ];
+
+    var presets = this.presetList();
+    return {
+      presets: presets.map(function (p) { var on = p.id === s.pid; return { name: p.name, desc: p.desc, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', sub: on ? '#E1F0F7' : '#4A5D6A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ pid: p.id, B: p.B, Z: p.Z, fov: p.fov }); } }; }),
+      camL: camL.toFixed(1), camR: camR.toFixed(1), camLx: (camL - 12).toFixed(1), camRx: (camR - 12).toFixed(1),
+      camLtx: (camL - 16).toFixed(1), camRtx: (camR + 16).toFixed(1),
+      objY: objY.toFixed(1), objLabelY: (objY + 6).toFixed(1),
+      imgL: imgL.toFixed(1), imgR: imgR.toFixed(1), objR: objR.toFixed(1),
+      bLabel: s.B >= 100 ? (s.B / 10).toFixed(0) + ' cm' : s.B >= 10 ? (s.B / 10).toFixed(1) + ' cm' : s.B.toFixed(0) + ' mm',
+      zLabel: this.fmtLen(Z), fovLabel: s.fov + '°', fov: s.fov,
+      bv: Math.round((Math.log10(s.B) - BMIN) / (BMAX - BMIN) * 100),
+      zv: Math.round((Math.log10(Z) - ZMIN) / (ZMAX - ZMIN) * 100),
+      setB: function (e) { self.setState({ B: Math.pow(10, BMIN + parseFloat(e.target.value) / 100 * (BMAX - BMIN)) }); },
+      setZ: function (e) { self.setState({ Z: Math.pow(10, ZMIN + parseFloat(e.target.value) / 100 * (ZMAX - ZMIN)) }); },
+      setFov: function (e) { self.setState({ fov: parseFloat(e.target.value) }); },
+      topLabel: 'Top-down diagram of two cameras spaced ' + s.B.toFixed(0) + ' mm apart, viewing an object at ' + this.fmtLen(Z),
+      readouts: readouts, verdict: verdict
+    };
+  }
+}
+</script>
+</body>
+</html>

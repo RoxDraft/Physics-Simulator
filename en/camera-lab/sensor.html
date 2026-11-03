@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Light and sensor size</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">02 Light and sensor</span><a class="ps-lang" href="../../camera-lab/sensor.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="lens.html" style="min-height: 44px; display: inline-flex; align-items: center">← Lenses and focal length</a>
+<a href="fusion.html" style="min-height: 44px; display: inline-flex; align-items: center">Next: multi-camera and image processing →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 860px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">Experiment 02</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Light and sensor size</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">A sensor is a grid of tiny buckets that count photons. Photons arrive randomly, like raindrops; when only a few are counted, that randomness shows up as grain (noise). The image below simulates real photon counting pixel by pixel.</p>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC">
+<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
+<span style="font-weight: 700; font-size: 17px">What the sensor recorded</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{expo.bg}}; color: {{expo.fg}}">{{expo.label}}</span>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button type="button" onClick="{{auto}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Auto exposure</button>
+<button type="button" onClick="{{reroll}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Take another shot</button>
+</div>
+</div>
+<div role="img" aria-label="{{imgLabel}}" style="display: grid; grid-template-columns: repeat(40, minmax(0, 1fr)); background: #000000">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="960">
+<div style="aspect-ratio: 1; background: {{c.bg}}"></div>
+</sc-for>
+</div>
+<div style="padding: 10px 16px; font-size: 13px; color: #4A5D6A; border-top: 1px solid #E3E9EC">Test scene: a gradient wall, a bright lamp and a 7-step grey reference strip at the bottom. Each cell is one pixel (enlarged).</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="4">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #0F2A3A">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">Lighting</h2>
+<div role="group" aria-label="Lighting" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{lights}}" as="l" hint-placeholder-count="6">
+<button type="button" onClick="{{l.pick}}" aria-pressed="{{l.pressed}}" style="min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 1.5px solid {{l.border}}; background: {{l.bg}}; color: {{l.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.3">{{l.name}}<br><span style="font-size: 12px; font-weight: 500; color: {{l.sub}}">{{l.lux}}</span></button>
+</sc-for>
+</div>
+<h2 style="margin: 8px 0 0; font-size: 17px; font-weight: 700">Sensor size (all 12 megapixels)</h2>
+<div role="group" aria-label="Sensor size" style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{sensors}}" as="s" hint-placeholder-count="5">
+<button type="button" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" style="min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 1.5px solid {{s.border}}; background: {{s.bg}}; color: {{s.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px">
+<span>{{s.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{s.sub}}">pixel {{s.pitch}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">The exposure triangle</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ss-n" style="font-size: 14px; font-weight: 600">Aperture</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{nLabel}}</span></div>
+<input id="ss-n" type="range" min="1.4" max="11" step="0.1" value="{{N}}" onChange="{{setN}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ss-t" style="font-size: 14px; font-weight: 600">Shutter speed</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{tLabel}}</span></div>
+<input id="ss-t" type="range" min="0" max="100" step="1" value="{{tv}}" onChange="{{setT}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ss-i" style="font-size: 14px; font-weight: 600">ISO (signal gain)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{isoLabel}}</span></div>
+<input id="ss-i" type="range" min="0" max="100" step="1" value="{{iv}}" onChange="{{setI}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ss-k" style="font-size: 14px; font-weight: 600">Night mode: stacked frames</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{kLabel}}</span></div>
+<input id="ss-k" type="range" min="1" max="16" step="1" value="{{k}}" onChange="{{setK}}">
+</div>
+</div>
+</div>
+</div>
+
+<section style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700">Signal-to-noise ratio (SNR) for every sensor size at the current settings</h2>
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px"><span style="font-weight: {{b.weight}}">{{b.name}}</span><span style="font-family: 'IBM Plex Mono', monospace">{{b.value}}</span></div>
+<div style="height: 14px; background: #E3E9EC; border-radius: 7px; overflow: hidden"><div style="height: 14px; width: {{b.width}}; background: {{b.color}}; border-radius: 7px"></div></div>
+</div>
+</sc-for>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #4A5D6A">SNR = signal ÷ noise; higher is smoother. Photon noise equals √(number of photons), so a sensor with 4× the area only gets 2× better SNR.</p>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700">Things to try</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">1. Choose “Street at night” and press Auto exposure: the image is bright enough but full of grain, because ISO only amplifies the signal; it adds no photons.</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">2. Switch to full frame: the grain drops at once, because bigger pixels collect more photons.</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">3. Go back to the phone and raise Night mode to 9–16 frames: phones make up for small sensors by shooting many frames and averaging them.</p>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1400}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { light: 'room', sensor: 'phone', N: 1.8, tv: 70, iv: 26, k: 1, seed: 7 };
+  }
+
+  lightList() {
+    return [
+      { id: 'sun', name: 'Bright sun', lux: 50000 },
+      { id: 'cloud', name: 'Overcast', lux: 5000 },
+      { id: 'office', name: 'Office', lux: 400 },
+      { id: 'room', name: 'Living room at night', lux: 50 },
+      { id: 'street', name: 'Street at night', lux: 5 },
+      { id: 'moon', name: 'Moonlight', lux: 0.2 }
+    ];
+  }
+
+  sensorList() {
+    return [
+      { id: 'phoneS', name: 'Phone, secondary camera (1/3.6″)', pitch: 1.0 },
+      { id: 'phone', name: 'Phone, main camera (1/1.3″)', pitch: 2.45 },
+      { id: 'one', name: '1-inch compact', pitch: 3.3 },
+      { id: 'apsc', name: 'Mirrorless APS-C', pitch: 5.9 },
+      { id: 'ff', name: 'Mirrorless full frame', pitch: 9.0 }
+    ];
+  }
+
+  tFrom(v) { return Math.pow(10, -3.903 + v / 100 * 3.903); }
+  isoFrom(v) { return 50 * Math.pow(2, v / 100 * 8); }
+
+  model(lux, pitch, N, t, iso, k) {
+    var A = pitch * pitch;
+    var nmid = 4100 * lux * 0.18 / (4 * N * N) * t * A * 0.6;
+    var expRatio = (lux * 0.18 / Math.PI) * iso * t / (12.5 * N * N);
+    var read = 2;
+    var snr = nmid / Math.sqrt(nmid + read * read) * Math.sqrt(k);
+    return { nmid: nmid, expRatio: expRatio, snr: snr, full: 3500 * A, read: read };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var lights = this.lightList(), sensors = this.sensorList();
+    var L = lights.filter(function (x) { return x.id === s.light; })[0];
+    var S = sensors.filter(function (x) { return x.id === s.sensor; })[0];
+    var t = this.tFrom(s.tv), iso = this.isoFrom(s.iv);
+    var m = this.model(L.lux, S.pitch, s.N, t, iso, s.k);
+
+    // seeded random
+    var a = s.seed * 2654435761 >>> 0;
+    var rand = function () { a |= 0; a = a + 0x6D2B79F5 | 0; var q = Math.imul(a ^ a >>> 15, 1 | a); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+    var gauss = function () { var u1 = Math.max(rand(), 1e-9), u2 = rand(); return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2); };
+
+    var steps = [0.03, 0.06, 0.12, 0.18, 0.35, 0.6, 0.9];
+    var scene = function (x, y) {
+      var dx = x - 30, dy = y - 6;
+      if (dx * dx + dy * dy <= 7) return 4;
+      if (dx * dx + dy * dy <= 14) return 1.2;
+      if (y >= 17 && y <= 21 && x >= 2 && x <= 36) return steps[Math.min(6, Math.floor((x - 2) / 5))];
+      if (x >= 4 && x <= 13 && y >= 3 && y <= 12) return (x === 4 || x === 13 || y === 3 || y === 12 || x === 8 || x === 9) ? 0.04 : 0.45;
+      return 0.04 + 0.4 * (x / 39) + 0.05 * (1 - y / 23);
+    };
+    var cells = [];
+    for (var y = 0; y < 24; y++) {
+      for (var x = 0; x < 40; x++) {
+        var r = scene(x, y);
+        var mean = m.nmid * r / 0.18;
+        var sd = Math.sqrt(mean + m.read * m.read) / Math.sqrt(s.k);
+        var e = Math.max(0, mean + sd * gauss());
+        e = Math.min(e, m.full);
+        var lin = m.nmid > 0 ? e / m.nmid * 0.18 * m.expRatio : 0;
+        var g = Math.round(Math.pow(Math.max(0, Math.min(1, lin)), 1 / 2.2) * 255);
+        cells.push({ bg: 'rgb(' + g + ',' + g + ',' + g + ')' });
+      }
+    }
+
+    var stops = Math.log2(Math.max(m.expRatio, 1e-6));
+    var expo;
+    if (Math.abs(stops) < 0.4) expo = { label: 'Well exposed', bg: '#DDEFF6', fg: '#0A4F70' };
+    else if (stops > 0) expo = { label: 'Overexposed by ' + stops.toFixed(1) + ' stops', bg: '#FCE3CF', fg: '#7E3407' };
+    else expo = { label: 'Underexposed by ' + Math.abs(stops).toFixed(1) + ' stops', bg: '#FCE3CF', fg: '#7E3407' };
+
+    var fmtT = function (tt) { return tt >= 0.3 ? tt.toFixed(1) + ' s' : '1/' + Math.round(1 / tt) + ' s'; };
+    var snrDb = 20 * Math.log10(Math.max(m.snr, 0.01));
+    var totalT = t * s.k;
+    var readouts = [
+      { label: 'Photons per pixel (mid-grey)', value: m.nmid >= 100 ? Math.round(m.nmid).toLocaleString('en-US') : m.nmid.toFixed(1), sub: 'per frame; noise ≈ √' + (m.nmid >= 100 ? Math.round(m.nmid) : m.nmid.toFixed(1)) },
+      { label: 'SNR at mid-grey', value: m.snr.toFixed(1) + ' (' + snrDb.toFixed(0) + ' dB)', sub: m.snr > 20 ? 'Smooth' : m.snr > 8 ? 'Grain starting to show' : 'Very grainy, detail lost' },
+      { label: 'Total capture time', value: fmtT(totalT), sub: totalT > 1 / 30 ? 'Long enough for hand shake to blur (see experiment 05)' : 'Fast enough to freeze hand shake' },
+      { label: 'Pixel full-well capacity', value: Math.round(m.full).toLocaleString('en-US') + ' e⁻', sub: 'Beyond this the pixel saturates and turns pure white' }
+    ];
+
+    var maxSnr = 0, bars = [];
+    var self2 = this;
+    sensors.forEach(function (x) { var mm = self2.model(L.lux, x.pitch, s.N, t, iso, s.k); x.snr = mm.snr; maxSnr = Math.max(maxSnr, mm.snr); });
+    sensors.forEach(function (x) {
+      var on = x.id === S.id;
+      bars.push({ name: x.name, value: x.snr.toFixed(1), width: (Math.max(2, x.snr / maxSnr * 100)).toFixed(1) + '%', color: on ? '#B04A0C' : '#0A6A94', weight: on ? 700 : 500 });
+    });
+
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', sub: '#E1F0F7', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', sub: '#4A5D6A', border: '#C9D4DA' }; };
+
+    return {
+      cells: cells,
+      imgLabel: 'Simulated image from the ' + S.name + ' in ' + L.name + ' ' + expo.label,
+      expo: expo, readouts: readouts, bars: bars,
+      lights: lights.map(function (x) { var p = pill(x.id === s.light); return { name: x.name, lux: '≈ ' + x.lux.toLocaleString('en-US') + ' lux', pressed: x.id === s.light ? 'true' : 'false', bg: p.bg, fg: p.fg, sub: p.sub, border: p.border, pick: function () { self.setState({ light: x.id }); } }; }),
+      sensors: sensors.map(function (x) { var p = pill(x.id === s.sensor); return { name: x.name, pitch: x.pitch.toFixed(1) + ' µm', pressed: x.id === s.sensor ? 'true' : 'false', bg: p.bg, fg: p.fg, sub: p.sub, border: p.border, pick: function () { self.setState({ sensor: x.id }); } }; }),
+      N: s.N, tv: s.tv, iv: s.iv, k: s.k,
+      nLabel: 'f/' + s.N.toFixed(1), tLabel: fmtT(t), isoLabel: 'ISO ' + Math.round(iso), kLabel: s.k === 1 ? 'Off (1 frame)' : s.k + ' frames',
+      setN: function (e) { self.setState({ N: parseFloat(e.target.value) }); },
+      setT: function (e) { self.setState({ tv: parseFloat(e.target.value) }); },
+      setI: function (e) { self.setState({ iv: parseFloat(e.target.value) }); },
+      setK: function (e) { self.setState({ k: parseInt(e.target.value, 10) }); },
+      reroll: function () { self.setState({ seed: self.state.seed + 1 }); },
+      auto: function () {
+        var st = self.state, Lx = self.lightList().filter(function (x) { return x.id === st.light; })[0];
+        var tt = self.tFrom(st.tv);
+        var need = 12.5 * st.N * st.N * Math.PI / (Lx.lux * 0.18 * tt);
+        if (need < 50) { tt = 12.5 * st.N * st.N * Math.PI / (Lx.lux * 0.18 * 50); need = 50; }
+        if (need > 12800 && tt < 1 / 15) { tt = 1 / 15; need = 12.5 * st.N * st.N * Math.PI / (Lx.lux * 0.18 * tt); }
+        need = Math.max(50, Math.min(12800, need));
+        tt = Math.max(1 / 8000, Math.min(1, tt));
+        self.setState({ iv: Math.log2(need / 50) / 8 * 100, tv: (Math.log10(tt) + 3.903) / 3.903 * 100 });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

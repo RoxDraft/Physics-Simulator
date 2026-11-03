@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lenses and focal length</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">01 Lenses and focal length</span><a class="ps-lang" href="../../camera-lab/lens.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">← Camera Lab</a>
+<a href="sensor.html" style="min-height: 44px; display: inline-flex; align-items: center">Next: light and sensor →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 860px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">Experiment 01</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Lenses and focal length</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Move the object in and out and change the focal length. See where the image forms, how big it is and whether it flips. Every device on this page uses the same rule: 1/f = 1/u + 1/v</p>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<svg viewBox="0 0 1120 440" style="display: block; width: 100%; height: auto" role="img" aria-label="{{svgLabel}}">
+<rect x="0" y="0" width="1120" height="440" fill="#FBFCFD"></rect>
+<line x1="0" y1="220" x2="1120" y2="220" stroke="#9AAAB4" stroke-width="1.5"></line>
+<ellipse cx="600" cy="220" rx="14" ry="170" fill="#D7EBF4" stroke="#0A6A94" stroke-width="2"></ellipse>
+<circle cx="{{fL}}" cy="220" r="5" fill="#0F2A3A"></circle>
+<circle cx="{{fR}}" cy="220" r="5" fill="#0F2A3A"></circle>
+<circle cx="{{f2L}}" cy="220" r="3.5" fill="#9AAAB4"></circle>
+<circle cx="{{f2R}}" cy="220" r="3.5" fill="#9AAAB4"></circle>
+<text x="{{fL}}" y="246" font-size="15" text-anchor="middle" fill="#0F2A3A">F</text>
+<text x="{{fR}}" y="246" font-size="15" text-anchor="middle" fill="#0F2A3A">F′</text>
+<text x="{{f2L}}" y="246" font-size="13" text-anchor="middle" fill="#4A5D6A">2F</text>
+<text x="{{f2R}}" y="246" font-size="13" text-anchor="middle" fill="#4A5D6A">2F′</text>
+<path d="{{raysPath}}" fill="none" stroke="#E07A2E" stroke-width="2"></path>
+<path d="{{virtualPath}}" fill="none" stroke="#E07A2E" stroke-width="1.5" stroke-dasharray="6 6"></path>
+<line x1="{{scrX}}" y1="70" x2="{{scrX}}" y2="370" stroke="#4A5D6A" stroke-width="5" stroke-linecap="round" opacity="{{scrOpacity}}"></line>
+<text x="{{scrX}}" y="392" font-size="14" text-anchor="middle" fill="#4A5D6A" opacity="{{scrOpacity}}">Screen / sensor</text>
+<path d="{{objPath}}" fill="none" stroke="#0F2A3A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="{{imgPath}}" fill="none" stroke="#0A6A94" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="{{imgDash}}"></path>
+<text x="{{objLabelX}}" y="140" font-size="15" text-anchor="middle" fill="#0F2A3A">Object</text>
+<text x="{{imgLabelX}}" y="{{imgLabelY}}" font-size="15" text-anchor="middle" fill="#0A6A94">{{imgLabel}}</text>
+<text x="24" y="32" font-size="15" fill="#4A5D6A">Scale: 1 screen unit ≈ 1 mm</text>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">What you see</h2>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{view.bg}}; color: {{view.fg}}">{{view.badge}}</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">Actual object</div>
+<svg viewBox="0 0 320 220" style="display: block; width: 100%; height: auto; border-radius: 10px; background: #EAF3F7" role="img" aria-label="Sample object: a tree, the sun and the letter F">
+<g transform="translate(160 110) scale(1.5) translate(-50 -50)">
+<circle cx="80" cy="20" r="10" fill="#F5C77A"></circle>
+<rect x="20" y="55" width="8" height="27" fill="#7A5A3A"></rect>
+<circle cx="24" cy="46" r="16" fill="#3F6B3F"></circle>
+<rect x="50" y="34" width="8" height="48" fill="#0F2A3A"></rect>
+<rect x="50" y="34" width="28" height="8" fill="#0F2A3A"></rect>
+<rect x="50" y="54" width="20" height="8" fill="#0F2A3A"></rect>
+<rect x="-10" y="82" width="120" height="6" fill="#B89B74"></rect>
+</g>
+</svg>
+</div>
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{view.title}}</div>
+<svg viewBox="0 0 320 220" style="display: block; width: 100%; height: auto; border-radius: 10px; background: {{view.ground}}" role="img" aria-label="{{view.aria}}">
+<g style="filter: blur({{view.blur}}px)" opacity="{{view.opacity}}">
+<g transform="{{view.transform}}">
+<circle cx="80" cy="20" r="10" fill="#F5C77A"></circle>
+<rect x="20" y="55" width="8" height="27" fill="#7A5A3A"></rect>
+<circle cx="24" cy="46" r="16" fill="#3F6B3F"></circle>
+<rect x="50" y="34" width="8" height="48" fill="#0F2A3A"></rect>
+<rect x="50" y="34" width="28" height="8" fill="#0F2A3A"></rect>
+<rect x="50" y="54" width="20" height="8" fill="#0F2A3A"></rect>
+<rect x="-10" y="82" width="120" height="6" fill="#B89B74"></rect>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">{{view.text}}</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="4">
+<div style="flex: 1 1 200px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #0F2A3A">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 18px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Controls</h2>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="ln-u" style="font-weight: 600; font-size: 15px">Object distance (u)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{uLabel}}</span></div>
+<input id="ln-u" type="range" min="30" max="560" step="1" value="{{u}}" onChange="{{setU}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="ln-f" style="font-weight: 600; font-size: 15px">Focal length (f)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{fLabel}}</span></div>
+<input id="ln-f" type="range" min="40" max="240" step="1" value="{{f}}" onChange="{{setF}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="ln-s" style="font-weight: 600; font-size: 15px">Screen / sensor distance</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{sLabel}}</span></div>
+<input id="ln-s" type="range" min="20" max="520" step="1" value="{{sPos}}" onChange="{{setS}}">
+<div style="font-size: 13px; color: #4A5D6A">Drag it yourself to find the sharpest point (manual focus)</div>
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input type="checkbox" checked="{{af}}" onChange="{{toggleAf}}" style="width: 22px; height: 22px; accent-color: #0A6A94">Autofocus (screen follows the image)</label>
+<button type="button" onClick="{{togglePlay}}" style="min-height: 48px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: {{playBg}}; color: {{playFg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">Right now this is like a</div>
+<div style="font-size: 20px; font-weight: 700">{{zone.title}}</div>
+<div style="font-size: 15px; line-height: 1.65; color: #D9E8EF">{{zone.text}}</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; font-size: 14px; line-height: 1.7; color: #34495A">
+<strong style="color: #0F2A3A">How to read the diagram</strong><br>
+The orange lines are the 3 principal rays: a ray parallel to the axis bends through F′, a ray through the centre goes straight, and a ray through F leaves parallel to the axis. Where the rays cross is where the image forms. Dashed lines show a virtual image: the eye sees it, but a screen can’t catch it.
+</div>
+</div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">Lenses in real devices</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+
+<div style="flex: 1 1 340px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">Phone camera</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">The real lens is tiny and moves only a few microns to focus</h3>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><label for="ph-f" style="font-size: 14px; font-weight: 600">Actual focal length</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{phone.fLabel}}</span></div>
+<input id="ph-f" type="range" min="2" max="10" step="0.1" value="{{phoneF}}" onChange="{{setPhoneF}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><label for="ph-s" style="font-size: 14px; font-weight: 600">Sensor diagonal</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{phone.sLabel}}</span></div>
+<input id="ph-s" type="range" min="4" max="16" step="0.1" value="{{phoneS}}" onChange="{{setPhoneS}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><label for="ph-d" style="font-size: 14px; font-weight: 600">Distance to subject</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{phone.dLabel}}</span></div>
+<input id="ph-d" type="range" min="5" max="300" step="1" value="{{phoneD}}" onChange="{{setPhoneD}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #E3E9EC; padding-top: 12px; font-size: 15px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Full-frame equivalent</span><strong style="font-family: 'IBM Plex Mono', monospace">{{phone.eq}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Field of view (diagonal)</span><strong style="font-family: 'IBM Plex Mono', monospace">{{phone.fov}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>How far the lens must move out</span><strong style="font-family: 'IBM Plex Mono', monospace">{{phone.travel}}</strong></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #4A5D6A">A tiny voice-coil motor (VCM) moves the lens by a hair’s width or less to focus from near to far. The advertised “24 mm” is the equivalent focal length, not the real one.</p>
+</div>
+
+<div style="flex: 1 1 340px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">Microscope</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">Two-stage magnification: objective × eyepiece</h3>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><label for="mi-o" style="font-size: 14px; font-weight: 600">Objective f</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{micro.oLabel}}</span></div>
+<input id="mi-o" type="range" min="1.6" max="40" step="0.1" value="{{microO}}" onChange="{{setMicroO}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><label for="mi-e" style="font-size: 14px; font-weight: 600">Eyepiece f</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{micro.eLabel}}</span></div>
+<input id="mi-e" type="range" min="10" max="50" step="0.5" value="{{microE}}" onChange="{{setMicroE}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #E3E9EC; padding-top: 12px; font-size: 15px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Objective magnification (160 ÷ f)</span><strong style="font-family: 'IBM Plex Mono', monospace">{{micro.mo}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Eyepiece magnification (250 ÷ f)</span><strong style="font-family: 'IBM Plex Mono', monospace">{{micro.me}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Total magnification</span><strong style="font-family: 'IBM Plex Mono', monospace; color: #B04A0C">{{micro.total}}</strong></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #4A5D6A">The objective places the specimen just beyond F (the F-to-2F zone in the diagram above) to form a magnified real image; the eyepiece then acts as a magnifier on that image, over the standard 160 mm tube length.</p>
+</div>
+
+<div style="flex: 1 1 340px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">Telescope</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">Big aperture = more light + more detail</h3>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><label for="te-o" style="font-size: 14px; font-weight: 600">Objective lens/mirror f</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{tele.oLabel}}</span></div>
+<input id="te-o" type="range" min="300" max="2500" step="10" value="{{teleO}}" onChange="{{setTeleO}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><label for="te-e" style="font-size: 14px; font-weight: 600">Eyepiece f</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{tele.eLabel}}</span></div>
+<input id="te-e" type="range" min="4" max="40" step="0.5" value="{{teleE}}" onChange="{{setTeleE}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><label for="te-d" style="font-size: 14px; font-weight: 600">Aperture diameter (D)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{tele.dLabel}}</span></div>
+<input id="te-d" type="range" min="50" max="300" step="5" value="{{teleD}}" onChange="{{setTeleD}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #E3E9EC; padding-top: 12px; font-size: 15px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Magnification (objective f ÷ eyepiece f)</span><strong style="font-family: 'IBM Plex Mono', monospace; color: #B04A0C">{{tele.mag}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Light gathered vs. the human eye</span><strong style="font-family: 'IBM Plex Mono', monospace">{{tele.light}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Resolves detail down to</span><strong style="font-family: 'IBM Plex Mono', monospace">{{tele.res}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Maximum useful magnification</span><strong style="font-family: 'IBM Plex Mono', monospace">{{tele.maxMag}}</strong></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #4A5D6A">{{tele.note}}</p>
+</div>
+
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1500}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { u: 380, f: 140, sPos: 222, af: true, playing: false, phase: 0, phoneF: 6.9, phoneS: 12.4, phoneD: 50, microO: 16, microE: 25, teleO: 900, teleE: 20, teleD: 90 };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing) {
+        var ph = self.state.phase + dt * 0.45;
+        self.setState({ phase: ph, u: Math.round(295 + 265 * Math.cos(ph)) });
+      }
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  screenPos() {
+    var s = this.state;
+    if (s.af && Math.abs(s.u - s.f) >= 2 && s.u > s.f) {
+      var v = s.u * s.f / (s.u - s.f);
+      return Math.max(20, Math.min(520, v));
+    }
+    return s.sPos;
+  }
+
+  setter(key) {
+    var self = this;
+    return function (e) { var o = {}; o[key] = parseFloat(e.target.value); self.setState(o); };
+  }
+
+  renderVals() {
+    var s = this.state, u = s.u, f = s.f;
+    var LX = 600, AX = 220, H = 60, XR = 1120;
+    var xo = LX - u, yo = AX - H;
+    var r1 = function (v) { return v.toFixed(1); };
+    var rays = '', virt = '', imgPath = '', imgDash = 'none';
+    var v = null, m = null, xi = null, yi = null, kind;
+    var nearF = Math.abs(u - f) < 2;
+
+    // ray 1: parallel then through F'
+    var y1end = yo + (H / f) * (XR - LX);
+    rays += 'M' + xo + ',' + yo + ' L' + LX + ',' + yo + ' L' + XR + ',' + r1(y1end) + ' ';
+    // ray 2: through centre
+    var y2end = AX + (H / u) * (XR - LX);
+    rays += 'M' + xo + ',' + yo + ' L' + XR + ',' + r1(y2end) + ' ';
+
+    if (!nearF) {
+      v = u * f / (u - f);
+      m = -v / u;
+      xi = LX + v;
+      yi = AX - H * m;
+      if (u > f) {
+        var y3 = yo + (H / (u - f)) * u;
+        if (Math.abs(y3 - AX) < 400) rays += 'M' + xo + ',' + yo + ' L' + LX + ',' + r1(y3) + ' L' + XR + ',' + r1(y3) + ' ';
+        kind = 'real';
+      } else {
+        kind = 'virtual';
+        virt = 'M' + LX + ',' + yo + ' L' + r1(xi) + ',' + r1(yi) + ' M' + xo + ',' + yo + ' L' + r1(xi) + ',' + r1(yi);
+        imgDash = '8 6';
+      }
+      var head = yi < AX ? 1 : -1;
+      imgPath = 'M' + r1(xi) + ',' + AX + ' L' + r1(xi) + ',' + r1(yi) + ' M' + r1(xi - 8) + ',' + r1(yi + head * 12) + ' L' + r1(xi) + ',' + r1(yi) + ' L' + r1(xi + 8) + ',' + r1(yi + head * 12);
+    } else {
+      kind = 'inf';
+    }
+    var objPath = 'M' + xo + ',' + AX + ' L' + xo + ',' + yo + ' M' + (xo - 8) + ',' + (yo + 12) + ' L' + xo + ',' + yo + ' L' + (xo + 8) + ',' + (yo + 12);
+
+    var zone;
+    if (kind === 'inf') zone = { title: 'Torch / car headlight', text: 'The object sits exactly at the focal point, so light leaves the lens as a parallel beam and the image forms at infinity' };
+    else if (u > 2 * f) zone = { title: 'Camera and the human eye', text: 'The object is beyond 2F: a real, inverted image smaller than the object, so a wide scene fits onto a small sensor' };
+    else if (u > f) zone = { title: 'Microscope objective / projector', text: 'The object is between F and 2F: a real, inverted image larger than the object. The closer to F, the bigger and farther the image' };
+    else zone = { title: 'Magnifying glass / eyepiece', text: 'The object is inside F: a virtual, upright, magnified image on the same side as the object. You only see it by looking through the lens' };
+
+    var inView = xi !== null && xi > 0 && xi < XR;
+    var readouts = [
+      { label: 'Image distance (v)', value: kind === 'inf' ? '∞' : (kind === 'virtual' ? '−' : '') + Math.abs(v).toFixed(0) + ' mm', sub: kind === 'virtual' ? 'Negative = virtual image on the object side' : (inView || kind === 'inf' ? 'Measured from the lens to the right' : 'The image lies beyond the edge of the view') },
+      { label: 'Magnification (m = −v/u)', value: kind === 'inf' ? '∞' : Math.abs(m).toFixed(2) + '×', sub: kind === 'inf' ? '' : (Math.abs(m) > 1 ? 'Image larger than the object' : 'Image smaller than the object') },
+      { label: 'Image type', value: kind === 'real' ? 'Real image' : kind === 'virtual' ? 'Virtual image' : 'No image', sub: kind === 'real' ? 'Inverted; can be caught on a screen or sensor' : kind === 'virtual' ? 'Upright; seen only through the lens' : 'Light leaves in parallel' },
+      { label: 'Object distance relative to f', value: (u / f).toFixed(2) + ' f', sub: 'over 2 = reduced, 1 to 2 = enlarged, under 1 = magnifier' }
+    ];
+
+    // phone
+    var pf = s.phoneF, ps = s.phoneS, pd = s.phoneD * 10;
+    var travel = pf * pf / (pd - pf) * 1000;
+    var phone = {
+      fLabel: pf.toFixed(1) + ' mm', sLabel: ps.toFixed(1) + ' mm', dLabel: s.phoneD + ' cm',
+      eq: (pf * 43.27 / ps).toFixed(0) + ' mm',
+      fov: (2 * Math.atan(ps / (2 * pf)) * 180 / Math.PI).toFixed(0) + '°',
+      travel: travel >= 1000 ? (travel / 1000).toFixed(2) + ' mm' : travel.toFixed(0) + ' µm'
+    };
+    var mo = 160 / s.microO, me = 250 / s.microE;
+    var micro = { oLabel: s.microO.toFixed(1) + ' mm', eLabel: s.microE.toFixed(1) + ' mm', mo: mo.toFixed(1) + '×', me: me.toFixed(1) + '×', total: (mo * me).toFixed(0) + '×' };
+    var tm = s.teleO / s.teleE, maxM = 2 * s.teleD;
+    var tele = {
+      oLabel: s.teleO + ' mm', eLabel: s.teleE.toFixed(1) + ' mm', dLabel: s.teleD + ' mm',
+      mag: tm.toFixed(0) + '×',
+      light: Math.round(Math.pow(s.teleD / 7, 2)) + ' ×',
+      res: (116 / s.teleD).toFixed(2) + ' arcsec',
+      maxMag: maxM + '×',
+      note: tm > maxM ? 'Magnification beyond what the aperture supports: the image gets bigger but blurrier, with no extra detail (empty magnification). Try an eyepiece with a longer f.' : 'Magnification is within the useful range. The real limit on detail is the aperture size, not the magnification.'
+    };
+
+    // ---------- screen and "what you see" preview ----------
+    var self = this;
+    var sp = this.screenPos();
+    var clampK = function (k) { return Math.max(0.08, Math.min(4.5, k)); };
+    var view;
+    if (kind === 'real') {
+      var A = 40;
+      var c = A * Math.abs(sp - v) / v;
+      var blurPx = Math.min(16, c * 0.55);
+      var k = clampK(1.5 * Math.abs(m));
+      var beyond = v > 520;
+      var sharp = blurPx < 0.6;
+      view = {
+        title: 'Image on the screen / sensor',
+        badge: sharp ? 'Sharp' : beyond ? 'Image is beyond the screen' : 'Out of focus',
+        bg: sharp ? '#DDEFF6' : '#FCE3CF', fg: sharp ? '#0A4F70' : '#7E3407',
+        ground: '#F3EFE6',
+        transform: 'translate(160 110) scale(' + (-k).toFixed(3) + ' ' + (-k).toFixed(3) + ') translate(-50 -50)',
+        blur: blurPx.toFixed(2), opacity: 1,
+        aria: 'Real, inverted image on the screen, size ' + Math.abs(m).toFixed(2) + ' × the object',
+        text: beyond
+          ? 'The image forms farther away than the screen can reach, so it is always blurry. Try moving the object farther from F.'
+          : sharp
+            ? 'A real image is flipped upside down and left to right (rotated 180°), size ' + Math.abs(m).toFixed(2) + ' ×. Camera sensors and our retinas receive the image upside down like this too, and it is flipped back afterwards.'
+            : 'The screen is away from the image position by ' + Math.abs(sp - v).toFixed(0) + ' mm, so light from each point spreads into a blur spot (circle of confusion). Move the screen or turn on autofocus.'
+      };
+    } else if (kind === 'virtual') {
+      var k2 = clampK(1.5 * Math.abs(m));
+      view = {
+        title: 'Looking through the lens',
+        badge: 'Virtual image, magnified ' + Math.abs(m).toFixed(1) + '×',
+        bg: '#DDEFF6', fg: '#0A4F70', ground: '#EAF3F7',
+        transform: 'translate(160 110) scale(' + k2.toFixed(3) + ' ' + k2.toFixed(3) + ') translate(-50 -50)',
+        blur: 0, opacity: 1,
+        aria: 'Upright virtual image, magnified ' + Math.abs(m).toFixed(1) + ' ×',
+        text: 'Like a magnifying glass: the image is upright and bigger, but no screen can catch it because the rays never actually cross. You have to look through the lens and let your eye bring the light together.'
+      };
+    } else {
+      view = {
+        title: 'Image on the screen / sensor', badge: 'No image', bg: '#FCE3CF', fg: '#7E3407', ground: '#F3EFE6',
+        transform: 'translate(160 110) scale(4) translate(-50 -50)', blur: 16, opacity: 0.6,
+        aria: 'No image: light leaves in parallel',
+        text: 'The object sits exactly at the focal point and light leaves as a parallel beam. A screen at any distance only shows a diffuse glow.'
+      };
+    }
+
+    return {
+      sPos: Math.round(sp), sLabel: Math.round(sp) + ' mm', af: s.af,
+      scrX: (LX + sp).toFixed(1), scrOpacity: kind === 'virtual' ? 0.25 : 1,
+      view: view,
+      setS: function (e) { self.setState({ sPos: parseFloat(e.target.value), af: false }); },
+      toggleAf: function () { self.setState({ sPos: self.screenPos(), af: !self.state.af }); },
+      togglePlay: function () { var on = !self.state.playing; self.setState({ playing: on, phase: on ? Math.acos(Math.max(-1, Math.min(1, (self.state.u - 295) / 265))) : self.state.phase }); },
+      playLabel: s.playing ? 'Stop animation' : 'Play animation: move the object automatically',
+      playBg: s.playing ? '#0A6A94' : '#FFFFFF', playFg: s.playing ? '#FFFFFF' : '#0A6A94',
+      u: u, f: f, uLabel: u + ' mm', fLabel: f + ' mm',
+      setU: function (e) { self.setState({ u: parseFloat(e.target.value), playing: false }); }, setF: this.setter('f'),
+      fL: LX - f, fR: LX + f, f2L: LX - 2 * f, f2R: LX + 2 * f,
+      raysPath: rays, virtualPath: virt || 'M0,0', objPath: objPath, imgPath: imgPath || 'M0,0', imgDash: imgDash,
+      objLabelX: xo,
+      imgLabelX: inView ? r1(xi) : -100,
+      imgLabelY: inView ? r1(yi < AX ? yi - 14 : yi + 26) : -100,
+      imgLabel: kind === 'virtual' ? 'Virtual image' : 'Image',
+      svgLabel: 'Ray diagram of a converging lens, object distance ' + u + ' mm, focal length ' + f + ' mm',
+      readouts: readouts, zone: zone,
+      phoneF: pf, phoneS: ps, phoneD: s.phoneD, phone: phone,
+      setPhoneF: this.setter('phoneF'), setPhoneS: this.setter('phoneS'), setPhoneD: this.setter('phoneD'),
+      microO: s.microO, microE: s.microE, micro: micro,
+      setMicroO: this.setter('microO'), setMicroE: this.setter('microE'),
+      teleO: s.teleO, teleE: s.teleE, teleD: s.teleD, tele: tele,
+      setTeleO: this.setter('teleO'), setTeleE: this.setter('teleE'), setTeleD: this.setter('teleD')
+    };
+  }
+}
+</script>
+</body>
+</html>

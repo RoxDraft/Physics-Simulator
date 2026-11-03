@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Multi-camera and image processing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">03 Multi-camera and ISP</span><a class="ps-lang" href="../../camera-lab/fusion.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="sensor.html" style="min-height: 44px; display: inline-flex; align-items: center">← Light and sensor</a>
+<a href="spatial.html" style="min-height: 44px; display: inline-flex; align-items: center">Next: stereo cameras and Spatial →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 860px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">Experiment 03</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Multi-camera and image processing</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Phones have several lenses with different focal lengths, each with its own sensor. The image signal processor (ISP) picks and blends data from every camera, then turns raw sensor data into the picture you see.</p>
+</header>
+
+<section style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 17px">Field of view of each lens (orange frame = current zoom)</div>
+<svg viewBox="0 0 1120 630" style="display: block; width: 100%; height: auto" role="img" aria-label="{{frameLabel}}">
+<rect x="0" y="0" width="1120" height="630" fill="#BFDCEB"></rect>
+<circle cx="840" cy="150" r="60" fill="#F5C77A"></circle>
+<path d="M0,420 L180,300 L330,390 L520,250 L700,380 L880,290 L1120,410 L1120,630 L0,630 Z" fill="#7FA6B8"></path>
+<rect x="420" y="330" width="90" height="300" fill="#2E4B5C"></rect>
+<rect x="520" y="280" width="70" height="350" fill="#3B5D70"></rect>
+<rect x="600" y="360" width="110" height="270" fill="#2E4B5C"></rect>
+<rect x="540" y="300" width="10" height="12" fill="#F5C77A"></rect>
+<rect x="560" y="300" width="10" height="12" fill="#F5C77A"></rect>
+<rect x="540" y="330" width="10" height="12" fill="#F5C77A"></rect>
+<path d="M552,312 l8,-5 l8,5" fill="none" stroke="#0F2A3A" stroke-width="1.5"></path>
+<circle cx="563" cy="318" r="2" fill="#B04A0C"></circle>
+<rect x="0" y="560" width="1120" height="70" fill="#4E6B48"></rect>
+<rect x="{{uw.x}}" y="{{uw.y}}" width="{{uw.w}}" height="{{uw.h}}" fill="none" stroke="#0F2A3A" stroke-width="4"></rect>
+<rect x="{{wd.x}}" y="{{wd.y}}" width="{{wd.w}}" height="{{wd.h}}" fill="none" stroke="#0F2A3A" stroke-width="3" stroke-dasharray="10 6"></rect>
+<rect x="{{te.x}}" y="{{te.y}}" width="{{te.w}}" height="{{te.h}}" fill="none" stroke="#0F2A3A" stroke-width="3" stroke-dasharray="3 5"></rect>
+<rect x="{{cr.x}}" y="{{cr.y}}" width="{{cr.w}}" height="{{cr.h}}" fill="none" stroke="#E07A2E" stroke-width="4"></rect>
+<text x="16" y="34" font-size="18" font-weight="600" fill="#0F2A3A">Ultra-wide 0.5×</text>
+<text x="{{wd.lx}}" y="{{wd.ly}}" font-size="16" font-weight="600" fill="#0F2A3A">Wide 1×</text>
+<text x="{{te.lx}}" y="{{te.ly}}" font-size="14" font-weight="600" fill="#0F2A3A">Tele 3×</text>
+</svg>
+</div>
+</div>
+
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; display: flex; justify-content: space-between; align-items: center; gap: 8px"><span style="font-weight: 700">On screen</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: #B04A0C">{{zLabel}}</span></div>
+<svg viewBox="{{viewBox}}" style="display: block; width: 100%; height: auto; filter: blur({{blurPx}}px)" role="img" aria-label="Sample image at the current zoom level">
+<rect x="0" y="0" width="1120" height="630" fill="#BFDCEB"></rect>
+<circle cx="840" cy="150" r="60" fill="#F5C77A"></circle>
+<path d="M0,420 L180,300 L330,390 L520,250 L700,380 L880,290 L1120,410 L1120,630 L0,630 Z" fill="#7FA6B8"></path>
+<rect x="420" y="330" width="90" height="300" fill="#2E4B5C"></rect>
+<rect x="520" y="280" width="70" height="350" fill="#3B5D70"></rect>
+<rect x="600" y="360" width="110" height="270" fill="#2E4B5C"></rect>
+<rect x="540" y="300" width="10" height="12" fill="#F5C77A"></rect>
+<rect x="560" y="300" width="10" height="12" fill="#F5C77A"></rect>
+<rect x="540" y="330" width="10" height="12" fill="#F5C77A"></rect>
+<path d="M552,312 l8,-5 l8,5" fill="none" stroke="#0F2A3A" stroke-width="1.5"></path>
+<circle cx="563" cy="318" r="2" fill="#B04A0C"></circle>
+<rect x="0" y="560" width="1120" height="70" fill="#4E6B48"></rect>
+</svg>
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<label for="fz-z" style="font-size: 14px; font-weight: 600">Zoom level</label>
+<input id="fz-z" type="range" min="0" max="100" step="1" value="{{zv}}" onChange="{{setZ}}">
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input type="checkbox" checked="{{low}}" onChange="{{toggleLow}}" style="width: 22px; height: 22px; accent-color: #0A6A94">Shooting in low light</label>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; border-top: 1px solid #E3E9EC; padding-top: 10px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Camera in use</span><strong>{{active.name}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Crop from sensor</span><strong style="font-family: 'IBM Plex Mono', monospace">{{cropLabel}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>Remaining resolution</span><strong style="font-family: 'IBM Plex Mono', monospace">{{mpLabel}}</strong></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #4A5D6A">{{zoomNote}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: clamp(18px, 3vw, 28px); display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">ISP: from raw data to image, step by step</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A">Tap each step to see how the image changes. All of this happens inside the chip within a fraction of a second after you press the shutter.</p>
+</div>
+<div role="group" aria-label="Processing steps" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{steps}}" as="st" hint-placeholder-count="7">
+<button type="button" onClick="{{st.pick}}" aria-pressed="{{st.pressed}}" style="min-height: 44px; padding: 6px 14px; border-radius: 10px; border: 1.5px solid {{st.border}}; background: {{st.bg}}; color: {{st.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{st.short}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center">
+<div role="img" aria-label="{{stepTitle}}" style="flex: 1 1 420px; min-width: 0; display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); border-radius: 10px; overflow: hidden; border: 1px solid #D5DEE3">
+<sc-for list="{{patch}}" as="p" hint-placeholder-count="160">
+<div style="aspect-ratio: 1; background: {{p.bg}}"></div>
+</sc-for>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">Step {{stepNo}} / 7</div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 700">{{stepTitle}}</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.75; color: #34495A">{{stepText}}</p>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{prev}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">← Previous</button>
+<button type="button" onClick="{{next}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Next step →</button>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">When several lenses work together</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Seamless camera switching</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">When zoom crosses from one lens to another, the ISP must match the colour, brightness and position of the two cameras so the picture doesn’t jump, because they sit in different places and have different sensors.</p></div>
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Cropping a high-resolution sensor</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">A 48-megapixel sensor cropped 2× in the centre still leaves 12 megapixels, giving an extra “2× lens” without a fourth camera.</p></div>
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">Depth for portrait mode</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Two cameras a little apart see slightly different images. That difference reveals depth, which is used to blur the background (together with LiDAR or AI on some models).</p></div>
+<a href="spatial.html" style="flex: 1 1 260px; text-decoration: none; color: #FFFFFF; background: #0F2A3A; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><span style="font-size: 17px; font-weight: 700">3D Spatial photos</span><span style="font-size: 15px; line-height: 1.65; color: #D9E8EF">Two cameras shoot at once as the left-eye and right-eye images. See how it works in the next experiment →</span></a>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1500}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { zv: 30, low: false, step: 0 };
+  }
+
+  zoomFrom(v) { return 0.5 * Math.pow(30, v / 100); }
+
+  stepList() {
+    return [
+      { short: '1 RAW', title: 'Raw sensor data (Bayer)', text: 'Each pixel has a single colour filter (red, green or blue), so it only knows the brightness of one colour. There are twice as many green pixels because human eyes are most sensitive to green. The data is still linear, so it looks dark and dull.' },
+      { short: '2 Demosaic', title: 'Fill in missing colours (demosaic)', text: 'The ISP estimates each pixel’s missing colours from its neighbours, giving full colour, but still with a green tint because the sensor is more sensitive to green light.' },
+      { short: '3 White balance', title: 'White balance', text: 'Boost red and blue until white objects look white again. The amount depends on the light source, e.g. daylight or an orange incandescent bulb.' },
+      { short: '4 Denoise', title: 'Noise reduction', text: 'Separate random grain from real detail by looking at neighbouring pixels and consecutive frames. Newer phones use AI models for this step.' },
+      { short: '5 HDR', title: 'Merge frames (HDR)', text: 'Several frames at different exposures are merged. The blown-out sun gets its detail back, and shadows are no longer pure black.' },
+      { short: '6 Tone map', title: 'Tone mapping for human vision', text: 'Linear brightness is passed through a gamma curve so the shadows lift the way our eyes perceive them. The image starts to look natural.' },
+      { short: '7 Sharpen + compress', title: 'Sharpening, colour and compression', text: 'Edges are sharpened, saturation is tuned to the maker’s style, then the file is compressed to HEIF or JPEG. A RAW file keeps the data from before step 2 so you can edit it yourself later.' }
+    ];
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var W = 1120, H = 630;
+    var z = this.zoomFrom(s.zv);
+    var frame = function (feq) { var w = W * 13 / feq, h = w * 0.5625; return { x: ((W - w) / 2).toFixed(1), y: ((H - h) / 2).toFixed(1), w: w.toFixed(1), h: h.toFixed(1), lx: ((W - w) / 2 + 8).toFixed(1), ly: ((H - h) / 2 + 22).toFixed(1) }; };
+    var lenses = [
+      { id: 'uw', name: 'Ultra-wide (13 mm)', feq: 13, mp: 12 },
+      { id: 'w', name: 'Wide (24 mm)', feq: 24, mp: 48 },
+      { id: 't', name: 'Tele (77 mm)', feq: 77, mp: 12 }
+    ];
+    var feqZ = 24 * z;
+    var active = lenses[0];
+    if (feqZ >= 77 && !s.low) active = lenses[2];
+    else if (feqZ >= 24) active = lenses[1];
+    var crop = feqZ / active.feq;
+    var mp = active.mp / (crop * crop);
+    var mpShown = Math.min(12, mp);
+    var blurPx = Math.max(0, Math.sqrt(12 / Math.max(mp, 0.01)) - 1) * 0.9;
+    var cw = W * 13 / feqZ, ch = cw * 0.5625;
+    var cx = (W - cw) / 2, cy = (H - ch) / 2;
+
+    var note;
+    if (active.id === 'w' && s.low && feqZ >= 77) note = 'In low light many phones skip the tele camera, because tele lenses usually have smaller apertures and smaller sensors. They crop the main camera instead: less noise, but less detail.';
+    else if (mp >= 12) note = 'Still a full 12-megapixel image, no detail lost';
+    else if (mp >= 3) note = 'This is digital zoom: the ISP enlarges fewer pixels, and detail starts to disappear';
+    else note = 'Heavy digital zoom: clearly blurry. Some phones use AI to invent extra detail, which can create detail that isn’t really there';
+
+    // ISP patch
+    var base = function (x, y) {
+      var dx = x - 12, dy = y - 2.2;
+      var d2 = dx * dx + dy * dy;
+      if (d2 < 1.5) return [3.0, 2.6, 1.6];
+      if (d2 < 4) return [1.9, 1.5, 0.9];
+      if (y >= 7) return (x >= 3 && x <= 5 && y <= 8) ? [0.55, 0.06, 0.05] : [0.06, 0.16, 0.05];
+      if (x >= 6 && x <= 8 && y >= 4) return [0.85, 0.85, 0.82];
+      var t = y / 6;
+      return [0.25 + 0.6 * t, 0.35 + 0.25 * t, 0.7 - 0.35 * t];
+    };
+    var a = 99 >>> 0;
+    var rand = function () { a |= 0; a = a + 0x6D2B79F5 | 0; var q = Math.imul(a ^ a >>> 15, 1 | a); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+    var gauss = function () { var u1 = Math.max(rand(), 1e-9), u2 = rand(); return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2); };
+    var resp = [0.5, 1.0, 0.6];
+    var clip = function (v) { return Math.max(0, Math.min(1, v)); };
+    var step = s.step;
+    var patch = [];
+    for (var y = 0; y < 10; y++) {
+      for (var x = 0; x < 16; x++) {
+        var b = base(x, y), n = [gauss() * 0.05, gauss() * 0.05, gauss() * 0.05];
+        var rgb;
+        if (step === 0) {
+          var ch2 = (y % 2 === 0 && x % 2 === 0) ? 0 : (y % 2 === 1 && x % 2 === 1) ? 2 : 1;
+          var v = clip(b[ch2] * resp[ch2] * 0.6 + n[ch2]);
+          rgb = [0, 0, 0]; rgb[ch2] = v;
+        } else if (step === 1) rgb = [0, 1, 2].map(function (c) { return clip(b[c] * resp[c] * 0.6 + n[c]); });
+        else if (step === 2) rgb = [0, 1, 2].map(function (c) { return clip(b[c] * 0.6 + n[c]); });
+        else if (step === 3) rgb = [0, 1, 2].map(function (c) { return clip(b[c] * 0.6); });
+        else {
+          rgb = [0, 1, 2].map(function (c) { var l = b[c] * 0.75; return l * (1 + l / 4) / (1 + l); });
+          if (step >= 5) rgb = rgb.map(function (v2) { return Math.pow(clip(v2), 1 / 2.2); });
+          if (step >= 6) { var m = (rgb[0] + rgb[1] + rgb[2]) / 3; rgb = rgb.map(function (v2) { return clip(m + (v2 - m) * 1.25); }); }
+        }
+        patch.push({ bg: 'rgb(' + Math.round(rgb[0] * 255) + ',' + Math.round(rgb[1] * 255) + ',' + Math.round(rgb[2] * 255) + ')' });
+      }
+    }
+    var steps = this.stepList();
+    var cur = steps[step];
+
+    return {
+      uw: frame(13), wd: frame(24), te: frame(77),
+      cr: { x: cx.toFixed(1), y: cy.toFixed(1), w: cw.toFixed(1), h: ch.toFixed(1) },
+      viewBox: cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ' + cw.toFixed(1) + ' ' + ch.toFixed(1),
+      blurPx: blurPx.toFixed(2),
+      frameLabel: 'Field-of-view frames of the ultra-wide, wide and tele lenses with the current zoom frame ' + z.toFixed(1) + ' ×',
+      zv: s.zv, zLabel: z.toFixed(1) + '×', low: s.low,
+      setZ: function (e) { self.setState({ zv: parseFloat(e.target.value) }); },
+      toggleLow: function () { self.setState({ low: !self.state.low }); },
+      active: active,
+      cropLabel: crop < 1.01 ? 'No crop' : crop.toFixed(2) + '×',
+      mpLabel: (mpShown >= 1 ? mpShown.toFixed(1) : mpShown.toFixed(2)) + ' MP',
+      zoomNote: note,
+      steps: steps.map(function (st, i) { var on = i === step; return { short: st.short, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ step: i }); } }; }),
+      patch: patch, stepNo: step + 1, stepTitle: cur.title, stepText: cur.text,
+      prev: function () { self.setState({ step: Math.max(0, self.state.step - 1) }); },
+      next: function () { self.setState({ step: Math.min(6, self.state.step + 1) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

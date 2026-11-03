@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Uses of ocean waves</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Ocean Wave Simulator</a><span aria-hidden="true">›</span><span aria-current="page">Uses of ocean waves</span><a class="ps-lang" href="../../ocean-waves/uses.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 800px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">WHAT WAVES GIVE US</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">How do we use ocean waves?</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Waves are energy travelling across the water surface. People make use of the energy itself, the way waves move, and the information waves carry, from generating electricity to warning of disasters.</p>
+</div>
+<a href="index.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; font-size: 16px; text-decoration: none">← Back to the simulator</a>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">01 · Energy</div>
+<h2 style="margin: 0; font-size: 19px; font-weight: 700">Electricity from wave power</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Waves are a renewable energy source more concentrated than wind or sunlight, and they can be forecast days ahead because swell travels from distant storms. A commonly cited estimate puts the global potential at about 2 terawatts.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">02 · Fresh water</div>
+<h2 style="margin: 0; font-size: 19px; font-weight: 700">Fresh water from seawater</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Pilot projects use wave pressure to drive seawater reverse osmosis directly, without converting to electricity first. Well suited to islands and coastal communities short of fresh water.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">03 · Tourism</div>
+<h2 style="margin: 0; font-size: 19px; font-weight: 700">Water sports and tourism</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Surfing, bodyboarding and windsurfing depend on swell arriving in regular sets. Beaches with good waves become a source of income for local communities, from board-rental shops to surf schools.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">04 · Coasts</div>
+<h2 style="margin: 0; font-size: 19px; font-weight: 700">Building and sustaining beaches</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Waves carry sand up and down the beach and along the shore (longshore drift), forming beaches, sandbars and spits. Understanding this helps plan solutions to coastal erosion.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">05 · Ecosystems</div>
+<h2 style="margin: 0; font-size: 19px; font-weight: 700">Adding oxygen and mixing nutrients</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Breaking waves drive air into the water, adding oxygen and gas exchange with the atmosphere. Wave mixing also stirs nutrients for plankton, corals and coastal life.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">06 · Engineering</div>
+<h2 style="margin: 0; font-size: 19px; font-weight: 700">Designing ports and offshore structures</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Wave height and period data size breakwaters, ports, oil platforms and offshore wind farms, and help plan shipping routes that are safe and fuel-efficient.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">07 · Warnings</div>
+<h2 style="margin: 0; font-size: 19px; font-weight: 700">Storm forecasting and tsunami warnings</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Swell often reaches the coast before a storm, giving early warning. Tsunami buoys measure water pressure on the seabed and can detect sea-level changes of just a few centimetres in the open ocean.</p>
+</div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">08 · Navigation</div>
+<h2 style="margin: 0; font-size: 19px; font-weight: 700">Reading waves to navigate</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">Polynesian navigators of the past read how swell reflected and bent around islands to find the direction and position of islands still out of sight, without a compass.</p>
+</div>
+</div>
+
+<section style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">4 main types of wave energy converter</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A">Each type captures a different part of the water’s motion, matching what you see in the simulator: the surface rising and falling, and the back-and-forth sloshing in shallow water.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 240 120" style="width: 100%; height: auto; display: block" role="img" aria-label="Diagram of an oscillating water column">
+<path d="M0,78 Q20,66 40,78 T80,78 T120,78 T160,78 T200,78 T240,78 L240,120 L0,120 Z" fill="#CFE6F0"></path>
+<path d="M120,120 L120,40 L200,40 L200,120" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<path d="M120,104 L120,40" stroke="#F3F6F7" stroke-width="0"></path>
+<line x1="160" y1="40" x2="160" y2="16" stroke="#0A6A94" stroke-width="3"></line>
+<circle cx="160" cy="12" r="9" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></circle>
+<path d="M146,64 L160,52 L174,64" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<line x1="125" y1="72" x2="195" y2="72" stroke="#0A6A94" stroke-width="2" stroke-dasharray="4 4"></line>
+</svg>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">Oscillating water column (OWC)</h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">Waves push water up and down inside a closed chamber. The air above is alternately compressed and sucked back through an air turbine that spins one way. Often built into a breakwater.</p>
+</div>
+
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 240 120" style="width: 100%; height: auto; display: block" role="img" aria-label="Diagram of a point absorber buoy">
+<path d="M0,44 Q30,28 60,44 T120,44 T180,44 T240,44 L240,120 L0,120 Z" fill="#CFE6F0"></path>
+<ellipse cx="120" cy="40" rx="30" ry="12" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="3"></ellipse>
+<line x1="120" y1="52" x2="120" y2="96" stroke="#0A6A94" stroke-width="3"></line>
+<rect x="104" y="96" width="32" height="20" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></rect>
+<path d="M166,22 L166,58 M158,30 L166,22 L174,30 M158,50 L166,58 L174,50" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+</svg>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">Point absorber</h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">A buoy rides up and down with the waves, pulling a line or shaft anchored to the seabed that drives a generator or hydraulic pump. Many can be installed as an array.</p>
+</div>
+
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 240 120" style="width: 100%; height: auto; display: block" role="img" aria-label="Diagram of an underwater oscillating flap">
+<path d="M0,30 Q30,18 60,30 T120,30 T180,30 T240,30 L240,112 L0,112 Z" fill="#CFE6F0"></path>
+<rect x="0" y="108" width="240" height="12" fill="#D8C39C"></rect>
+<rect x="114" y="40" width="12" height="66" rx="3" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="3"></rect>
+<circle cx="120" cy="106" r="6" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></circle>
+<path d="M88,58 Q120,40 152,58" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<path d="M144,50 L152,58 L142,62 M96,50 L88,58 L98,62" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+</svg>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">Oscillating wave surge converter</h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">A hinged flap fixed to the seabed in shallow water rocks back and forth with the water’s horizontal sloshing, matching the flattened orbits you see in the simulator in shallow water.</p>
+</div>
+
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 240 120" style="width: 100%; height: auto; display: block" role="img" aria-label="Diagram of an overtopping device">
+<path d="M0,72 Q20,58 40,72 T80,72 L80,120 L0,120 Z" fill="#CFE6F0"></path>
+<path d="M80,104 L150,44 L150,104" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<path d="M150,44 L230,44 L230,104 L150,104" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<rect x="153" y="58" width="74" height="44" fill="#CFE6F0"></rect>
+<path d="M96,70 Q120,30 160,52" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<path d="M150,46 L160,52 L150,58" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<circle cx="190" cy="112" r="7" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2.5"></circle>
+</svg>
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">Overtopping device</h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">A ramp lets waves wash water up into a reservoir above sea level, then the water flows back out through a water turbine, like a small hydroelectric dam.</p>
+</div>
+
+</div>
+</div>
+
+<aside style="flex: 1 1 320px; min-width: 0; background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: #9FD0E6">Back-of-the-envelope</div>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700; line-height: 1.35">How much power does a wave carry?</h2>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 26px; font-weight: 500; background: #163A4F; border-radius: 10px; padding: 14px 16px">P ≈ 0.5 × H² × T</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">Gives power in kilowatts per metre of wave front (for deep-water waves). H is the wave height in metres and T is the period in seconds.</p>
+<div style="border-top: 1px solid #2E5468; padding-top: 14px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 15px; line-height: 1.7; color: #FFFFFF">Example: swell 2 m high, 10 s period</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 17px; color: #FFC79A">0.5 × 2² × 10 ≈ 20 kW per metre</div>
+<div style="font-size: 15px; line-height: 1.7; color: #D9E8EF">So a 100 m wide wave front carries about 2 megawatts, before subtracting the efficiency of the converter.</div>
+</div>
+<div style="font-size: 14px; line-height: 1.7; color: #D9E8EF">Try choosing “Swell” in the simulator and look at the “Wave power” box to compare with this formula.</div>
+</aside>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: clamp(20px, 3vw, 32px); display: flex; flex-direction: column; gap: 18px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">Waves and Thailand</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #0A6A94">Andaman coast</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #34495A">Phuket and Phang Nga get surfable waves during the southwest monsoon, roughly May to October, because swell from the Indian Ocean reaches them.</p>
+</div>
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #0A6A94">Gulf of Thailand</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #34495A">A semi-enclosed, fairly shallow sea where most waves are small to moderate wind waves. Its wave energy potential is lower than coasts facing the open ocean, but coastal erosion is a major issue.</p>
+</div>
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #0A6A94">After the 2004 tsunami</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #34495A">Thailand set up a national disaster warning system with warning towers along the Andaman coast, which issues alerts based on earthquake data and sea-level measurements.</p>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

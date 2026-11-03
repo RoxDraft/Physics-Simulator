@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Temperature, humidity, radiation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">06 Temperature, humidity, radiation</span><a class="ps-lang" href="../../camera-lab/environment.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="stabilize.html" style="min-height: 44px; display: inline-flex; align-items: center">← Stabilisation</a>
+<a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">Back to the lab →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">Experiment 06</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Temperature, humidity and radiation</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Phone cameras, CCTV, cars and satellites all have to work in very different conditions. See how each factor degrades the image, and how engineers fix it.</p>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700">Lens front</div>
+<svg viewBox="0 0 300 220" style="display: block; width: 100%; height: auto" role="img" aria-label="{{fog.label}}">
+<rect x="0" y="0" width="300" height="220" fill="#F3F6F7"></rect>
+<circle cx="150" cy="110" r="90" fill="#0F2A3A"></circle>
+<circle cx="150" cy="110" r="72" fill="#1E4A63"></circle>
+<circle cx="150" cy="110" r="48" fill="#0A6A94"></circle>
+<circle cx="130" cy="90" r="14" fill="#9FD0E6" opacity="0.7"></circle>
+<circle cx="150" cy="110" r="72" fill="#FFFFFF" opacity="{{fog.opacity}}"></circle>
+</svg>
+<div style="padding: 10px 16px 14px; font-size: 14px; line-height: 1.5"><strong style="color: {{fog.color}}">{{fog.title}}</strong><br><span style="color: #4A5D6A">{{fog.text}}</span></div>
+</div>
+<div style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap"><span style="font-weight: 700">Dark frame: lens cap on, 1 second</span><button type="button" onClick="{{reroll}}" style="min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Re-roll</button></div>
+<div role="img" aria-label="{{darkLabel}}" style="display: grid; grid-template-columns: repeat(40, minmax(0, 1fr)); background: #000000">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="960">
+<div style="aspect-ratio: 1; background: {{c.bg}}"></div>
+</sc-for>
+</div>
+<div style="padding: 10px 16px 14px; font-size: 13px; line-height: 1.5; color: #4A5D6A">This frame should be pure black. Grey specks are thermal noise; bright dots are hot pixels caused by radiation.</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="6">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: {{r.color}}">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">Temperature and humidity</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="en-a" style="font-size: 14px; font-weight: 600">Air temperature</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{airLabel}}</span></div>
+<input id="en-a" type="range" min="-30" max="50" step="1" value="{{air}}" onChange="{{setAir}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="en-h" style="font-size: 14px; font-weight: 600">Relative humidity</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{rhLabel}}</span></div>
+<input id="en-h" type="range" min="10" max="100" step="1" value="{{rh}}" onChange="{{setRh}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="en-c" style="font-size: 14px; font-weight: 600">Camera body temperature</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{camLabel}}</span></div>
+<input id="en-c" type="range" min="-30" max="80" step="1" value="{{cam}}" onChange="{{setCam}}">
+<div style="font-size: 13px; color: #4A5D6A">e.g. just carried out of an air-conditioned room, or left in a car in the sun</div>
+</div>
+<h2 style="margin: 6px 0 0; font-size: 17px; font-weight: 700">Lens material (phone, f = 6 mm)</h2>
+<div role="group" aria-label="Lens material" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{materials}}" as="m" hint-placeholder-count="3">
+<button type="button" onClick="{{m.pick}}" aria-pressed="{{m.pressed}}" style="min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 1.5px solid {{m.border}}; background: {{m.bg}}; color: {{m.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{m.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">Radiation in space</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="en-d" style="font-size: 14px; font-weight: 600">Time in orbit</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{daysLabel}}</span></div>
+<input id="en-d" type="range" min="0" max="1825" step="5" value="{{days}}" onChange="{{setDays}}">
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 15px"><input type="checkbox" checked="{{shield}}" onChange="{{toggleShield}}" style="width: 22px; height: 22px; accent-color: #0A6A94">Radiation shielding around the sensor</label>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 15px"><input type="checkbox" checked="{{cerium}}" onChange="{{toggleCerium}}" style="width: 22px; height: 22px; accent-color: #0A6A94">Use cerium-doped glass</label>
+<div style="font-size: 13px; line-height: 1.6; color: #4A5D6A">The radiation damage rates are made-up numbers to show the trend. Real rates depend on the orbit and solar activity.</div>
+</div>
+</div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">How engineers protect cameras</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<div style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">Temperature</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">Keep focus from drifting and noise from soaring</h3>
+<ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: #34495A; display: flex; flex-direction: column; gap: 6px">
+<li><strong>Athermal design:</strong> pair glass and plastic lens elements and choose barrel materials whose expansion cancels out, so focus stays put</li>
+<li><strong>Closed-loop autofocus:</strong> phone lenses are plastic and sensitive to heat, so the AF system keeps compensating for the drift</li>
+<li><strong>Thermal management:</strong> heat spreaders, plus throttling or stopping recording when it gets too hot</li>
+<li><strong>Sensor cooling:</strong> astronomy cameras use Peltier coolers to drop the sensor tens of degrees and take dark frames to subtract</li>
+<li><strong>Heaters:</strong> outdoor and space cameras warm themselves to stay within their operating range</li>
+</ul>
+</div>
+<div style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">Humidity</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">Keep water out and fog away</h3>
+<ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: #34495A; display: flex; flex-direction: column; gap: 6px">
+<li><strong>Seals and IP ratings:</strong> O-rings, adhesives and sealed housings, e.g. IP68 dust- and waterproofing</li>
+<li><strong>Nitrogen purging:</strong> fog-proof binoculars flush out humid air and refill with dry gas, so they never fog inside</li>
+<li><strong>Membrane vents:</strong> let air through to equalise pressure but block water droplets; desiccants soak up moisture</li>
+<li><strong>Coatings:</strong> anti-fog or hydrophobic coatings on the front element, and conformal coating on circuit boards</li>
+<li><strong>Dew heaters:</strong> keep the lens slightly above the dew point; used on telescopes and CCTV cameras</li>
+</ul>
+</div>
+<div style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">Radiation</div>
+<h3 style="margin: 0; font-size: 19px; font-weight: 700">Cameras that must survive in space</h3>
+<ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: #34495A; display: flex; flex-direction: column; gap: 6px">
+<li><strong>Radiation-hardened parts (rad-hard):</strong> circuits and sensors designed to tolerate much more accumulated damage</li>
+<li><strong>Shielding:</strong> metal around the sensor and electronics reduces how many high-energy particles get through</li>
+<li><strong>Cerium-doped glass:</strong> ordinary glass slowly turns brown under radiation; cerium keeps it clear far longer</li>
+<li><strong>ECC memory and watchdog circuits:</strong> fix bits flipped by particles and reset the system if it hangs</li>
+<li><strong>Software:</strong> map hot pixels and fill them in from their neighbours; some missions warm the sensor (annealing) to heal part of the damage</li>
+</ul>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1500}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { air: 32, rh: 80, cam: 22, mat: 'plastic', days: 0, shield: false, cerium: false, seed: 3 };
+  }
+
+  setter(key) {
+    var self = this;
+    return function (e) { var o = {}; o[key] = parseFloat(e.target.value); self.setState(o); };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    // dew point (Magnus)
+    var b = 17.62, c = 243.12;
+    var g = Math.log(s.rh / 100) + b * s.air / (c + s.air);
+    var dew = c * g / (b - g);
+    var fogging = s.cam < dew;
+    var fogAmt = fogging ? Math.min(0.85, 0.25 + (dew - s.cam) * 0.08) : 0;
+    var fog = fogging
+      ? { title: 'Lens is fogged', text: 'The camera body is colder than the dew point by ' + (dew - s.cam).toFixed(1) + ' °C, so water vapour condenses on the lens surface', color: '#7E3407', opacity: fogAmt.toFixed(2), label: 'Lens front is fogged' }
+      : { title: 'Lens is clear', text: 'The camera body is warmer than the dew point, so no water condenses', color: '#0A4F70', opacity: 0, label: 'Lens front is clear' };
+
+    // focus shift
+    var coef = { plastic: 2.57e-4, glass: -1.98e-5, athermal: 1.5e-6 }[s.mat];
+    var dT = s.cam - 20;
+    var shift = 6000 * coef * dT;
+    var dof = 1.8 * 2.4;
+    var focusOk = Math.abs(shift) <= dof;
+
+    // dark current
+    var dark = 5 * Math.pow(2, (s.cam - 25) / 6);
+
+    // radiation
+    var hotN = Math.round(s.days * 0.05 * (s.shield ? 0.3 : 1));
+    var trans = 100 * Math.exp(-s.days / (s.cerium ? 60000 : 3000));
+
+    // dark frame
+    var a = (s.seed * 2654435761) >>> 0;
+    var rand = function () { a |= 0; a = a + 0x6D2B79F5 | 0; var q = Math.imul(a ^ a >>> 15, 1 | a); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+    var gauss = function () { var u1 = Math.max(rand(), 1e-9), u2 = rand(); return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2); };
+    var hot = {};
+    var hr = (91 >>> 0);
+    var rand2 = function () { hr |= 0; hr = hr + 0x6D2B79F5 | 0; var q = Math.imul(hr ^ hr >>> 15, 1 | hr); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+    for (var i = 0; i < hotN && i < 960; i++) hot[Math.floor(rand2() * 960)] = 0.4 + rand2() * 0.6;
+    var cells = [];
+    for (var k = 0; k < 960; k++) {
+      var e = dark + Math.sqrt(dark + 4) * gauss();
+      if (hot[k]) e += hot[k] * 400 * Math.max(0.3, dark / 5);
+      var lin = Math.max(0, Math.min(1, e / 400));
+      var v = Math.round(Math.pow(lin, 1 / 2.2) * 255);
+      cells.push({ bg: 'rgb(' + v + ',' + v + ',' + v + ')' });
+    }
+
+    var ink = '#0F2A3A', warn = '#B04A0C';
+    var readouts = [
+      { label: 'Dew point', value: dew.toFixed(1) + ' °C', sub: 'Any surface colder than this collects droplets', color: ink },
+      { label: 'Focus shift (vs. 20 °C)', value: (shift >= 0 ? '+' : '') + shift.toFixed(1) + ' µm', sub: focusOk ? 'Still within depth of focus ±' + dof.toFixed(1) + ' µm' : 'Beyond depth of focus ±' + dof.toFixed(1) + ' µm: blurry unless AF compensates', color: focusOk ? ink : warn },
+      { label: 'Sensor dark current', value: dark >= 100 ? Math.round(dark) + ' e⁻/s' : dark.toFixed(1) + ' e⁻/s', sub: 'Roughly doubles every 6 °C', color: dark > 40 ? warn : ink },
+      { label: 'Accumulated hot pixels', value: hotN + ' pixels', sub: 'out of 960 pixels in the sample frame', color: hotN > 30 ? warn : ink },
+      { label: 'Lens transmission', value: trans.toFixed(0) + '%', sub: s.cerium ? 'Cerium glass stays clear' : 'Ordinary glass slowly browns', color: trans < 80 ? warn : ink },
+      { label: 'Overall status', value: (fogging || !focusOk || dark > 40 || hotN > 30 || trans < 80) ? 'Degraded' : 'Normal', sub: 'Orange boxes show which factor is the problem', color: (fogging || !focusOk || dark > 40 || hotN > 30 || trans < 80) ? warn : ink }
+    ];
+
+    var mats = [{ id: 'plastic', name: 'Plastic' }, { id: 'glass', name: 'Glass' }, { id: 'athermal', name: 'Glass + plastic (athermal)' }];
+
+    return {
+      fog: fog, cells: cells, readouts: readouts,
+      darkLabel: 'Simulated dark frame with hot pixels: ' + hotN + ' pixels',
+      air: s.air, rh: s.rh, cam: s.cam, days: s.days, shield: s.shield, cerium: s.cerium,
+      airLabel: s.air + ' °C', rhLabel: s.rh + '%', camLabel: s.cam + ' °C',
+      daysLabel: s.days < 365 ? s.days + ' days' : (s.days / 365).toFixed(1) + ' years',
+      setAir: this.setter('air'), setRh: this.setter('rh'), setCam: this.setter('cam'), setDays: this.setter('days'),
+      toggleShield: function () { self.setState({ shield: !self.state.shield }); },
+      toggleCerium: function () { self.setState({ cerium: !self.state.cerium }); },
+      reroll: function () { self.setState({ seed: self.state.seed + 1 }); },
+      materials: mats.map(function (m) { var on = m.id === s.mat; return { name: m.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ mat: m.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

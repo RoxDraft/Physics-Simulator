@@ -26,10 +26,18 @@
   .tag { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: #EAF3F7; color: #0A4F70; }
   .go { font-weight: 600; color: var(--accent); }
   footer { font-size: 14px; line-height: 1.7; color: var(--muted); }
+  .top { display: flex; justify-content: flex-end; }
+  .lang { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--accent); font-weight: 600; text-decoration: none; }
+  .lang:hover { background: #EAF3F7; }
 </style>
+<script>
+  // Open the language the visitor chose last time (set when they press the language button)
+  try { if (document.documentElement.lang === 'th' && localStorage.getItem('ps-lang') === 'en') location.replace('en/index.html'); } catch (e) {}
+</script>
 </head>
 <body>
 <main>
+  <div class="top"><a class="lang" href="en/index.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="Switch to English"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>English</a></div>
   <header>
     <div class="eyebrow">PHYSICS SIMULATOR</div>
     <h1>จำลองฟิสิกส์ให้เห็นภาพ</h1>
@@ -58,5 +66,6 @@
     <a href="https://github.com/RoxDraft/Physics-Simulator">ดูซอร์สโค้ดบน GitHub</a>
   </footer>
 </main>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-ps-lang]');if(a){try{localStorage.setItem('ps-lang',a.getAttribute('data-ps-lang'))}catch(_){}}});</script>
 </body>
 </html>

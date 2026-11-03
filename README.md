@@ -47,7 +47,9 @@ ocean-waves/          index.html, uses.html
 camera-lab/           index.html, lens.html, sensor.html, fusion.html,
                       spatial.html, stabilize.html, environment.html
 src/                  canvas sources (.dc.html) for every page
-tools/build.sh        rebuilds all pages from src/ (adds the home / breadcrumb bar)
+tools/build.sh        rebuilds all pages from src/ in Thai and English (home bar + language button)
+tools/i18n/en.json    English text for every Thai string; the build stops if one is missing
+en/                   English versions of every page (generated)
 tools/dc2html.py      converts one canvas artboard into a page here
 ```
 

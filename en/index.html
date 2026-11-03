@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physics Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+  :root { --ink: #0F2A3A; --muted: #4A5D6A; --line: #D5DEE3; --bg: #F3F6F7; --card: #FFFFFF; --accent: #0A6A94; --warm: #B04A0C; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 3px solid var(--warm); outline-offset: 2px; }
+  main { max-width: 1120px; margin: 0 auto; padding: 56px 16px 72px; display: flex; flex-direction: column; gap: 40px; }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .08em; color: var(--accent); }
+  h1 { margin: 8px 0 12px; font-size: clamp(34px, 5vw, 54px); line-height: 1.15; }
+  .lede { margin: 0; max-width: 760px; font-size: 18px; line-height: 1.7; color: var(--muted); }
+  .grid { display: flex; flex-wrap: wrap; gap: 20px; }
+  .card { flex: 1 1 420px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--ink); }
+  .card:hover { border-color: var(--accent); }
+  .num { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--warm); }
+  .card h2 { margin: 0; font-size: 24px; }
+  .card p { margin: 0; font-size: 16px; line-height: 1.7; color: #34495A; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: #EAF3F7; color: #0A4F70; }
+  .go { font-weight: 600; color: var(--accent); }
+  footer { font-size: 14px; line-height: 1.7; color: var(--muted); }
+  .top { display: flex; justify-content: flex-end; }
+  .lang { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--accent); font-weight: 600; text-decoration: none; }
+  .lang:hover { background: #EAF3F7; }
+</style>
+<script>
+  // Open the language the visitor chose last time (set when they press the language button)
+  try { if (false && localStorage.getItem('ps-lang') === 'en') location.replace('en/index.html'); } catch (e) {}
+</script>
+</head>
+<body>
+<main>
+  <div class="top"><a class="lang" href="../index.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></div>
+  <header>
+    <div class="eyebrow">PHYSICS SIMULATOR</div>
+    <h1>Physics you can see</h1>
+    <p class="lede">Interactive simulations: change a value and see the result instantly. Covering Physics I (mechanics and heat) and Physics II (waves, electromagnetism, light), plus how they are applied in real technology.</p>
+  </header>
+
+  <section class="grid" aria-label="List of simulations">
+    <a class="card" href="ocean-waves/index.html">
+      <span class="num">01 · Waves</span>
+      <h2>Ocean Wave Simulator</h2>
+      <p>Simulates 5 types of ocean wave, from wind waves, swell and shoaling waves to tsunamis and tides. See water-particle orbits, wave speed, period and power from the real dispersion relation, plus how ocean waves are put to use.</p>
+      <div class="tags"><span class="tag">Physics II · Waves</span><span class="tag">Wave energy</span><span class="tag">2 pages</span></div>
+      <span class="go">Open simulation →</span>
+    </a>
+    <a class="card" href="camera-lab/index.html">
+      <span class="num">02 · Light and optics</span>
+      <h2>Camera Lab</h2>
+      <p>A camera lab with 6 experiments: lenses and focal length, light and sensor size, multi-camera and image processing (ISP), stereo cameras and Spatial Photo/Video, OIS/EIS stabilisation, and the effects of temperature, humidity and radiation.</p>
+      <div class="tags"><span class="tag">Physics II · Optics</span><span class="tag">Computer Vision</span><span class="tag">7 pages</span></div>
+      <span class="go">Open the lab →</span>
+    </a>
+  </section>
+
+  <footer>
+    These simulations use models simplified for learning. Device figures are representative examples, not the specs of any particular model. ·
+    <a href="https://github.com/RoxDraft/Physics-Simulator">View the source code on GitHub</a>
+  </footer>
+</main>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-ps-lang]');if(a){try{localStorage.setItem('ps-lang',a.getAttribute('data-ps-lang'))}catch(_){}}});</script>
+</body>
+</html>

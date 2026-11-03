@@ -28,3 +28,35 @@ Entanglement (Quantum Entanglement): A phenomenon where two qubits are mysteriou
 Quantum Algorithms: Quantum-based programming or algorithms, such as Shor's Algorithm, can decrypt security codes (e.g., RSA) that would take a normal computer millions of years to calculate, in just a few minutes.
 
 Currently, it is being applied to model complex chemical molecules for drug development, solving highly complex transportation and logistics routing problems, as well as financial analysis and cryptography.
+
+---
+
+## Simulators in this repo
+
+Open `index.html` in a browser (or enable GitHub Pages: Settings → Pages → Deploy from branch `main`, folder `/`). No build step or install is needed.
+
+| Folder | Simulator | Pages |
+|---|---|---|
+| [`ocean-waves/`](ocean-waves/index.html) | **Ocean Wave Simulator** — wind sea, swell, shoaling/breaking, tsunami and tide. Water-particle orbits, wave speed, period and power from the linear dispersion relation, plus how we use ocean waves (wave energy converters, coastlines, warning systems). | 2 |
+| [`camera-lab/`](camera-lab/index.html) | **Camera Lab** — six experiments: thin-lens ray diagram (phone camera, microscope, telescope), photon shot noise vs. light level and sensor size, multi-camera zoom and the ISP pipeline, stereo depth and Spatial Photo/Video, OIS vs. EIS stabilisation, and temperature / humidity / radiation effects. | 7 |
+
+```
+index.html            landing page linking every simulator
+shared/dc-runtime.js  tiny runtime that renders the pages (no dependencies)
+ocean-waves/          index.html, uses.html
+camera-lab/           index.html, lens.html, sensor.html, fusion.html,
+                      spatial.html, stabilize.html, environment.html
+tools/dc2html.py      converts a Claude Design canvas artboard (.dc.html) into a page here
+```
+
+### How the pages work
+
+Each page keeps its markup in a `<template id="dc-template">` with `{{holes}}`, `<sc-for>` loops and `<sc-if>` branches, and its physics in a `class Component extends DCLogic { renderVals() { … } }` script. `shared/dc-runtime.js` calls `renderVals()` whenever the state changes and patches the page in place, so sliders and animations update live.
+
+To add a new simulator designed on a Claude Design canvas:
+
+```bash
+python3 tools/dc2html.py path/to/Main.dc.html my-sim/index.html --rename Main.dc.html=index.html
+```
+
+The models are simplified for learning (thin lenses, linear wave theory, photon shot noise). Device figures are representative examples, not the specs of any particular model.

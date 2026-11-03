@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>หลายกล้องและการประมวลผลภาพ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="sensor.html" style="min-height: 44px; display: inline-flex; align-items: center">← แสงและเซนเซอร์</a>
+<a href="spatial.html" style="min-height: 44px; display: inline-flex; align-items: center">ถัดไป: กล้องคู่และ Spatial →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 860px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">การทดลอง 03</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">หลายกล้องและการประมวลผลภาพ</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">มือถือมีเลนส์หลายตัว ทางยาวโฟกัสต่างกัน แต่ละตัวมีเซนเซอร์ของตัวเอง ชิปประมวลผลภาพ (ISP) เลือกและผสมข้อมูลจากทุกกล้อง แล้วแปลงข้อมูลดิบให้เป็นภาพที่เราเห็น</p>
+</header>
+
+<section style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 17px">มุมรับภาพของแต่ละเลนส์ (กรอบส้ม = สิ่งที่ซูมอยู่)</div>
+<svg viewBox="0 0 1120 630" style="display: block; width: 100%; height: auto" role="img" aria-label="{{frameLabel}}">
+<rect x="0" y="0" width="1120" height="630" fill="#BFDCEB"></rect>
+<circle cx="840" cy="150" r="60" fill="#F5C77A"></circle>
+<path d="M0,420 L180,300 L330,390 L520,250 L700,380 L880,290 L1120,410 L1120,630 L0,630 Z" fill="#7FA6B8"></path>
+<rect x="420" y="330" width="90" height="300" fill="#2E4B5C"></rect>
+<rect x="520" y="280" width="70" height="350" fill="#3B5D70"></rect>
+<rect x="600" y="360" width="110" height="270" fill="#2E4B5C"></rect>
+<rect x="540" y="300" width="10" height="12" fill="#F5C77A"></rect>
+<rect x="560" y="300" width="10" height="12" fill="#F5C77A"></rect>
+<rect x="540" y="330" width="10" height="12" fill="#F5C77A"></rect>
+<path d="M552,312 l8,-5 l8,5" fill="none" stroke="#0F2A3A" stroke-width="1.5"></path>
+<circle cx="563" cy="318" r="2" fill="#B04A0C"></circle>
+<rect x="0" y="560" width="1120" height="70" fill="#4E6B48"></rect>
+<rect x="{{uw.x}}" y="{{uw.y}}" width="{{uw.w}}" height="{{uw.h}}" fill="none" stroke="#0F2A3A" stroke-width="4"></rect>
+<rect x="{{wd.x}}" y="{{wd.y}}" width="{{wd.w}}" height="{{wd.h}}" fill="none" stroke="#0F2A3A" stroke-width="3" stroke-dasharray="10 6"></rect>
+<rect x="{{te.x}}" y="{{te.y}}" width="{{te.w}}" height="{{te.h}}" fill="none" stroke="#0F2A3A" stroke-width="3" stroke-dasharray="3 5"></rect>
+<rect x="{{cr.x}}" y="{{cr.y}}" width="{{cr.w}}" height="{{cr.h}}" fill="none" stroke="#E07A2E" stroke-width="4"></rect>
+<text x="16" y="34" font-size="18" font-weight="600" fill="#0F2A3A">อัลตร้าไวด์ 0.5×</text>
+<text x="{{wd.lx}}" y="{{wd.ly}}" font-size="16" font-weight="600" fill="#0F2A3A">ไวด์ 1×</text>
+<text x="{{te.lx}}" y="{{te.ly}}" font-size="14" font-weight="600" fill="#0F2A3A">เทเล 3×</text>
+</svg>
+</div>
+</div>
+
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; display: flex; justify-content: space-between; align-items: center; gap: 8px"><span style="font-weight: 700">ภาพในจอ</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: #B04A0C">{{zLabel}}</span></div>
+<svg viewBox="{{viewBox}}" style="display: block; width: 100%; height: auto; filter: blur({{blurPx}}px)" role="img" aria-label="ภาพตัวอย่างที่ระดับซูมปัจจุบัน">
+<rect x="0" y="0" width="1120" height="630" fill="#BFDCEB"></rect>
+<circle cx="840" cy="150" r="60" fill="#F5C77A"></circle>
+<path d="M0,420 L180,300 L330,390 L520,250 L700,380 L880,290 L1120,410 L1120,630 L0,630 Z" fill="#7FA6B8"></path>
+<rect x="420" y="330" width="90" height="300" fill="#2E4B5C"></rect>
+<rect x="520" y="280" width="70" height="350" fill="#3B5D70"></rect>
+<rect x="600" y="360" width="110" height="270" fill="#2E4B5C"></rect>
+<rect x="540" y="300" width="10" height="12" fill="#F5C77A"></rect>
+<rect x="560" y="300" width="10" height="12" fill="#F5C77A"></rect>
+<rect x="540" y="330" width="10" height="12" fill="#F5C77A"></rect>
+<path d="M552,312 l8,-5 l8,5" fill="none" stroke="#0F2A3A" stroke-width="1.5"></path>
+<circle cx="563" cy="318" r="2" fill="#B04A0C"></circle>
+<rect x="0" y="560" width="1120" height="70" fill="#4E6B48"></rect>
+</svg>
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<label for="fz-z" style="font-size: 14px; font-weight: 600">ระดับซูม</label>
+<input id="fz-z" type="range" min="0" max="100" step="1" value="{{zv}}" onChange="{{setZ}}">
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input type="checkbox" checked="{{low}}" onChange="{{toggleLow}}" style="width: 22px; height: 22px; accent-color: #0A6A94">ถ่ายในที่แสงน้อย</label>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; border-top: 1px solid #E3E9EC; padding-top: 10px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>กล้องที่ใช้</span><strong>{{active.name}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>ครอปจากเซนเซอร์</span><strong style="font-family: 'IBM Plex Mono', monospace">{{cropLabel}}</strong></div>
+<div style="display: flex; justify-content: space-between; gap: 8px"><span>ความละเอียดที่เหลือ</span><strong style="font-family: 'IBM Plex Mono', monospace">{{mpLabel}}</strong></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #4A5D6A">{{zoomNote}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: clamp(18px, 3vw, 28px); display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">ISP: จากข้อมูลดิบสู่ภาพ ทีละขั้น</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A">กดแต่ละขั้นเพื่อดูว่าภาพเปลี่ยนไปอย่างไร ทุกขั้นเกิดในชิปภายในเสี้ยววินาทีหลังกดชัตเตอร์</p>
+</div>
+<div role="group" aria-label="ขั้นตอนการประมวลผล" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{steps}}" as="st" hint-placeholder-count="7">
+<button type="button" onClick="{{st.pick}}" aria-pressed="{{st.pressed}}" style="min-height: 44px; padding: 6px 14px; border-radius: 10px; border: 1.5px solid {{st.border}}; background: {{st.bg}}; color: {{st.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{st.short}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center">
+<div role="img" aria-label="{{stepTitle}}" style="flex: 1 1 420px; min-width: 0; display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); border-radius: 10px; overflow: hidden; border: 1px solid #D5DEE3">
+<sc-for list="{{patch}}" as="p" hint-placeholder-count="160">
+<div style="aspect-ratio: 1; background: {{p.bg}}"></div>
+</sc-for>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">ขั้นที่ {{stepNo}} / 7</div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 700">{{stepTitle}}</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.75; color: #34495A">{{stepText}}</p>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{prev}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">← ก่อนหน้า</button>
+<button type="button" onClick="{{next}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">ขั้นถัดไป →</button>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">เมื่อเลนส์หลายตัวทำงานร่วมกัน</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">สลับกล้องให้เนียน</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">ตอนซูมข้ามเลนส์ ISP ต้องจับคู่สี ความสว่าง และตำแหน่งภาพของสองกล้องให้ตรงกัน ไม่ให้ภาพกระโดด เพราะสองกล้องอยู่คนละตำแหน่งและเซนเซอร์ต่างกัน</p></div>
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">ครอปเซนเซอร์ความละเอียดสูง</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">เซนเซอร์ 48 ล้านพิกเซล ครอปตรงกลาง 2 เท่ายังเหลือ 12 ล้านพิกเซล จึงเป็น “เลนส์ 2×” เพิ่มได้โดยไม่ต้องมีกล้องตัวที่สี่</p></div>
+<div style="flex: 1 1 260px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">วัดความลึกเพื่อโหมดถ่ายบุคคล</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #34495A">ภาพจากสองกล้องที่อยู่ห่างกันเล็กน้อยต่างกันนิดหน่อย ความต่างนั้นบอกความลึกได้ ใช้ทำฉากหลังเบลอ (ร่วมกับเซนเซอร์ LiDAR หรือ AI ในบางรุ่น)</p></div>
+<a href="spatial.html" style="flex: 1 1 260px; text-decoration: none; color: #FFFFFF; background: #0F2A3A; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><span style="font-size: 17px; font-weight: 700">ภาพ Spatial 3 มิติ</span><span style="font-size: 15px; line-height: 1.65; color: #D9E8EF">ใช้สองกล้องถ่ายพร้อมกันเป็นภาพตาซ้ายและตาขวา ดูวิธีทำงานในการทดลองถัดไป →</span></a>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1500}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { zv: 30, low: false, step: 0 };
+  }
+
+  zoomFrom(v) { return 0.5 * Math.pow(30, v / 100); }
+
+  stepList() {
+    return [
+      { short: '1 RAW', title: 'ข้อมูลดิบจากเซนเซอร์ (Bayer)', text: 'แต่ละพิกเซลมีฟิลเตอร์สีเดียว แดง เขียว หรือน้ำเงิน จึงรู้ความสว่างของสีเดียว พิกเซลเขียวมีมากเป็นสองเท่า เพราะตาคนไวต่อสีเขียวที่สุด ข้อมูลยังเป็นค่าเชิงเส้น จึงดูมืดทึม' },
+      { short: '2 Demosaic', title: 'เติมสีที่ขาด (Demosaic)', text: 'ISP เดาสีที่ขาดของแต่ละพิกเซลจากพิกเซลข้าง ๆ ได้ภาพสีครบ แต่ยังอมเขียว เพราะเซนเซอร์ไวต่อแสงสีเขียวมากกว่าสีอื่น' },
+      { short: '3 White balance', title: 'ปรับสมดุลแสงขาว', text: 'คูณค่าสีแดงและน้ำเงินเพิ่ม จนวัตถุสีขาวกลับเป็นขาวจริง ค่าที่ใช้ขึ้นกับแหล่งแสง เช่น แดดกลางวัน หรือหลอดไส้สีส้ม' },
+      { short: '4 ลดนอยส์', title: 'ลดนอยส์', text: 'แยกเม็ดเกรนสุ่มออกจากรายละเอียดจริง โดยดูจากพิกเซลรอบข้างและเฟรมที่ถ่ายต่อเนื่อง มือถือรุ่นใหม่ใช้โมเดล AI ช่วยในขั้นนี้' },
+      { short: '5 HDR', title: 'รวมหลายเฟรม (HDR)', text: 'ถ่ายหลายเฟรมที่ความสว่างต่างกันแล้วรวมเข้าด้วยกัน ดวงอาทิตย์ที่เคยขาวโพลนกลับมีรายละเอียด และส่วนมืดไม่ดำสนิท' },
+      { short: '6 Tone map', title: 'ปรับโทนให้ตรงกับสายตา', text: 'แปลงค่าความสว่างเชิงเส้นด้วยเส้นโค้งแกมมา ให้ส่วนมืดสว่างขึ้นตามที่ตาคนรับรู้ ภาพเริ่มดูเป็นธรรมชาติ' },
+      { short: '7 Sharpen + บีบอัด', title: 'เพิ่มความคม สี และบีบอัดไฟล์', text: 'เพิ่มความคมที่ขอบ ปรับความอิ่มสีตามสไตล์ของผู้ผลิต แล้วบีบอัดเป็นไฟล์ HEIF หรือ JPEG ส่วนไฟล์ RAW เก็บข้อมูลก่อนขั้นที่ 2 ไว้ให้แต่งเองภายหลัง' }
+    ];
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var W = 1120, H = 630;
+    var z = this.zoomFrom(s.zv);
+    var frame = function (feq) { var w = W * 13 / feq, h = w * 0.5625; return { x: ((W - w) / 2).toFixed(1), y: ((H - h) / 2).toFixed(1), w: w.toFixed(1), h: h.toFixed(1), lx: ((W - w) / 2 + 8).toFixed(1), ly: ((H - h) / 2 + 22).toFixed(1) }; };
+    var lenses = [
+      { id: 'uw', name: 'อัลตร้าไวด์ (13 มม.)', feq: 13, mp: 12 },
+      { id: 'w', name: 'ไวด์ (24 มม.)', feq: 24, mp: 48 },
+      { id: 't', name: 'เทเล (77 มม.)', feq: 77, mp: 12 }
+    ];
+    var feqZ = 24 * z;
+    var active = lenses[0];
+    if (feqZ >= 77 && !s.low) active = lenses[2];
+    else if (feqZ >= 24) active = lenses[1];
+    var crop = feqZ / active.feq;
+    var mp = active.mp / (crop * crop);
+    var mpShown = Math.min(12, mp);
+    var blurPx = Math.max(0, Math.sqrt(12 / Math.max(mp, 0.01)) - 1) * 0.9;
+    var cw = W * 13 / feqZ, ch = cw * 0.5625;
+    var cx = (W - cw) / 2, cy = (H - ch) / 2;
+
+    var note;
+    if (active.id === 'w' && s.low && feqZ >= 77) note = 'ในที่แสงน้อย มือถือหลายรุ่นไม่ใช้กล้องเทเล เพราะเลนส์เทเลมักมีรูรับแสงแคบและเซนเซอร์เล็กกว่า จึงครอปจากกล้องหลักแทน ภาพนอยส์น้อยกว่าแต่ละเอียดน้อยลง';
+    else if (mp >= 12) note = 'ยังได้ภาพ 12 ล้านพิกเซลเต็ม ไม่สูญเสียรายละเอียด';
+    else if (mp >= 3) note = 'เป็นซูมดิจิทัล ISP ต้องขยายภาพจากพิกเซลที่น้อยลง รายละเอียดเริ่มหายไป';
+    else note = 'ซูมดิจิทัลมาก ภาพเบลอชัด มือถือบางรุ่นใช้ AI เดารายละเอียดเพิ่ม ซึ่งอาจสร้างรายละเอียดที่ไม่มีจริงขึ้นมา';
+
+    // ISP patch
+    var base = function (x, y) {
+      var dx = x - 12, dy = y - 2.2;
+      var d2 = dx * dx + dy * dy;
+      if (d2 < 1.5) return [3.0, 2.6, 1.6];
+      if (d2 < 4) return [1.9, 1.5, 0.9];
+      if (y >= 7) return (x >= 3 && x <= 5 && y <= 8) ? [0.55, 0.06, 0.05] : [0.06, 0.16, 0.05];
+      if (x >= 6 && x <= 8 && y >= 4) return [0.85, 0.85, 0.82];
+      var t = y / 6;
+      return [0.25 + 0.6 * t, 0.35 + 0.25 * t, 0.7 - 0.35 * t];
+    };
+    var a = 99 >>> 0;
+    var rand = function () { a |= 0; a = a + 0x6D2B79F5 | 0; var q = Math.imul(a ^ a >>> 15, 1 | a); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+    var gauss = function () { var u1 = Math.max(rand(), 1e-9), u2 = rand(); return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2); };
+    var resp = [0.5, 1.0, 0.6];
+    var clip = function (v) { return Math.max(0, Math.min(1, v)); };
+    var step = s.step;
+    var patch = [];
+    for (var y = 0; y < 10; y++) {
+      for (var x = 0; x < 16; x++) {
+        var b = base(x, y), n = [gauss() * 0.05, gauss() * 0.05, gauss() * 0.05];
+        var rgb;
+        if (step === 0) {
+          var ch2 = (y % 2 === 0 && x % 2 === 0) ? 0 : (y % 2 === 1 && x % 2 === 1) ? 2 : 1;
+          var v = clip(b[ch2] * resp[ch2] * 0.6 + n[ch2]);
+          rgb = [0, 0, 0]; rgb[ch2] = v;
+        } else if (step === 1) rgb = [0, 1, 2].map(function (c) { return clip(b[c] * resp[c] * 0.6 + n[c]); });
+        else if (step === 2) rgb = [0, 1, 2].map(function (c) { return clip(b[c] * 0.6 + n[c]); });
+        else if (step === 3) rgb = [0, 1, 2].map(function (c) { return clip(b[c] * 0.6); });
+        else {
+          rgb = [0, 1, 2].map(function (c) { var l = b[c] * 0.75; return l * (1 + l / 4) / (1 + l); });
+          if (step >= 5) rgb = rgb.map(function (v2) { return Math.pow(clip(v2), 1 / 2.2); });
+          if (step >= 6) { var m = (rgb[0] + rgb[1] + rgb[2]) / 3; rgb = rgb.map(function (v2) { return clip(m + (v2 - m) * 1.25); }); }
+        }
+        patch.push({ bg: 'rgb(' + Math.round(rgb[0] * 255) + ',' + Math.round(rgb[1] * 255) + ',' + Math.round(rgb[2] * 255) + ')' });
+      }
+    }
+    var steps = this.stepList();
+    var cur = steps[step];
+
+    return {
+      uw: frame(13), wd: frame(24), te: frame(77),
+      cr: { x: cx.toFixed(1), y: cy.toFixed(1), w: cw.toFixed(1), h: ch.toFixed(1) },
+      viewBox: cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ' + cw.toFixed(1) + ' ' + ch.toFixed(1),
+      blurPx: blurPx.toFixed(2),
+      frameLabel: 'กรอบมุมรับภาพของเลนส์อัลตร้าไวด์ ไวด์ และเทเล พร้อมกรอบซูมปัจจุบัน ' + z.toFixed(1) + ' เท่า',
+      zv: s.zv, zLabel: z.toFixed(1) + '×', low: s.low,
+      setZ: function (e) { self.setState({ zv: parseFloat(e.target.value) }); },
+      toggleLow: function () { self.setState({ low: !self.state.low }); },
+      active: active,
+      cropLabel: crop < 1.01 ? 'ไม่ครอป' : crop.toFixed(2) + '×',
+      mpLabel: (mpShown >= 1 ? mpShown.toFixed(1) : mpShown.toFixed(2)) + ' ล้านพิกเซล',
+      zoomNote: note,
+      steps: steps.map(function (st, i) { var on = i === step; return { short: st.short, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ step: i }); } }; }),
+      patch: patch, stepNo: step + 1, stepTitle: cur.title, stepText: cur.text,
+      prev: function () { self.setState({ step: Math.max(0, self.state.step - 1) }); },
+      next: function () { self.setState({ step: Math.min(6, self.state.step + 1) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

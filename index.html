@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physics Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+  :root { --ink: #0F2A3A; --muted: #4A5D6A; --line: #D5DEE3; --bg: #F3F6F7; --card: #FFFFFF; --accent: #0A6A94; --warm: #B04A0C; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 3px solid var(--warm); outline-offset: 2px; }
+  main { max-width: 1120px; margin: 0 auto; padding: 56px 16px 72px; display: flex; flex-direction: column; gap: 40px; }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .08em; color: var(--accent); }
+  h1 { margin: 8px 0 12px; font-size: clamp(34px, 5vw, 54px); line-height: 1.15; }
+  .lede { margin: 0; max-width: 760px; font-size: 18px; line-height: 1.7; color: var(--muted); }
+  .grid { display: flex; flex-wrap: wrap; gap: 20px; }
+  .card { flex: 1 1 420px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--ink); }
+  .card:hover { border-color: var(--accent); }
+  .num { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--warm); }
+  .card h2 { margin: 0; font-size: 24px; }
+  .card p { margin: 0; font-size: 16px; line-height: 1.7; color: #34495A; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: #EAF3F7; color: #0A4F70; }
+  .go { font-weight: 600; color: var(--accent); }
+  footer { font-size: 14px; line-height: 1.7; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">PHYSICS SIMULATOR</div>
+    <h1>จำลองฟิสิกส์ให้เห็นภาพ</h1>
+    <p class="lede">ชุดการจำลองแบบโต้ตอบได้ ปรับค่าแล้วเห็นผลทันที ครอบคลุมฟิสิกส์ 1 (กลศาสตร์และความร้อน) และฟิสิกส์ 2 (คลื่น แม่เหล็กไฟฟ้า แสง) รวมถึงการนำไปใช้ในเทคโนโลยีจริง</p>
+  </header>
+
+  <section class="grid" aria-label="รายการการจำลอง">
+    <a class="card" href="ocean-waves/index.html">
+      <span class="num">01 · คลื่น</span>
+      <h2>Ocean Wave Simulator</h2>
+      <p>จำลองคลื่นทะเล 5 แบบ ตั้งแต่คลื่นลม สเวลล์ คลื่นเข้าฝั่ง สึนามิ ไปจนถึงน้ำขึ้นน้ำลง ดูวงโคจรของอนุภาคน้ำ ความเร็ว คาบ และกำลังคลื่นจากสมการ dispersion จริง พร้อมการใช้ประโยชน์จากคลื่นทะเล</p>
+      <div class="tags"><span class="tag">ฟิสิกส์ 2 · คลื่น</span><span class="tag">พลังงานคลื่น</span><span class="tag">2 หน้า</span></div>
+      <span class="go">เปิดการจำลอง →</span>
+    </a>
+    <a class="card" href="camera-lab/index.html">
+      <span class="num">02 · แสงและทัศนศาสตร์</span>
+      <h2>Camera Lab</h2>
+      <p>ห้องแล็บกล้อง 6 การทดลอง: เลนส์และระยะโฟกัส แสงกับขนาดเซนเซอร์ หลายกล้องและการประมวลผลภาพ (ISP) กล้องคู่และ Spatial Photo/Video ระบบกันสั่น OIS/EIS และผลของอุณหภูมิ ความชื้น และรังสี</p>
+      <div class="tags"><span class="tag">ฟิสิกส์ 2 · ทัศนศาสตร์</span><span class="tag">Computer Vision</span><span class="tag">7 หน้า</span></div>
+      <span class="go">เปิดห้องแล็บ →</span>
+    </a>
+  </section>
+
+  <footer>
+    การจำลองใช้โมเดลที่ทำให้ง่ายลงเพื่อการเรียนรู้ ตัวเลขของอุปกรณ์เป็นค่าตัวอย่าง ไม่ใช่สเปกของรุ่นใดรุ่นหนึ่ง ·
+    <a href="https://github.com/RoxDraft/Physics-Simulator">ดูซอร์สโค้ดบน GitHub</a>
+  </footer>
+</main>
+</body>
+</html>

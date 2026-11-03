@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แสงและขนาดเซนเซอร์</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="Lens.dc.html" style="min-height: 44px; display: inline-flex; align-items: center">← เลนส์และระยะโฟกัส</a>
+<a href="Fusion.dc.html" style="min-height: 44px; display: inline-flex; align-items: center">ถัดไป: หลายกล้องและการประมวลผลภาพ →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 860px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">การทดลอง 02</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">แสงและขนาดเซนเซอร์</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">เซนเซอร์คือตารางถังเล็ก ๆ ที่นับโฟตอน โฟตอนมาถึงแบบสุ่มเหมือนเม็ดฝน ถ้านับได้น้อย ความสุ่มนั้นจะกลายเป็นเกรน (นอยส์) ภาพด้านล่างจำลองการนับโฟตอนจริงทีละพิกเซล</p>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC">
+<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
+<span style="font-weight: 700; font-size: 17px">ภาพที่เซนเซอร์บันทึกได้</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{expo.bg}}; color: {{expo.fg}}">{{expo.label}}</span>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button type="button" onClick="{{auto}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">วัดแสงอัตโนมัติ</button>
+<button type="button" onClick="{{reroll}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">ถ่ายภาพใหม่</button>
+</div>
+</div>
+<div role="img" aria-label="{{imgLabel}}" style="display: grid; grid-template-columns: repeat(40, minmax(0, 1fr)); background: #000000">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="960">
+<div style="aspect-ratio: 1; background: {{c.bg}}"></div>
+</sc-for>
+</div>
+<div style="padding: 10px 16px; font-size: 13px; color: #4A5D6A; border-top: 1px solid #E3E9EC">ฉากทดสอบ: ผนังไล่ระดับความสว่าง โคมไฟสว่างจ้า และแถบเทาอ้างอิง 7 ระดับด้านล่าง แต่ละช่องคือ 1 พิกเซล (ขยายให้เห็น)</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="4">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #0F2A3A">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">สภาพแสง</h2>
+<div role="group" aria-label="สภาพแสง" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{lights}}" as="l" hint-placeholder-count="6">
+<button type="button" onClick="{{l.pick}}" aria-pressed="{{l.pressed}}" style="min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 1.5px solid {{l.border}}; background: {{l.bg}}; color: {{l.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.3">{{l.name}}<br><span style="font-size: 12px; font-weight: 500; color: {{l.sub}}">{{l.lux}}</span></button>
+</sc-for>
+</div>
+<h2 style="margin: 8px 0 0; font-size: 17px; font-weight: 700">ขนาดเซนเซอร์ (ภาพ 12 ล้านพิกเซลเท่ากัน)</h2>
+<div role="group" aria-label="ขนาดเซนเซอร์" style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{sensors}}" as="s" hint-placeholder-count="5">
+<button type="button" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" style="min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 1.5px solid {{s.border}}; background: {{s.bg}}; color: {{s.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px">
+<span>{{s.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{s.sub}}">พิกเซล {{s.pitch}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">สามเหลี่ยมการรับแสง</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ss-n" style="font-size: 14px; font-weight: 600">รูรับแสง</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{nLabel}}</span></div>
+<input id="ss-n" type="range" min="1.4" max="11" step="0.1" value="{{N}}" onChange="{{setN}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ss-t" style="font-size: 14px; font-weight: 600">ความเร็วชัตเตอร์</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{tLabel}}</span></div>
+<input id="ss-t" type="range" min="0" max="100" step="1" value="{{tv}}" onChange="{{setT}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ss-i" style="font-size: 14px; font-weight: 600">ISO (ขยายสัญญาณ)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{isoLabel}}</span></div>
+<input id="ss-i" type="range" min="0" max="100" step="1" value="{{iv}}" onChange="{{setI}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ss-k" style="font-size: 14px; font-weight: 600">Night mode: ซ้อนภาพ</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{kLabel}}</span></div>
+<input id="ss-k" type="range" min="1" max="16" step="1" value="{{k}}" onChange="{{setK}}">
+</div>
+</div>
+</div>
+</div>
+
+<section style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700">เทียบความคมชัดของสัญญาณ (SNR) ทุกขนาดเซนเซอร์ ที่ค่าตั้งปัจจุบัน</h2>
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px"><span style="font-weight: {{b.weight}}">{{b.name}}</span><span style="font-family: 'IBM Plex Mono', monospace">{{b.value}}</span></div>
+<div style="height: 14px; background: #E3E9EC; border-radius: 7px; overflow: hidden"><div style="height: 14px; width: {{b.width}}; background: {{b.color}}; border-radius: 7px"></div></div>
+</div>
+</sc-for>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #4A5D6A">SNR = สัญญาณ ÷ นอยส์ ยิ่งสูงยิ่งเนียน นอยส์จากโฟตอนเท่ากับ √(จำนวนโฟตอน) เซนเซอร์ที่ใหญ่ขึ้น 4 เท่าในพื้นที่ จึงได้ SNR ดีขึ้นเพียง 2 เท่า</p>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700">สิ่งที่ควรลอง</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">1. เลือก “ถนนกลางคืน” แล้วกดวัดแสงอัตโนมัติ: ภาพสว่างพอแต่เกรนเต็ม เพราะ ISO แค่ขยายสัญญาณ ไม่ได้เพิ่มโฟตอน</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">2. เปลี่ยนเป็นฟูลเฟรม: เกรนลดลงทันที เพราะพิกเซลใหญ่รับโฟตอนได้มากกว่า</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #D9E8EF">3. กลับมาที่มือถือ แล้วเพิ่ม Night mode เป็น 9–16 ภาพ: มือถือชดเชยเซนเซอร์เล็กด้วยการถ่ายหลายเฟรมแล้วเฉลี่ย</p>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1400}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { light: 'room', sensor: 'phone', N: 1.8, tv: 70, iv: 26, k: 1, seed: 7 };
+  }
+
+  lightList() {
+    return [
+      { id: 'sun', name: 'แดดจ้า', lux: 50000 },
+      { id: 'cloud', name: 'ฟ้าครึ้ม', lux: 5000 },
+      { id: 'office', name: 'ในออฟฟิศ', lux: 400 },
+      { id: 'room', name: 'ห้องนั่งเล่นตอนค่ำ', lux: 50 },
+      { id: 'street', name: 'ถนนกลางคืน', lux: 5 },
+      { id: 'moon', name: 'แสงจันทร์', lux: 0.2 }
+    ];
+  }
+
+  sensorList() {
+    return [
+      { id: 'phoneS', name: 'มือถือ กล้องรอง (1/3.6″)', pitch: 1.0 },
+      { id: 'phone', name: 'มือถือ กล้องหลัก (1/1.3″)', pitch: 2.45 },
+      { id: 'one', name: 'กล้องพกพา 1 นิ้ว', pitch: 3.3 },
+      { id: 'apsc', name: 'มิเรอร์เลส APS-C', pitch: 5.9 },
+      { id: 'ff', name: 'มิเรอร์เลส ฟูลเฟรม', pitch: 9.0 }
+    ];
+  }
+
+  tFrom(v) { return Math.pow(10, -3.903 + v / 100 * 3.903); }
+  isoFrom(v) { return 50 * Math.pow(2, v / 100 * 8); }
+
+  model(lux, pitch, N, t, iso, k) {
+    var A = pitch * pitch;
+    var nmid = 4100 * lux * 0.18 / (4 * N * N) * t * A * 0.6;
+    var expRatio = (lux * 0.18 / Math.PI) * iso * t / (12.5 * N * N);
+    var read = 2;
+    var snr = nmid / Math.sqrt(nmid + read * read) * Math.sqrt(k);
+    return { nmid: nmid, expRatio: expRatio, snr: snr, full: 3500 * A, read: read };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var lights = this.lightList(), sensors = this.sensorList();
+    var L = lights.filter(function (x) { return x.id === s.light; })[0];
+    var S = sensors.filter(function (x) { return x.id === s.sensor; })[0];
+    var t = this.tFrom(s.tv), iso = this.isoFrom(s.iv);
+    var m = this.model(L.lux, S.pitch, s.N, t, iso, s.k);
+
+    // seeded random
+    var a = s.seed * 2654435761 >>> 0;
+    var rand = function () { a |= 0; a = a + 0x6D2B79F5 | 0; var q = Math.imul(a ^ a >>> 15, 1 | a); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; };
+    var gauss = function () { var u1 = Math.max(rand(), 1e-9), u2 = rand(); return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2); };
+
+    var steps = [0.03, 0.06, 0.12, 0.18, 0.35, 0.6, 0.9];
+    var scene = function (x, y) {
+      var dx = x - 30, dy = y - 6;
+      if (dx * dx + dy * dy <= 7) return 4;
+      if (dx * dx + dy * dy <= 14) return 1.2;
+      if (y >= 17 && y <= 21 && x >= 2 && x <= 36) return steps[Math.min(6, Math.floor((x - 2) / 5))];
+      if (x >= 4 && x <= 13 && y >= 3 && y <= 12) return (x === 4 || x === 13 || y === 3 || y === 12 || x === 8 || x === 9) ? 0.04 : 0.45;
+      return 0.04 + 0.4 * (x / 39) + 0.05 * (1 - y / 23);
+    };
+    var cells = [];
+    for (var y = 0; y < 24; y++) {
+      for (var x = 0; x < 40; x++) {
+        var r = scene(x, y);
+        var mean = m.nmid * r / 0.18;
+        var sd = Math.sqrt(mean + m.read * m.read) / Math.sqrt(s.k);
+        var e = Math.max(0, mean + sd * gauss());
+        e = Math.min(e, m.full);
+        var lin = m.nmid > 0 ? e / m.nmid * 0.18 * m.expRatio : 0;
+        var g = Math.round(Math.pow(Math.max(0, Math.min(1, lin)), 1 / 2.2) * 255);
+        cells.push({ bg: 'rgb(' + g + ',' + g + ',' + g + ')' });
+      }
+    }
+
+    var stops = Math.log2(Math.max(m.expRatio, 1e-6));
+    var expo;
+    if (Math.abs(stops) < 0.4) expo = { label: 'แสงพอดี', bg: '#DDEFF6', fg: '#0A4F70' };
+    else if (stops > 0) expo = { label: 'สว่างเกิน ' + stops.toFixed(1) + ' สต็อป', bg: '#FCE3CF', fg: '#7E3407' };
+    else expo = { label: 'มืดไป ' + Math.abs(stops).toFixed(1) + ' สต็อป', bg: '#FCE3CF', fg: '#7E3407' };
+
+    var fmtT = function (tt) { return tt >= 0.3 ? tt.toFixed(1) + ' วินาที' : '1/' + Math.round(1 / tt) + ' วินาที'; };
+    var snrDb = 20 * Math.log10(Math.max(m.snr, 0.01));
+    var totalT = t * s.k;
+    var readouts = [
+      { label: 'โฟตอนต่อพิกเซล (เทากลาง)', value: m.nmid >= 100 ? Math.round(m.nmid).toLocaleString('en-US') : m.nmid.toFixed(1), sub: 'ต่อ 1 ภาพ นอยส์ ≈ √' + (m.nmid >= 100 ? Math.round(m.nmid) : m.nmid.toFixed(1)) },
+      { label: 'SNR ที่เทากลาง', value: m.snr.toFixed(1) + ' (' + snrDb.toFixed(0) + ' dB)', sub: m.snr > 20 ? 'เนียน' : m.snr > 8 ? 'เริ่มเห็นเกรน' : 'เกรนมาก รายละเอียดหาย' },
+      { label: 'เวลาถ่ายรวม', value: fmtT(totalT), sub: totalT > 1 / 30 ? 'นานพอที่มือสั่นจะทำให้เบลอ (ดูการทดลอง 05)' : 'เร็วพอจะหยุดการสั่นของมือ' },
+      { label: 'ความจุพิกเซล', value: Math.round(m.full).toLocaleString('en-US') + ' e⁻', sub: 'เกินนี้พิกเซลเต็ม กลายเป็นขาวโพลน' }
+    ];
+
+    var maxSnr = 0, bars = [];
+    var self2 = this;
+    sensors.forEach(function (x) { var mm = self2.model(L.lux, x.pitch, s.N, t, iso, s.k); x.snr = mm.snr; maxSnr = Math.max(maxSnr, mm.snr); });
+    sensors.forEach(function (x) {
+      var on = x.id === S.id;
+      bars.push({ name: x.name, value: x.snr.toFixed(1), width: (Math.max(2, x.snr / maxSnr * 100)).toFixed(1) + '%', color: on ? '#B04A0C' : '#0A6A94', weight: on ? 700 : 500 });
+    });
+
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', sub: '#E1F0F7', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', sub: '#4A5D6A', border: '#C9D4DA' }; };
+
+    return {
+      cells: cells,
+      imgLabel: 'ภาพจำลองจากเซนเซอร์ ' + S.name + ' ใน' + L.name + ' ' + expo.label,
+      expo: expo, readouts: readouts, bars: bars,
+      lights: lights.map(function (x) { var p = pill(x.id === s.light); return { name: x.name, lux: '≈ ' + x.lux.toLocaleString('en-US') + ' ลักซ์', pressed: x.id === s.light ? 'true' : 'false', bg: p.bg, fg: p.fg, sub: p.sub, border: p.border, pick: function () { self.setState({ light: x.id }); } }; }),
+      sensors: sensors.map(function (x) { var p = pill(x.id === s.sensor); return { name: x.name, pitch: x.pitch.toFixed(1) + ' µm', pressed: x.id === s.sensor ? 'true' : 'false', bg: p.bg, fg: p.fg, sub: p.sub, border: p.border, pick: function () { self.setState({ sensor: x.id }); } }; }),
+      N: s.N, tv: s.tv, iv: s.iv, k: s.k,
+      nLabel: 'f/' + s.N.toFixed(1), tLabel: fmtT(t), isoLabel: 'ISO ' + Math.round(iso), kLabel: s.k === 1 ? 'ปิด (1 ภาพ)' : s.k + ' ภาพ',
+      setN: function (e) { self.setState({ N: parseFloat(e.target.value) }); },
+      setT: function (e) { self.setState({ tv: parseFloat(e.target.value) }); },
+      setI: function (e) { self.setState({ iv: parseFloat(e.target.value) }); },
+      setK: function (e) { self.setState({ k: parseInt(e.target.value, 10) }); },
+      reroll: function () { self.setState({ seed: self.state.seed + 1 }); },
+      auto: function () {
+        var st = self.state, Lx = self.lightList().filter(function (x) { return x.id === st.light; })[0];
+        var tt = self.tFrom(st.tv);
+        var need = 12.5 * st.N * st.N * Math.PI / (Lx.lux * 0.18 * tt);
+        if (need < 50) { tt = 12.5 * st.N * st.N * Math.PI / (Lx.lux * 0.18 * 50); need = 50; }
+        if (need > 12800 && tt < 1 / 15) { tt = 1 / 15; need = 12.5 * st.N * st.N * Math.PI / (Lx.lux * 0.18 * tt); }
+        need = Math.max(50, Math.min(12800, need));
+        tt = Math.max(1 / 8000, Math.min(1, tt));
+        self.setState({ iv: Math.log2(need / 50) / 8 * 100, tv: (Math.log10(tt) + 3.903) / 3.903 * 100 });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

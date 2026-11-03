@@ -12,8 +12,21 @@ a{color:#0A6A94}a:hover{color:#074E6E}
 input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
 a:focus-visible,input:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
 </style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+</style>
 </head>
 <body>
+<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><a href="index.html">Camera Lab</a><span aria-hidden="true">›</span><span aria-current="page">01 เลนส์และระยะโฟกัส</span></nav>
 <div id="dc-root"></div>
 <template id="dc-template">
 <div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
@@ -47,12 +60,53 @@ a:focus-visible,input:focus-visible{outline:3px solid #B04A0C;outline-offset:2px
 <text x="{{f2R}}" y="246" font-size="13" text-anchor="middle" fill="#4A5D6A">2F′</text>
 <path d="{{raysPath}}" fill="none" stroke="#E07A2E" stroke-width="2"></path>
 <path d="{{virtualPath}}" fill="none" stroke="#E07A2E" stroke-width="1.5" stroke-dasharray="6 6"></path>
+<line x1="{{scrX}}" y1="70" x2="{{scrX}}" y2="370" stroke="#4A5D6A" stroke-width="5" stroke-linecap="round" opacity="{{scrOpacity}}"></line>
+<text x="{{scrX}}" y="392" font-size="14" text-anchor="middle" fill="#4A5D6A" opacity="{{scrOpacity}}">ฉาก / เซนเซอร์</text>
 <path d="{{objPath}}" fill="none" stroke="#0F2A3A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
 <path d="{{imgPath}}" fill="none" stroke="#0A6A94" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="{{imgDash}}"></path>
 <text x="{{objLabelX}}" y="140" font-size="15" text-anchor="middle" fill="#0F2A3A">วัตถุ</text>
 <text x="{{imgLabelX}}" y="{{imgLabelY}}" font-size="15" text-anchor="middle" fill="#0A6A94">{{imgLabel}}</text>
 <text x="24" y="32" font-size="15" fill="#4A5D6A">สเกล 1 ช่องจอ ≈ 1 มม.</text>
 </svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">ภาพที่มองเห็น</h2>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{view.bg}}; color: {{view.fg}}">{{view.badge}}</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">วัตถุจริง</div>
+<svg viewBox="0 0 320 220" style="display: block; width: 100%; height: auto; border-radius: 10px; background: #EAF3F7" role="img" aria-label="วัตถุตัวอย่าง: ต้นไม้ ดวงอาทิตย์ และตัวอักษร F">
+<g transform="translate(160 110) scale(1.5) translate(-50 -50)">
+<circle cx="80" cy="20" r="10" fill="#F5C77A"></circle>
+<rect x="20" y="55" width="8" height="27" fill="#7A5A3A"></rect>
+<circle cx="24" cy="46" r="16" fill="#3F6B3F"></circle>
+<rect x="50" y="34" width="8" height="48" fill="#0F2A3A"></rect>
+<rect x="50" y="34" width="28" height="8" fill="#0F2A3A"></rect>
+<rect x="50" y="54" width="20" height="8" fill="#0F2A3A"></rect>
+<rect x="-10" y="82" width="120" height="6" fill="#B89B74"></rect>
+</g>
+</svg>
+</div>
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{view.title}}</div>
+<svg viewBox="0 0 320 220" style="display: block; width: 100%; height: auto; border-radius: 10px; background: {{view.ground}}" role="img" aria-label="{{view.aria}}">
+<g style="filter: blur({{view.blur}}px)" opacity="{{view.opacity}}">
+<g transform="{{view.transform}}">
+<circle cx="80" cy="20" r="10" fill="#F5C77A"></circle>
+<rect x="20" y="55" width="8" height="27" fill="#7A5A3A"></rect>
+<circle cx="24" cy="46" r="16" fill="#3F6B3F"></circle>
+<rect x="50" y="34" width="8" height="48" fill="#0F2A3A"></rect>
+<rect x="50" y="34" width="28" height="8" fill="#0F2A3A"></rect>
+<rect x="50" y="54" width="20" height="8" fill="#0F2A3A"></rect>
+<rect x="-10" y="82" width="120" height="6" fill="#B89B74"></rect>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">{{view.text}}</p>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 12px">
 <sc-for list="{{readouts}}" as="r" hint-placeholder-count="4">
@@ -76,6 +130,13 @@ a:focus-visible,input:focus-visible{outline:3px solid #B04A0C;outline-offset:2px
 <div style="display: flex; justify-content: space-between; gap: 8px"><label for="ln-f" style="font-weight: 600; font-size: 15px">ทางยาวโฟกัส (f)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{fLabel}}</span></div>
 <input id="ln-f" type="range" min="40" max="240" step="1" value="{{f}}" onChange="{{setF}}">
 </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="ln-s" style="font-weight: 600; font-size: 15px">ระยะฉาก / เซนเซอร์</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{sLabel}}</span></div>
+<input id="ln-s" type="range" min="20" max="520" step="1" value="{{sPos}}" onChange="{{setS}}">
+<div style="font-size: 13px; color: #4A5D6A">เลื่อนเองเพื่อหาจุดที่ภาพคมที่สุด (การโฟกัสด้วยมือ)</div>
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input type="checkbox" checked="{{af}}" onChange="{{toggleAf}}" style="width: 22px; height: 22px; accent-color: #0A6A94">โฟกัสอัตโนมัติ (ฉากเลื่อนตามภาพ)</label>
+<button type="button" onClick="{{togglePlay}}" style="min-height: 48px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #0A6A94; background: {{playBg}}; color: {{playFg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{playLabel}}</button>
 </div>
 <div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
 <div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">ตอนนี้เหมือนอุปกรณ์</div>
@@ -169,7 +230,39 @@ a:focus-visible,input:focus-visible{outline:3px solid #B04A0C;outline-offset:2px
 class Component extends DCLogic {
   constructor() {
     super(...arguments);
-    this.state = { u: 380, f: 140, phoneF: 6.9, phoneS: 12.4, phoneD: 50, microO: 16, microE: 25, teleO: 900, teleE: 20, teleD: 90 };
+    this.state = { u: 380, f: 140, sPos: 222, af: true, playing: false, phase: 0, phoneF: 6.9, phoneS: 12.4, phoneD: 50, microO: 16, microE: 25, teleO: 900, teleE: 20, teleD: 90 };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing) {
+        var ph = self.state.phase + dt * 0.45;
+        self.setState({ phase: ph, u: Math.round(295 + 265 * Math.cos(ph)) });
+      }
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  screenPos() {
+    var s = this.state;
+    if (s.af && Math.abs(s.u - s.f) >= 2 && s.u > s.f) {
+      var v = s.u * s.f / (s.u - s.f);
+      return Math.max(20, Math.min(520, v));
+    }
+    return s.sPos;
   }
 
   setter(key) {
@@ -249,9 +342,63 @@ class Component extends DCLogic {
       note: tm > maxM ? 'ขยายเกินกำลังของหน้ากล้อง ภาพใหญ่ขึ้นแต่เบลอ ไม่ได้รายละเอียดเพิ่ม (empty magnification) ลองใช้เลนส์ตาที่ f ยาวขึ้น' : 'กำลังขยายยังอยู่ในช่วงที่ใช้ได้ ข้อจำกัดจริงของรายละเอียดคือขนาดหน้ากล้อง ไม่ใช่กำลังขยาย'
     };
 
+    // ---------- screen and "what you see" preview ----------
+    var self = this;
+    var sp = this.screenPos();
+    var clampK = function (k) { return Math.max(0.08, Math.min(4.5, k)); };
+    var view;
+    if (kind === 'real') {
+      var A = 40;
+      var c = A * Math.abs(sp - v) / v;
+      var blurPx = Math.min(16, c * 0.55);
+      var k = clampK(1.5 * Math.abs(m));
+      var beyond = v > 520;
+      var sharp = blurPx < 0.6;
+      view = {
+        title: 'ภาพบนฉาก / เซนเซอร์',
+        badge: sharp ? 'คมชัด' : beyond ? 'ภาพอยู่ไกลเกินฉาก' : 'ยังไม่โฟกัส',
+        bg: sharp ? '#DDEFF6' : '#FCE3CF', fg: sharp ? '#0A4F70' : '#7E3407',
+        ground: '#F3EFE6',
+        transform: 'translate(160 110) scale(' + (-k).toFixed(3) + ' ' + (-k).toFixed(3) + ') translate(-50 -50)',
+        blur: blurPx.toFixed(2), opacity: 1,
+        aria: 'ภาพจริงกลับหัวบนฉาก ขนาด ' + Math.abs(m).toFixed(2) + ' เท่าของวัตถุ',
+        text: beyond
+          ? 'ภาพเกิดไกลกว่าที่ฉากเลื่อนไปถึง จึงเบลอเสมอ ลองเลื่อนวัตถุออกห่างจาก F'
+          : sharp
+            ? 'ภาพจริงกลับหัวและกลับซ้าย-ขวา (หมุน 180°) ขนาด ' + Math.abs(m).toFixed(2) + ' เท่า เซนเซอร์กล้องและจอประสาทตาก็รับภาพกลับหัวแบบนี้ แล้วค่อยกลับด้านภายหลัง'
+            : 'ฉากอยู่ห่างจากตำแหน่งภาพ ' + Math.abs(sp - v).toFixed(0) + ' มม. แสงจากแต่ละจุดจึงกระจายเป็นวงเบลอ (circle of confusion) เลื่อนฉากหรือเปิดโฟกัสอัตโนมัติ'
+      };
+    } else if (kind === 'virtual') {
+      var k2 = clampK(1.5 * Math.abs(m));
+      view = {
+        title: 'มองผ่านเลนส์ด้วยตา',
+        badge: 'ภาพเสมือน ขยาย ' + Math.abs(m).toFixed(1) + '×',
+        bg: '#DDEFF6', fg: '#0A4F70', ground: '#EAF3F7',
+        transform: 'translate(160 110) scale(' + k2.toFixed(3) + ' ' + k2.toFixed(3) + ') translate(-50 -50)',
+        blur: 0, opacity: 1,
+        aria: 'ภาพเสมือนหัวตั้ง ขยาย ' + Math.abs(m).toFixed(1) + ' เท่า',
+        text: 'แบบแว่นขยาย: ภาพหัวตั้งและใหญ่ขึ้น แต่ฉากรับไม่ได้ เพราะแสงไม่ได้ตัดกันจริง ต้องมองผ่านเลนส์ ตาจึงช่วยรวมแสงเอง'
+      };
+    } else {
+      view = {
+        title: 'ภาพบนฉาก / เซนเซอร์', badge: 'ไม่เกิดภาพ', bg: '#FCE3CF', fg: '#7E3407', ground: '#F3EFE6',
+        transform: 'translate(160 110) scale(4) translate(-50 -50)', blur: 16, opacity: 0.6,
+        aria: 'ไม่เกิดภาพ แสงออกขนาน',
+        text: 'วัตถุอยู่ที่จุดโฟกัสพอดี แสงออกเป็นลำขนาน ฉากระยะไหนก็ได้แค่แสงสว่างฟุ้ง ๆ'
+      };
+    }
+
     return {
+      sPos: Math.round(sp), sLabel: Math.round(sp) + ' มม.', af: s.af,
+      scrX: (LX + sp).toFixed(1), scrOpacity: kind === 'virtual' ? 0.25 : 1,
+      view: view,
+      setS: function (e) { self.setState({ sPos: parseFloat(e.target.value), af: false }); },
+      toggleAf: function () { self.setState({ sPos: self.screenPos(), af: !self.state.af }); },
+      togglePlay: function () { var on = !self.state.playing; self.setState({ playing: on, phase: on ? Math.acos(Math.max(-1, Math.min(1, (self.state.u - 295) / 265))) : self.state.phase }); },
+      playLabel: s.playing ? 'หยุดภาพเคลื่อนไหว' : 'เล่นภาพเคลื่อนไหว: เลื่อนวัตถุอัตโนมัติ',
+      playBg: s.playing ? '#0A6A94' : '#FFFFFF', playFg: s.playing ? '#FFFFFF' : '#0A6A94',
       u: u, f: f, uLabel: u + ' มม.', fLabel: f + ' มม.',
-      setU: this.setter('u'), setF: this.setter('f'),
+      setU: function (e) { self.setState({ u: parseFloat(e.target.value), playing: false }); }, setF: this.setter('f'),
       fL: LX - f, fR: LX + f, f2L: LX - 2 * f, f2R: LX + 2 * f,
       raysPath: rays, virtualPath: virt || 'M0,0', objPath: objPath, imgPath: imgPath || 'M0,0', imgDash: imgDash,
       objLabelX: xo,

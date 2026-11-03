@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>ห้องแล็บกล้อง</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 48px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+
+<header style="display: flex; flex-direction: column; gap: 10px; max-width: 860px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">CAMERA LAB · 6 การทดลอง</div>
+<h1 style="margin: 0; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.15; font-weight: 700">ห้องแล็บกล้อง: จากแสงหนึ่งลำ จนกลายเป็นภาพหนึ่งภาพ</h1>
+<p style="margin: 0; font-size: 18px; line-height: 1.7; color: #4A5D6A">ชุดการจำลองที่ลองปรับค่าได้จริง ตั้งแต่เลนส์ เซนเซอร์ การประมวลผลภาพ กล้องคู่สำหรับภาพ 3 มิติ ระบบกันสั่น ไปจนถึงการออกแบบให้กล้องทนต่อสภาพแวดล้อม</p>
+</header>
+
+<section aria-label="เส้นทางของแสงในกล้อง" style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">แสงเดินทางผ่านกล้องอย่างไร</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch">
+<div style="flex: 1 1 150px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #0A6A94">แสง</div><div style="font-size: 15px; line-height: 1.55">โฟตอนสะท้อนจากวัตถุ ยิ่งมืด ยิ่งมีน้อย</div></div>
+<div style="display: flex; align-items: center; color: #4A5D6A; font-size: 22px" aria-hidden="true">→</div>
+<div style="flex: 1 1 150px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #0A6A94">เลนส์</div><div style="font-size: 15px; line-height: 1.55">หักเหแสงให้รวมเป็นภาพบนระนาบเดียว</div></div>
+<div style="display: flex; align-items: center; color: #4A5D6A; font-size: 22px" aria-hidden="true">→</div>
+<div style="flex: 1 1 150px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #0A6A94">กันสั่น</div><div style="font-size: 15px; line-height: 1.55">ขยับเลนส์หรือเซนเซอร์สวนการสั่นของมือ</div></div>
+<div style="display: flex; align-items: center; color: #4A5D6A; font-size: 22px" aria-hidden="true">→</div>
+<div style="flex: 1 1 150px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #0A6A94">เซนเซอร์</div><div style="font-size: 15px; line-height: 1.55">นับโฟตอนในแต่ละพิกเซล แปลงเป็นตัวเลข</div></div>
+<div style="display: flex; align-items: center; color: #4A5D6A; font-size: 22px" aria-hidden="true">→</div>
+<div style="flex: 1 1 150px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #0A6A94">ISP</div><div style="font-size: 15px; line-height: 1.55">ชิปประมวลผลภาพ เติมสี ลดนอยส์ รวมหลายเฟรม</div></div>
+<div style="display: flex; align-items: center; color: #4A5D6A; font-size: 22px" aria-hidden="true">→</div>
+<div style="flex: 1 1 150px; background: #0F2A3A; color: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #9FD0E6">ภาพ</div><div style="font-size: 15px; line-height: 1.55">ไฟล์ภาพ วิดีโอ หรือภาพ 3 มิติ</div></div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">เลือกการทดลอง</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<a href="Lens.dc.html" style="flex: 1 1 360px; text-decoration: none; color: #0F2A3A; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">01</span><span style="font-size: 20px; font-weight: 700">เลนส์และระยะโฟกัส</span><span style="font-size: 15px; line-height: 1.65; color: #34495A">วาดเส้นทางแสงผ่านเลนส์ แล้วเทียบกล้องมือถือ กล้องจุลทรรศน์ และกล้องโทรทรรศน์</span><span style="font-size: 15px; font-weight: 600; color: #0A6A94">เปิดการทดลอง →</span></a>
+<a href="Sensor.dc.html" style="flex: 1 1 360px; text-decoration: none; color: #0F2A3A; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">02</span><span style="font-size: 20px; font-weight: 700">แสงและขนาดเซนเซอร์</span><span style="font-size: 15px; line-height: 1.65; color: #34495A">นับโฟตอนในที่มืดและที่สว่าง ดูนอยส์ที่เกิดจริงเมื่อเซนเซอร์เล็กหรือใหญ่ และ Night mode ทำงานอย่างไร</span><span style="font-size: 15px; font-weight: 600; color: #0A6A94">เปิดการทดลอง →</span></a>
+<a href="Fusion.dc.html" style="flex: 1 1 360px; text-decoration: none; color: #0F2A3A; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">03</span><span style="font-size: 20px; font-weight: 700">หลายกล้องและการประมวลผลภาพ</span><span style="font-size: 15px; line-height: 1.65; color: #34495A">ซูมแล้วมือถือสลับไปใช้เลนส์ไหน และชิป ISP เปลี่ยนข้อมูลดิบจากเซนเซอร์เป็นภาพได้อย่างไร</span><span style="font-size: 15px; font-weight: 600; color: #0A6A94">เปิดการทดลอง →</span></a>
+<a href="Spatial.dc.html" style="flex: 1 1 360px; text-decoration: none; color: #0F2A3A; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">04</span><span style="font-size: 20px; font-weight: 700">กล้องคู่ ภาพ 3 มิติ และ Spatial</span><span style="font-size: 15px; line-height: 1.65; color: #34495A">สองเลนส์วัดความลึกได้อย่างไร และเทคนิคเดียวกันนี้ใช้ในหุ่นยนต์ รถยนต์ ยานสำรวจดาวอังคาร</span><span style="font-size: 15px; font-weight: 600; color: #0A6A94">เปิดการทดลอง →</span></a>
+<a href="Stabilize.dc.html" style="flex: 1 1 360px; text-decoration: none; color: #0F2A3A; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">05</span><span style="font-size: 20px; font-weight: 700">ระบบกันสั่น OIS และ EIS</span><span style="font-size: 15px; line-height: 1.65; color: #34495A">เปิด-ปิดกันสั่นแบบฮาร์ดแวร์และซอฟต์แวร์ ดูว่าแบบไหนแก้ภาพสั่น แบบไหนแก้ภาพเบลอ</span><span style="font-size: 15px; font-weight: 600; color: #0A6A94">เปิดการทดลอง →</span></a>
+<a href="Environment.dc.html" style="flex: 1 1 360px; text-decoration: none; color: #0F2A3A; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">06</span><span style="font-size: 20px; font-weight: 700">อุณหภูมิ ความชื้น และรังสี</span><span style="font-size: 15px; line-height: 1.65; color: #34495A">โฟกัสเลื่อนเมื่อร้อน เลนส์เป็นฝ้าเมื่อไหร่ และพิกเซลเสียสะสมในอวกาศ พร้อมวิธีที่วิศวกรป้องกัน</span><span style="font-size: 15px; font-weight: 600; color: #0A6A94">เปิดการทดลอง →</span></a>
+</div>
+</section>
+
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #4A5D6A; max-width: 860px">หมายเหตุ: การจำลองใช้โมเดลฟิสิกส์ที่ทำให้ง่ายลงเพื่อการเรียนรู้ เช่น เลนส์บาง และนอยส์แบบโฟตอน ตัวเลขของอุปกรณ์เป็นค่าตัวอย่างที่ใกล้เคียงของจริง ไม่ใช่สเปกของรุ่นใดรุ่นหนึ่ง</p>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>กล้องคู่และ Spatial</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<nav style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600">
+<a href="Fusion.dc.html" style="min-height: 44px; display: inline-flex; align-items: center">← หลายกล้องและการประมวลผลภาพ</a>
+<a href="Stabilize.dc.html" style="min-height: 44px; display: inline-flex; align-items: center">ถัดไป: ระบบกันสั่น →</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #B04A0C">การทดลอง 04</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">กล้องคู่ ภาพ 3 มิติ และ Spatial Photo/Video</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">ลองหลับตาทีละข้างแล้วมองนิ้วตัวเอง นิ้วจะกระโดดไปมา ส่วนของไกลแทบไม่ขยับ ความต่างนี้เรียกว่า disparity สมองและคอมพิวเตอร์ใช้มันคำนวณความลึก: Z = f × B ÷ d</p>
+</header>
+
+<div role="group" aria-label="ตัวอย่างระบบกล้องคู่" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="5">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 52px; padding: 8px 16px; border-radius: 14px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.3">{{p.name}}<br><span style="font-size: 12px; font-weight: 500; color: {{p.sub}}">{{p.desc}}</span></button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 12px 16px; border-bottom: 1px solid #E3E9EC; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap"><span style="font-weight: 700; font-size: 17px">มุมมองจากด้านบน</span><span style="font-size: 13px; color: #4A5D6A">ระยะห่างกล้องขยายให้มองเห็น ไม่ตามสเกล</span></div>
+<svg viewBox="0 0 1120 440" style="display: block; width: 100%; height: auto" role="img" aria-label="{{topLabel}}">
+<rect x="0" y="0" width="1120" height="440" fill="#FBFCFD"></rect>
+<path d="M0,40 L140,20 L300,44 L460,16 L640,40 L820,22 L1000,46 L1120,30" fill="none" stroke="#9AAAB4" stroke-width="2"></path>
+<text x="16" y="70" font-size="14" fill="#4A5D6A">ฉากหลังไกลมาก (ภาพแทบไม่ต่างกันในสองกล้อง)</text>
+<line x1="{{camL}}" y1="400" x2="560" y2="{{objY}}" stroke="#0A6A94" stroke-width="2"></line>
+<line x1="{{camR}}" y1="400" x2="560" y2="{{objY}}" stroke="#E07A2E" stroke-width="2"></line>
+<line x1="{{camL}}" y1="400" x2="{{camL}}" y2="30" stroke="#0A6A94" stroke-width="1" stroke-dasharray="4 6"></line>
+<line x1="{{camR}}" y1="400" x2="{{camR}}" y2="30" stroke="#E07A2E" stroke-width="1" stroke-dasharray="4 6"></line>
+<circle cx="560" cy="{{objY}}" r="14" fill="#0F2A3A"></circle>
+<text x="582" y="{{objLabelY}}" font-size="16" font-weight="600" fill="#0F2A3A">วัตถุ ระยะ Z = {{zLabel}}</text>
+<rect x="{{camLx}}" y="392" width="24" height="18" rx="3" fill="#0A6A94"></rect>
+<rect x="{{camRx}}" y="392" width="24" height="18" rx="3" fill="#B04A0C"></rect>
+<line x1="{{camL}}" y1="426" x2="{{camR}}" y2="426" stroke="#0F2A3A" stroke-width="1.5"></line>
+<text x="560" y="420" font-size="15" text-anchor="middle" fill="#0F2A3A">B = {{bLabel}}</text>
+<text x="{{camLtx}}" y="436" font-size="13" text-anchor="end" fill="#0A4F70">กล้องซ้าย</text>
+<text x="{{camRtx}}" y="436" font-size="13" fill="#7E3407">กล้องขวา</text>
+</svg>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-weight: 700; font-size: 17px">ภาพที่แต่ละกล้องเห็น (กว้าง 1,920 พิกเซล)</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #0A4F70">กล้องซ้าย</div>
+<svg viewBox="0 0 400 120" style="display: block; width: 100%; height: auto; border-radius: 8px" role="img" aria-label="ภาพจากกล้องซ้าย">
+<rect x="0" y="0" width="400" height="120" fill="#DDEBF2"></rect>
+<path d="M0,60 L60,40 L120,62 L200,34 L280,58 L340,42 L400,60 L400,120 L0,120 Z" fill="#B9CCD6"></path>
+<line x1="200" y1="0" x2="200" y2="120" stroke="#4A5D6A" stroke-width="1" stroke-dasharray="3 4"></line>
+<circle cx="{{imgL}}" cy="80" r="{{objR}}" fill="#0F2A3A"></circle>
+</svg>
+</div>
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #7E3407">กล้องขวา</div>
+<svg viewBox="0 0 400 120" style="display: block; width: 100%; height: auto; border-radius: 8px" role="img" aria-label="ภาพจากกล้องขวา">
+<rect x="0" y="0" width="400" height="120" fill="#DDEBF2"></rect>
+<path d="M0,60 L60,40 L120,62 L200,34 L280,58 L340,42 L400,60 L400,120 L0,120 Z" fill="#B9CCD6"></path>
+<line x1="200" y1="0" x2="200" y2="120" stroke="#4A5D6A" stroke-width="1" stroke-dasharray="3 4"></line>
+<circle cx="{{imgR}}" cy="80" r="{{objR}}" fill="#0F2A3A"></circle>
+</svg>
+</div>
+</div>
+<div style="font-size: 14px; line-height: 1.6; color: #4A5D6A">ภูเขาฉากหลังอยู่ตำแหน่งเดิมในทั้งสองภาพ แต่วัตถุใกล้เลื่อนห่างจากเส้นกลาง ยิ่งใกล้ยิ่งเลื่อนมาก</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{readouts}}" as="r" hint-placeholder-count="4">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.label}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #0F2A3A">{{r.value}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">ปรับค่า</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sp-b" style="font-size: 14px; font-weight: 600">ระยะห่างกล้อง (B)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{bLabel}}</span></div>
+<input id="sp-b" type="range" min="0" max="100" step="1" value="{{bv}}" onChange="{{setB}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sp-z" style="font-size: 14px; font-weight: 600">ระยะวัตถุ (Z)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{zLabel}}</span></div>
+<input id="sp-z" type="range" min="0" max="100" step="1" value="{{zv}}" onChange="{{setZ}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sp-f" style="font-size: 14px; font-weight: 600">มุมรับภาพแนวนอน</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{fovLabel}}</span></div>
+<input id="sp-f" type="range" min="30" max="100" step="1" value="{{fov}}" onChange="{{setFov}}">
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สรุปผล</div>
+<div style="font-size: 19px; font-weight: 700">{{verdict.title}}</div>
+<div style="font-size: 15px; line-height: 1.65; color: #D9E8EF">{{verdict.text}}</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; font-size: 14px; line-height: 1.7; color: #34495A"><strong style="color: #0F2A3A">กฎสำคัญ</strong><br>ความคลาดเคลื่อนของระยะเพิ่มตาม Z² ระยะไกลขึ้น 2 เท่า วัดพลาดมากขึ้น 4 เท่า วิธีแก้คือกางกล้องให้ห่างขึ้น (B มากขึ้น) หรือใช้เลนส์ซูม (f มากขึ้น)</div>
+</div>
+</div>
+
+<section style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: clamp(18px, 3vw, 28px); display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">มือถือถ่าย Spatial Photo/Video ด้วยสองเลนส์อย่างไร</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A">iPhone รุ่นที่รองรับใช้กล้องหลัก (ไวด์) คู่กับกล้องอัลตร้าไวด์ ถ่ายพร้อมกันเป็นภาพตาซ้ายและตาขวา ต้องถือเครื่องแนวนอนเพื่อให้สองเลนส์เรียงซ้าย-ขวาแบบตาคน ความท้าทายคือสองกล้องไม่เหมือนกัน ISP จึงต้องปรับให้เป็นคู่ที่ตรงกันก่อน</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">1</div><div style="font-weight: 700">ถ่ายพร้อมกัน</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">ซิงก์เวลาสองเซนเซอร์ให้ตรงกันทุกเฟรม ไม่งั้นวัตถุที่เคลื่อนที่จะผิดตำแหน่ง</div></div>
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">2</div><div style="font-weight: 700">ครอปมุมให้เท่ากัน</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">ภาพอัลตร้าไวด์กว้างกว่ามาก จึงถูกครอปให้มุมรับภาพเท่ากล้องหลัก (ย้อนดูกรอบในการทดลอง 03)</div></div>
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">3</div><div style="font-weight: 700">จับคู่สีและแสง</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">สองเซนเซอร์ให้สี ความคม และนอยส์ต่างกัน ต้องปรับให้เหมือนกัน ไม่งั้นตาสองข้างเห็นภาพขัดกันจนเวียนหัว</div></div>
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">4</div><div style="font-weight: 700">จัดแนวภาพ</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">แก้ความบิดเบี้ยวของเลนส์ และหมุนภาพให้แถวพิกเซลของสองภาพตรงกัน (rectification) เหลือความต่างแค่แนวนอน</div></div>
+<div style="flex: 1 1 180px; background: #EAF3F7; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">5</div><div style="font-weight: 700">เก็บสองมุมในไฟล์เดียว</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">วิดีโอเข้ารหัสแบบ MV-HEVC ที่เก็บภาพตาที่สองเป็นส่วนต่างจากภาพแรก ไฟล์จึงไม่ใหญ่เป็นสองเท่า</div></div>
+<div style="flex: 1 1 180px; background: #0F2A3A; color: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #9FD0E6">6</div><div style="font-weight: 700">แสดงแยกตา</div><div style="font-size: 14px; line-height: 1.6; color: #D9E8EF">แว่น VR/MR ส่งภาพซ้ายเข้าตาซ้าย ขวาเข้าตาขวา สมองรวมเป็นภาพมีความลึก</div></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #4A5D6A">เลนส์มือถืออยู่ห่างกันน้อยกว่าระยะระหว่างตาคน (ราว 6.3 ซม.) มาก ลองเลือก “มือถือกล้องคู่” ข้างบน จะเห็นว่าความลึกชัดเฉพาะวัตถุใกล้ ภาพ Spatial จากมือถือจึงเหมาะกับคนหรือสิ่งของในระยะไม่กี่เมตร</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">เทคนิคกล้องคู่ (Stereo vision) ใช้กับอะไรอีกบ้าง</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">หุ่นยนต์และ AMR</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">กล้องความลึกแบบสเตอริโอช่วยหุ่นยนต์ในโรงงานและคลังสินค้าหลบสิ่งกีดขวาง หาตำแหน่งชิ้นงาน และหยิบของจากกล่อง (bin picking)</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">รถยนต์และระบบช่วยขับ</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">กล้องคู่หลังกระจกหน้า วัดระยะรถคันหน้าและคนเดินถนน ใช้กับเบรกฉุกเฉินและครูสคอนโทรลอัตโนมัติ เช่น ระบบ EyeSight ของ Subaru</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">ยานสำรวจดาวอังคาร</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">กล้องนำทางและกล้องหลบอันตรายติดตั้งเป็นคู่ สร้างแผนที่พื้นผิว 3 มิติ ให้ยานเลือกเส้นทางขับเองได้ เพราะสัญญาณจากโลกใช้เวลาหลายนาที</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">โดรน</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">กล้องคู่รอบลำตัวมองหาต้นไม้ สายไฟ และกำแพง เพื่อเบรกหรือบินอ้อมอัตโนมัติ</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">การแพทย์และการผ่าตัด</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">กล้องจุลทรรศน์สเตอริโอสำหรับผ่าตัดละเอียด และกล้องส่องภายใน 3 มิติของหุ่นยนต์ผ่าตัด ช่วยให้ศัลยแพทย์กะระยะความลึกได้</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">ทำแผนที่และสำรวจ</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">ถ่ายภาพพื้นที่เดียวกันจากเครื่องบิน โดรน หรือดาวเทียมสองมุม (photogrammetry) ระยะห่างระหว่างจุดถ่ายเป็นร้อยเมตรถึงกิโลเมตร จึงวัดความสูงภูเขาและอาคารได้</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">แว่น VR/MR</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">กล้องหน้าแว่นถ่ายโลกจริงส่งเข้าตาแต่ละข้าง (passthrough) และใช้ข้อมูลความลึกวางวัตถุเสมือนให้ตรงกับโต๊ะหรือผนังจริง</p></div>
+<div style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">ตรวจคุณภาพและภาพยนตร์ 3 มิติ</h3><p style="margin: 0; font-size: 14px; line-height: 1.65; color: #34495A">สายการผลิตใช้วัดรูปทรงชิ้นงาน ส่วนกองถ่ายภาพยนตร์ 3 มิติใช้กล้องสองตัวบนแท่นเดียว ปรับระยะห่างได้ตามฉาก</p></div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700">วิธีวัดความลึกแบบอื่นที่มักใช้ร่วมกัน</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px"><strong>LiDAR / ToF</strong><div style="font-size: 14px; line-height: 1.6; color: #34495A; margin-top: 4px">ยิงแสงอินฟราเรดแล้ววัดเวลาที่สะท้อนกลับ ใช้ได้ในที่มืดและบนผนังเรียบที่ไม่มีลาย</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px"><strong>Structured light</strong><div style="font-size: 14px; line-height: 1.6; color: #34495A; margin-top: 4px">ฉายจุดหรือลายอินฟราเรดลงบนวัตถุ แล้วดูว่าลายบิดอย่างไร เช่นระบบสแกนใบหน้า</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px"><strong>Dual-pixel</strong><div style="font-size: 14px; line-height: 1.6; color: #34495A; margin-top: 4px">แบ่งพิกเซลเป็นซ้าย-ขวา เป็นกล้องคู่ขนาดจิ๋วในเลนส์เดียว ใช้โฟกัสอัตโนมัติและแยกฉากหลัง</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px"><strong>AI จากภาพเดียว</strong><div style="font-size: 14px; line-height: 1.6; color: #34495A; margin-top: 4px">โมเดลเรียนรู้ความลึกจากรูปร่างและขนาดวัตถุ ใช้ได้กับกล้องตัวเดียว แต่เป็นการประมาณ ไม่ใช่การวัด</div></div>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1600}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { pid: 'phone', B: 20, Z: 1.5, fov: 70 };
+  }
+
+  presetList() {
+    return [
+      { id: 'phone', name: 'มือถือกล้องคู่', desc: 'ตัวอย่าง B ≈ 2 ซม.', B: 20, Z: 1.5, fov: 70 },
+      { id: 'eye', name: 'ตาคน', desc: 'B ≈ 6.3 ซม.', B: 63, Z: 3, fov: 60 },
+      { id: 'robot', name: 'กล้องความลึกหุ่นยนต์', desc: 'ตัวอย่าง B ≈ 5 ซม.', B: 50, Z: 2, fov: 87 },
+      { id: 'car', name: 'กล้องคู่ในรถยนต์', desc: 'ตัวอย่าง B ≈ 35 ซม.', B: 350, Z: 40, fov: 40 },
+      { id: 'rover', name: 'ยานสำรวจดาวอังคาร', desc: 'ตัวอย่าง B ≈ 40 ซม.', B: 400, Z: 10, fov: 45 }
+    ];
+  }
+
+  fmtLen(m) {
+    if (m >= 1) return (m >= 10 ? m.toFixed(0) : m.toFixed(1)) + ' ม.';
+    if (m >= 0.01) return (m * 100).toFixed(m >= 0.1 ? 0 : 1) + ' ซม.';
+    return (m * 1000).toFixed(1) + ' มม.';
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var BMIN = Math.log10(5), BMAX = Math.log10(1000), ZMIN = Math.log10(0.2), ZMAX = Math.log10(200);
+    var Bm = s.B / 1000, Z = s.Z;
+    var fpx = 960 / Math.tan(s.fov / 2 * Math.PI / 180);
+    var d = fpx * Bm / Z;
+    var dd = 0.25;
+    var err = Z * Z * dd / (fpx * Bm);
+    var z10 = 0.1 * fpx * Bm / dd;
+
+    // top view drawing
+    var half = Math.max(14, Math.min(260, 40 * Math.log10(s.B) + 10));
+    var camL = 560 - half, camR = 560 + half;
+    var objY = 380 - (Math.log10(Z / 0.2) / Math.log10(1000)) * 300;
+    var sc = 400 / 1920;
+    var imgL = 200 + Math.min(220, d / 2 * sc), imgR = 200 - Math.min(220, d / 2 * sc);
+    var objR = Math.max(4, Math.min(30, 30 / Math.sqrt(Z)));
+
+    var verdict;
+    if (d < 1) verdict = { title: 'แทบไม่เห็นความลึก', text: 'ความต่างของสองภาพน้อยกว่า 1 พิกเซล ระบบแยกวัตถุนี้ออกจากฉากหลังไม่ได้ ต้องเพิ่ม B หรือเข้าใกล้ขึ้น' };
+    else if (err / Z > 0.1) verdict = { title: 'เห็นความลึก แต่วัดระยะไม่แม่น', text: 'มีความต่างพอให้รู้สึก 3 มิติ แต่ถ้าใช้วัดระยะจริง จะคลาดเคลื่อนเกิน 10%' };
+    else if (d > 150) verdict = { title: 'ความลึกชัดมาก อาจล้นสายตา', text: 'วัตถุใกล้เกินไป สองภาพต่างกันมากจนตารวมภาพยาก ในภาพ Spatial อาจทำให้ปวดตา' };
+    else verdict = { title: 'ระยะกำลังดี', text: 'ทั้งรู้สึก 3 มิติชัดเจน และวัดระยะได้แม่นยำพอสำหรับงานจริง' };
+
+    var readouts = [
+      { label: 'ความต่างของภาพ (disparity)', value: d >= 10 ? d.toFixed(0) + ' px' : d.toFixed(2) + ' px', sub: 'วัตถุเลื่อนตำแหน่งระหว่างภาพซ้ายและขวา' },
+      { label: 'ความคลาดเคลื่อนของระยะ', value: '± ' + this.fmtLen(err), sub: 'เมื่อจับคู่พิกเซลพลาด 0.25 px' },
+      { label: 'วัดแม่นในระยะ 10% ได้ถึง', value: this.fmtLen(z10), sub: 'ไกลกว่านี้ค่าที่วัดเชื่อถือได้น้อยลง' },
+      { label: 'ทางยาวโฟกัสเป็นพิกเซล', value: Math.round(fpx) + ' px', sub: 'f ในสูตร Z = f × B ÷ d' }
+    ];
+
+    var presets = this.presetList();
+    return {
+      presets: presets.map(function (p) { var on = p.id === s.pid; return { name: p.name, desc: p.desc, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', sub: on ? '#E1F0F7' : '#4A5D6A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ pid: p.id, B: p.B, Z: p.Z, fov: p.fov }); } }; }),
+      camL: camL.toFixed(1), camR: camR.toFixed(1), camLx: (camL - 12).toFixed(1), camRx: (camR - 12).toFixed(1),
+      camLtx: (camL - 16).toFixed(1), camRtx: (camR + 16).toFixed(1),
+      objY: objY.toFixed(1), objLabelY: (objY + 6).toFixed(1),
+      imgL: imgL.toFixed(1), imgR: imgR.toFixed(1), objR: objR.toFixed(1),
+      bLabel: s.B >= 100 ? (s.B / 10).toFixed(0) + ' ซม.' : s.B >= 10 ? (s.B / 10).toFixed(1) + ' ซม.' : s.B.toFixed(0) + ' มม.',
+      zLabel: this.fmtLen(Z), fovLabel: s.fov + '°', fov: s.fov,
+      bv: Math.round((Math.log10(s.B) - BMIN) / (BMAX - BMIN) * 100),
+      zv: Math.round((Math.log10(Z) - ZMIN) / (ZMAX - ZMIN) * 100),
+      setB: function (e) { self.setState({ B: Math.pow(10, BMIN + parseFloat(e.target.value) / 100 * (BMAX - BMIN)) }); },
+      setZ: function (e) { self.setState({ Z: Math.pow(10, ZMIN + parseFloat(e.target.value) / 100 * (ZMAX - ZMIN)) }); },
+      setFov: function (e) { self.setState({ fov: parseFloat(e.target.value) }); },
+      topLabel: 'แผนภาพมุมบนของกล้องสองตัวห่างกัน ' + s.B.toFixed(0) + ' มม. มองวัตถุที่ระยะ ' + this.fmtLen(Z),
+      readouts: readouts, verdict: verdict
+    };
+  }
+}
+</script>
+</body>
+</html>

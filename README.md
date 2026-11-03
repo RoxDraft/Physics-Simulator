@@ -46,17 +46,21 @@ shared/dc-runtime.js  tiny runtime that renders the pages (no dependencies)
 ocean-waves/          index.html, uses.html
 camera-lab/           index.html, lens.html, sensor.html, fusion.html,
                       spatial.html, stabilize.html, environment.html
-tools/dc2html.py      converts a Claude Design canvas artboard (.dc.html) into a page here
+src/                  canvas sources (.dc.html) for every page
+tools/build.sh        rebuilds all pages from src/ (adds the home / breadcrumb bar)
+tools/dc2html.py      converts one canvas artboard into a page here
 ```
 
 ### How the pages work
 
 Each page keeps its markup in a `<template id="dc-template">` with `{{holes}}`, `<sc-for>` loops and `<sc-if>` branches, and its physics in a `class Component extends DCLogic { renderVals() { … } }` script. `shared/dc-runtime.js` calls `renderVals()` whenever the state changes and patches the page in place, so sliders and animations update live.
 
-To add a new simulator designed on a Claude Design canvas:
+After editing anything in `src/`, rebuild with:
 
 ```bash
-python3 tools/dc2html.py path/to/Main.dc.html my-sim/index.html --rename Main.dc.html=index.html
+bash tools/build.sh
 ```
+
+To add a new simulator, put its `.dc.html` files in `src/<name>/` and add a block for it in `tools/build.sh`.
 
 The models are simplified for learning (thin lenses, linear wave theory, photon shot noise). Device figures are representative examples, not the specs of any particular model.

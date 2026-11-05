@@ -42,8 +42,9 @@ Open `index.html` in a browser (or enable GitHub Pages: Settings → Pages → D
 | [`camera-lab/`](camera-lab/index.html) | **Camera Lab** — six experiments: thin-lens ray diagram (phone camera, microscope, telescope), photon shot noise vs. light level and sensor size, multi-camera zoom and the ISP pipeline, stereo depth and Spatial Photo/Video, OIS vs. EIS stabilisation, and temperature / humidity / radiation effects. | 7 |
 | [`mechanics-lab/`](mechanics-lab/index.html) | **Mechanics Lab** — a backhoe (tipping moments, ISO 10567 rated lift, slewing) and a container ship (buoyancy, GM, wind heel), plus sub-pages: **statics** (ladder friction, Pratt/Howe truss solver with buckling check), **dynamics** (stopping distance, crash impulse with crumple zone/seatbelt/airbag), **thermodynamics** (chip thermal resistance and throttling, room cooling load and AC refrigeration cycle), **fluids** (condo water pressure and zoning, pump vs. system curve in coolant loops) and the **swim start**. | 7 |
 | [`beam-fea/`](beam-fea/index.html) | **Beam FEA** — a real 1-D finite element solver (40 Hermite beam elements, K·u = F) with von Mises / bending-stress colour maps, SFD/BMD, deflection limits and a textbook check. Presets: condo floor beam, factory crane runway, balcony, warehouse roof, timber footbridge. | 2 |
-| [`circuit-lab/`](circuit-lab/index.html) | **Circuit Lab** — series/parallel circuit with animated current, a home distribution board (breakers tripping on overload or short circuit, earth leakage with/without earth wire and RCD, wire size, voltage drop, cost per hour) and RC charging. | 2 |
+| [`circuit-lab/`](circuit-lab/index.html) | **Circuit Lab** — series/parallel circuit with animated current, a home distribution board (breakers tripping on overload or short circuit, earth leakage with/without earth wire and RCD, wire size, voltage drop, cost per hour), RC charging, and **from circuits to computers**: MOSFET switch, CMOS gates, a 4-bit adder, a D flip-flop register and a tiny fetch–decode–execute CPU. | 3 |
 | [`chem-bio-lab/`](chem-bio-lab/index.html) | **Chem · Bio Lab** — collision-theory particle box with temperature, concentration, Ea and catalyst; an agent-based SEIR epidemic with masks, vaccination, distancing and isolation, plus data analysis (log-linear growth fit, doubling time, R0); and an SEIR ODE "flatten the curve" model. | 2 |
+| [`quantum-lab/`](quantum-lab/index.html) | **Quantum Lab** — photoelectric effect (photon energy vs. work function, camera sensors, solar cells), quantum tunnelling (STM, gate-oxide leakage, flash memory), quantum dots and LED colour, a qubit on the Bloch sphere with H/X/Z/S/T gates and measurement statistics, and photonics: total internal reflection in fibre, attenuation and EDFA amplifiers, DWDM capacity. | 2 |
 
 ```
 index.html            landing page linking every simulator
@@ -52,7 +53,8 @@ ocean-waves/          index.html, uses.html
 camera-lab/           index.html, lens.html, sensor.html, fusion.html,
                       spatial.html, stabilize.html, environment.html
 mechanics-lab/         index.html, statics.html, dynamics.html, thermo.html, fluids.html, swim.html, sources.html
-beam-fea/ circuit-lab/ chem-bio-lab/   index.html, sources.html
+circuit-lab/           index.html, computer.html, sources.html
+beam-fea/ chem-bio-lab/ quantum-lab/   index.html, sources.html
 src/                  canvas sources (.dc.html) for every page
 tools/build.sh        rebuilds all pages from src/ in Thai and English (home bar + language button)
 tools/i18n/en.json    English text for every Thai string; the build stops if one is missing

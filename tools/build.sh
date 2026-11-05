@@ -118,6 +118,7 @@ page src/circuit-lab/Computer.dc.html circuit-lab/computer.html circuit-lab/comp
   "หน้าหลัก=../index.html" "Circuit Lab=index.html" "จากวงจรสู่คอมพิวเตอร์=" -- \
   "Home=../index.html" "Circuit Lab=index.html" "From circuits to computers="
 lab chem-bio-lab "Chem · Bio Lab"
+lab quantum-lab "Quantum Lab"
 
 # ---------- English landing page ----------
 $PY index.html en/index.html --plain --lang en --dict tools/i18n/en.json \

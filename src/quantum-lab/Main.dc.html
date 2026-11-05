@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แล็บควอนตัมและโฟโตนิกส์</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">QUANTUM LAB · ฟิสิกส์ยุคใหม่</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">ควอนตัมรอบตัวเรา: แสง อิเล็กตรอน และคิวบิต</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">ในโลกเล็กระดับอะตอม แสงมาเป็นก้อนพลังงาน อิเล็กตรอนทะลุกำแพงได้ และสิ่งของอยู่หลายสถานะพร้อมกันได้จนกว่าจะถูกวัด ฟังดูแปลก แต่หลักเหล่านี้ทำงานอยู่ในกล้องมือถือ SSD จอทีวี สายอินเทอร์เน็ต และคอมพิวเตอร์ควอนตัม</p>
+</div>
+<a href="Sources.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; text-decoration: none">แหล่งข้อมูล</a>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. ปรากฏการณ์โฟโตอิเล็กทริก: แสงมาเป็นก้อน</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">ถ้าแสงเป็นแค่คลื่น แสงจ้าพอก็น่าจะเตะอิเล็กตรอนออกจากโลหะได้ แต่การทดลองพบว่าแสงแดงจ้าแค่ไหนก็ไม่หลุด ส่วนแสงม่วงสลัว ๆ หลุดทันที ไอน์สไตน์อธิบายว่าแสงมาเป็นโฟตอน แต่ละก้อนมีพลังงาน E = h·f อิเล็กตรอนหนึ่งตัวรับได้ทีละก้อน ต้องได้ก้อนที่ใหญ่พอจึงจะหลุด (รางวัลโนเบล 1921)</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<svg viewBox="0 0 440 280" style="display: block; width: 100%; height: auto; background: #0F2A3A" role="img" aria-label="{{pe.aria}}">
+<rect x="300" y="40" width="40" height="200" fill="#9AAAB4"></rect>
+<text x="320" y="262" font-size="12" text-anchor="middle" fill="#D9E8EF">{{pe.metal}}</text>
+<path d="{{pe.photons}}" fill="none" stroke="{{pe.col}}" stroke-width="2.5"></path>
+<path d="{{pe.elec}}" fill="#9FD0E6"></path>
+<circle cx="22" cy="20" r="6" fill="{{pe.col}}"></circle><text x="34" y="24" font-size="12" fill="#FFFFFF" font-weight="700">{{pe.lamTxt}}</text>
+<text x="16" y="262" font-size="12" fill="#D9E8EF">{{pe.status}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 14px">พลังงานจลน์ของอิเล็กตรอนเทียบความถี่แสง</span>
+<svg viewBox="0 0 300 200" style="display: block; width: 100%; height: auto" role="img" aria-label="กราฟพลังงานอิเล็กตรอนเทียบความถี่แสง">
+<line x1="36" y1="170" x2="290" y2="170" stroke="#9AAAB4"></line>
+<line x1="36" y1="10" x2="36" y2="170" stroke="#9AAAB4"></line>
+<path d="{{pe.line}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<line x1="{{pe.f0x}}" y1="20" x2="{{pe.f0x}}" y2="170" stroke="#B04A0C" stroke-dasharray="4 4"></line>
+<text x="{{pe.f0x}}" y="186" font-size="10" text-anchor="middle" fill="#B04A0C">f₀</text>
+<circle cx="{{pe.px}}" cy="{{pe.py}}" r="6" fill="#B04A0C"></circle>
+<text x="290" y="196" font-size="10" text-anchor="end" fill="#4A5D6A">ความถี่ →</text>
+<text x="40" y="18" font-size="10" fill="#4A5D6A">KE (eV)</text>
+</svg>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">ความชันของเส้นคือค่าคงที่ของพลังค์ h ทุกโลหะได้ความชันเท่ากัน ต่างกันแค่จุดเริ่ม f₀</span>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{pe.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<span style="font-size: 14px; font-weight: 600">โลหะ</span>
+<div role="group" aria-label="โลหะ" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{pe.metals}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 100px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{pe.stats}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #E3E9EC; padding-top: 6px"><span>{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace; color: {{r.c}}">{{r.v}}</span></div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">ใช้ที่ไหน</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">เซนเซอร์กล้องมือถือและโฟโตไดโอดปลายสายใยแก้วใช้หลักเดียวกันในสารกึ่งตัวนำ: โฟตอนที่มีพลังงานเกินช่องว่างแถบพลังงาน (ซิลิคอน 1.12 eV) ปล่อยอิเล็กตรอนออกมาเป็นสัญญาณ ซิลิคอนจึงรับแสงได้ถึงราว 1,100 นาโนเมตร ส่วนเซลล์แสงอาทิตย์ใช้อิเล็กตรอนที่ปล่อยออกมาเป็นไฟฟ้า</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. การทะลุผ่านทางควอนตัม: อิเล็กตรอนเดินทะลุกำแพง</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">อิเล็กตรอนมีพฤติกรรมเป็นคลื่น เมื่อชนกำแพงพลังงานที่สูงกว่าตัวมันเอง คลื่นไม่ได้หยุดทันที แต่ลดลงแบบเอกซ์โพเนนเชียลในกำแพง ถ้ากำแพงบางพอ คลื่นยังเหลือออกไปอีกฝั่ง แปลว่าอิเล็กตรอนมีโอกาสโผล่อีกด้านโดยไม่ต้องข้ามกำแพง โอกาสนี้ไวต่อความหนามาก หนาขึ้นนิดเดียว โอกาสลดลงหลายเท่า</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<svg viewBox="0 0 900 260" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{tn.aria}}">
+<rect x="{{tn.bx}}" y="40" width="{{tn.bw}}" height="180" fill="#FCE3CF"></rect>
+<text x="{{tn.bcx}}" y="34" font-size="12" text-anchor="middle" fill="#7E3407" font-weight="700">{{tn.bTxt}}</text>
+<line x1="20" y1="130" x2="880" y2="130" stroke="#E3E9EC"></line>
+<path d="{{tn.wave}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<path d="{{tn.env}}" fill="none" stroke="#B04A0C" stroke-width="1.5" stroke-dasharray="5 4"></path>
+<text x="40" y="236" font-size="12" fill="#4A5D6A">คลื่นเข้ามาและสะท้อน</text>
+<text x="860" y="236" font-size="12" text-anchor="end" fill="#4A5D6A">{{tn.outTxt}}</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px">
+<sc-for list="{{tn.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: #EAF3F7; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7">{{tn.msg}}</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">ตัวอย่างจริง</span>
+<div role="group" aria-label="ตัวอย่างการทะลุผ่าน" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{tn.presets}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{tn.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สมการ</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">T ≈ e^(−2κd)<br>κ = √(2m(V₀ − E)) / ħ<br>κ ≈ 5.12 · √(V₀ − E [eV]) ต่อนาโนเมตร</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">3. ควอนตัมดอต: ขนาดกำหนดสี</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">อิเล็กตรอนที่ถูกขังในกล่องเล็กมีพลังงานได้เฉพาะบางระดับ (E ∝ n²/L²) เหมือนเชือกกีตาร์ที่สั่นได้เฉพาะบางความถี่ กล่องยิ่งเล็ก ระดับพลังงานยิ่งห่างกัน เมื่ออิเล็กตรอนตกลงระดับล่าง ก็ปล่อยโฟตอนสีตามช่องว่างพลังงานนั้นออกมา ผลึกสารกึ่งตัวนำขนาดไม่กี่นาโนเมตร (ควอนตัมดอต) จึงเปลี่ยนสีได้เพียงแค่เปลี่ยนขนาด ใช้ในจอทีวี QLED (รางวัลโนเบลเคมี 2023)</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">อนุภาคในกล่อง: ระดับพลังงานและรูปคลื่น</div>
+<svg viewBox="0 0 420 280" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{qd.aria}}">
+<line x1="{{qd.x0}}" y1="20" x2="{{qd.x0}}" y2="260" stroke="#0F2A3A" stroke-width="4"></line>
+<line x1="{{qd.x1}}" y1="20" x2="{{qd.x1}}" y2="260" stroke="#0F2A3A" stroke-width="4"></line>
+<sc-for list="{{qd.levels}}" as="l" hint-placeholder-count="3">
+<line x1="{{l.x0}}" y1="{{l.y}}" x2="{{l.x1}}" y2="{{l.y}}" stroke="#C9D4DA" stroke-dasharray="4 4"></line>
+<path d="{{l.psi}}" fill="none" stroke="{{l.c}}" stroke-width="2.5"></path>
+<text x="{{l.tx}}" y="{{l.y}}" dy="4" font-size="11" fill="#4A5D6A">n = {{l.n}}</text>
+</sc-for>
+<path d="{{qd.jump}}" fill="none" stroke="{{qd.col}}" stroke-width="3"></path>
+<text x="{{qd.x1}}" y="272" font-size="11" text-anchor="end" fill="#4A5D6A">{{qd.wTxt}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 240px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; align-items: center">
+<svg viewBox="0 0 240 200" style="display: block; width: 100%; max-width: 280px; height: auto" role="img" aria-label="{{qd.dotAria}}">
+<rect x="0" y="0" width="240" height="200" rx="12" fill="#0F2A3A"></rect>
+<circle cx="120" cy="92" r="{{qd.glowR}}" fill="{{qd.col}}" opacity="0.35"></circle>
+<circle cx="120" cy="92" r="{{qd.dotR}}" fill="{{qd.col}}"></circle>
+<text x="120" y="186" font-size="12" text-anchor="middle" fill="#D9E8EF">{{qd.lamTxt}}</text>
+</svg>
+<svg viewBox="0 0 240 30" style="display: block; width: 100%; max-width: 280px; height: auto" aria-hidden="true">
+<defs><linearGradient id="spec" x1="0" x2="1"><stop offset="0" stop-color="#7A00FF"></stop><stop offset="0.17" stop-color="#2050FF"></stop><stop offset="0.33" stop-color="#00C0FF"></stop><stop offset="0.5" stop-color="#20D040"></stop><stop offset="0.67" stop-color="#FFE000"></stop><stop offset="0.83" stop-color="#FF8000"></stop><stop offset="1" stop-color="#E00000"></stop></linearGradient></defs>
+<rect x="0" y="6" width="240" height="14" rx="4" fill="url(#spec)"></rect>
+<path d="{{qd.mark}}" fill="#0F2A3A"></path>
+</svg>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="q-L" style="font-size: 14px; font-weight: 600">ขนาดควอนตัมดอต</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{qd.Ltxt}}</span></div>
+<input id="q-L" type="range" min="2" max="7" step="0.1" value="{{L}}" onChange="{{setL}}">
+</div>
+<sc-for list="{{qd.stats}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #E3E9EC; padding-top: 6px"><span>{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace">{{r.v}}</span></div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">หลักเดียวกันใน LED และเลเซอร์</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">หลอด LED เลือกสีด้วยวัสดุแทนขนาด ช่องว่างพลังงานของวัสดุกำหนดสี LED สีน้ำเงิน (อินเดียมแกลเลียมไนไตรด์) ทำให้มีหลอดไฟ LED สีขาวใช้ทุกวันนี้ ส่วนเลเซอร์ทำให้อะตอมปล่อยโฟตอนที่เหมือนกันทุกประการออกมาพร้อมกัน (การปล่อยแสงแบบกระตุ้น) จึงได้แสงสีเดียวทิศเดียว ใช้ส่งข้อมูลในใยแก้ว</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">4. คิวบิต: อยู่หลายสถานะพร้อมกันจนกว่าจะถูกวัด</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">บิตธรรมดาเป็น 0 หรือ 1 แต่คิวบิตอยู่ในสถานะซ้อนทับ α|0⟩ + β|1⟩ ได้ วาดเป็นลูกศรบนทรงกลม (Bloch sphere) ขั้วบนคือ 0 ขั้วล่างคือ 1 เมื่อวัด คิวบิตจะกลายเป็น 0 หรือ 1 แบบสุ่ม ด้วยโอกาส |α|² และ |β|² ลองใช้เกต H สองครั้ง จะเห็นว่าสถานะกลับมาเป็น 0 แน่นอน เพราะแอมพลิจูดหักล้างกันเหมือนคลื่น (การแทรกสอด) นี่คือสิ่งที่บิตธรรมดาที่สุ่มเหรียญทำไม่ได้</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<svg viewBox="0 0 320 300" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{qb.aria}}">
+<circle cx="160" cy="150" r="110" fill="#EAF3F7" stroke="#9AAAB4" stroke-width="1.5"></circle>
+<ellipse cx="160" cy="150" rx="110" ry="30" fill="none" stroke="#9AAAB4" stroke-dasharray="4 4"></ellipse>
+<line x1="160" y1="36" x2="160" y2="264" stroke="#C9D4DA"></line>
+<text x="168" y="30" font-size="14" fill="#0F2A3A" font-weight="700">|0⟩</text>
+<text x="168" y="284" font-size="14" fill="#0F2A3A" font-weight="700">|1⟩</text>
+<text x="274" y="160" font-size="12" fill="#4A5D6A">+x</text>
+<line x1="160" y1="150" x2="{{qb.vx}}" y2="{{qb.vy}}" stroke="#B04A0C" stroke-width="4" stroke-linecap="round"></line>
+<circle cx="{{qb.vx}}" cy="{{qb.vy}}" r="8" fill="#B04A0C"></circle>
+<line x1="{{qb.vx}}" y1="{{qb.vy}}" x2="{{qb.vx}}" y2="{{qb.sy}}" stroke="#B04A0C" stroke-dasharray="3 3" opacity="0.5"></line>
+</svg>
+</div>
+<div style="flex: 1 1 280px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-weight: 700; font-size: 14px">สถานะ</span>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 16px">{{qb.stateTxt}}</div>
+<sc-for list="{{qb.probs}}" as="p" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 10px; font-size: 14px">
+<span style="flex: 0 0 90px; font-family: 'IBM Plex Mono', monospace">{{p.n}}</span>
+<div style="flex: 1 1 auto; height: 16px; background: #F3F6F7; border-radius: 4px; overflow: hidden"><div style="width: {{p.w}}; height: 100%; background: {{p.c}}"></div></div>
+<span style="flex: 0 0 56px; text-align: right; font-family: 'IBM Plex Mono', monospace">{{p.v}}</span>
+</div>
+</sc-for>
+<span style="font-weight: 700; font-size: 14px; margin-top: 4px">ผลการวัด {{qb.nShots}} ครั้ง</span>
+<sc-for list="{{qb.hist}}" as="p" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 10px; font-size: 14px">
+<span style="flex: 0 0 90px; font-family: 'IBM Plex Mono', monospace">{{p.n}}</span>
+<div style="flex: 1 1 auto; height: 16px; background: #F3F6F7; border-radius: 4px; overflow: hidden"><div style="width: {{p.w}}; height: 100%; background: {{p.c}}"></div></div>
+<span style="flex: 0 0 56px; text-align: right; font-family: 'IBM Plex Mono', monospace">{{p.v}}</span>
+</div>
+</sc-for>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">{{qb.log}}</span>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">ใส่เกตควอนตัม</span>
+<div role="group" aria-label="เกตควอนตัม" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{qb.gates}}" as="p" hint-placeholder-count="5">
+<button type="button" onClick="{{p.pick}}" title="{{p.tip}}" style="flex: 1 1 56px; min-height: 48px; border-radius: 10px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 700; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">H = ทำให้ซ้อนทับเท่า ๆ กัน · X = กลับ 0 กับ 1 · Z = กลับเครื่องหมายของ |1⟩ · S, T = หมุนเฟส</span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button type="button" onClick="{{measure1}}" style="flex: 1 1 120px; min-height: 44px; border-radius: 999px; border: 1.5px solid #B04A0C; background: #FFFFFF; color: #B04A0C; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">วัด 1 ครั้ง</button>
+<button type="button" onClick="{{measure100}}" style="flex: 1 1 120px; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">เตรียมใหม่แล้ววัด 1,000 ครั้ง</button>
+<button type="button" onClick="{{qReset}}" style="flex: 1 1 120px; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">เริ่มที่ |0⟩</button>
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">คอมพิวเตอร์ควอนตัมใช้ทำอะไร</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">คิวบิต n ตัวมีแอมพลิจูด 2ⁿ ค่าพร้อมกัน อัลกอริทึมควอนตัมจัดการให้คำตอบผิดหักล้างกันและคำตอบถูกเสริมกัน งานที่หวังผล ได้แก่ จำลองโมเลกุลเพื่อออกแบบยาและวัสดุ และการแยกตัวประกอบที่คุกคามการเข้ารหัสแบบเดิม คิวบิตจริงทำจากวงจรตัวนำยวดยิ่งที่เย็นใกล้ศูนย์เคลวิน ไอออนที่ถูกกักด้วยสนามไฟฟ้า หรือโฟตอน และยังเสียสถานะง่ายมาก (decoherence)</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">5. Photonics และใยแก้วนำแสง: ส่งข้อมูลด้วยแสง</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">สายใยแก้วมีแกนกลางที่ดัชนีหักเหสูงกว่าเปลือกเล็กน้อย แสงที่วิ่งทำมุมตื้นกับแนวสายจะสะท้อนกลับหมดที่ผิวรอยต่อ (total internal reflection) จึงวิ่งไปได้หลายสิบกิโลเมตร ปลายทางมีโฟโตไดโอดแปลงแสงกลับเป็นไฟฟ้าด้วยหลักในข้อ 1 และส่งหลายสีพร้อมกันในเส้นเดียว (DWDM)</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">ภาพตัดตามยาวของใยแก้ว (ความกว้างขยายมาก)</span><span style="font-weight: 600; color: {{fb.okC}}">{{fb.okTxt}}</span></div>
+<svg viewBox="0 0 900 220" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{fb.aria}}">
+<rect x="0" y="30" width="900" height="160" fill="#E3E9EC"></rect>
+<rect x="0" y="70" width="900" height="80" fill="#CFE6F0"></rect>
+<text x="10" y="50" font-size="12" fill="#4A5D6A">เปลือก (cladding) n₂ = {{fb.n2}}</text>
+<text x="10" y="90" font-size="12" fill="#0A4F70" font-weight="600">แกน (core) n₁ = {{fb.n1}}</text>
+<path d="{{fb.ray}}" fill="none" stroke="#B04A0C" stroke-width="3" stroke-linejoin="round"></path>
+<path d="{{fb.pulse}}" fill="#B04A0C"></path>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">กำลังแสงตามระยะทาง</span><span style="font-weight: 600; color: {{fb.linkC}}">{{fb.linkTxt}}</span></div>
+<svg viewBox="0 0 900 200" style="display: block; width: 100%; height: auto" role="img" aria-label="กราฟกำลังแสงในสายใยแก้วเทียบระยะทาง">
+<line x1="60" y1="170" x2="880" y2="170" stroke="#9AAAB4"></line>
+<line x1="60" y1="20" x2="60" y2="170" stroke="#9AAAB4"></line>
+<line x1="60" y1="{{fb.sensY}}" x2="880" y2="{{fb.sensY}}" stroke="#B04A0C" stroke-dasharray="5 4"></line>
+<text x="876" y="{{fb.sensY}}" dy="-5" font-size="11" text-anchor="end" fill="#B04A0C">ตัวรับต้องได้อย่างน้อย −28 dBm</text>
+<path d="{{fb.powerPath}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<path d="{{fb.amps}}" fill="#0A6A94"></path>
+<text x="54" y="26" font-size="11" text-anchor="end" fill="#4A5D6A">0 dBm</text>
+<text x="54" y="174" font-size="11" text-anchor="end" fill="#4A5D6A">−40</text>
+<text x="880" y="190" font-size="11" text-anchor="end" fill="#4A5D6A">{{fb.dTxt}}</text>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">DWDM: หลายสีในเส้นเดียว (ย่าน C 1530–1565 นาโนเมตร)</span><span style="font-family: 'IBM Plex Mono', monospace; font-weight: 700">{{fb.capTxt}}</span></div>
+<svg viewBox="0 0 900 100" style="display: block; width: 100%; height: auto; background: #0F2A3A" role="img" aria-label="{{fb.capAria}}">
+<path d="{{fb.comb}}" stroke="#F5C77A" stroke-width="2"></path>
+<text x="20" y="92" font-size="11" fill="#D9E8EF">1530 nm</text>
+<text x="880" y="92" font-size="11" text-anchor="end" fill="#D9E8EF">1565 nm</text>
+</svg>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">ชนิดใยแก้ว</span>
+<div role="group" aria-label="ชนิดใยแก้ว" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{fb.types}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{fb.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{amp}}" onChange="{{toggleAmp}}" style="width: 20px; height: 20px; accent-color: #0A6A94">ใส่เครื่องขยายสัญญาณ EDFA ทุก 80 กม.</label>
+<span style="font-size: 14px; font-weight: 600">ความเร็วต่อช่องสี</span>
+<div role="group" aria-label="ความเร็วต่อช่อง" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{fb.rates}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 60px; min-height: 40px; border-radius: 999px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 12px; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สมการ</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">n₁ sinθ₁ = n₂ sinθ₂ (สเนลล์)<br>สะท้อนกลับหมดเมื่อมุมกับแนวสาย &lt; arccos(n₂/n₁)<br>P(dBm) = P₀ − α·L<br>ทุก 10 dB = แสงเหลือ 1/10</div>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":3900}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      lam: 420, inten: 0.6, metal: 'na', t: 0, tick: 0,
+      V0: 4, E: 1, d: 0.5, tpre: 'stm',
+      L: 3.5,
+      re0: 1, im0: 0, re1: 0, im1: 0, shots: null, log: 'สถานะเริ่มต้น |0⟩',
+      ftype: 'smf', rayA: 3, dist: 60, ch: 40, rate: 400, amp: true, atten: 0.2
+    };
+    this._seed = 777;
+  }
+
+  rnd() { this._seed = (this._seed * 1664525 + 1013904223) % 4294967296; return this._seed / 4294967296; }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      if (!self.reduce) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  lamColor(nm) {
+    var r = 0, g = 0, b = 0;
+    if (nm < 380) { r = 0.55; g = 0.3; b = 1; }
+    else if (nm < 440) { r = (440 - nm) / 60; b = 1; }
+    else if (nm < 490) { g = (nm - 440) / 50; b = 1; }
+    else if (nm < 510) { g = 1; b = (510 - nm) / 20; }
+    else if (nm < 580) { r = (nm - 510) / 70; g = 1; }
+    else if (nm < 645) { r = 1; g = (645 - nm) / 65; }
+    else if (nm <= 780) { r = 1; }
+    else { r = 0.6; g = 0.15; b = 0.15; }
+    return 'rgb(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255) + ')';
+  }
+
+  applyGate(g) {
+    var s = this.state, a = [s.re0, s.im0], b = [s.re1, s.im1], r2 = Math.SQRT1_2;
+    var mul = function (z, w) { return [z[0] * w[0] - z[1] * w[1], z[0] * w[1] + z[1] * w[0]]; };
+    var na, nb;
+    if (g === 'H') { na = [(a[0] + b[0]) * r2, (a[1] + b[1]) * r2]; nb = [(a[0] - b[0]) * r2, (a[1] - b[1]) * r2]; }
+    else if (g === 'X') { na = b; nb = a; }
+    else if (g === 'Z') { na = a; nb = [-b[0], -b[1]]; }
+    else if (g === 'S') { na = a; nb = mul(b, [0, 1]); }
+    else { na = a; nb = mul(b, [r2, r2]); }   // T
+    var log = (s.log && s.log.indexOf('สถานะเริ่มต้น') === 0 ? '|0⟩' : s.log) + ' → ' + g;
+    if (log.length > 60) log = '… ' + log.slice(-56);
+    this.setState({ re0: na[0], im0: na[1], re1: nb[0], im1: nb[1], log: log, shots: null });
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- 1. photoelectric ----------
+    var metals = { cs: { n: 'ซีเซียม 2.1 eV', w: 2.1 }, na: { n: 'โซเดียม 2.3 eV', w: 2.28 }, zn: { n: 'สังกะสี 4.3 eV', w: 4.3 }, cu: { n: 'ทองแดง 4.7 eV', w: 4.7 } };
+    var M = metals[s.metal], Eph = 1240 / s.lam, KE = Eph - M.w, emit = KE > 0;
+    var col = this.lamColor(s.lam), photons = '', elec = '';
+    var nPh = Math.round(2 + 10 * s.inten), sp = 160;
+    for (var i = 0; i < nPh; i++) {
+      var ph = (s.t * sp / 260 + i / nPh) % 1, x = 20 + ph * 270, y = 50 + ((i * 53) % 180);
+      var wl = 6 + s.lam / 60;
+      photons += 'M' + f1(x) + ',' + f1(y);
+      for (var k = 0; k < 4; k++) photons += ' q' + f1(wl / 4) + ',-6 ' + f1(wl / 2) + ',0 q' + f1(wl / 4) + ',6 ' + f1(wl / 2) + ',0';
+    }
+    if (emit) {
+      var v = Math.sqrt(KE);
+      for (var j = 0; j < nPh; j++) { var p2 = ((s.t * (0.6 + 0.8 * v) + j / nPh) % 1), ex = 300 - p2 * 260, ey = 60 + ((j * 47) % 170) - p2 * 30 * Math.sin(j); elec += 'M' + f1(ex - 5) + ',' + f1(ey) + ' a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0 '; }
+    }
+    var fT = function (E) { return 36 + 254 * E / 7; }, kY = function (ke) { return 170 - 150 * ke / 4.5; };
+    var line = 'M' + f1(fT(M.w)) + ',170 L' + f1(fT(7)) + ',' + f1(kY(7 - M.w));
+    var pe = {
+      photons: photons, elec: elec || 'M0,0', col: col, metal: M.n.split(' ')[0],
+      lamTxt: s.lam + ' nm · โฟตอนละ ' + Eph.toFixed(2) + ' eV',
+      status: emit ? 'อิเล็กตรอนหลุดออกมา พลังงานสูงสุด ' + KE.toFixed(2) + ' eV' : 'ไม่มีอิเล็กตรอนหลุด แม้แสงจะจ้าแค่ไหน',
+      line: line, f0x: f1(fT(M.w)), px: f1(fT(Eph)), py: f1(emit ? kY(KE) : 170),
+      sliders: [
+        { id: 'p-l', name: 'ความยาวคลื่นแสง', label: s.lam + ' nm', min: 180, max: 800, step: 5, v: s.lam, set: function (e) { self.setState({ lam: parseFloat(e.target.value) }); } },
+        { id: 'p-i', name: 'ความเข้มแสง (จำนวนโฟตอน)', label: Math.round(s.inten * 100) + '%', min: 0.05, max: 1, step: 0.05, v: s.inten, set: function (e) { self.setState({ inten: parseFloat(e.target.value) }); } }
+      ],
+      metals: Object.keys(metals).map(function (id) { var q = pill(s.metal === id); return { name: metals[id].n, pressed: s.metal === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ metal: id }); } }; }),
+      stats: [
+        { k: 'พลังงานโฟตอน E = hc/λ', v: Eph.toFixed(2) + ' eV', c: '#0F2A3A' },
+        { k: 'งานที่ต้องใช้ดึงอิเล็กตรอน φ', v: M.w.toFixed(2) + ' eV', c: '#0F2A3A' },
+        { k: 'พลังงานจลน์สูงสุด E − φ', v: emit ? KE.toFixed(2) + ' eV' : 'ไม่หลุด', c: emit ? '#0A6A94' : '#B04A0C' },
+        { k: 'จำนวนอิเล็กตรอนต่อวินาที', v: emit ? 'ตามความเข้ม ' + Math.round(s.inten * 100) + '%' : '0', c: '#0F2A3A' }
+      ],
+      aria: 'แสง ' + s.lam + ' นาโนเมตร ส่องโลหะ ' + (emit ? 'อิเล็กตรอนหลุด' : 'อิเล็กตรอนไม่หลุด')
+    };
+
+    // ---------- 2. tunnelling ----------
+    var dV = Math.max(0.01, s.V0 - s.E), kap = 5.123 * Math.sqrt(dV), T = Math.exp(-2 * kap * s.d);
+    var bw = Math.max(6, Math.min(520, s.d / 2.5 * 520)), bx = 450 - bw / 2;
+    var kIn = 0.06 + 0.03 * Math.sqrt(s.E);   // display wavenumber (scaled for readability)
+    var wave = [], env = [], A0 = 70, At = A0 * Math.sqrt(T), om = 4;
+    for (var xp = 20; xp <= 880; xp += 3) {
+      var yv;
+      if (xp < bx) yv = A0 * Math.cos(kIn * (xp - bx) - om * s.t);
+      else if (xp <= bx + bw) { var u = (xp - bx) / bw; yv = A0 * Math.exp(-kap * s.d * u) * Math.cos(-om * s.t); }
+      else yv = At * Math.cos(kIn * (xp - bx - bw) - om * s.t);
+      wave.push(f1(xp) + ',' + f1(130 - yv));
+      if (xp >= bx && xp <= bx + bw) { var u2 = (xp - bx) / bw; env.push(f1(xp) + ',' + f1(130 - A0 * Math.exp(-kap * s.d * u2))); }
+    }
+    var log10T = Math.log10(T), elecPerSec = 6.24e12 * T;    // 1 µA of electrons hitting the barrier
+    var sens = Math.exp(2 * kap * 0.1);
+    var presets = [
+      { id: 'stm', name: 'กล้องจุลทรรศน์ STM: ปลายเข็มห่างผิว 0.5 นาโนเมตร', v: { V0: 4.5, E: 0.5, d: 0.5 } },
+      { id: 'gate', name: 'ฉนวนเกตทรานซิสเตอร์บาง 1.2 นาโนเมตร (กระแสรั่ว)', v: { V0: 3.6, E: 0.5, d: 1.2 } },
+      { id: 'flash', name: 'ฉนวนรอบเซลล์แฟลช 8 นาโนเมตร (เก็บข้อมูล)', v: { V0: 3.6, E: 0.5, d: 8 } }
+    ];
+    var tmsg = {
+      stm: 'STM ใช้กระแสทะลุผ่านระหว่างปลายเข็มกับผิวชิ้นงาน ระยะห่างเปลี่ยนแค่ 0.1 นาโนเมตร (ราวครึ่งอะตอม) กระแสเปลี่ยนราว ' + sens.toFixed(0) + ' เท่า จึงวาดภาพผิวได้ละเอียดถึงระดับอะตอมทีละตัว (รางวัลโนเบล 1986)',
+      gate: 'เมื่อทรานซิสเตอร์เล็กลง ฉนวนเกตบางเหลือราว 1 นาโนเมตร อิเล็กตรอนทะลุผ่านเป็นกระแสรั่ว ชิปร้อนและเปลืองไฟ ผู้ผลิตจึงเปลี่ยนไปใช้ฉนวนชนิดใหม่ (high-k) ที่หนากว่าแต่เก็บประจุได้ดีพอกัน',
+      flash: 'ฉนวนหนา 8 นาโนเมตร โอกาสทะลุแทบเป็นศูนย์ ประจุที่เก็บไว้จึงอยู่ได้หลายปีแม้ปิดเครื่อง ตอนเขียนข้อมูล ชิปใส่แรงดันสูงจนกำแพงเอียงและบางลง (Fowler–Nordheim tunnelling) อิเล็กตรอนจึงทะลุเข้าไปเก็บได้'
+    }[s.tpre] || 'ลองเพิ่มความหนาทีละน้อย แล้วดูว่าโอกาสทะลุลดลงแบบเอกซ์โพเนนเชียล ส่วนกำแพงที่สูงขึ้นก็ลดโอกาสเหมือนกัน แต่ช้ากว่าความหนา';
+    var tn = {
+      bx: f1(bx), bw: f1(bw), bcx: f1(450), bTxt: 'กำแพงพลังงาน ' + s.V0.toFixed(1) + ' eV · หนา ' + s.d.toFixed(2) + ' nm',
+      wave: 'M' + wave.join(' L'), env: env.length > 1 ? 'M' + env.join(' L') : 'M0,0',
+      outTxt: T > 1e-4 ? 'คลื่นที่ทะลุออกไป (ขยายให้เห็น: แอมพลิจูด √T)' : 'คลื่นที่ทะลุออกไปเล็กเกินกว่าจะเห็น',
+      stats: [
+        { k: 'โอกาสทะลุผ่าน T', v: T > 1e-3 ? (T * 100).toFixed(2) + '%' : '10^' + log10T.toFixed(1), sub: 'ต่ออิเล็กตรอนหนึ่งตัวที่ชนกำแพง', c: '#0F2A3A' },
+        { k: 'κ (ความเร็วที่คลื่นลดลงในกำแพง)', v: kap.toFixed(1) + ' /nm', sub: 'คลื่นลดเหลือ 1/e ทุก ' + (1 / kap).toFixed(3) + ' nm', c: '#0F2A3A' },
+        { k: 'ถ้ากระแส 1 µA ชนกำแพง', v: elecPerSec >= 1 ? elecPerSec.toExponential(1) + ' ตัว/วิ' : 'ทะลุ 1 ตัวทุก ' + (1 / elecPerSec).toExponential(1) + ' วิ', sub: 'อิเล็กตรอน 6.2 × 10¹² ตัวต่อวินาที', c: '#0F2A3A' },
+        { k: 'หนาขึ้น 0.1 nm', v: '÷ ' + (sens < 1000 ? sens.toFixed(1) : sens.toExponential(1)), sub: 'โอกาสทะลุลดลงกี่เท่า', c: '#B04A0C' }
+      ],
+      msg: tmsg,
+      presets: presets.map(function (p) { var q = pill(s.tpre === p.id); return { name: p.name, pressed: s.tpre === p.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState(Object.assign({ tpre: p.id }, p.v)); } }; }),
+      sliders: [
+        { id: 't-d', name: 'ความหนากำแพง', label: s.d.toFixed(2) + ' nm', min: 0.1, max: 10, step: 0.05, v: s.d, set: function (e) { self.setState({ d: parseFloat(e.target.value), tpre: '' }); } },
+        { id: 't-v', name: 'ความสูงกำแพงเหนือพลังงานอิเล็กตรอน', label: dV.toFixed(1) + ' eV', min: 0.2, max: 6, step: 0.1, v: dV, set: function (e) { self.setState({ V0: s.E + parseFloat(e.target.value), tpre: '' }); } }
+      ],
+      aria: 'คลื่นอิเล็กตรอนชนกำแพงหนา ' + s.d + ' นาโนเมตร โอกาสทะลุ ' + T.toExponential(1)
+    };
+
+    // ---------- 3. quantum dots ----------
+    var Eg = 1.74 + 4.5 / (s.L * s.L), lamQ = 1240 / Eg, qcol = this.lamColor(lamQ);
+    var bwQ = 60 + s.L * 40, x0 = 210 - bwQ / 2, x1 = 210 + bwQ / 2;
+    var levels = [1, 2, 3].map(function (n) {
+      var y = 250 - n * n * (2 / s.L) * (2 / s.L) * 50;
+      var hidden = y < 28; y = Math.max(28, y);
+      var psi = []; for (var q = 0; q <= 40; q++) { var xx = x0 + bwQ * q / 40; psi.push(f1(xx) + ',' + f1(y - 14 * Math.sin(n * Math.PI * q / 40) * Math.cos(s.t * (1 + n)))); }
+      return { n: hidden ? n + ' (สูงเกินภาพ)' : n, y: f1(y), x0: f1(x0), x1: f1(x1), tx: f1(x1 + 8), psi: hidden ? 'M0,0' : 'M' + psi.join(' L'), c: n === 1 ? '#0A6A94' : n === 2 ? '#B04A0C' : '#9AAAB4' };
+    });
+    var y1 = +levels[0].y, y2 = +levels[1].y, jx = x1 - 20;
+    var jump = 'M' + f1(jx) + ',' + f1(y2 + 4) + ' L' + f1(jx) + ',' + f1(y1 - 6) + ' M' + f1(jx - 6) + ',' + f1(y1 - 14) + ' L' + f1(jx) + ',' + f1(y1 - 4) + ' L' + f1(jx + 6) + ',' + f1(y1 - 14);
+    var mk = Math.max(0, Math.min(240, (lamQ - 380) / 400 * 240));
+    var qd = {
+      x0: f1(x0), x1: f1(x1), levels: levels, jump: jump, col: qcol, wTxt: 'ความกว้างกล่อง ' + s.L.toFixed(1) + ' nm',
+      glowR: f1(30 + s.L * 6), dotR: f1(10 + s.L * 4), lamTxt: 'แสงที่ปล่อย ≈ ' + Math.round(lamQ) + ' nm', mark: 'M' + f1(mk - 6) + ',0 L' + f1(mk + 6) + ',0 L' + f1(mk) + ',8 Z',
+      Ltxt: s.L.toFixed(1) + ' nm (≈ ' + Math.round(Math.pow(s.L / 0.6, 3) * 0.5) + ' อะตอม)',
+      stats: [
+        { k: 'ช่องว่างพลังงาน', v: Eg.toFixed(2) + ' eV' },
+        { k: 'ความยาวคลื่นที่ปล่อย', v: Math.round(lamQ) + ' nm' },
+        { k: 'สี', v: lamQ < 450 ? 'น้ำเงิน-ม่วง' : lamQ < 495 ? 'ฟ้า' : lamQ < 570 ? 'เขียว' : lamQ < 590 ? 'เหลือง' : lamQ < 620 ? 'ส้ม' : 'แดง' }
+      ],
+      aria: 'อนุภาคในกล่องกว้าง ' + s.L.toFixed(1) + ' นาโนเมตร', dotAria: 'ควอนตัมดอตเรืองแสงสี ' + Math.round(lamQ) + ' นาโนเมตร'
+    };
+
+    // ---------- 4. qubit ----------
+    var p0 = s.re0 * s.re0 + s.im0 * s.im0, p1 = s.re1 * s.re1 + s.im1 * s.im1;
+    var th = 2 * Math.acos(Math.min(1, Math.sqrt(p0))), phi = Math.atan2(s.im1, s.re1) - Math.atan2(s.im0, s.re0);
+    var bxv = Math.sin(th) * Math.cos(phi), byv = Math.sin(th) * Math.sin(phi), bzv = Math.cos(th);
+    var vx = 160 + 110 * (bxv * 0.94 + byv * 0.34 * 0), vy = 150 - 110 * bzv + 30 * byv;
+    vx = 160 + 110 * bxv - 20 * byv;
+    var cfmt = function (re, im) { if (Math.abs(im) < 1e-9) return re.toFixed(2); if (Math.abs(re) < 1e-9) return im.toFixed(2) + 'i'; return '(' + re.toFixed(2) + (im >= 0 ? '+' : '') + im.toFixed(2) + 'i)'; };
+    var shots = s.shots;
+    var qb = {
+      vx: f1(vx), vy: f1(vy), sy: f1(150 + 30 * byv),
+      stateTxt: cfmt(s.re0, s.im0) + '|0⟩ + ' + cfmt(s.re1, s.im1) + '|1⟩',
+      probs: [{ n: 'P(0) = |α|²', w: (p0 * 100).toFixed(1) + '%', v: (p0 * 100).toFixed(0) + '%', c: '#0A6A94' }, { n: 'P(1) = |β|²', w: (p1 * 100).toFixed(1) + '%', v: (p1 * 100).toFixed(0) + '%', c: '#B04A0C' }],
+      nShots: shots ? (shots[0] + shots[1]).toLocaleString('en-US') : '0',
+      hist: shots ? [{ n: '0', w: (shots[0] / (shots[0] + shots[1]) * 100).toFixed(1) + '%', v: shots[0], c: '#0A6A94' }, { n: '1', w: (shots[1] / (shots[0] + shots[1]) * 100).toFixed(1) + '%', v: shots[1], c: '#B04A0C' }] : [{ n: '0', w: '0%', v: '–', c: '#0A6A94' }, { n: '1', w: '0%', v: '–', c: '#B04A0C' }],
+      log: s.log,
+      gates: [['H', 'Hadamard: สร้างการซ้อนทับ'], ['X', 'กลับบิต'], ['Z', 'กลับเฟส'], ['S', 'หมุนเฟส 90°'], ['T', 'หมุนเฟส 45°']].map(function (g) { return { name: g[0], tip: g[1], pick: function () { self.applyGate(g[0]); } }; }),
+      aria: 'คิวบิต โอกาสได้ 0 ' + (p0 * 100).toFixed(0) + ' เปอร์เซ็นต์'
+    };
+
+    // ---------- 5. fiber ----------
+    var types = { smf: { name: 'ใยแก้วสื่อสารจริง n₁ 1.468 · n₂ 1.463', n1: 1.468, n2: 1.463 }, demo: { name: 'แบบเห็นชัด n₁ 1.50 · n₂ 1.40 (เช่นใยพลาสติก)', n1: 1.5, n2: 1.4 } };
+    var F = types[s.ftype], thc = Math.acos(F.n2 / F.n1) * 180 / Math.PI, trapped = s.rayA < thc;
+    var NA = Math.sqrt(F.n1 * F.n1 - F.n2 * F.n2);
+    // ray zig-zag in the core (visual: vertical exaggeration so small angles are visible)
+    var ex = 14, rad = s.rayA * Math.PI / 180, slope = Math.tan(rad) * ex, ray = 'M0,110', x = 0, yy = 110, dir = -1, bounced = 0, escapeX = null;
+    while (x < 900 && bounced < 60) {
+      var target = dir < 0 ? 70 : 150, dx = Math.abs(target - yy) / Math.max(slope, 0.02);
+      if (x + dx > 900) { ray += ' L900,' + f1(yy + dir * (900 - x) * slope); break; }
+      x += dx; yy = target; ray += ' L' + f1(x) + ',' + f1(yy);
+      if (!trapped) { escapeX = x; var out = Math.asin(Math.min(1, F.n1 / F.n2 * Math.sin(Math.PI / 2 - rad))); var ang2 = Math.PI / 2 - out; ray += ' l' + f1(60) + ',' + f1(dir * Math.max(10, Math.tan(ang2) * 60 * 1.5)); break; }
+      dir = -dir; bounced++;
+    }
+    var pulse = ''; if (trapped) { var px = (s.t * 220) % 900; pulse = 'M' + f1(px - 5) + ',110 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0'; }
+    var att = s.atten, P0 = 0, sensDb = -28, pts = [], ampMarks = '', Pend = 0, ok = true, minP = 0;
+    var DX = function (km) { return 60 + 820 * km / s.dist; }, DY = function (dbm) { return 20 + 150 * (-Math.max(-40, Math.min(0, dbm))) / 40; };
+    for (var km = 0; km <= s.dist + 1e-9; km += s.dist / 200) {
+      var P = P0 - att * km;
+      if (s.amp) { var nAmp = Math.floor(km / 80); P = P0 - att * (km - nAmp * 80); }
+      pts.push(f1(DX(km)) + ',' + f1(DY(P))); minP = Math.min(minP, P); Pend = P;
+    }
+    if (s.amp) for (var ak = 80; ak < s.dist; ak += 80) ampMarks += 'M' + f1(DX(ak) - 5) + ',178 l5,-8 l5,8 z ';
+    ok = minP >= sensDb;
+    var cap = s.ch * s.rate / 1000, comb = '';
+    for (var c = 0; c < s.ch; c++) { var cx = 20 + 860 * (c + 0.5) / s.ch; comb += 'M' + f1(cx) + ',78 L' + f1(cx) + ',' + f1(20 + 10 * Math.sin(c * 1.7 + s.t * 2) * 0.3) + ' '; }
+    var fb = {
+      n1: F.n1, n2: F.n2, ray: ray, pulse: pulse || 'M0,0',
+      okTxt: trapped ? 'แสงถูกนำไปตามแกน (มุมวิกฤต ' + thc.toFixed(1) + '°)' : 'มุมชันเกิน ' + thc.toFixed(1) + '° แสงรั่วออกไปในเปลือก', okC: trapped ? '#0A6A94' : '#B04A0C',
+      sensY: f1(DY(sensDb)), powerPath: 'M' + pts.join(' L'), amps: ampMarks || 'M0,0', dTxt: s.dist + ' กม.',
+      linkTxt: ok ? 'รับสัญญาณได้ ปลายสายเหลือ ' + Pend.toFixed(1) + ' dBm' : 'สัญญาณอ่อนเกินที่ปลายสาย ต้องใส่เครื่องขยาย', linkC: ok ? '#0A6A94' : '#B04A0C',
+      capTxt: cap >= 1 ? cap.toFixed(1) + ' Tb/s ต่อเส้น' : (cap * 1000).toFixed(0) + ' Gb/s ต่อเส้น', comb: comb,
+      capAria: 'ช่องสัญญาณ ' + s.ch + ' ช่อง รวม ' + cap.toFixed(1) + ' เทราบิตต่อวินาที',
+      types: Object.keys(types).map(function (id) { var q = pill(s.ftype === id); return { name: types[id].name, pressed: s.ftype === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ ftype: id }); } }; }),
+      sliders: [
+        { id: 'f-a', name: 'มุมของแสงกับแนวสาย', label: s.rayA.toFixed(1) + '°', min: 0.5, max: 30, step: 0.5, v: s.rayA, set: function (e) { self.setState({ rayA: parseFloat(e.target.value) }); } },
+        { id: 'f-d', name: 'ระยะทาง', label: s.dist + ' กม.', min: 1, max: 400, step: 1, v: s.dist, set: function (e) { self.setState({ dist: parseFloat(e.target.value) }); } },
+        { id: 'f-t', name: 'การลดทอนของสาย', label: s.atten.toFixed(2) + ' dB/กม.' + (s.atten <= 0.22 ? ' (1550 nm)' : s.atten <= 0.4 ? ' (1310 nm)' : ' (850 nm)'), min: 0.15, max: 3, step: 0.05, v: s.atten, set: function (e) { self.setState({ atten: parseFloat(e.target.value) }); } },
+        { id: 'f-c', name: 'จำนวนช่องสี (DWDM)', label: s.ch + ' ช่อง', min: 1, max: 96, step: 1, v: s.ch, set: function (e) { self.setState({ ch: parseInt(e.target.value, 10) }); } }
+      ],
+      rates: [10, 100, 400, 800].map(function (r) { var q = pill(s.rate === r); return { name: r + 'G', pressed: s.rate === r ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ rate: r }); } }; }),
+      aria: 'แสงในใยแก้ว มุม ' + s.rayA + ' องศา ' + (trapped ? 'ถูกนำไปตามแกน' : 'รั่วออก') + ' NA ' + NA.toFixed(3)
+    };
+
+    return {
+      pe: pe, tn: tn, qd: qd, qb: qb, fb: fb, L: s.L, amp: s.amp,
+      setL: function (e) { self.setState({ L: parseFloat(e.target.value) }); },
+      toggleAmp: function () { self.setState({ amp: !self.state.amp }); },
+      measure1: function () {
+        var st = self.state, pz = st.re0 * st.re0 + st.im0 * st.im0, r = self.rnd() < pz ? 0 : 1;
+        var prev = st.shots || [0, 0]; prev = [prev[0] + (r === 0 ? 1 : 0), prev[1] + (r === 1 ? 1 : 0)];
+        self.setState({ re0: r === 0 ? 1 : 0, im0: 0, re1: r === 1 ? 1 : 0, im1: 0, shots: prev, log: 'วัดได้ ' + r + ' สถานะยุบเป็น |' + r + '⟩ (วัดซ้ำจะได้ ' + r + ' เสมอ)' });
+      },
+      measure100: function () {
+        var st = self.state, pz = st.re0 * st.re0 + st.im0 * st.im0, n0 = 0;
+        for (var i = 0; i < 1000; i++) if (self.rnd() < pz) n0++;
+        self.setState({ shots: [n0, 1000 - n0], log: 'เตรียมสถานะเดิม 1,000 ครั้ง แล้ววัดครั้งละครั้ง ผลกระจายตามโอกาส |α|² และ |β|²' });
+      },
+      qReset: function () { self.setState({ re0: 1, im0: 0, re1: 0, im1: 0, shots: null, log: 'สถานะเริ่มต้น |0⟩' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

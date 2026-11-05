@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>อุณหพลศาสตร์: ระบบระบายความร้อน</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><a href="index.html">Mechanics Lab</a><span aria-hidden="true">›</span><span aria-current="page">อุณหพลศาสตร์</span><a class="ps-lang" href="../en/mechanics-lab/thermo.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="เปลี่ยนเป็นภาษาอังกฤษ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>English</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px">
+<nav aria-label="หัวข้อในแล็บกลศาสตร์" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="index.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">เครื่องจักร</a>
+<a href="statics.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">สถิตยศาสตร์</a>
+<a href="dynamics.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">พลศาสตร์</a>
+<a href="thermo.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">อุณหพลศาสตร์</a>
+<a href="fluids.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">ของไหล</a>
+<a href="swim.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">ว่ายน้ำ</a>
+</nav>
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">THERMODYNAMICS · อุณหพลศาสตร์</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">ความร้อนไหลไปไหน: ระบายความร้อนชิป และแอร์ในบ้าน</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">ไฟฟ้าทุกวัตต์ที่ชิปใช้กลายเป็นความร้อน และความร้อนไหลจากที่ร้อนไปที่เย็นเสมอ การระบายความร้อนคือการทำทางให้ความร้อนไหลออกง่ายที่สุด ส่วนแอร์ทำสิ่งที่ธรรมชาติไม่ทำเอง คือใช้งานไฟฟ้า "สูบ" ความร้อนจากห้องเย็นไปทิ้งข้างนอกที่ร้อนกว่า</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. ระบายความร้อนชิป: ฮีตซิงก์ พัดลม และน้ำ</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; flex-wrap: wrap">
+<span style="font-family: 'IBM Plex Mono', monospace; font-weight: 600">{{ch.clock}}</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{ch.bg}}; color: {{ch.fg}}">{{ch.badge}}</span>
+</div>
+<svg viewBox="0 0 900 300" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{ch.aria}}">
+<rect x="40" y="236" width="400" height="18" fill="#2F6B3F"></rect>
+<rect x="190" y="220" width="100" height="16" rx="2" fill="{{ch.dieC}}" stroke="#0F2A3A" stroke-width="1.5"></rect>
+<text x="240" y="232" font-size="11" text-anchor="middle" fill="#FFFFFF" font-weight="700">{{ch.dieT}}</text>
+<rect x="180" y="212" width="120" height="8" fill="#C9D4DA"></rect>
+<rect x="110" y="196" width="260" height="16" fill="{{ch.baseC}}"></rect>
+<path d="{{ch.fins}}" fill="{{ch.finC}}" stroke="#7A8A94" stroke-width="1"></path>
+<rect x="386" y="70" width="34" height="126" rx="6" fill="#4A5D6A" opacity="{{ch.fanO}}"></rect>
+<path d="{{ch.blade}}" stroke="#D5DEE3" stroke-width="3" opacity="{{ch.fanO}}"></path>
+<path d="{{ch.air}}" fill="none" stroke="#0A6A94" stroke-width="2" opacity="0.7"></path>
+<path d="{{ch.hot}}" fill="none" stroke="#B04A0C" stroke-width="2" opacity="0.7"></path>
+<path d="{{ch.pipe}}" fill="none" stroke="#0A6A94" stroke-width="6" opacity="{{ch.pipeO}}"></path>
+<text x="40" y="276" font-size="12" fill="#4A5D6A">{{ch.cap}}</text>
+<line x1="470" y1="20" x2="470" y2="270" stroke="#E3E9EC"></line>
+<text x="490" y="30" font-size="12" fill="#4A5D6A">อุณหภูมิ (°C) · {{ch.span}}</text>
+<line x1="490" y1="250" x2="880" y2="250" stroke="#9AAAB4"></line>
+<line x1="490" y1="40" x2="490" y2="250" stroke="#9AAAB4"></line>
+<sc-for list="{{ch.ticks}}" as="t" hint-placeholder-count="5">
+<line x1="490" y1="{{t.y}}" x2="880" y2="{{t.y}}" stroke="#EEF2F4"></line>
+<text x="484" y="{{t.y}}" dy="4" font-size="10" text-anchor="end" fill="#4A5D6A">{{t.v}}</text>
+</sc-for>
+<line x1="490" y1="{{ch.limY}}" x2="880" y2="{{ch.limY}}" stroke="#B04A0C" stroke-dasharray="5 4"></line>
+<text x="878" y="{{ch.limY}}" dy="-5" font-size="11" text-anchor="end" fill="#B04A0C">ขีดจำกัดชิป 100 °C</text>
+<path d="{{ch.lineJ}}" fill="none" stroke="#B04A0C" stroke-width="2.5"></path>
+<path d="{{ch.lineH}}" fill="none" stroke="#0A6A94" stroke-width="2"></path>
+<text x="880" y="270" font-size="11" text-anchor="end" fill="#4A5D6A">ส้ม = ชิป · ฟ้า = ฮีตซิงก์</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{ch.stats}}" as="r" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">อุปกรณ์</span>
+<div role="group" aria-label="อุปกรณ์" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{ch.devices}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 120px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">ตัวระบายความร้อน</span>
+<div role="group" aria-label="ตัวระบายความร้อน" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{ch.coolers}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 100px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{ch.sliders}}" as="x" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{oldPaste}}" onChange="{{togglePaste}}" style="width: 20px; height: 20px; accent-color: #0A6A94">ซิลิโคนนำความร้อนแห้งหรือทาไม่ทั่ว</label>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{toggleLoad}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{ch.loadTxt}}</button>
+<button type="button" onClick="{{resetChip}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">เริ่มจากเย็น</button>
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">วงจรความร้อน (เหมือนวงจรไฟฟ้า)</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">ΔT = P · R_รวม (เหมือน V = I·R)<br>R_รวม = R_ชิป + R_ซิลิโคน + R_ฮีตซิงก์<br>C·dT/dt = P_เข้า − P_ออก<br>ฮีตซิงก์: q = h·A·ΔT</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">ความร้อนเปรียบเหมือนกระแส อุณหภูมิเหมือนแรงดัน และความต้านทานความร้อน (K/W) เหมือนตัวต้านทาน ครีบเพิ่มพื้นที่ A พัดลมเพิ่ม h ส่วนน้ำมีความจุความร้อนสูงกว่าอากาศราว 3,500 เท่าต่อปริมาตร จึงพาความร้อนได้มากในท่อเล็ก ๆ</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. แอร์ในห้อง: ปั๊มความร้อนจากที่เย็นไปที่ร้อน</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; flex-wrap: wrap">
+<span style="font-weight: 700">วัฏจักรทำความเย็นแบบอัดไอ</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{ac.bg}}; color: {{ac.fg}}">{{ac.badge}}</span>
+</div>
+<svg viewBox="0 0 900 320" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{ac.aria}}">
+<rect x="20" y="20" width="400" height="280" rx="10" fill="#EAF3F7"></rect>
+<rect x="480" y="20" width="400" height="280" rx="10" fill="#FCEFE3"></rect>
+<text x="36" y="44" font-size="14" font-weight="700" fill="#0A4F70">ในห้อง {{ac.tin}}</text>
+<text x="496" y="44" font-size="14" font-weight="700" fill="#7E3407">นอกบ้าน {{ac.tout}}</text>
+<path d="M150,80 L750,80 L750,240 L150,240 Z" fill="none" stroke="#C9D4DA" stroke-width="10" stroke-linejoin="round"></path>
+<path d="{{ac.dots}}" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="0.5"></path>
+<path d="{{ac.hotDots}}" fill="#B04A0C"></path>
+<path d="{{ac.coldDots}}" fill="#0A6A94"></path>
+<rect x="110" y="110" width="80" height="100" rx="8" fill="#FFFFFF" stroke="#0A6A94" stroke-width="2"></rect>
+<path d="M120,125 h60 M120,140 h60 M120,155 h60 M120,170 h60 M120,185 h60 M120,200 h60" stroke="#0A6A94" stroke-width="2"></path>
+<text x="150" y="228" font-size="12" text-anchor="middle" fill="#0A4F70" font-weight="700">คอยล์เย็น</text>
+<rect x="710" y="110" width="80" height="100" rx="8" fill="#FFFFFF" stroke="#B04A0C" stroke-width="2"></rect>
+<path d="M720,125 h60 M720,140 h60 M720,155 h60 M720,170 h60 M720,185 h60 M720,200 h60" stroke="#B04A0C" stroke-width="2"></path>
+<text x="750" y="228" font-size="12" text-anchor="middle" fill="#7E3407" font-weight="700">คอยล์ร้อน</text>
+<circle cx="450" cy="240" r="30" fill="#0F2A3A"></circle>
+<text x="450" y="200" font-size="12" text-anchor="middle" fill="#0F2A3A" font-weight="700">คอมเพรสเซอร์</text>
+<path d="M440,70 l20,10 l-20,10 z M460,70 l-20,10 l20,10 z" fill="#4A5D6A"></path>
+<text x="450" y="62" font-size="12" text-anchor="middle" fill="#4A5D6A">วาล์วลดแรงดัน</text>
+<path d="M70,160 h34" stroke="#B04A0C" stroke-width="4"></path><path d="M100,152 l10,8 l-10,8 z" fill="#B04A0C"></path>
+<text x="40" y="150" font-size="12" fill="#7E3407" font-weight="700">{{ac.qc}}</text>
+<path d="M796,160 h44" stroke="#B04A0C" stroke-width="6"></path><path d="M838,150 l14,10 l-14,10 z" fill="#B04A0C"></path>
+<text x="800" y="140" font-size="12" fill="#7E3407" font-weight="700">{{ac.qh}}</text>
+<path d="M450,300 v-24" stroke="#F5A623" stroke-width="4"></path><path d="M442,280 l8,-10 l8,10 z" fill="#F5A623"></path>
+<text x="490" y="276" font-size="12" fill="#6B4A00" font-weight="700">{{ac.w}}</text>
+<text x="300" y="100" font-size="11" fill="#0A4F70">สารทำความเย็นเย็นจัด {{ac.te}}</text>
+<text x="520" y="100" font-size="11" fill="#7E3407">ไอร้อนแรงดันสูง {{ac.tc}}</text>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-weight: 700">ความร้อนที่ไหลเข้าห้อง (ภาระความเย็น) รวม {{ac.loadTxt}}</span>
+<sc-for list="{{ac.bars}}" as="b" hint-placeholder-count="6">
+<div style="display: flex; align-items: center; gap: 10px; font-size: 13px">
+<span style="flex: 0 0 170px; font-weight: 600">{{b.n}}</span>
+<div style="flex: 1 1 auto; height: 16px; background: #F3F6F7; border-radius: 4px; overflow: hidden"><div style="width: {{b.w}}; height: 100%; background: {{b.c}}"></div></div>
+<span style="flex: 0 0 70px; text-align: right; font-family: 'IBM Plex Mono', monospace">{{b.v}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{ac.stats}}" as="r" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: {{ac.msgBg}}; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; color: {{ac.msgFg}}">{{ac.msg}}</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{ac.sliders}}" as="x" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<span style="font-size: 14px; font-weight: 600">หน้าต่างหันไปทาง</span>
+<div role="group" aria-label="ทิศหน้าต่าง" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{ac.dirs}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 70px; min-height: 40px; border-radius: 999px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">ขนาดแอร์</span>
+<div role="group" aria-label="ขนาดแอร์" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{ac.sizes}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 70px; min-height: 40px; border-radius: 999px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 12px; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{ac.checks}}" as="t" hint-placeholder-count="4">
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; cursor: pointer"><input type="checkbox" checked="{{t.on}}" onChange="{{t.toggle}}" style="width: 20px; height: 20px; accent-color: #0A6A94">{{t.name}}</label>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">กฎข้อที่หนึ่งและสอง</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">Q_ทิ้งข้างนอก = Q_ดูดจากห้อง + W<br>COP = Q_ดูดจากห้อง / W<br>COP_สูงสุด = T_เย็น / (T_ร้อน − T_เย็น)<br>(อุณหภูมิเป็นเคลวิน)</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">ยิ่งข้างนอกร้อนหรือตั้งอุณหภูมิห้องต่ำ ช่วงอุณหภูมิที่ต้องปั๊มยิ่งกว้าง COP ยิ่งต่ำ แอร์จึงกินไฟมากขึ้นตอนบ่าย ตั้งแอร์สูงขึ้น 1 °C จึงประหยัดไฟได้ราวไม่กี่เปอร์เซ็นต์ คอยล์ร้อนต้องอยู่ที่ลมถ่ายเทได้ ถ้าตั้งในที่อับ ความร้อนวนกลับมา คอยล์ร้อนยิ่งร้อน COP ยิ่งตก</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">3. ระบบระบายความร้อนรอบตัวเรา</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="6">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #0A6A94">{{c.tag}}</div>
+<div style="font-size: 17px; font-weight: 700">{{c.t}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #34495A">{{c.d}}</p>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2600}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      dev: 'desktop', P: 150, cooler: 'tower', fan: 0.6, Ta: 32, oldPaste: false, load: true, Tj: 32, Th: 32, hist: [], simT: 0, tick: 0,
+      area: 20, win: 4, dir: 'west', out: 35, set: 25, people: 2, appl: 300, size: 12000, inverter: true, insul: false, lowe: false, roof: false, curtain: false, cyc: 0
+    };
+  }
+
+  coolerR(s) {
+    var f = s.fan;
+    var c = {
+      passive: { R: 1.1, C: 250 },
+      tower: { R: 0.17 + 0.55 * Math.exp(-3.2 * f), C: 650 },
+      aio: { R: 0.09 + 0.22 * Math.exp(-3.2 * f), C: 1100 }
+    }[s.cooler];
+    var Rtim = s.oldPaste ? 0.35 : 0.05, Rjc = s.dev === 'phone' ? 0.6 : 0.12;
+    if (s.dev === 'phone') c = { R: 6.5, C: 60 };  // no fan: whole phone body spreads heat to the air
+    return { Rhs: c.R, C: c.C, Rtim: Rtim, Rjc: Rjc };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null; this._acc = 0;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      var s = self.state, R = self.coolerR(s), sp = 6;   // 1 s on screen = 6 s
+      var Tj = s.Tj, Th = s.Th, simDt = dt * sp, n = 12, h = simDt / n, Pused = 0;
+      for (var i = 0; i < n; i++) {
+        var Pw = s.load ? s.P : s.P * 0.08;
+        var thr = Tj > 95 ? Math.max(0.3, 1 - (Tj - 95) / 10) : 1;
+        Pused = Pw * thr;
+        var q1 = (Tj - Th) / (R.Rjc + R.Rtim), q2 = (Th - s.Ta) / R.Rhs;
+        Tj += h * (Pused - q1) / 25;
+        Th += h * (q1 - q2) / R.C;
+      }
+      var hist = s.hist; self._acc += simDt;
+      if (self._acc > 1) { self._acc = 0; hist = hist.concat([[Tj, Th]]); if (hist.length > 240) hist = hist.slice(-240); }
+      self.setState({ Tj: Tj, Th: Th, hist: hist, simT: s.simT + simDt, Pused: Pused, cyc: (s.cyc + dt) % 1000, tick: s.tick + 1 });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  room(s) {
+    var side = Math.sqrt(s.area), wallA = side * 2 * 2.7 - s.win;          // two outside walls
+    var Uw = s.insul ? 0.6 : 2.8, Ug = s.lowe ? 2.0 : 5.8, shgc = (s.lowe ? 0.35 : 0.8) * (s.curtain ? 0.6 : 1);
+    var I = { north: 100, east: 350, south: 220, west: 500 }[s.dir];
+    var Uroof = s.insul ? 0.5 : 1.8;
+    var UA = Uw * wallA + Ug * s.win + (s.roof ? Uroof * s.area * 0 : 0);
+    var roofHeat = s.roof ? Uroof * s.area * (52 - s.set) : 0;             // sun-baked roof ~52 °C
+    var solar = shgc * s.win * I, internal = s.people * 100 + s.appl;
+    var load = function (Tin) { return UA * (s.out - Tin) + (s.roof ? Uroof * s.area * (52 - Tin) : 0) + solar + internal; };
+    var cap = s.size * 0.293;
+    var Q = load(s.set), Tin = s.set, short = false;
+    if (Q > cap) { short = true; var UAt = UA + (s.roof ? Uroof * s.area : 0); Tin = s.set + (Q - cap) / UAt; Q = cap; }
+    var Te = Tin - 13 + 273.15, Tc = s.out + 12 + 273.15, carnot = Te / (Tc - Te);
+    var part = Q / cap;
+    var eff = s.inverter ? 0.42 + 0.12 * (1 - part) : 0.36 - 0.05 * (1 - part);   // inverter is best at part load; on/off loses some
+    var COP = carnot * eff, W = Q / COP;
+    return {
+      wall: Uw * wallA * (s.out - Tin), glassCond: Ug * s.win * (s.out - Tin), solar: solar, roof: s.roof ? Uroof * s.area * (52 - Tin) : 0,
+      people: s.people * 100, appl: s.appl, Q: Q, need: load(s.set), cap: cap, Tin: Tin, short: short, COP: COP, carnot: carnot, W: W, Te: Te - 273.15, Tc: Tc - 273.15, part: part
+    };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+    var heat = function (T) { var u = Math.max(0, Math.min(1, (T - 30) / 70)); var r = Math.round(10 + u * 166), g = Math.round(106 - u * 32), b = Math.round(148 - u * 136); return 'rgb(' + r + ',' + g + ',' + b + ')'; };
+
+    // ---------- chip ----------
+    var R = this.coolerR(s), Rt = R.Rjc + R.Rtim + R.Rhs, Pfull = s.P, Tss = s.Ta + Pfull * Rt;
+    var fins = '', fanOn = s.cooler !== 'passive' && s.dev !== 'phone';
+    var finTop = s.cooler === 'aio' ? 150 : s.dev === 'phone' ? 186 : 70;
+    if (s.dev === 'phone') fins = 'M110,186 h260 v10 h-260 z';
+    else for (var i = 0; i < 13; i++) fins += 'M' + (118 + i * 19) + ',' + finTop + ' h7 v' + (196 - finTop) + ' h-7 z ';
+    var ph = (s.simT * (0.5 + 3 * s.fan)) % 1, air = '', hot = '';
+    if (fanOn) for (var k = 0; k < 4; k++) { var y = 90 + k * 26; var x = 380 - ((ph + k * 0.25) % 1) * 280; air += 'M' + f1(x + 30) + ',' + y + ' l-24,0 m6,-5 l-6,5 l6,5 '; }
+    for (var k2 = 0; k2 < 3; k2++) { var x2 = 150 + k2 * 80, yy = finTop - 10 - ((s.simT * 0.6 + k2 * 0.33) % 1) * 40; hot += 'M' + x2 + ',' + f1(yy + 14) + ' q6,-7 0,-14 '; }
+    var blade = fanOn ? (function () { var a = s.simT * (2 + 18 * s.fan); var cx = 403, cy = 133, out = ''; for (var b = 0; b < 3; b++) { var t = a + b * 2.094; out += 'M' + cx + ',' + cy + ' L' + f1(cx + 14 * Math.cos(t)) + ',' + f1(cy + 50 * Math.sin(t)) + ' '; } return out; })() : 'M0,0';
+    var H = s.hist, ymin = 20, ymax = Math.max(110, Math.ceil(Math.max.apply(null, [Tss].concat(H.map(function (q) { return q[0]; }))) / 10) * 10);
+    var CY = function (T) { return 250 - 210 * (T - ymin) / (ymax - ymin); }, CX = function (i) { return 490 + 390 * i / 239; };
+    var lJ = H.map(function (q, i) { return (i ? 'L' : 'M') + f1(CX(i + 240 - H.length)) + ',' + f1(CY(q[0])); }).join(' ');
+    var lH = H.map(function (q, i) { return (i ? 'L' : 'M') + f1(CX(i + 240 - H.length)) + ',' + f1(CY(q[1])); }).join(' ');
+    var throttling = s.load && s.Tj > 95;
+    var perf = s.load ? Math.round(100 * Math.pow((s.Pused || s.P) / s.P, 0.33)) : 100;
+    var devs = [{ id: 'phone', name: 'มือถือ (ไม่มีพัดลม) 6 W', P: 6 }, { id: 'laptop', name: 'โน้ตบุ๊ก 45 W', P: 45 }, { id: 'desktop', name: 'CPU คอมตั้งโต๊ะ 150 W', P: 150 }, { id: 'gpu', name: 'การ์ดจอ/ชิป AI 350 W', P: 350 }];
+    var ch = {
+      clock: 'เวลาจำลอง ' + Math.floor(s.simT) + ' วิ (เร็ว 6 เท่า) · กำลัง ' + (s.load ? (s.Pused || s.P).toFixed(0) : (s.P * 0.08).toFixed(0)) + ' W',
+      dieC: heat(s.Tj), dieT: s.Tj.toFixed(0) + ' °C', baseC: heat(s.Th + 5), finC: heat(s.Th), fins: fins,
+      fanO: fanOn ? 1 : 0, blade: blade, air: air || 'M0,0', hot: hot,
+      pipe: s.cooler === 'aio' && s.dev !== 'phone' ? 'M120,150 C60,150 60,40 140,40 L400,40' : 'M0,0', pipeO: 0.8,
+      cap: { passive: 'ฮีตซิงก์ครีบอะลูมิเนียม ไม่มีพัดลม', tower: 'ฮีตซิงก์ครีบ + ท่อนำความร้อน + พัดลม', aio: 'ระบบน้ำ: ปั๊มน้ำผ่านแผ่นทองแดงบนชิป ไปหม้อน้ำที่มีพัดลม' }[s.cooler] + (s.dev === 'phone' ? ' · มือถือ: กระจายความร้อนทั้งเครื่องผ่าน vapor chamber' : ''),
+      span: 'ย้อนหลัง 4 นาที', ticks: [20, 40, 60, 80, 100].filter(function (v) { return v <= ymax; }).map(function (v) { return { y: f1(CY(v)), v: v }; }), limY: f1(CY(100)),
+      lineJ: lJ || 'M0,0', lineH: lH || 'M0,0',
+      badge: throttling ? 'ร้อนเกิน ชิปลดความเร็วตัวเอง (throttling)' : s.Tj > 85 ? 'ร้อน แต่ยังทำงานเต็มที่' : 'อุณหภูมิปกติ',
+      bg: throttling ? '#FCE3CF' : s.Tj > 85 ? '#FFF1CC' : '#DDEFF6', fg: throttling ? '#7E3407' : s.Tj > 85 ? '#6B4A00' : '#0A4F70',
+      loadTxt: s.load ? 'หยุดใช้งานหนัก' : 'เริ่มใช้งานหนัก',
+      stats: [
+        { k: 'อุณหภูมิชิปตอนนี้', v: s.Tj.toFixed(1) + ' °C', sub: 'ฮีตซิงก์ ' + s.Th.toFixed(1) + ' °C', c: s.Tj > 95 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ถ้าใช้งานหนักนาน ๆ', v: Tss.toFixed(0) + ' °C', sub: 'T = T_อากาศ + P·R_รวม (ถ้าไม่ลดความเร็ว)', c: Tss > 100 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ความต้านทานความร้อนรวม', v: Rt.toFixed(2) + ' K/W', sub: 'ชิป ' + R.Rjc.toFixed(2) + ' · ซิลิโคน ' + R.Rtim.toFixed(2) + ' · ตัวระบาย ' + R.Rhs.toFixed(2), c: '#0F2A3A' },
+        { k: 'ประสิทธิภาพที่เหลือ', v: perf + '%', sub: throttling ? 'ลดไฟเพื่อไม่ให้เกิน 100 °C' : 'ทำงานเต็มความเร็ว', c: perf < 95 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ค่าคงที่เวลาความร้อน', v: (R.Rhs * R.C / 60).toFixed(1) + ' นาที', sub: 'τ = R·C ฮีตซิงก์หนักร้อนช้า เย็นช้า', c: '#0F2A3A' }
+      ],
+      devices: devs.map(function (d) { var q = pill(s.dev === d.id); return { name: d.name, pressed: s.dev === d.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ dev: d.id, P: d.P }); } }; }),
+      coolers: [{ id: 'passive', name: 'ครีบเปล่า' }, { id: 'tower', name: 'ครีบ + พัดลม' }, { id: 'aio', name: 'ระบบน้ำ' }].map(function (c) { var q = pill(s.cooler === c.id); return { name: c.name, pressed: s.cooler === c.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ cooler: c.id }); } }; }),
+      sliders: [
+        { id: 'c-p', name: 'กำลังไฟฟ้าตอนทำงานหนัก', label: s.P + ' W', min: 2, max: 450, step: 1, v: s.P, set: function (e) { self.setState({ P: parseFloat(e.target.value) }); } },
+        { id: 'c-f', name: 'ความเร็วพัดลม', label: Math.round(s.fan * 100) + '% · เสียง ~' + Math.round(18 + 28 * s.fan) + ' dB', min: 0, max: 1, step: 0.05, v: s.fan, set: function (e) { self.setState({ fan: parseFloat(e.target.value) }); } },
+        { id: 'c-a', name: 'อุณหภูมิห้อง', label: s.Ta + ' °C', min: 18, max: 40, step: 1, v: s.Ta, set: function (e) { self.setState({ Ta: parseFloat(e.target.value) }); } }
+      ],
+      aria: 'ชิป ' + s.P + ' วัตต์ อุณหภูมิ ' + s.Tj.toFixed(0) + ' องศาเซลเซียส'
+    };
+
+    // ---------- air conditioner ----------
+    var A = this.room(s), loop = [[150, 240], [150, 80], [750, 80], [750, 240], [150, 240]];
+    var per = 0, segs = []; for (var j = 1; j < loop.length; j++) { var d = Math.abs(loop[j][0] - loop[j - 1][0]) + Math.abs(loop[j][1] - loop[j - 1][1]); segs.push(d); per += d; }
+    // flow direction: evaporator (left, going up) → valve? Real order: compressor → condenser → valve → evaporator → compressor
+    // path order here: compressor(450,240) → right → condenser (750) up → top → valve (450,80) → left → evaporator (150) down → back to compressor
+    var path = [[450, 240], [750, 240], [750, 80], [450, 80], [150, 80], [150, 240], [450, 240]], plen = [], tot = 0;
+    for (var m = 1; m < path.length; m++) { var dd = Math.hypot(path[m][0] - path[m - 1][0], path[m][1] - path[m - 1][1]); plen.push(dd); tot += dd; }
+    var hotD = '', coldD = '', speed = 40 + 120 * A.part;
+    for (var o = 0; o < 26; o++) {
+      var u = ((s.cyc * speed + o * tot / 26) % tot), seg = 0;
+      while (u > plen[seg]) { u -= plen[seg]; seg++; }
+      var p0 = path[seg], p1 = path[seg + 1], fr = u / plen[seg], xx = p0[0] + (p1[0] - p0[0]) * fr, yv = p0[1] + (p1[1] - p0[1]) * fr;
+      var c = 'M' + f1(xx - 5) + ',' + f1(yv) + ' a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0 ';
+      if (seg <= 1 || (seg === 2 && fr < 0.5)) hotD += c; else coldD += c;
+    }
+    var kw = function (w) { return (w / 1000).toFixed(2) + ' kW'; };
+    var parts = [
+      { n: 'แดดผ่านกระจก', v: A.solar, c: '#F5A623' }, { n: 'นำผ่านกระจก', v: A.glassCond, c: '#E8C27A' },
+      { n: 'นำผ่านผนัง', v: A.wall, c: '#B89B5E' }, { n: 'หลังคา (ชั้นบนสุด)', v: A.roof, c: '#B04A0C' },
+      { n: 'คนในห้อง', v: A.people, c: '#0A6A94' }, { n: 'เครื่องใช้ไฟฟ้า', v: A.appl, c: '#4A5D6A' }
+    ];
+    var pmax = Math.max.apply(null, parts.map(function (q) { return q.v; })) || 1;
+    var hours = 8, kwh = A.W / 1000 * hours * 30;
+    var msg = A.short ? 'แอร์เล็กเกินไป ความร้อนเข้าห้อง ' + kw(A.need) + ' มากกว่าที่แอร์ทำได้ ' + kw(A.cap) + ' ห้องจึงเย็นได้แค่ราว ' + A.Tin.toFixed(1) + ' °C และคอมเพรสเซอร์ทำงานเต็มที่ตลอด ลองติดฟิล์มหรือกระจก Low-E ปิดม่าน หรือเลือกแอร์ใหญ่ขึ้น'
+      : 'แอร์ทำงานที่ ' + Math.round(A.part * 100) + '% ของกำลัง ' + (s.inverter ? 'แอร์อินเวอร์เตอร์ปรับรอบคอมเพรสเซอร์ลงได้ จึงมีประสิทธิภาพดีขึ้นตอนทำงานไม่เต็มที่' : 'แอร์แบบธรรมดาตัด-ต่อคอมเพรสเซอร์ เสียพลังงานตอนเริ่มทำงานใหม่ทุกครั้ง') + ' ความร้อนที่ทิ้งข้างนอก = ความร้อนจากห้อง + ไฟฟ้าที่ใช้ เสมอ';
+    var ac = {
+      tin: A.Tin.toFixed(1) + ' °C', tout: s.out + ' °C', dots: 'M0,0', hotDots: hotD, coldDots: coldD,
+      qc: 'ดูดความร้อน ' + kw(A.Q), qh: 'ทิ้ง ' + kw(A.Q + A.W), w: 'ไฟฟ้า ' + kw(A.W), te: '~' + A.Te.toFixed(0) + ' °C', tc: '~' + A.Tc.toFixed(0) + ' °C',
+      badge: A.short ? 'แอร์เล็กเกินไป' : 'เย็นถึง ' + s.set + ' °C', bg: A.short ? '#FCE3CF' : '#DDEFF6', fg: A.short ? '#7E3407' : '#0A4F70',
+      loadTxt: kw(A.need),
+      bars: parts.map(function (q) { return { n: q.n, w: Math.max(0, q.v / pmax * 100).toFixed(1) + '%', c: q.c, v: Math.round(q.v) + ' W' }; }),
+      stats: [
+        { k: 'COP จริง (โดยประมาณ)', v: A.COP.toFixed(2), sub: 'สูงสุดตามทฤษฎี (คาร์โนต์) ' + A.carnot.toFixed(1), c: '#0F2A3A' },
+        { k: 'ไฟฟ้าที่แอร์ใช้', v: kw(A.W), sub: 'ความเย็น ' + kw(A.Q) + ' ÷ COP', c: '#0F2A3A' },
+        { k: 'ค่าไฟต่อเดือน', v: Math.round(kwh * 4.2).toLocaleString('en-US') + ' บาท', sub: 'เปิดวันละ ' + hours + ' ชม. · ' + Math.round(kwh) + ' หน่วย × 4.2 บาท (สมมติ)', c: '#0F2A3A' },
+        { k: 'ขนาดแอร์ที่เหมาะ', v: Math.ceil(A.need / 0.293 / 1000) * 1000 > 0 ? (Math.ceil(A.need / 0.293 / 3000) * 3000).toLocaleString('en-US') + ' BTU' : '–', sub: 'คิดจากความร้อนที่เข้าห้องจริง ไม่ใช่แค่พื้นที่', c: '#0F2A3A' }
+      ],
+      msg: msg, msgBg: A.short ? '#FCE3CF' : '#EAF3F7', msgFg: A.short ? '#7E3407' : '#0F2A3A',
+      sliders: [
+        { id: 'a-o', name: 'อุณหภูมินอกบ้าน', label: s.out + ' °C', min: 26, max: 42, step: 1, v: s.out, set: function (e) { self.setState({ out: parseFloat(e.target.value) }); } },
+        { id: 'a-s', name: 'ตั้งอุณหภูมิแอร์', label: s.set + ' °C', min: 20, max: 28, step: 1, v: s.set, set: function (e) { self.setState({ set: parseFloat(e.target.value) }); } },
+        { id: 'a-a', name: 'ขนาดห้อง', label: s.area + ' ตร.ม.', min: 9, max: 60, step: 1, v: s.area, set: function (e) { self.setState({ area: parseFloat(e.target.value) }); } },
+        { id: 'a-w', name: 'พื้นที่กระจกหน้าต่าง', label: s.win + ' ตร.ม.', min: 0, max: 12, step: 0.5, v: s.win, set: function (e) { self.setState({ win: parseFloat(e.target.value) }); } },
+        { id: 'a-p', name: 'จำนวนคน', label: s.people + ' คน', min: 0, max: 8, step: 1, v: s.people, set: function (e) { self.setState({ people: parseFloat(e.target.value) }); } },
+        { id: 'a-e', name: 'เครื่องใช้ไฟฟ้า (ทีวี คอม ไฟ)', label: s.appl + ' W', min: 0, max: 1500, step: 50, v: s.appl, set: function (e) { self.setState({ appl: parseFloat(e.target.value) }); } }
+      ],
+      dirs: [{ id: 'north', name: 'เหนือ' }, { id: 'east', name: 'ตะวันออก' }, { id: 'south', name: 'ใต้' }, { id: 'west', name: 'ตะวันตก' }].map(function (d) { var q = pill(s.dir === d.id); return { name: d.name, pressed: s.dir === d.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ dir: d.id }); } }; }),
+      sizes: [9000, 12000, 18000, 24000].map(function (z) { var q = pill(s.size === z); return { name: z.toLocaleString('en-US') + ' BTU', pressed: s.size === z ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ size: z }); } }; }),
+      checks: [
+        { name: 'แอร์อินเวอร์เตอร์', k: 'inverter' }, { name: 'ผนังและหลังคามีฉนวน', k: 'insul' }, { name: 'กระจก Low-E หรือติดฟิล์มกันร้อน', k: 'lowe' },
+        { name: 'ปิดม่านกันแดด', k: 'curtain' }, { name: 'ห้องชั้นบนสุด (ใต้หลังคา)', k: 'roof' }
+      ].map(function (x) { return { name: x.name, on: !!s[x.k], toggle: function () { var o = {}; o[x.k] = !self.state[x.k]; self.setState(o); } }; }),
+      aria: 'แอร์ ' + s.size + ' บีทียู ห้อง ' + s.area + ' ตารางเมตร ใช้ไฟ ' + kw(A.W)
+    };
+
+    var cards = [
+      { tag: 'เปลี่ยนสถานะ', t: 'ท่อนำความร้อนและ vapor chamber', d: 'ข้างในมีของเหลวเล็กน้อย ระเหยที่ปลายร้อน แล้วไปควบแน่นที่ปลายเย็น การเปลี่ยนสถานะพาความร้อนได้มากกว่าทองแดงตันหลายสิบเท่า ใช้ในโน้ตบุ๊ก มือถือ และฮีตซิงก์ CPU' },
+      { tag: 'รถยนต์', t: 'หม้อน้ำและน้ำยาหล่อเย็น', d: 'เครื่องยนต์เผาเชื้อเพลิง แต่ได้เป็นงานแค่ราว 30–40% ที่เหลือเป็นความร้อน ปั๊มน้ำพาน้ำยาผ่านเครื่องไปหม้อน้ำหน้ารถ วาล์วน้ำเปิดเมื่อร้อนถึงอุณหภูมิทำงาน' },
+      { tag: 'รถไฟฟ้า', t: 'แบตเตอรี่ต้องไม่ร้อนและไม่เย็นเกิน', d: 'แบตเตอรี่ลิเธียมเสื่อมเร็วเมื่อร้อน และอาจเกิดความร้อนสะสมจนลุกไหม้ (thermal runaway) จึงมีแผ่นน้ำหล่อเย็นใต้แบต และใช้แอร์ของรถช่วยดึงความร้อนตอนชาร์จเร็ว' },
+      { tag: 'ดาต้าเซ็นเตอร์', t: 'ระบายความร้อนชิป AI ด้วยน้ำ', d: 'ตู้เซิร์ฟเวอร์ AI หนึ่งตู้ใช้ไฟหลายสิบถึงร้อยกว่ากิโลวัตต์ ลมพัดไม่ทันแล้ว จึงต่อท่อน้ำเข้าแผ่นเย็นบนชิปโดยตรง วัดประสิทธิภาพด้วย PUE = ไฟทั้งอาคาร ÷ ไฟที่คอมพิวเตอร์ใช้' },
+      { tag: 'อาคารสูง', t: 'ชิลเลอร์และหอผึ่งเย็น', d: 'ห้างและคอนโดใหญ่ทำน้ำเย็นจากเครื่องชิลเลอร์ส่วนกลาง แล้วส่งตามท่อไปเครื่องเป่าลมแต่ละชั้น ความร้อนทิ้งที่หอผึ่งเย็นบนดาดฟ้า ซึ่งใช้การระเหยของน้ำช่วยดึงความร้อน' },
+      { tag: 'เครื่องจักรโรงงาน', t: 'น้ำมันหล่อลื่นและน้ำหล่อเย็น', d: 'แท่นกลึงและเครื่องตัดโลหะพ่นน้ำหล่อเย็นที่จุดตัด มอเตอร์และระบบไฮดรอลิกมีออยล์คูลเลอร์ ถ้าความร้อนสะสม น้ำมันจะเสื่อม ซีลรั่ว และชิ้นงานขยายตัวจนขนาดเพี้ยน' }
+    ];
+
+    return {
+      ch: ch, ac: ac, cards: cards, oldPaste: s.oldPaste,
+      togglePaste: function () { self.setState({ oldPaste: !self.state.oldPaste }); },
+      toggleLoad: function () { self.setState({ load: !self.state.load }); },
+      resetChip: function () { self.setState({ Tj: self.state.Ta, Th: self.state.Ta, hist: [], simT: 0 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

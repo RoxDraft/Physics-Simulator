@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>กลศาสตร์ของไหล: ท่อและปั๊ม</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px">
+<nav aria-label="หัวข้อในแล็บกลศาสตร์" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">เครื่องจักร</a>
+<a href="Statics.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">สถิตยศาสตร์</a>
+<a href="Dynamics.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">พลศาสตร์</a>
+<a href="Thermo.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">อุณหพลศาสตร์</a>
+<a href="Fluids.dc.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">ของไหล</a>
+<a href="Swim.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">ว่ายน้ำ</a>
+</nav>
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">FLUID MECHANICS · กลศาสตร์ของไหล</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">น้ำในท่อ: แรงดันน้ำในคอนโด และระบบน้ำหล่อเย็น</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">น้ำนิ่งมีแรงดันเพิ่มตามความลึก P = ρ·g·h ส่วนน้ำที่ไหลในท่อเสียแรงดันไปกับแรงเสียดทาน ยิ่งเร็วยิ่งเสียมาก ปั๊มทุกตัวจึงต้องเลือกให้เข้ากับท่อ ไม่อย่างนั้นน้ำจะไหลน้อยเกินหรือเปลืองไฟเกิน</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. น้ำประปาในคอนโด: ทำไมชั้นบนน้ำไหลเบา ชั้นล่างแรงเกิน</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><rect width="14" height="14" rx="3" fill="#F5C77A"></rect></svg>น้อยเกิน (ต่ำกว่า 1 บาร์)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><rect width="14" height="14" rx="3" fill="#7FBF9A"></rect></svg>พอดี (1–4 บาร์)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><rect width="14" height="14" rx="3" fill="#E07A5F"></rect></svg>สูงเกิน (เกิน 4 บาร์)</span>
+</div>
+<svg viewBox="0 0 900 400" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{wt.aria}}">
+<rect x="120" y="{{wt.topY}}" width="200" height="{{wt.bH}}" fill="#E3E9EC" stroke="#9AAAB4"></rect>
+<sc-for list="{{wt.floors}}" as="f" hint-placeholder-count="20">
+<rect x="124" y="{{f.y}}" width="192" height="{{f.h}}" fill="{{f.c}}" opacity="0.9"></rect>
+<rect x="360" y="{{f.y}}" width="{{f.w}}" height="{{f.h}}" fill="{{f.c}}"></rect>
+<text x="112" y="{{f.ty}}" font-size="10" text-anchor="end" fill="#4A5D6A">{{f.lab}}</text>
+</sc-for>
+<line x1="330" y1="{{wt.topY}}" x2="330" y2="380" stroke="#0A6A94" stroke-width="5"></line>
+<path d="{{wt.drops}}" fill="#0A6A94"></path>
+<sc-for list="{{wt.tanks}}" as="t" hint-placeholder-count="3">
+<rect x="300" y="{{t.y}}" width="56" height="22" rx="3" fill="#0A6A94"></rect>
+<text x="294" y="{{t.ty}}" font-size="11" text-anchor="end" fill="#0A4F70" font-weight="700" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">{{t.t}}</text>
+</sc-for>
+<circle cx="330" cy="384" r="10" fill="#0F2A3A"></circle>
+<text x="346" y="392" font-size="11" fill="#0F2A3A" font-weight="600">ปั๊มน้ำ + ถังเก็บน้ำใต้ดิน</text>
+<line x1="360" y1="390" x2="880" y2="390" stroke="#9AAAB4"></line>
+<line x1="{{wt.x1bar}}" y1="{{wt.topY}}" x2="{{wt.x1bar}}" y2="386" stroke="#F5A623" stroke-dasharray="4 4"></line>
+<line x1="{{wt.x4bar}}" y1="{{wt.topY}}" x2="{{wt.x4bar}}" y2="386" stroke="#B04A0C" stroke-dasharray="4 4"></line>
+<text x="{{wt.x1bar}}" y="{{wt.labY}}" font-size="11" text-anchor="middle" fill="#6B4A00">1 บาร์</text>
+<text x="{{wt.x4bar}}" y="{{wt.labY}}" font-size="11" text-anchor="middle" fill="#7E3407">4 บาร์</text>
+<text x="880" y="{{wt.labY}}" font-size="11" text-anchor="end" fill="#4A5D6A">แรงดันที่ก๊อกแต่ละชั้น →</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{wt.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: #EAF3F7; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7">{{wt.msg}}</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">วิธีจ่ายน้ำ</span>
+<div role="group" aria-label="วิธีจ่ายน้ำ" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{wt.modes}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{wt.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สมการ</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">P = ρ·g·h<br>น้ำสูง 10 ม. ≈ 1 บาร์<br>กำลังปั๊ม = ρ·g·Q·H / η</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">แรงดันขึ้นกับความสูงของน้ำเหนือก๊อกเท่านั้น ไม่ขึ้นกับขนาดถัง ตึกสูงจึงต้องแบ่งโซน ให้ชั้นล่างไม่รับแรงดันจากน้ำทั้งตึก และใช้ปั๊มเพิ่มแรงดันหรือถังกลางตึกช่วยชั้นบน</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. ระบบน้ำหล่อเย็น: ปั๊ม ท่อ และความร้อนที่พาออกไป</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">ปั๊มแต่ละตัวมีเส้นโค้งของตัวเอง ยิ่งต้องดันแรง น้ำยิ่งไหลน้อย ส่วนท่อก็มีเส้นโค้งระบบ ยิ่งน้ำไหลเร็ว แรงต้านยิ่งมาก จุดที่สองเส้นตัดกันคืออัตราการไหลจริง แล้วอัตราการไหลนี้ก็กำหนดว่าน้ำจะร้อนขึ้นเท่าไรระหว่างพาความร้อนออกจากเครื่อง</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">วงจรน้ำหล่อเย็น</div>
+<svg viewBox="0 0 420 260" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{cl.aria}}">
+<path d="M70,60 L350,60 L350,200 L70,200 Z" fill="none" stroke="#C9D4DA" stroke-width="{{cl.pipeW}}" stroke-linejoin="round"></path>
+<path d="{{cl.dots}}" fill="{{cl.dotC}}"></path>
+<path d="{{cl.hotDots}}" fill="#B04A0C"></path>
+<rect x="30" y="100" width="80" height="60" rx="8" fill="#0F2A3A"></rect>
+<text x="70" y="126" font-size="11" text-anchor="middle" fill="#FFFFFF" font-weight="700">{{cl.srcName}}</text>
+<text x="70" y="144" font-size="11" text-anchor="middle" fill="#F5C77A">{{cl.srcP}}</text>
+<rect x="312" y="96" width="76" height="68" rx="6" fill="#FFFFFF" stroke="#0A6A94" stroke-width="2"></rect>
+<path d="M318,108 h64 M318,118 h64 M318,128 h64 M318,138 h64 M318,148 h64" stroke="#0A6A94" stroke-width="2"></path>
+<text x="350" y="182" font-size="11" text-anchor="middle" fill="#0A4F70" font-weight="700">{{cl.sinkName}}</text>
+<circle cx="210" cy="200" r="18" fill="#4A5D6A"></circle>
+<path d="{{cl.impeller}}" stroke="#FFFFFF" stroke-width="3"></path>
+<text x="210" y="238" font-size="11" text-anchor="middle" fill="#0F2A3A" font-weight="700">ปั๊ม</text>
+<text x="210" y="48" font-size="11" text-anchor="middle" fill="#7E3407">น้ำร้อนออก {{cl.tHot}}</text>
+<text x="210" y="222" font-size="11" text-anchor="middle" fill="#0A4F70" dy="32">น้ำเย็นเข้า {{cl.tCold}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">เส้นโค้งปั๊ม (ส้ม) และเส้นโค้งระบบท่อ (ฟ้า)</div>
+<svg viewBox="0 0 420 260" style="display: block; width: 100%; height: auto" role="img" aria-label="กราฟจุดทำงานของปั๊ม">
+<line x1="50" y1="220" x2="400" y2="220" stroke="#9AAAB4"></line>
+<line x1="50" y1="20" x2="50" y2="220" stroke="#9AAAB4"></line>
+<text x="400" y="246" font-size="11" text-anchor="end" fill="#4A5D6A">{{cl.qAxis}}</text>
+<text x="60" y="14" font-size="11" fill="#4A5D6A">{{cl.hAxis}}</text>
+<text x="44" y="24" font-size="10" text-anchor="end" fill="#4A5D6A">{{cl.hMax}}</text>
+<text x="400" y="234" font-size="10" text-anchor="end" fill="#4A5D6A">{{cl.qMax}}</text>
+<path d="{{cl.pumpC}}" fill="none" stroke="#B04A0C" stroke-width="2.5"></path>
+<path d="{{cl.sysC}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<line x1="{{cl.opX}}" y1="{{cl.opY}}" x2="{{cl.opX}}" y2="220" stroke="#0F2A3A" stroke-dasharray="3 3"></line>
+<line x1="50" y1="{{cl.opY}}" x2="{{cl.opX}}" y2="{{cl.opY}}" stroke="#0F2A3A" stroke-dasharray="3 3"></line>
+<circle cx="{{cl.opX}}" cy="{{cl.opY}}" r="6" fill="#0F2A3A"></circle>
+<text x="{{cl.opX}}" y="{{cl.opY}}" dx="10" dy="-8" font-size="11" fill="#0F2A3A" font-weight="700">จุดทำงาน</text>
+</svg>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{cl.stats}}" as="r" hint-placeholder-count="6">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: {{cl.msgBg}}; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; color: {{cl.msgFg}}">{{cl.msg}}</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">ระบบ</span>
+<div role="group" aria-label="ระบบน้ำหล่อเย็น" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{cl.scen}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">ของเหลว</span>
+<div role="group" aria-label="ของเหลว" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{cl.fluids}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 90px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{cl.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สมการ</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">ΔP = f·(L/D)·½ρv² (Darcy–Weisbach)<br>Re = ρ·v·D / μ<br>ΔT_น้ำ = P_ความร้อน / (ṁ·c_p)<br>ปั๊มหมุนช้าลงครึ่งหนึ่ง: แรงดัน ¼ ไฟ ⅛</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">Re ต่ำกว่าราว 2,300 น้ำไหลเป็นชั้นเรียบ (laminar) สูงกว่าราว 4,000 ไหลปั่นป่วน (turbulent) ซึ่งเสียแรงดันมากกว่า แต่พาความร้อนจากผนังท่อได้ดีกว่า ท่อเล็กลงครึ่งหนึ่งที่อัตราไหลเท่าเดิม แรงดันที่เสียเพิ่มขึ้นราว 30 เท่า</p>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2100}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = { N: 30, mode: 'roof', zone: 12, units: 10, use: 200, scen: 'rack', fluid: 'water', D: 32, L: 40, n: 0.8, heat: 80, t: 0, tick: 0 };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      if (!self.reduce) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  scenarios() {
+    return {
+      pc: { name: 'คอมพิวเตอร์ระบบน้ำ (ท่อยาว 2 ม.)', H0: 3, Qmax: 10 / 60000, K: 12, D: 10, L: 2, heat: 0.35, src: 'CPU/GPU', sink: 'หม้อน้ำ', hMin: 0.1, hMax: 1.5, dMin: 6, dMax: 16, lMax: 6 },
+      rack: { name: 'ตู้เซิร์ฟเวอร์ AI ในดาต้าเซ็นเตอร์', H0: 28, Qmax: 300 / 60000, K: 20, D: 32, L: 40, heat: 80, src: 'แผ่นเย็นบนชิป', sink: 'CDU', hMin: 10, hMax: 200, dMin: 15, dMax: 65, lMax: 200 },
+      bldg: { name: 'น้ำเย็นจากชิลเลอร์ในอาคาร', H0: 38, Qmax: 4000 / 60000, K: 40, D: 150, L: 300, heat: 1500, src: 'คอยล์เย็นทุกชั้น', sink: 'ชิลเลอร์', hMin: 200, hMax: 4000, dMin: 80, dMax: 300, lMax: 800 }
+    };
+  }
+
+  fluidProps(id) {
+    return {
+      water: { name: 'น้ำ', rho: 997, mu: 0.00089, cp: 4180 },
+      glycol: { name: 'น้ำ + ไกลคอล 30%', rho: 1040, mu: 0.0025, cp: 3700 },
+      oil: { name: 'น้ำมันไดอิเล็กทริก', rho: 850, mu: 0.012, cp: 2000 }
+    }[id];
+  }
+
+  loopCalc(s) {
+    var sc = this.scenarios()[s.scen], F = this.fluidProps(s.fluid), g = 9.81, D = s.D / 1000, A = Math.PI * D * D / 4;
+    var friction = function (Re) { if (Re < 2300) return 64 / Math.max(Re, 1); var e = 0.0000015 / D; return 0.25 / Math.pow(Math.log10(e / 3.7 + 5.74 / Math.pow(Re, 0.9)), 2); };
+    var sysH = function (Q) { var v = Q / A, Re = F.rho * v * D / F.mu; return (friction(Re) * s.L / D + sc.K) * v * v / (2 * g); };
+    var pumpH = function (Q) { return sc.H0 * s.n * s.n * (1 - Math.pow(Q / (sc.Qmax * s.n), 2)); };
+    var lo = 0, hi = sc.Qmax * s.n;
+    for (var i = 0; i < 60; i++) { var mid = (lo + hi) / 2; if (pumpH(mid) > sysH(mid)) lo = mid; else hi = mid; }
+    var Q = lo, H = pumpH(Q), v = Q / A, Re = F.rho * v * D / F.mu, mdot = F.rho * Q;
+    var dT = s.heat * 1000 / Math.max(mdot * F.cp, 1e-6);
+    var Pw = F.rho * g * Q * H / 0.55;
+    return { sc: sc, F: F, Q: Q, H: H, v: v, Re: Re, dT: dT, Pw: Pw, dP: F.rho * g * H, pumpH: pumpH, sysH: sysH };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- condo water ----------
+    var N = s.N, FH = 3.2, topY = 30, bH = 330, rowH = bH / N, g = 9.81, rho = 997;
+    var hTop = N * FH + 4;                       // roof tank water level (m)
+    var zoneTops = [];
+    if (s.mode === 'zone') { for (var zt = s.zone; zt < N; zt += s.zone) zoneTops.push(zt); zoneTops.push(N); }
+    var pAt = function (i) {                      // floor i (1 = ground), tap 1 m above floor
+      var h = (i - 1) * FH + 1;
+      if (s.mode === 'booster') return 3.0 + 0.3 - 0.012 * (i - 1);   // pressure-controlled pump with a PRV at each zone
+      var src = hTop;
+      if (s.mode === 'zone') { var z = zoneTops.find(function (t) { return t >= i; }); src = z * FH + 4; }
+      var loss = 0.004 * (src - h);              // friction at peak hour ≈ 0.4% of the head per metre
+      return Math.max(0, rho * g * (src - h) * (1 - 0.04) / 1e5 - loss);
+    };
+    var floors = [], pMin = 99, pMax = 0, nLow = 0, nHigh = 0;
+    var px = function (p) { return 360 + Math.min(p, 10) / 10 * 500; };
+    for (var i = 1; i <= N; i++) {
+      var p = pAt(i); pMin = Math.min(pMin, p); pMax = Math.max(pMax, p);
+      if (p < 1) nLow++; if (p > 4) nHigh++;
+      var y = topY + bH - i * rowH;
+      floors.push({ y: f1(y + 0.5), h: f1(Math.max(1, rowH - 1)), w: f1(Math.max(1, px(p) - 360)), c: p < 1 ? '#F5C77A' : p > 4 ? '#E07A5F' : '#7FBF9A', ty: f1(y + rowH / 2 + 3), lab: (i === 1 || i % 5 === 0) ? 'ชั้น ' + i : '' });
+    }
+    var tanks = [];
+    if (s.mode === 'roof') tanks.push({ y: f1(topY - 24), ty: f1(topY - 9), t: 'ถังน้ำบนดาดฟ้า' });
+    if (s.mode === 'zone') zoneTops.forEach(function (zt) { var y = topY + bH - zt * rowH; tanks.push({ y: f1(y - 22), ty: f1(y - 7), t: zt === N ? 'ถังดาดฟ้า' : 'ถังกลาง ชั้น ' + zt }); });
+    if (s.mode === 'booster') tanks.push({ y: f1(topY + bH - 26), ty: f1(topY + bH - 11), t: 'ปั๊มควบคุมแรงดัน' });
+    var drops = '';
+    for (var k = 0; k < 8; k++) { var yy = 380 - ((s.t * 60 + k * bH / 8) % bH); drops += 'M326,' + f1(yy) + ' a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 '; }
+    var people = N * s.units * 2, vol = people * s.use / 1000;                // m³/day
+    var Elift = rho * g * vol * (s.mode === 'zone' ? hTop * 0.75 : hTop) / 0.6 / 3.6e6;   // kWh/day
+    var modes = [
+      { id: 'roof', name: 'ถังบนดาดฟ้าถังเดียว (แรงโน้มถ่วง)' },
+      { id: 'zone', name: 'แบ่งโซน มีถังกลางตึก' },
+      { id: 'booster', name: 'ปั๊มเพิ่มแรงดันควบคุมอัตโนมัติ' }
+    ];
+    var wmsg = s.mode === 'roof' ? (nHigh > 0 ? 'ใช้ถังเดียวบนดาดฟ้า ชั้นล่าง ' + nHigh + ' ชั้นได้แรงดันสูงเกิน 4 บาร์ ก๊อกและสายฉีดชำรุดเร็ว ส่วนชั้นบนสุดที่อยู่ใกล้ถัง น้ำไหลเบา ตึกสูงจึงแบ่งโซน หรือติดวาล์วลดแรงดัน (PRV)' : 'ตึกยังเตี้ยพอ ถังเดียวบนดาดฟ้าใช้ได้ แต่ชั้นบนสุดที่อยู่ใกล้ถังน้ำไหลเบา มักต้องมีปั๊มเพิ่มแรงดันช่วยเฉพาะชั้นบน')
+      : s.mode === 'zone' ? 'แบ่งเป็นโซนละ ' + s.zone + ' ชั้น แต่ละโซนรับน้ำจากถังของตัวเอง แรงดันจึงไม่สะสมจนสูงเกิน ชั้นที่อยู่ใต้ถังทันทียังเบาอยู่ จึงมักใช้ปั๊มช่วยเฉพาะ 2–3 ชั้นบนของแต่ละโซน'
+      : 'ปั๊มปรับรอบเองตามแรงดันที่วัดได้ จ่ายน้ำแรงดันใกล้เคียงกันทุกชั้น ไม่ต้องมีถังบนหลังคา แต่ต้องมีไฟฟ้าตลอดเวลาและปั๊มสำรอง ถ้าไฟดับน้ำจะไม่ไหลทันที';
+    var wt = {
+      topY: topY, bH: bH, floors: floors, tanks: tanks, drops: drops, x1bar: f1(px(1)), x4bar: f1(px(4)), labY: topY - 10,
+      stats: [
+        { k: 'แรงดันต่ำสุด', v: pMin.toFixed(2) + ' บาร์', sub: nLow + ' ชั้นต่ำกว่า 1 บาร์', c: nLow ? '#B04A0C' : '#0F2A3A' },
+        { k: 'แรงดันสูงสุด', v: pMax.toFixed(2) + ' บาร์', sub: nHigh + ' ชั้นเกิน 4 บาร์', c: nHigh ? '#B04A0C' : '#0F2A3A' },
+        { k: 'น้ำที่ใช้ต่อวัน', v: Math.round(vol).toLocaleString('en-US') + ' ม³', sub: people.toLocaleString('en-US') + ' คน × ' + s.use + ' ลิตร', c: '#0F2A3A' },
+        { k: 'ไฟฟ้าสูบน้ำขึ้นตึก', v: Math.round(Elift).toLocaleString('en-US') + ' หน่วย/วัน', sub: 'ρ·g·V·H / η (ปั๊มประสิทธิภาพ 60%)', c: '#0F2A3A' }
+      ],
+      msg: wmsg,
+      modes: modes.map(function (m) { var q = pill(s.mode === m.id); return { name: m.name, pressed: s.mode === m.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ mode: m.id }); } }; }),
+      sliders: [
+        { id: 'w-n', name: 'จำนวนชั้น', label: s.N + ' ชั้น', min: 4, max: 60, step: 1, v: s.N, set: function (e) { self.setState({ N: parseInt(e.target.value, 10) }); } },
+        { id: 'w-z', name: 'ชั้นต่อโซน (ถ้าแบ่งโซน)', label: s.zone + ' ชั้น', min: 6, max: 20, step: 1, v: s.zone, set: function (e) { self.setState({ zone: parseInt(e.target.value, 10) }); } },
+        { id: 'w-u', name: 'ห้องต่อชั้น', label: s.units + ' ห้อง', min: 2, max: 30, step: 1, v: s.units, set: function (e) { self.setState({ units: parseInt(e.target.value, 10) }); } },
+        { id: 'w-c', name: 'น้ำต่อคนต่อวัน', label: s.use + ' ลิตร', min: 100, max: 300, step: 10, v: s.use, set: function (e) { self.setState({ use: parseFloat(e.target.value) }); } }
+      ],
+      aria: 'คอนโด ' + N + ' ชั้น แรงดันน้ำ ' + pMin.toFixed(1) + ' ถึง ' + pMax.toFixed(1) + ' บาร์'
+    };
+
+    // ---------- cooling loop ----------
+    var C = this.loopCalc(s), sc = C.sc;
+    var qUnit = s.scen === 'bldg' ? 1000 : 60000, qLab = s.scen === 'bldg' ? 'ลิตร/วินาที' : 'ลิตร/นาที';
+    var qMax = sc.Qmax * 1.05, hMax = sc.H0 * 1.1;
+    var GX = function (q) { return 50 + 350 * q / qMax; }, GY = function (h) { return 220 - 200 * Math.min(h, hMax) / hMax; };
+    var pc = [], sy = [];
+    for (var j = 0; j <= 40; j++) { var q = qMax * j / 40, hp = C.pumpH(q); if (hp >= 0) pc.push(f1(GX(q)) + ',' + f1(GY(hp))); if (C.sysH(q) <= hMax) sy.push(f1(GX(q)) + ',' + f1(GY(C.sysH(q)))); }
+    var loopPath = [[70, 200], [70, 60], [350, 60], [350, 200], [70, 200]], plen = [], tot = 0;
+    for (var m = 1; m < loopPath.length; m++) { var dd = Math.hypot(loopPath[m][0] - loopPath[m - 1][0], loopPath[m][1] - loopPath[m - 1][1]); plen.push(dd); tot += dd; }
+    var spd = Math.min(220, 20 + 60 * C.v), cold = '', hotD = '';
+    for (var o = 0; o < 22; o++) {
+      var u = (s.t * spd + o * tot / 22) % tot, sg = 0; while (u > plen[sg]) { u -= plen[sg]; sg++; }
+      var p0 = loopPath[sg], p1 = loopPath[sg + 1], fr = u / plen[sg], xx = p0[0] + (p1[0] - p0[0]) * fr, yv = p0[1] + (p1[1] - p0[1]) * fr;
+      var dot = 'M' + f1(xx - 4) + ',' + f1(yv) + ' a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 ';
+      if (sg === 1 || (sg === 2 && fr < 0.7)) hotD += dot; else cold += dot;   // hot from the source (left) to the radiator (right)
+    }
+    var imp = ''; var a = s.t * (4 + 20 * s.n); for (var b = 0; b < 3; b++) { var th = a + b * 2.094; imp += 'M210,200 L' + f1(210 + 13 * Math.cos(th)) + ',' + f1(200 + 13 * Math.sin(th)) + ' '; }
+    var Tin = 30, regime = C.Re < 2300 ? 'ไหลเป็นชั้น (laminar)' : C.Re < 4000 ? 'ช่วงเปลี่ยน' : 'ไหลปั่นป่วน (turbulent)';
+    var issues = [];
+    if (C.dT > 15) issues.push('น้ำร้อนขึ้น ' + C.dT.toFixed(1) + ' °C มากเกินไป น้ำไหลน้อยไม่พอพาความร้อน ชิปหรือคอยล์ปลายทางจะร้อนเกิน ลองเพิ่มรอบปั๊มหรือขยายท่อ');
+    if (C.v > 3) issues.push('น้ำในท่อเร็ว ' + C.v.toFixed(1) + ' ม./วิ เกินราว 3 ม./วิ จะมีเสียงดัง สึกกร่อนท่อ และเสียแรงดันมาก ควรใช้ท่อใหญ่ขึ้น');
+    if (C.Re < 2300) issues.push('น้ำไหลเป็นชั้นเรียบ ถ่ายเทความร้อนกับผนังได้ไม่ดี');
+    var clMsg = issues.length ? issues.join(' · ') : 'ระบบสมดุลดี น้ำร้อนขึ้น ' + C.dT.toFixed(1) + ' °C ระหว่างรับความร้อน ความเร็วในท่ออยู่ในช่วงเหมาะสม ลองลดรอบปั๊มลง แล้วดูว่าไฟที่ปั๊มใช้ลดลงเร็วกว่าอัตราการไหลมาก';
+    var cl = {
+      pipeW: f1(Math.max(4, Math.min(14, s.D / sc.dMax * 14))), dots: cold, dotC: '#0A6A94', hotDots: hotD, impeller: imp,
+      srcName: sc.src, srcP: s.heat >= 1000 ? (s.heat / 1000).toFixed(2) + ' MW' : s.heat + ' kW', sinkName: sc.sink,
+      tHot: (Tin + C.dT).toFixed(1) + ' °C', tCold: Tin + ' °C',
+      pumpC: 'M' + pc.join(' L'), sysC: sy.length > 1 ? 'M' + sy.join(' L') : 'M0,0', opX: f1(GX(C.Q)), opY: f1(GY(C.H)),
+      qAxis: 'อัตราการไหล (' + qLab + ')', hAxis: 'ความดันปั๊ม (ม. น้ำ)', hMax: hMax.toFixed(0), qMax: (qMax * qUnit).toFixed(qUnit === 1000 ? 0 : 0),
+      stats: [
+        { k: 'อัตราการไหล', v: (C.Q * qUnit).toFixed(1) + ' ' + qLab, sub: 'จุดที่เส้นปั๊มตัดเส้นระบบ', c: '#0F2A3A' },
+        { k: 'ความเร็วในท่อ', v: C.v.toFixed(2) + ' ม./วิ', sub: 'Re = ' + Math.round(C.Re).toLocaleString('en-US') + ' · ' + regime, c: C.v > 3 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'แรงดันที่ปั๊มต้องดัน', v: (C.dP / 1e5).toFixed(2) + ' บาร์', sub: C.H.toFixed(1) + ' เมตรน้ำ', c: '#0F2A3A' },
+        { k: 'น้ำร้อนขึ้น ΔT', v: C.dT.toFixed(1) + ' °C', sub: 'ΔT = P / (ṁ·c_p)', c: C.dT > 15 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ไฟฟ้าที่ปั๊มใช้', v: C.Pw >= 1000 ? (C.Pw / 1000).toFixed(2) + ' kW' : C.Pw.toFixed(1) + ' W', sub: 'คิดประสิทธิภาพปั๊ม 55%', c: '#0F2A3A' },
+        { k: 'สัดส่วนไฟปั๊มต่อความร้อน', v: (C.Pw / (s.heat * 1000) * 100).toFixed(2) + '%', sub: 'ยิ่งต่ำ ระบบยิ่งประหยัด', c: '#0F2A3A' }
+      ],
+      msg: clMsg, msgBg: issues.length ? '#FFF1CC' : '#EAF3F7', msgFg: issues.length ? '#6B4A00' : '#0F2A3A',
+      scen: Object.keys(this.scenarios()).map(function (id) { var z = self.scenarios()[id], q = pill(s.scen === id); return { name: z.name, pressed: s.scen === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ scen: id, D: z.D, L: z.L, heat: z.heat, n: 0.8 }); } }; }),
+      fluids: ['water', 'glycol', 'oil'].map(function (id) { var q = pill(s.fluid === id); return { name: self.fluidProps(id).name, pressed: s.fluid === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ fluid: id }); } }; }),
+      sliders: [
+        { id: 'p-n', name: 'รอบปั๊ม', label: Math.round(s.n * 100) + '%', min: 0.3, max: 1, step: 0.05, v: s.n, set: function (e) { self.setState({ n: parseFloat(e.target.value) }); } },
+        { id: 'p-d', name: 'ขนาดท่อ', label: s.D + ' มม.', min: sc.dMin, max: sc.dMax, step: 1, v: s.D, set: function (e) { self.setState({ D: parseFloat(e.target.value) }); } },
+        { id: 'p-l', name: 'ความยาวท่อรวม', label: s.L + ' ม.', min: 1, max: sc.lMax, step: 1, v: s.L, set: function (e) { self.setState({ L: parseFloat(e.target.value) }); } },
+        { id: 'p-h', name: 'ความร้อนที่ต้องพาออก', label: s.heat >= 1000 ? (s.heat / 1000).toFixed(2) + ' MW' : s.heat + ' kW', min: sc.hMin, max: sc.hMax, step: sc.hMin, v: s.heat, set: function (e) { self.setState({ heat: parseFloat(e.target.value) }); } }
+      ],
+      aria: 'วงจรน้ำหล่อเย็น อัตราการไหล ' + (C.Q * qUnit).toFixed(1) + ' ' + qLab + ' น้ำร้อนขึ้น ' + C.dT.toFixed(1) + ' องศา'
+    };
+    return { wt: wt, cl: cl };
+  }
+}
+</script>
+</body>
+</html>

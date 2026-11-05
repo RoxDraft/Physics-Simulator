@@ -94,15 +94,31 @@ lab() {
     "Home=../index.html" "$name=index.html" "Sources="
 }
 lab mechanics-lab "Mechanics Lab"
-RENAMES=(--rename Main.dc.html=index.html --rename Swim.dc.html=swim.html --rename Sources.dc.html=sources.html)
+RENAMES=(--rename Main.dc.html=index.html --rename Swim.dc.html=swim.html --rename Statics.dc.html=statics.html \
+  --rename Dynamics.dc.html=dynamics.html --rename Thermo.dc.html=thermo.html --rename Fluids.dc.html=fluids.html \
+  --rename Sources.dc.html=sources.html)
 page src/mechanics-lab/Main.dc.html mechanics-lab/index.html mechanics-lab/index.html \
   "หน้าหลัก=../index.html" "Mechanics Lab=" -- "Home=../index.html" "Mechanics Lab="
-page src/mechanics-lab/Swim.dc.html mechanics-lab/swim.html mechanics-lab/swim.html \
-  "หน้าหลัก=../index.html" "Mechanics Lab=index.html" "ออกตัวว่ายน้ำ=" -- \
-  "Home=../index.html" "Mechanics Lab=index.html" "Swim start="
+page src/mechanics-lab/Sources.dc.html mechanics-lab/sources.html mechanics-lab/sources.html \
+  "หน้าหลัก=../index.html" "Mechanics Lab=index.html" "แหล่งข้อมูล=" -- \
+  "Home=../index.html" "Mechanics Lab=index.html" "Sources="
+declare -A MTH=([Swim]="ออกตัวว่ายน้ำ" [Statics]="สถิตยศาสตร์" [Dynamics]="พลศาสตร์" [Thermo]="อุณหพลศาสตร์" [Fluids]="กลศาสตร์ของไหล")
+declare -A MEN=([Swim]="Swim start" [Statics]="Statics" [Dynamics]="Dynamics" [Thermo]="Thermodynamics" [Fluids]="Fluid mechanics")
+for n in Statics Dynamics Thermo Fluids Swim; do
+  page "src/mechanics-lab/$n.dc.html" "mechanics-lab/${n,,}.html" "mechanics-lab/${n,,}.html" \
+    "หน้าหลัก=../index.html" "Mechanics Lab=index.html" "${MTH[$n]}=" -- \
+    "Home=../index.html" "Mechanics Lab=index.html" "${MEN[$n]}="
+done
 lab beam-fea "Beam FEA"
 lab circuit-lab "Circuit Lab"
+RENAMES=(--rename Main.dc.html=index.html --rename Computer.dc.html=computer.html --rename Sources.dc.html=sources.html)
+page src/circuit-lab/Main.dc.html circuit-lab/index.html circuit-lab/index.html \
+  "หน้าหลัก=../index.html" "Circuit Lab=" -- "Home=../index.html" "Circuit Lab="
+page src/circuit-lab/Computer.dc.html circuit-lab/computer.html circuit-lab/computer.html \
+  "หน้าหลัก=../index.html" "Circuit Lab=index.html" "จากวงจรสู่คอมพิวเตอร์=" -- \
+  "Home=../index.html" "Circuit Lab=index.html" "From circuits to computers="
 lab chem-bio-lab "Chem · Bio Lab"
+lab quantum-lab "Quantum Lab"
 
 # ---------- English landing page ----------
 $PY index.html en/index.html --plain --lang en --dict tools/i18n/en.json \

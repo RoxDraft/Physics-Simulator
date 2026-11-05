@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>สถิตยศาสตร์: แรงที่สมดุล</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px">
+
+<nav aria-label="หัวข้อในแล็บกลศาสตร์" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">เครื่องจักร</a>
+<a href="Statics.dc.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">สถิตยศาสตร์</a>
+<a href="Dynamics.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">พลศาสตร์</a>
+<a href="Thermo.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">อุณหพลศาสตร์</a>
+<a href="Fluids.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">ของไหล</a>
+<a href="Swim.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">ว่ายน้ำ</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">STATICS · สถิตยศาสตร์</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">แรงที่สมดุล: บันไดพาด และโครงถักสะพาน</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">ของที่อยู่นิ่งไม่ได้แปลว่าไม่มีแรง แต่แปลว่าแรงและโมเมนต์ทุกตัวหักล้างกันพอดี ΣF = 0 และ ΣM = 0 วิศวกรใช้สองสมการนี้ตรวจว่าโครงสร้างจะยืนอยู่ได้หรือไม่ ก่อนสร้างจริง</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. บันไดพาดผนัง: ลื่นเมื่อไร</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; flex-wrap: wrap">
+<span style="font-weight: 700">แผนภาพแรงอิสระ (free-body diagram)</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{ld.bg}}; color: {{ld.fg}}">{{ld.badge}}</span>
+</div>
+<svg viewBox="0 0 700 380" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{ld.aria}}">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F2A3A"></path></marker></defs>
+<rect x="600" y="20" width="40" height="320" fill="#D5DEE3"></rect>
+<rect x="20" y="340" width="660" height="24" fill="{{ld.floor}}"></rect>
+<line x1="{{ld.fx}}" y1="{{ld.fy}}" x2="{{ld.tx}}" y2="{{ld.ty}}" stroke="#8A6D3B" stroke-width="10" stroke-linecap="round"></line>
+<path d="{{ld.rungs}}" stroke="#B89B5E" stroke-width="3"></path>
+<g transform="translate({{ld.px}},{{ld.py}})"><circle cx="-14" cy="-58" r="9" fill="#0F2A3A"></circle><path d="M-14,-49 L-12,-20 M-12,-20 L-4,0 M-12,-20 L-20,-2 M-13,-42 L0,-34" fill="none" stroke="#0F2A3A" stroke-width="4" stroke-linecap="round"></path></g>
+<sc-for list="{{ld.arrows}}" as="a" hint-placeholder-count="5">
+<line x1="{{a.x1}}" y1="{{a.y1}}" x2="{{a.x2}}" y2="{{a.y2}}" stroke="{{a.c}}" stroke-width="3" marker-end="url(#ah)"></line>
+<text x="{{a.lx}}" y="{{a.ly}}" font-size="12" fill="{{a.c}}" font-weight="700" text-anchor="{{a.anchor}}">{{a.t}}</text>
+</sc-for>
+<path d="{{ld.arc}}" fill="none" stroke="#4A5D6A" stroke-width="1.5"></path>
+<text x="{{ld.angX}}" y="332" font-size="13" fill="#4A5D6A">{{ld.angTxt}}</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px">
+<sc-for list="{{ld.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{ld.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<span style="font-size: 14px; font-weight: 600">พื้นใต้ขาบันได</span>
+<div role="group" aria-label="พื้นใต้ขาบันได" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{ld.floors}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 120px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{climb}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">ปีนขึ้นบันได</button>
+<button type="button" onClick="{{resetLadder}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">ตั้งบันไดใหม่</button>
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สมการสมดุล</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">ΣFy: N = W_บันได + W_คน<br>ΣFx: f = F_ผนัง<br>ΣM รอบขาบันได:<br>F_ผนัง·L·sinθ = (W_บันได·½ + W_คน·s)·L·cosθ<br>ไม่ลื่นเมื่อ f ≤ μ·N</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">ยิ่งปีนสูง โมเมนต์จากน้ำหนักคนยิ่งมาก ผนังต้องดันมากขึ้น และพื้นต้องใช้แรงเสียดทานมากขึ้นตาม บันไดจึงมักลื่นตอนคนอยู่ใกล้ยอด กฎความปลอดภัยทั่วไปให้ตั้งบันไดแบบ 4 : 1 คือระยะห่างผนังเป็น ¼ ของความสูง (ราว 75°)</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. โครงถัก (truss): ชิ้นไหนถูกดึง ชิ้นไหนถูกอัด</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">สะพานเหล็กและโครงหลังคาโรงงานประกอบจากท่อนตรงที่ต่อกันเป็นรูปสามเหลี่ยม แต่ละท่อนรับแรงตามแนวแกนอย่างเดียว คือถูกดึงหรือถูกอัด หน้านี้แก้สมการสมดุลที่ทุกจุดต่อ (method of joints) พร้อมกัน แล้วระบายสีให้เห็น</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="22" height="10" aria-hidden="true"><line x1="2" y1="5" x2="20" y2="5" stroke="#0A6A94" stroke-width="5"></line></svg>แรงดึง (tension)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="22" height="10" aria-hidden="true"><line x1="2" y1="5" x2="20" y2="5" stroke="#B04A0C" stroke-width="5"></line></svg>แรงอัด (compression)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="22" height="10" aria-hidden="true"><line x1="2" y1="5" x2="20" y2="5" stroke="#C9D4DA" stroke-width="5"></line></svg>แทบไม่รับแรง</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="22" height="12" aria-hidden="true"><rect x="2" y="2" width="18" height="8" fill="none" stroke="#7E3407" stroke-width="2" stroke-dasharray="3 2"></rect></svg>เกินกำลัง</span>
+</div>
+<svg viewBox="0 0 720 330" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{tr.aria}}">
+<sc-for list="{{tr.members}}" as="m" hint-placeholder-count="13">
+<line x1="{{m.x1}}" y1="{{m.y1}}" x2="{{m.x2}}" y2="{{m.y2}}" stroke="{{m.c}}" stroke-width="{{m.w}}" stroke-linecap="round"></line>
+<line x1="{{m.x1}}" y1="{{m.y1}}" x2="{{m.x2}}" y2="{{m.y2}}" stroke="#7E3407" stroke-width="{{m.ow}}" stroke-dasharray="6 4" fill="none" opacity="{{m.oo}}"></line>
+<text x="{{m.lx}}" y="{{m.ly}}" font-size="11" text-anchor="middle" fill="#0F2A3A" font-family="IBM Plex Mono, monospace">{{m.t}}</text>
+</sc-for>
+<sc-for list="{{tr.nodes}}" as="n" hint-placeholder-count="8">
+<circle cx="{{n.x}}" cy="{{n.y}}" r="6" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></circle>
+</sc-for>
+<path d="M70,262 l-14,26 h28 z" fill="#9AAAB4"></path>
+<path d="M650,262 l-14,22 h28 z" fill="#9AAAB4"></path><circle cx="642" cy="290" r="4" fill="#9AAAB4"></circle><circle cx="658" cy="290" r="4" fill="#9AAAB4"></circle>
+<path d="{{tr.loads}}" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<path d="{{tr.heads}}" fill="#0F2A3A"></path>
+<text x="70" y="314" font-size="12" text-anchor="middle" fill="#4A5D6A">{{tr.r1}}</text>
+<text x="650" y="314" font-size="12" text-anchor="middle" fill="#4A5D6A">{{tr.r2}}</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px">
+<sc-for list="{{tr.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: #EAF3F7; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7">{{tr.msg}}</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">รูปแบบโครงถัก</span>
+<div role="group" aria-label="รูปแบบโครงถัก" style="display: flex; gap: 6px">
+<sc-for list="{{tr.types}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 0; min-height: 44px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">น้ำหนักกระทำที่</span>
+<div role="group" aria-label="ตำแหน่งน้ำหนัก" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{tr.loadPos}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 70px; min-height: 40px; border-radius: 999px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{tr.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">ตรวจความปลอดภัยของแต่ละท่อน</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">ถูกดึง: F ≤ A·fy / 1.5<br>ถูกอัด: F ≤ min(A·fy, π²EI/L²) / 1.5</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">ท่อนที่ถูกอัดอาจโก่งเดาะ (buckling) ก่อนเหล็กจะคราก แรงที่ทำให้โก่งตามสูตรออยเลอร์ลดลงตามความยาวยกกำลังสอง ท่อนยาวที่ถูกอัดจึงต้องใหญ่กว่าท่อนที่ถูกดึง</p>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1900}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      L: 5, ang: 70, mp: 75, s: 0.3, mu: 0.5, floor: 'concrete', climbing: false, slip: 0,
+      type: 'pratt', load: 'all', P: 40, span: 16, hr: 0.25, tube: 100, tick: 0
+    };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      var s = self.state, lad = self.ladder(s), patch = {};
+      if (lad.slips) patch.slip = Math.min(1, s.slip + dt * (self.reduce ? 10 : 1.4));
+      else if (s.climbing) { var ns = Math.min(1, s.s + dt * 0.18); patch.s = ns; if (ns >= 1) patch.climbing = false; }
+      if (lad.slips && s.climbing) patch.climbing = false;
+      if (Object.keys(patch).length) self.setState(patch);
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  ladder(s) {
+    var g = 9.81, Wl = 12 * g, Wp = s.mp * g, th = s.ang * Math.PI / 180;
+    var Fw = (Wl / 2 + Wp * s.s) / Math.tan(th), N = Wl + Wp, fNeed = Fw, fMax = s.mu * N;
+    var sMax = (s.mu * N * Math.tan(th) - Wl / 2) / Wp;
+    return { Wl: Wl, Wp: Wp, Fw: Fw, N: N, f: fNeed, fMax: fMax, slips: fNeed > fMax + 1e-9, sMax: sMax, th: th, muNeed: fNeed / N };
+  }
+
+  // truss: 5 bottom nodes B0..B4, 3 top nodes T1..T3
+  truss(s) {
+    var a = s.span / 4, h = s.span * s.hr;
+    var nodes = [[0, 0], [a, 0], [2 * a, 0], [3 * a, 0], [4 * a, 0], [a, h], [2 * a, h], [3 * a, h]];
+    var M = [[0, 1], [1, 2], [2, 3], [3, 4], [5, 6], [6, 7], [0, 5], [4, 7], [1, 5], [2, 6], [3, 7]];
+    if (s.type === 'pratt') M.push([5, 2], [7, 2]); else M.push([1, 6], [3, 6]);
+    var n = nodes.length, m = M.length, N = 2 * n, U = m + 3;
+    var Amat = [], b = [];
+    for (var i = 0; i < N; i++) { Amat.push(new Array(U).fill(0)); b.push(0); }
+    M.forEach(function (e, k) {
+      var p = nodes[e[0]], q = nodes[e[1]], L = Math.hypot(q[0] - p[0], q[1] - p[1]), ux = (q[0] - p[0]) / L, uy = (q[1] - p[1]) / L;
+      Amat[2 * e[0]][k] += ux; Amat[2 * e[0] + 1][k] += uy;   // tension pulls node toward the other end
+      Amat[2 * e[1]][k] -= ux; Amat[2 * e[1] + 1][k] -= uy;
+    });
+    Amat[0][m] = 1; Amat[1][m + 1] = 1; Amat[9][m + 2] = 1;   // pin at B0 (Rx, Ry), roller at B4 (Ry)
+    var P = s.P, loads = [];
+    if (s.load === 'all') { [1, 2, 3].forEach(function (j) { loads.push([j, P / 3]); }); }
+    else loads.push([{ b1: 1, b2: 2, b3: 3 }[s.load], P]);
+    loads.forEach(function (l) { b[2 * l[0] + 1] += l[1]; });  // ΣF + load = 0 → A·x = +P (load acts downward)
+    // Gaussian elimination
+    var A2 = Amat.map(function (r, i) { return r.concat([b[i]]); });
+    for (var c = 0; c < U; c++) {
+      var piv = c; for (var r = c + 1; r < N; r++) if (Math.abs(A2[r][c]) > Math.abs(A2[piv][c])) piv = r;
+      var tmp = A2[c]; A2[c] = A2[piv]; A2[piv] = tmp;
+      for (var r2 = 0; r2 < N; r2++) { if (r2 === c) continue; var fct = A2[r2][c] / A2[c][c]; if (fct) for (var cc = c; cc <= U; cc++) A2[r2][cc] -= fct * A2[c][cc]; }
+    }
+    var x = A2.map(function (r, i) { return i < U ? r[U] / r[i] : 0; });
+    // section: square hollow steel tube b×b×4 mm
+    var bt = s.tube / 1000, t = 0.004, Ar = bt * bt - Math.pow(bt - 2 * t, 2), I = (Math.pow(bt, 4) - Math.pow(bt - 2 * t, 4)) / 12, E = 200e9, fy = 275e6;
+    var mem = M.map(function (e, k) {
+      var p = nodes[e[0]], q = nodes[e[1]], L = Math.hypot(q[0] - p[0], q[1] - p[1]), F = x[k] * 1000; // kN → N
+      var cap = F >= 0 ? Ar * fy / 1.5 : Math.min(Ar * fy, Math.PI * Math.PI * E * I / (L * L)) / 1.5;
+      return { e: e, F: x[k], L: L, util: Math.abs(F) / cap, buck: F < 0 && Math.PI * Math.PI * E * I / (L * L) < Ar * fy };
+    });
+    return { nodes: nodes, mem: mem, R: { x: x[m], y1: x[m + 1], y2: x[m + 2] }, h: h, a: a, loads: loads };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- ladder ----------
+    var L = this.ladder(s), SC = 52, wallX = 600, floorY = 340;
+    var thv = L.th * (1 - (s.slip ? (1 - Math.pow(1 - s.slip, 2)) * 0.92 : 0));
+    var topX = wallX, topY = floorY - s.L * Math.sin(thv) * SC, footX = wallX - s.L * Math.cos(thv) * SC;
+    if (s.slip > 0) { topY = Math.min(floorY - 8, topY); }
+    var at = function (u) { return [footX + (topX - footX) * u, floorY + (topY - floorY) * u]; };
+    var rungs = ''; for (var r = 1; r < s.L / 0.3; r++) { var p = at(r * 0.3 / s.L); rungs += 'M' + f1(p[0] - 7) + ',' + f1(p[1]) + ' l14,0 '; }
+    var pp = at(Math.min(0.97, s.s)), mid = at(0.5), FS = 0.07;
+    var arr = function (x, y, dx, dy, c, t, lx, ly, anchor) { return { x1: f1(x), y1: f1(y), x2: f1(x + dx), y2: f1(y + dy), c: c, t: t, lx: f1(lx), ly: f1(ly), anchor: anchor || 'start' }; };
+    var arrows = s.slip > 0.05 ? [] : [
+      arr(mid[0], mid[1], 0, L.Wl * FS, '#4A5D6A', 'W บันได ' + L.Wl.toFixed(0) + ' N', mid[0] + 8, mid[1] + L.Wl * FS),
+      arr(pp[0] - 12, pp[1] + 4, 0, L.Wp * FS, '#4A5D6A', 'W คน ' + L.Wp.toFixed(0) + ' N', pp[0] - 4, pp[1] + L.Wp * FS),
+      arr(footX, floorY, 0, -L.N * FS * 0.6, '#0A6A94', 'N ' + L.N.toFixed(0) + ' N', footX - 10, floorY - L.N * FS * 0.6 + 4, 'end'),
+      arr(footX, floorY + 10, Math.min(260, L.f * FS * 1.6), 0, L.slips ? '#B04A0C' : '#0A6A94', 'f ต้องการ ' + L.f.toFixed(0) + ' N (สูงสุด ' + L.fMax.toFixed(0) + ')', footX, floorY + 30),
+      arr(topX, topY, -Math.min(260, L.Fw * FS * 1.6), 0, '#0A6A94', 'F ผนัง ' + L.Fw.toFixed(0) + ' N', topX - 10, topY - 10, 'end')
+    ];
+    var arcR = 40, arc = 'M' + f1(footX + arcR) + ',' + floorY + ' A' + arcR + ',' + arcR + ' 0 0,0 ' + f1(footX + arcR * Math.cos(thv)) + ',' + f1(floorY - arcR * Math.sin(thv));
+    var floors = [
+      { id: 'tile', name: 'กระเบื้องเปียก μ 0.2', mu: 0.2 }, { id: 'wood', name: 'พื้นไม้ μ 0.35', mu: 0.35 },
+      { id: 'concrete', name: 'คอนกรีต μ 0.5', mu: 0.5 }, { id: 'rubber', name: 'ยางกันลื่น μ 0.8', mu: 0.8 }
+    ];
+    var base = s.L * Math.cos(L.th);
+    var ld = {
+      fx: f1(footX), fy: floorY, tx: f1(topX), ty: f1(topY), rungs: rungs, px: f1(pp[0]), py: f1(pp[1]), arrows: arrows, arc: arc,
+      angX: f1(footX + 46), angTxt: s.ang + '°', floor: { tile: '#C9DCE6', wood: '#C8A47A', concrete: '#B9C2C8', rubber: '#4A5D6A' }[s.floor],
+      badge: s.slip > 0 ? 'บันไดลื่นล้ม' : L.slips ? 'กำลังจะลื่น' : L.sMax < 1 ? 'ปีนได้ถึง ' + Math.max(0, Math.round(L.sMax * 100)) + '% ของความยาว' : 'ปีนถึงยอดได้อย่างปลอดภัย',
+      bg: s.slip > 0 || L.slips ? '#FCE3CF' : L.sMax < 1 ? '#FFF1CC' : '#DDEFF6', fg: s.slip > 0 || L.slips ? '#7E3407' : L.sMax < 1 ? '#6B4A00' : '#0A4F70',
+      stats: [
+        { k: 'แรงเสียดทานที่ต้องใช้', v: L.f.toFixed(0) + ' N', sub: 'พื้นให้ได้สูงสุด μ·N = ' + L.fMax.toFixed(0) + ' N', c: L.slips ? '#B04A0C' : '#0F2A3A' },
+        { k: 'μ ที่ต้องการตอนนี้', v: L.muNeed.toFixed(2), sub: 'ถ้ามากกว่า μ ของพื้น บันไดจะลื่น', c: L.slips ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ปีนได้สูงสุด', v: L.sMax >= 1 ? 'ถึงยอด' : Math.max(0, L.sMax * 100).toFixed(0) + '%', sub: 'ของความยาวบันได ก่อนจะลื่น', c: L.sMax < 1 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ระยะขาบันไดห่างผนัง', v: base.toFixed(2) + ' ม.', sub: 'กฎ 4 : 1 แนะนำ ' + (s.L * 0.25).toFixed(2) + ' ม. (≈ 75°)', c: '#0F2A3A' }
+      ],
+      sliders: [
+        { id: 'l-a', name: 'มุมบันไดกับพื้น', label: s.ang + '°', min: 45, max: 85, step: 1, v: s.ang, set: function (e) { self.setState({ ang: parseFloat(e.target.value), slip: 0 }); } },
+        { id: 'l-s', name: 'ตำแหน่งคนบนบันได', label: Math.round(s.s * 100) + '%', min: 0, max: 1, step: 0.01, v: s.s, set: function (e) { self.setState({ s: parseFloat(e.target.value), slip: 0, climbing: false }); } },
+        { id: 'l-m', name: 'น้ำหนักคน (รวมเครื่องมือ)', label: s.mp + ' กก.', min: 40, max: 130, step: 5, v: s.mp, set: function (e) { self.setState({ mp: parseFloat(e.target.value), slip: 0 }); } },
+        { id: 'l-L', name: 'ความยาวบันได', label: s.L + ' ม.', min: 2, max: 6, step: 0.5, v: s.L, set: function (e) { self.setState({ L: parseFloat(e.target.value), slip: 0 }); } }
+      ],
+      floors: floors.map(function (f) { var q = pill(s.floor === f.id); return { name: f.name, pressed: s.floor === f.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ floor: f.id, mu: f.mu, slip: 0 }); } }; }),
+      aria: 'บันไดยาว ' + s.L + ' เมตร มุม ' + s.ang + ' องศา คนอยู่ที่ ' + Math.round(s.s * 100) + ' เปอร์เซ็นต์ ' + (L.slips ? 'ลื่น' : 'ไม่ลื่น')
+    };
+
+    // ---------- truss ----------
+    var T = this.truss(s), X0 = 70, W = 580, sx = W / s.span, Ybase = 262, sy = Math.min(sx, 200 / Math.max(T.h, 0.1));
+    var PXt = function (p) { return [X0 + p[0] * sx, Ybase - p[1] * sy]; };
+    var Fmax = Math.max.apply(null, T.mem.map(function (q) { return Math.abs(q.F); })) || 1;
+    var members = T.mem.map(function (q) {
+      var p = PXt(T.nodes[q.e[0]]), r = PXt(T.nodes[q.e[1]]), ab = Math.abs(q.F);
+      var c = ab < Fmax * 0.03 ? '#C9D4DA' : q.F > 0 ? '#0A6A94' : '#B04A0C';
+      return { x1: f1(p[0]), y1: f1(p[1]), x2: f1(r[0]), y2: f1(r[1]), c: c, w: f1(2.5 + 9 * ab / Fmax), ow: q.util > 1 ? 16 : 0, oo: q.util > 1 ? 0.8 : 0, lx: f1((p[0] + r[0]) / 2), ly: f1((p[1] + r[1]) / 2 - 8), t: (q.F >= 0 ? '+' : '') + q.F.toFixed(1) };
+    });
+    var nodesOut = T.nodes.map(function (p) { var q = PXt(p); return { x: f1(q[0]), y: f1(q[1]) }; });
+    var loadsP = '', heads = '';
+    T.loads.forEach(function (l) { var q = PXt(T.nodes[l[0]]), len = 20 + 30 * l[1] / s.P; loadsP += 'M' + f1(q[0]) + ',' + f1(q[1] + 8) + ' l0,' + f1(len) + ' '; heads += 'M' + f1(q[0] - 6) + ',' + f1(q[1] + 8 + len - 8) + ' l6,10 l6,-10 z '; });
+    var maxT = T.mem.reduce(function (a, q) { return q.F > a.F ? q : a; }, { F: -1e9 }), maxC = T.mem.reduce(function (a, q) { return q.F < a.F ? q : a; }, { F: 1e9 });
+    var worst = T.mem.reduce(function (a, q) { return q.util > a.util ? q : a; }, { util: 0 });
+    var diag = T.mem.slice(11), vert = T.mem.slice(8, 11);
+    var diagT = diag.every(function (q) { return q.F > 0.01; }), diagC = diag.every(function (q) { return q.F < -0.01; });
+    var vertT = vert.every(function (q) { return q.F > -0.01; });
+    var msg = s.type === 'pratt'
+      ? 'โครงแบบ Pratt: ท่อนทแยงเอียงลงเข้าหากลางช่วง จึง' + (diagT ? 'ถูกดึง' : 'รับทั้งแรงดึงและแรงอัด เพราะน้ำหนักไม่สมมาตร') + ' ท่อนยาวที่ถูกดึงไม่โก่งเดาะ จึงประหยัดเหล็ก นิยมใช้ในสะพานและหลังคาเหล็ก'
+      : 'โครงแบบ Howe: ท่อนทแยงเอียงกลับด้าน จึง' + (diagC ? 'ถูกอัด' : 'รับทั้งแรงดึงและแรงอัด เพราะน้ำหนักไม่สมมาตร') + (vertT ? ' ส่วนเสาตั้งถูกดึง สมัยก่อนจึงนิยมทำทแยงด้วยไม้ซึ่งรับแรงอัดได้ดี แล้วใช้เหล็กเส้นเป็นเสาตั้ง' : '');
+    msg += ' · ขอบบนถูกอัดและขอบล่างถูกดึงเสมอ เหมือนคานที่โก่งลง ลองย้ายน้ำหนักไปจุดเดียว แล้วดูว่าแรงในแต่ละท่อนเปลี่ยนอย่างไร';
+    var tr = {
+      members: members, nodes: nodesOut, loads: loadsP, heads: heads,
+      r1: 'Ry ' + T.R.y1.toFixed(1) + ' kN', r2: 'Ry ' + T.R.y2.toFixed(1) + ' kN',
+      stats: [
+        { k: 'แรงดึงสูงสุด', v: maxT.F.toFixed(1) + ' kN', sub: 'ท่อน ' + maxT.L.toFixed(1) + ' ม.', c: '#0A6A94' },
+        { k: 'แรงอัดสูงสุด', v: (-maxC.F).toFixed(1) + ' kN', sub: 'ท่อน ' + maxC.L.toFixed(1) + ' ม.' + (maxC.buck ? ' · คุมด้วยการโก่งเดาะ' : ''), c: '#B04A0C' },
+        { k: 'ท่อนที่ทำงานหนักสุด', v: Math.round(worst.util * 100) + '%', sub: worst.util > 1 ? 'เกินกำลัง ต้องใช้หน้าตัดใหญ่ขึ้น' : 'ของกำลังที่ยอมให้ (รวมส่วนเผื่อ 1.5)', c: worst.util > 1 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'แรงปฏิกิริยารวม', v: (T.R.y1 + T.R.y2).toFixed(1) + ' kN', sub: 'เท่ากับน้ำหนักทั้งหมดที่กด ' + s.P + ' kN', c: '#0F2A3A' }
+      ],
+      msg: msg,
+      types: [{ id: 'pratt', name: 'Pratt (ทแยงถูกดึง)' }, { id: 'howe', name: 'Howe (ทแยงถูกอัด)' }].map(function (p) { var q = pill(s.type === p.id); return { name: p.name, pressed: s.type === p.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ type: p.id }); } }; }),
+      loadPos: [{ id: 'all', name: 'ทุกจุดล่าง' }, { id: 'b1', name: 'จุด 1' }, { id: 'b2', name: 'กลาง' }, { id: 'b3', name: 'จุด 3' }].map(function (p) { var q = pill(s.load === p.id); return { name: p.name, pressed: s.load === p.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ load: p.id }); } }; }),
+      sliders: [
+        { id: 't-P', name: 'น้ำหนักรวม', label: s.P + ' kN', min: 5, max: 400, step: 5, v: s.P, set: function (e) { self.setState({ P: parseFloat(e.target.value) }); } },
+        { id: 't-L', name: 'ช่วงความยาว', label: s.span + ' ม.', min: 6, max: 40, step: 1, v: s.span, set: function (e) { self.setState({ span: parseFloat(e.target.value) }); } },
+        { id: 't-h', name: 'ความสูงโครง ÷ ช่วง', label: s.hr.toFixed(2), min: 0.1, max: 0.5, step: 0.01, v: s.hr, set: function (e) { self.setState({ hr: parseFloat(e.target.value) }); } },
+        { id: 't-b', name: 'ขนาดท่อเหล็กกล่อง (หนา 4 มม.)', label: s.tube + ' มม.', min: 50, max: 250, step: 10, v: s.tube, set: function (e) { self.setState({ tube: parseFloat(e.target.value) }); } }
+      ],
+      aria: 'โครงถักแบบ ' + s.type + ' ช่วง ' + s.span + ' เมตร น้ำหนัก ' + s.P + ' กิโลนิวตัน'
+    };
+
+    return {
+      ld: ld, tr: tr,
+      climb: function () { self.setState({ s: 0, slip: 0, climbing: true }); },
+      resetLadder: function () { self.setState({ s: 0.3, slip: 0, climbing: false }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fluid mechanics: pipes and pumps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Mechanics Lab</a><span aria-hidden="true">›</span><span aria-current="page">Fluid mechanics</span><a class="ps-lang" href="../../mechanics-lab/fluids.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px">
+<nav aria-label="Mechanics Lab topics" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="index.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Machines</a>
+<a href="statics.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Statics</a>
+<a href="dynamics.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Dynamics</a>
+<a href="thermo.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Thermodynamics</a>
+<a href="fluids.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Fluids</a>
+<a href="swim.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Swimming</a>
+</nav>
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">FLUID MECHANICS · Fluid mechanics</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">Water in pipes: water pressure in a condo, and coolant loops</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Still water gains pressure with depth, P = ρ·g·h. Water flowing in a pipe loses pressure to friction, and the faster it flows the more it loses. Every pump must be matched to its pipes, or the flow will be too low or the power wasted</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. Tap water in a condo: why upper floors trickle and lower floors blast</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><rect width="14" height="14" rx="3" fill="#F5C77A"></rect></svg>Too low (below 1 bar)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><rect width="14" height="14" rx="3" fill="#7FBF9A"></rect></svg>Right (1–4 bar)</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><rect width="14" height="14" rx="3" fill="#E07A5F"></rect></svg>Too high (above 4 bar)</span>
+</div>
+<svg viewBox="0 0 900 400" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{wt.aria}}">
+<rect x="120" y="{{wt.topY}}" width="200" height="{{wt.bH}}" fill="#E3E9EC" stroke="#9AAAB4"></rect>
+<sc-for list="{{wt.floors}}" as="f" hint-placeholder-count="20">
+<rect x="124" y="{{f.y}}" width="192" height="{{f.h}}" fill="{{f.c}}" opacity="0.9"></rect>
+<rect x="360" y="{{f.y}}" width="{{f.w}}" height="{{f.h}}" fill="{{f.c}}"></rect>
+<text x="112" y="{{f.ty}}" font-size="10" text-anchor="end" fill="#4A5D6A">{{f.lab}}</text>
+</sc-for>
+<line x1="330" y1="{{wt.topY}}" x2="330" y2="380" stroke="#0A6A94" stroke-width="5"></line>
+<path d="{{wt.drops}}" fill="#0A6A94"></path>
+<sc-for list="{{wt.tanks}}" as="t" hint-placeholder-count="3">
+<rect x="300" y="{{t.y}}" width="56" height="22" rx="3" fill="#0A6A94"></rect>
+<text x="294" y="{{t.ty}}" font-size="11" text-anchor="end" fill="#0A4F70" font-weight="700" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">{{t.t}}</text>
+</sc-for>
+<circle cx="330" cy="384" r="10" fill="#0F2A3A"></circle>
+<text x="346" y="392" font-size="11" fill="#0F2A3A" font-weight="600">Pump + underground water tank</text>
+<line x1="360" y1="390" x2="880" y2="390" stroke="#9AAAB4"></line>
+<line x1="{{wt.x1bar}}" y1="{{wt.topY}}" x2="{{wt.x1bar}}" y2="386" stroke="#F5A623" stroke-dasharray="4 4"></line>
+<line x1="{{wt.x4bar}}" y1="{{wt.topY}}" x2="{{wt.x4bar}}" y2="386" stroke="#B04A0C" stroke-dasharray="4 4"></line>
+<text x="{{wt.x1bar}}" y="{{wt.labY}}" font-size="11" text-anchor="middle" fill="#6B4A00">1 bar</text>
+<text x="{{wt.x4bar}}" y="{{wt.labY}}" font-size="11" text-anchor="middle" fill="#7E3407">4 bar</text>
+<text x="880" y="{{wt.labY}}" font-size="11" text-anchor="end" fill="#4A5D6A">Pressure at each floor’s tap →</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{wt.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: #EAF3F7; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7">{{wt.msg}}</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Water supply method</span>
+<div role="group" aria-label="Water supply method" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{wt.modes}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{wt.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">Equations</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">P = ρ·g·h<br>10 m of water ≈ 1 bar<br>Pump power = ρ·g·Q·H / η</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">Pressure depends only on the height of water above the tap, not on the size of the tank. Tall buildings are therefore split into zones so the lower floors do not carry the pressure of the whole building, with booster pumps or mid-building tanks helping the upper floors</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. Coolant loops: pumps, pipes and the heat carried away</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">Every pump has its own curve: the harder it has to push, the less water flows. The pipes have a system curve: the faster the water flows, the more resistance. Where the two curves cross is the real flow rate, and that flow rate decides how much the water heats up as it carries heat away from the machine</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Coolant loop</div>
+<svg viewBox="0 0 420 260" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{cl.aria}}">
+<path d="M70,60 L350,60 L350,200 L70,200 Z" fill="none" stroke="#C9D4DA" stroke-width="{{cl.pipeW}}" stroke-linejoin="round"></path>
+<path d="{{cl.dots}}" fill="{{cl.dotC}}"></path>
+<path d="{{cl.hotDots}}" fill="#B04A0C"></path>
+<rect x="30" y="100" width="80" height="60" rx="8" fill="#0F2A3A"></rect>
+<text x="70" y="126" font-size="11" text-anchor="middle" fill="#FFFFFF" font-weight="700">{{cl.srcName}}</text>
+<text x="70" y="144" font-size="11" text-anchor="middle" fill="#F5C77A">{{cl.srcP}}</text>
+<rect x="312" y="96" width="76" height="68" rx="6" fill="#FFFFFF" stroke="#0A6A94" stroke-width="2"></rect>
+<path d="M318,108 h64 M318,118 h64 M318,128 h64 M318,138 h64 M318,148 h64" stroke="#0A6A94" stroke-width="2"></path>
+<text x="350" y="182" font-size="11" text-anchor="middle" fill="#0A4F70" font-weight="700">{{cl.sinkName}}</text>
+<circle cx="210" cy="200" r="18" fill="#4A5D6A"></circle>
+<path d="{{cl.impeller}}" stroke="#FFFFFF" stroke-width="3"></path>
+<text x="210" y="238" font-size="11" text-anchor="middle" fill="#0F2A3A" font-weight="700">Pump</text>
+<text x="210" y="48" font-size="11" text-anchor="middle" fill="#7E3407">Hot water out {{cl.tHot}}</text>
+<text x="210" y="222" font-size="11" text-anchor="middle" fill="#0A4F70" dy="32">Cool water in {{cl.tCold}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Pump curve (orange) and pipe system curve (blue)</div>
+<svg viewBox="0 0 420 260" style="display: block; width: 100%; height: auto" role="img" aria-label="Pump operating point graph">
+<line x1="50" y1="220" x2="400" y2="220" stroke="#9AAAB4"></line>
+<line x1="50" y1="20" x2="50" y2="220" stroke="#9AAAB4"></line>
+<text x="400" y="246" font-size="11" text-anchor="end" fill="#4A5D6A">{{cl.qAxis}}</text>
+<text x="60" y="14" font-size="11" fill="#4A5D6A">{{cl.hAxis}}</text>
+<text x="44" y="24" font-size="10" text-anchor="end" fill="#4A5D6A">{{cl.hMax}}</text>
+<text x="400" y="234" font-size="10" text-anchor="end" fill="#4A5D6A">{{cl.qMax}}</text>
+<path d="{{cl.pumpC}}" fill="none" stroke="#B04A0C" stroke-width="2.5"></path>
+<path d="{{cl.sysC}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<line x1="{{cl.opX}}" y1="{{cl.opY}}" x2="{{cl.opX}}" y2="220" stroke="#0F2A3A" stroke-dasharray="3 3"></line>
+<line x1="50" y1="{{cl.opY}}" x2="{{cl.opX}}" y2="{{cl.opY}}" stroke="#0F2A3A" stroke-dasharray="3 3"></line>
+<circle cx="{{cl.opX}}" cy="{{cl.opY}}" r="6" fill="#0F2A3A"></circle>
+<text x="{{cl.opX}}" y="{{cl.opY}}" dx="10" dy="-8" font-size="11" fill="#0F2A3A" font-weight="700">Operating point</text>
+</svg>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{cl.stats}}" as="r" hint-placeholder-count="6">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: {{cl.msgBg}}; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; color: {{cl.msgFg}}">{{cl.msg}}</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">System</span>
+<div role="group" aria-label="Coolant system" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{cl.scen}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">Fluid</span>
+<div role="group" aria-label="Fluid" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{cl.fluids}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 90px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{cl.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">Equations</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">ΔP = f·(L/D)·½ρv² (Darcy–Weisbach)<br>Re = ρ·v·D / μ<br>ΔT_water = P_heat / (ṁ·c_p)<br>Pump at half speed: ¼ the pressure, ⅛ the power</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">Below Re ≈ 2,300 water flows in smooth layers (laminar); above about 4,000 it is turbulent, which loses more pressure but transfers heat from the pipe wall better. Halving the pipe size at the same flow increases the pressure loss about 30 times</p>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2100}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = { N: 30, mode: 'roof', zone: 12, units: 10, use: 200, scen: 'rack', fluid: 'water', D: 32, L: 40, n: 0.8, heat: 80, t: 0, tick: 0 };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      if (!self.reduce) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  scenarios() {
+    return {
+      pc: { name: 'Water-cooled PC (2 m of tubing)', H0: 3, Qmax: 10 / 60000, K: 12, D: 10, L: 2, heat: 0.35, src: 'CPU/GPU', sink: 'Radiator', hMin: 0.1, hMax: 1.5, dMin: 6, dMax: 16, lMax: 6 },
+      rack: { name: 'AI server rack in a data centre', H0: 28, Qmax: 300 / 60000, K: 20, D: 32, L: 40, heat: 80, src: 'Cold plates on the chips', sink: 'CDU', hMin: 10, hMax: 200, dMin: 15, dMax: 65, lMax: 200 },
+      bldg: { name: 'Chilled water from a building chiller', H0: 38, Qmax: 4000 / 60000, K: 40, D: 150, L: 300, heat: 1500, src: 'Cooling coils on every floor', sink: 'Chiller', hMin: 200, hMax: 4000, dMin: 80, dMax: 300, lMax: 800 }
+    };
+  }
+
+  fluidProps(id) {
+    return {
+      water: { name: 'Water', rho: 997, mu: 0.00089, cp: 4180 },
+      glycol: { name: 'Water + 30% glycol', rho: 1040, mu: 0.0025, cp: 3700 },
+      oil: { name: 'Dielectric oil', rho: 850, mu: 0.012, cp: 2000 }
+    }[id];
+  }
+
+  loopCalc(s) {
+    var sc = this.scenarios()[s.scen], F = this.fluidProps(s.fluid), g = 9.81, D = s.D / 1000, A = Math.PI * D * D / 4;
+    var friction = function (Re) { if (Re < 2300) return 64 / Math.max(Re, 1); var e = 0.0000015 / D; return 0.25 / Math.pow(Math.log10(e / 3.7 + 5.74 / Math.pow(Re, 0.9)), 2); };
+    var sysH = function (Q) { var v = Q / A, Re = F.rho * v * D / F.mu; return (friction(Re) * s.L / D + sc.K) * v * v / (2 * g); };
+    var pumpH = function (Q) { return sc.H0 * s.n * s.n * (1 - Math.pow(Q / (sc.Qmax * s.n), 2)); };
+    var lo = 0, hi = sc.Qmax * s.n;
+    for (var i = 0; i < 60; i++) { var mid = (lo + hi) / 2; if (pumpH(mid) > sysH(mid)) lo = mid; else hi = mid; }
+    var Q = lo, H = pumpH(Q), v = Q / A, Re = F.rho * v * D / F.mu, mdot = F.rho * Q;
+    var dT = s.heat * 1000 / Math.max(mdot * F.cp, 1e-6);
+    var Pw = F.rho * g * Q * H / 0.55;
+    return { sc: sc, F: F, Q: Q, H: H, v: v, Re: Re, dT: dT, Pw: Pw, dP: F.rho * g * H, pumpH: pumpH, sysH: sysH };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- condo water ----------
+    var N = s.N, FH = 3.2, topY = 30, bH = 330, rowH = bH / N, g = 9.81, rho = 997;
+    var hTop = N * FH + 4;                       // roof tank water level (m)
+    var zoneTops = [];
+    if (s.mode === 'zone') { for (var zt = s.zone; zt < N; zt += s.zone) zoneTops.push(zt); zoneTops.push(N); }
+    var pAt = function (i) {                      // floor i (1 = ground), tap 1 m above floor
+      var h = (i - 1) * FH + 1;
+      if (s.mode === 'booster') return 3.0 + 0.3 - 0.012 * (i - 1);   // pressure-controlled pump with a PRV at each zone
+      var src = hTop;
+      if (s.mode === 'zone') { var z = zoneTops.find(function (t) { return t >= i; }); src = z * FH + 4; }
+      var loss = 0.004 * (src - h);              // friction at peak hour ≈ 0.4% of the head per metre
+      return Math.max(0, rho * g * (src - h) * (1 - 0.04) / 1e5 - loss);
+    };
+    var floors = [], pMin = 99, pMax = 0, nLow = 0, nHigh = 0;
+    var px = function (p) { return 360 + Math.min(p, 10) / 10 * 500; };
+    for (var i = 1; i <= N; i++) {
+      var p = pAt(i); pMin = Math.min(pMin, p); pMax = Math.max(pMax, p);
+      if (p < 1) nLow++; if (p > 4) nHigh++;
+      var y = topY + bH - i * rowH;
+      floors.push({ y: f1(y + 0.5), h: f1(Math.max(1, rowH - 1)), w: f1(Math.max(1, px(p) - 360)), c: p < 1 ? '#F5C77A' : p > 4 ? '#E07A5F' : '#7FBF9A', ty: f1(y + rowH / 2 + 3), lab: (i === 1 || i % 5 === 0) ? 'floors ' + i : '' });
+    }
+    var tanks = [];
+    if (s.mode === 'roof') tanks.push({ y: f1(topY - 24), ty: f1(topY - 9), t: 'Roof water tank' });
+    if (s.mode === 'zone') zoneTops.forEach(function (zt) { var y = topY + bH - zt * rowH; tanks.push({ y: f1(y - 22), ty: f1(y - 7), t: zt === N ? 'Roof tank' : 'Mid tank, floor ' + zt }); });
+    if (s.mode === 'booster') tanks.push({ y: f1(topY + bH - 26), ty: f1(topY + bH - 11), t: 'Pressure-controlled pump' });
+    var drops = '';
+    for (var k = 0; k < 8; k++) { var yy = 380 - ((s.t * 60 + k * bH / 8) % bH); drops += 'M326,' + f1(yy) + ' a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 '; }
+    var people = N * s.units * 2, vol = people * s.use / 1000;                // m³/day
+    var Elift = rho * g * vol * (s.mode === 'zone' ? hTop * 0.75 : hTop) / 0.6 / 3.6e6;   // kWh/day
+    var modes = [
+      { id: 'roof', name: 'Single roof tank (gravity)' },
+      { id: 'zone', name: 'Zoned, with mid-building tanks' },
+      { id: 'booster', name: 'Automatic booster pump' }
+    ];
+    var wmsg = s.mode === 'roof' ? (nHigh > 0 ? 'With a single roof tank, the lowest ' + nHigh + ' floors get more than 4 bar, wearing out taps and hoses quickly, while the top floors near the tank only trickle. Tall buildings are therefore zoned or fitted with pressure-reducing valves (PRV)' : 'The building is low enough for a single roof tank, but the top floors near the tank trickle and usually need a booster pump just for them')
+      : s.mode === 'zone' ? 'Split into zones of ' + s.zone + ' floors, each fed from its own tank, so pressure never builds up too high. Floors just below each tank are still weak, so a small pump usually helps the top 2–3 floors of each zone'
+      : 'The pump adjusts its speed to the measured pressure, giving similar pressure on every floor without a roof tank. But it needs power all the time and a standby pump; in a power cut the water stops immediately';
+    var wt = {
+      topY: topY, bH: bH, floors: floors, tanks: tanks, drops: drops, x1bar: f1(px(1)), x4bar: f1(px(4)), labY: topY - 10,
+      stats: [
+        { k: 'Lowest pressure', v: pMin.toFixed(2) + ' bar', sub: nLow + ' floors below 1 bar', c: nLow ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Highest pressure', v: pMax.toFixed(2) + ' bar', sub: nHigh + ' floors above 4 bar', c: nHigh ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Water used per day', v: Math.round(vol).toLocaleString('en-US') + ' m³', sub: people.toLocaleString('en-US') + ' people × ' + s.use + ' litres', c: '#0F2A3A' },
+        { k: 'Electricity to pump water up', v: Math.round(Elift).toLocaleString('en-US') + ' units/day', sub: 'ρ·g·V·H / η (pump efficiency 60%)', c: '#0F2A3A' }
+      ],
+      msg: wmsg,
+      modes: modes.map(function (m) { var q = pill(s.mode === m.id); return { name: m.name, pressed: s.mode === m.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ mode: m.id }); } }; }),
+      sliders: [
+        { id: 'w-n', name: 'Number of floors', label: s.N + ' floors', min: 4, max: 60, step: 1, v: s.N, set: function (e) { self.setState({ N: parseInt(e.target.value, 10) }); } },
+        { id: 'w-z', name: 'Floors per zone (if zoned)', label: s.zone + ' floors', min: 6, max: 20, step: 1, v: s.zone, set: function (e) { self.setState({ zone: parseInt(e.target.value, 10) }); } },
+        { id: 'w-u', name: 'Units per floor', label: s.units + ' units', min: 2, max: 30, step: 1, v: s.units, set: function (e) { self.setState({ units: parseInt(e.target.value, 10) }); } },
+        { id: 'w-c', name: 'Water per person per day', label: s.use + ' litres', min: 100, max: 300, step: 10, v: s.use, set: function (e) { self.setState({ use: parseFloat(e.target.value) }); } }
+      ],
+      aria: 'Condo, ' + N + ' floors, water pressure ' + pMin.toFixed(1) + ' to ' + pMax.toFixed(1) + ' bar'
+    };
+
+    // ---------- cooling loop ----------
+    var C = this.loopCalc(s), sc = C.sc;
+    var qUnit = s.scen === 'bldg' ? 1000 : 60000, qLab = s.scen === 'bldg' ? 'L/s' : 'L/min';
+    var qMax = sc.Qmax * 1.05, hMax = sc.H0 * 1.1;
+    var GX = function (q) { return 50 + 350 * q / qMax; }, GY = function (h) { return 220 - 200 * Math.min(h, hMax) / hMax; };
+    var pc = [], sy = [];
+    for (var j = 0; j <= 40; j++) { var q = qMax * j / 40, hp = C.pumpH(q); if (hp >= 0) pc.push(f1(GX(q)) + ',' + f1(GY(hp))); if (C.sysH(q) <= hMax) sy.push(f1(GX(q)) + ',' + f1(GY(C.sysH(q)))); }
+    var loopPath = [[70, 200], [70, 60], [350, 60], [350, 200], [70, 200]], plen = [], tot = 0;
+    for (var m = 1; m < loopPath.length; m++) { var dd = Math.hypot(loopPath[m][0] - loopPath[m - 1][0], loopPath[m][1] - loopPath[m - 1][1]); plen.push(dd); tot += dd; }
+    var spd = Math.min(220, 20 + 60 * C.v), cold = '', hotD = '';
+    for (var o = 0; o < 22; o++) {
+      var u = (s.t * spd + o * tot / 22) % tot, sg = 0; while (u > plen[sg]) { u -= plen[sg]; sg++; }
+      var p0 = loopPath[sg], p1 = loopPath[sg + 1], fr = u / plen[sg], xx = p0[0] + (p1[0] - p0[0]) * fr, yv = p0[1] + (p1[1] - p0[1]) * fr;
+      var dot = 'M' + f1(xx - 4) + ',' + f1(yv) + ' a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 ';
+      if (sg === 1 || (sg === 2 && fr < 0.7)) hotD += dot; else cold += dot;   // hot from the source (left) to the radiator (right)
+    }
+    var imp = ''; var a = s.t * (4 + 20 * s.n); for (var b = 0; b < 3; b++) { var th = a + b * 2.094; imp += 'M210,200 L' + f1(210 + 13 * Math.cos(th)) + ',' + f1(200 + 13 * Math.sin(th)) + ' '; }
+    var Tin = 30, regime = C.Re < 2300 ? 'Laminar flow' : C.Re < 4000 ? 'Transitional' : 'Turbulent flow';
+    var issues = [];
+    if (C.dT > 15) issues.push('Water heats up by ' + C.dT.toFixed(1) + ' °C, too much: the flow is too low to carry the heat, and the chip or coil at the end will overheat. Try a faster pump or a bigger pipe');
+    if (C.v > 3) issues.push('Water in the pipe moves at ' + C.v.toFixed(1) + ' m/s; above about 3 m/s it is noisy, erodes the pipe and wastes pressure. Use a bigger pipe');
+    if (C.Re < 2300) issues.push('Smooth laminar flow transfers heat to the wall poorly');
+    var clMsg = issues.length ? issues.join(' · ') : 'The system is well balanced: the water heats up by ' + C.dT.toFixed(1) + ' °C while picking up heat and the pipe velocity is in a good range. Try lowering the pump speed and see how the pump’s power drops much faster than the flow rate';
+    var cl = {
+      pipeW: f1(Math.max(4, Math.min(14, s.D / sc.dMax * 14))), dots: cold, dotC: '#0A6A94', hotDots: hotD, impeller: imp,
+      srcName: sc.src, srcP: s.heat >= 1000 ? (s.heat / 1000).toFixed(2) + ' MW' : s.heat + ' kW', sinkName: sc.sink,
+      tHot: (Tin + C.dT).toFixed(1) + ' °C', tCold: Tin + ' °C',
+      pumpC: 'M' + pc.join(' L'), sysC: sy.length > 1 ? 'M' + sy.join(' L') : 'M0,0', opX: f1(GX(C.Q)), opY: f1(GY(C.H)),
+      qAxis: 'Flow rate (' + qLab + ')', hAxis: 'Pump head (m of water)', hMax: hMax.toFixed(0), qMax: (qMax * qUnit).toFixed(qUnit === 1000 ? 0 : 0),
+      stats: [
+        { k: 'Flow rate', v: (C.Q * qUnit).toFixed(1) + ' ' + qLab, sub: 'Where the pump curve meets the system curve', c: '#0F2A3A' },
+        { k: 'Velocity in the pipe', v: C.v.toFixed(2) + ' m/s', sub: 'Re = ' + Math.round(C.Re).toLocaleString('en-US') + ' · ' + regime, c: C.v > 3 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Pressure the pump must provide', v: (C.dP / 1e5).toFixed(2) + ' bar', sub: C.H.toFixed(1) + ' m of water', c: '#0F2A3A' },
+        { k: 'Water temperature rise ΔT', v: C.dT.toFixed(1) + ' °C', sub: 'ΔT = P / (ṁ·c_p)', c: C.dT > 15 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Pump electricity', v: C.Pw >= 1000 ? (C.Pw / 1000).toFixed(2) + ' kW' : C.Pw.toFixed(1) + ' W', sub: 'Assuming 55% pump efficiency', c: '#0F2A3A' },
+        { k: 'Pump power as a share of heat', v: (C.Pw / (s.heat * 1000) * 100).toFixed(2) + '%', sub: 'The lower, the more efficient', c: '#0F2A3A' }
+      ],
+      msg: clMsg, msgBg: issues.length ? '#FFF1CC' : '#EAF3F7', msgFg: issues.length ? '#6B4A00' : '#0F2A3A',
+      scen: Object.keys(this.scenarios()).map(function (id) { var z = self.scenarios()[id], q = pill(s.scen === id); return { name: z.name, pressed: s.scen === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ scen: id, D: z.D, L: z.L, heat: z.heat, n: 0.8 }); } }; }),
+      fluids: ['water', 'glycol', 'oil'].map(function (id) { var q = pill(s.fluid === id); return { name: self.fluidProps(id).name, pressed: s.fluid === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ fluid: id }); } }; }),
+      sliders: [
+        { id: 'p-n', name: 'Pump speed', label: Math.round(s.n * 100) + '%', min: 0.3, max: 1, step: 0.05, v: s.n, set: function (e) { self.setState({ n: parseFloat(e.target.value) }); } },
+        { id: 'p-d', name: 'Pipe size', label: s.D + ' mm', min: sc.dMin, max: sc.dMax, step: 1, v: s.D, set: function (e) { self.setState({ D: parseFloat(e.target.value) }); } },
+        { id: 'p-l', name: 'Total pipe length', label: s.L + ' m', min: 1, max: sc.lMax, step: 1, v: s.L, set: function (e) { self.setState({ L: parseFloat(e.target.value) }); } },
+        { id: 'p-h', name: 'Heat to carry away', label: s.heat >= 1000 ? (s.heat / 1000).toFixed(2) + ' MW' : s.heat + ' kW', min: sc.hMin, max: sc.hMax, step: sc.hMin, v: s.heat, set: function (e) { self.setState({ heat: parseFloat(e.target.value) }); } }
+      ],
+      aria: 'Coolant loop, flow rate ' + (C.Q * qUnit).toFixed(1) + ' ' + qLab + ' Water heats up by ' + C.dT.toFixed(1) + ' degrees'
+    };
+    return { wt: wt, cl: cl };
+  }
+}
+</script>
+</body>
+</html>

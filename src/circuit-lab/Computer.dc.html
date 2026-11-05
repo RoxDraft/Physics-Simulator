@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>จากวงจรสู่คอมพิวเตอร์</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 34px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">CIRCUIT LAB · จากวงจรสู่คอมพิวเตอร์</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">จากสวิตช์เล็ก ๆ หนึ่งตัว สู่ CPU</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">คอมพิวเตอร์ทุกเครื่องสร้างจากชิ้นส่วนเดียวกัน คือทรานซิสเตอร์ที่ทำหน้าที่เป็นสวิตช์เปิด-ปิดด้วยไฟฟ้า เอาสวิตช์มาต่อกันเป็นเกตตรรกะ เอาเกตมาต่อกันเป็นวงจรบวกเลขและหน่วยความจำ แล้วเอาทั้งหมดมาต่อกันเป็น CPU ไล่ดูทีละขั้นได้เลย</p>
+</div>
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; text-decoration: none">← แล็บวงจรไฟฟ้า</a>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. ทรานซิสเตอร์: สวิตช์ที่เปิดด้วยแรงดันไฟฟ้า</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<svg viewBox="0 0 400 300" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{tx.aria}}">
+<line x1="60" y1="30" x2="300" y2="30" stroke="#B04A0C" stroke-width="3"></line>
+<text x="60" y="22" font-size="12" fill="#7E3407" font-weight="700">+3.3 V</text>
+<line x1="60" y1="275" x2="300" y2="275" stroke="#0A6A94" stroke-width="3"></line>
+<text x="60" y="292" font-size="12" fill="#0A4F70" font-weight="700">GND 0 V</text>
+<line x1="240" y1="30" x2="240" y2="60" stroke="#4A5D6A" stroke-width="3"></line>
+<rect x="228" y="60" width="24" height="34" fill="#FFFFFF" stroke="#4A5D6A" stroke-width="2"></rect>
+<text x="262" y="82" font-size="11" fill="#4A5D6A">100 Ω</text>
+<line x1="240" y1="94" x2="240" y2="112" stroke="#4A5D6A" stroke-width="3"></line>
+<circle cx="240" cy="126" r="26" fill="#F5C77A" opacity="{{tx.glow}}"></circle>
+<path d="M228,114 L252,114 L240,136 Z" fill="{{tx.ledC}}" stroke="#0F2A3A" stroke-width="2"></path>
+<line x1="228" y1="138" x2="252" y2="138" stroke="#0F2A3A" stroke-width="2"></line>
+<text x="262" y="130" font-size="11" fill="#4A5D6A">LED</text>
+<line x1="240" y1="138" x2="240" y2="170" stroke="#4A5D6A" stroke-width="3"></line>
+<line x1="240" y1="170" x2="240" y2="185" stroke="#4A5D6A" stroke-width="3"></line>
+<line x1="226" y1="185" x2="226" y2="235" stroke="#0F2A3A" stroke-width="4"></line>
+<line x1="234" y1="185" x2="234" y2="235" stroke="{{tx.chC}}" stroke-width="5"></line>
+<line x1="234" y1="190" x2="240" y2="190" stroke="#4A5D6A" stroke-width="3"></line>
+<line x1="234" y1="230" x2="240" y2="230" stroke="#4A5D6A" stroke-width="3"></line>
+<line x1="240" y1="185" x2="240" y2="190" stroke="#4A5D6A" stroke-width="3"></line>
+<line x1="240" y1="230" x2="240" y2="275" stroke="#4A5D6A" stroke-width="3"></line>
+<line x1="120" y1="210" x2="226" y2="210" stroke="#0F2A3A" stroke-width="3"></line>
+<circle cx="120" cy="210" r="5" fill="#0F2A3A"></circle>
+<text x="80" y="200" font-size="12" fill="#0F2A3A" font-weight="700">Gate {{tx.vgTxt}}</text>
+<text x="262" y="196" font-size="11" fill="#4A5D6A">Drain</text>
+<text x="262" y="236" font-size="11" fill="#4A5D6A">Source</text>
+<path d="{{tx.dots}}" fill="#B04A0C"></path>
+<text x="300" y="160" font-size="12" fill="#0F2A3A" font-weight="700">{{tx.iTxt}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 280px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 14px">กระแสเทียบแรงดันที่ขา Gate</span>
+<svg viewBox="0 0 320 210" style="display: block; width: 100%; height: auto" role="img" aria-label="กราฟกระแสของทรานซิสเตอร์เทียบแรงดันเกต">
+<rect x="40" y="10" width="{{tx.zone0}}" height="170" fill="#DDEFF6"></rect>
+<rect x="{{tx.zone1x}}" y="10" width="{{tx.zone1w}}" height="170" fill="#FCE3CF"></rect>
+<text x="44" y="24" font-size="11" fill="#0A4F70" font-weight="700">อ่านเป็น 0</text>
+<text x="306" y="24" font-size="11" text-anchor="end" fill="#7E3407" font-weight="700">อ่านเป็น 1</text>
+<line x1="40" y1="180" x2="310" y2="180" stroke="#9AAAB4"></line>
+<line x1="40" y1="10" x2="40" y2="180" stroke="#9AAAB4"></line>
+<path d="{{tx.curve}}" fill="none" stroke="#0F2A3A" stroke-width="2.5"></path>
+<circle cx="{{tx.px}}" cy="{{tx.py}}" r="6" fill="#B04A0C"></circle>
+<text x="310" y="198" font-size="11" text-anchor="end" fill="#4A5D6A">V_gate 0 → 3.3 V</text>
+<text x="34" y="16" font-size="10" text-anchor="end" fill="#4A5D6A">13 mA</text>
+</svg>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">ระหว่างสองโซนคือช่วงที่วงจรดิจิทัลไม่ยอมให้สัญญาณค้างอยู่ เพราะอ่านไม่ได้ว่าเป็น 0 หรือ 1</span>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="t-vg" style="font-size: 14px; font-weight: 600">แรงดันที่ขา Gate</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{tx.vgTxt}}</span></div>
+<input id="t-vg" type="range" min="0" max="3.3" step="0.05" value="{{vg}}" onChange="{{setVg}}">
+</div>
+<div style="font-size: 15px; line-height: 1.7">{{tx.msg}}</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">MOSFET ทำงานอย่างไร</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">ขา Gate คั่นจากซิลิคอนด้วยฉนวนบาง ๆ เมื่อแรงดันที่ Gate สูงกว่าค่าขีดเริ่ม (ราว 0.7 V ในตัวอย่างนี้) สนามไฟฟ้าดึงอิเล็กตรอนมารวมเป็นช่องทางนำไฟระหว่าง Drain กับ Source สวิตช์จึงปิดวงจร โดยแทบไม่มีกระแสไหลเข้าขา Gate เลย ทรานซิสเตอร์ตัวหนึ่งจึงคุมตัวต่อไปได้ ต่อกันเป็นทอด ๆ นับพันล้านตัว</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">I_D ≈ k·(V_G − V_th)² เมื่อ V_G &gt; V_th</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. เกตตรรกะ: ต่อทรานซิสเตอร์เป็นการตัดสินใจ</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">ชิปสมัยใหม่ใช้ CMOS คือทรานซิสเตอร์สองชนิดคู่กัน PMOS นำไฟเมื่ออินพุตเป็น 0 และต่อเอาต์พุตขึ้นไฟเลี้ยง NMOS นำไฟเมื่ออินพุตเป็น 1 และต่อเอาต์พุตลงกราวด์ ในทุกสถานะจะมีทางเดียวที่นำไฟ จึงแทบไม่กินไฟตอนอยู่นิ่ง กดสลับอินพุต A และ B แล้วดูว่ากระแสวิ่งทางไหน</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; font-weight: 700"><span>{{gt.title}}</span><span style="font-family: 'IBM Plex Mono', monospace; color: {{gt.outC}}">OUT = {{gt.out}}</span></div>
+<svg viewBox="0 0 420 300" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{gt.aria}}">
+<line x1="60" y1="24" x2="360" y2="24" stroke="#B04A0C" stroke-width="3"></line>
+<text x="364" y="28" font-size="11" fill="#7E3407" font-weight="700">VDD (1)</text>
+<line x1="60" y1="282" x2="360" y2="282" stroke="#0A6A94" stroke-width="3"></line>
+<text x="364" y="286" font-size="11" fill="#0A4F70" font-weight="700">GND (0)</text>
+<sc-for list="{{gt.wires}}" as="w" hint-placeholder-count="10">
+<line x1="{{w.x1}}" y1="{{w.y1}}" x2="{{w.x2}}" y2="{{w.y2}}" stroke="{{w.c}}" stroke-width="{{w.sw}}" stroke-linecap="round"></line>
+</sc-for>
+<sc-for list="{{gt.tr}}" as="t" hint-placeholder-count="4">
+<rect x="{{t.x}}" y="{{t.y}}" width="64" height="40" rx="6" fill="{{t.fill}}" stroke="{{t.stroke}}" stroke-width="2"></rect>
+<text x="{{t.tx}}" y="{{t.ty}}" font-size="12" text-anchor="middle" fill="{{t.tc}}" font-weight="700">{{t.label}}</text>
+<text x="{{t.tx}}" y="{{t.ty2}}" font-size="10" text-anchor="middle" fill="{{t.tc}}">{{t.state}}</text>
+</sc-for>
+<circle cx="{{gt.outX}}" cy="{{gt.outY}}" r="9" fill="{{gt.outC}}"></circle>
+<text x="{{gt.outX}}" y="{{gt.outY}}" dx="14" dy="4" font-size="13" fill="#0F2A3A" font-weight="700">OUT</text>
+</svg>
+</div>
+<div style="flex: 1 1 220px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div role="table" aria-label="ตารางความจริง" style="display: flex; flex-direction: column; font-family: 'IBM Plex Mono', monospace; font-size: 15px">
+<div role="row" style="display: grid; grid-template-columns: repeat(3, 1fr); padding: 10px 16px; background: #F3F6F7; font-weight: 700"><span role="columnheader">A</span><span role="columnheader">{{gt.bHead}}</span><span role="columnheader">OUT</span></div>
+<sc-for list="{{gt.rows}}" as="r" hint-placeholder-count="4">
+<div role="row" style="display: grid; grid-template-columns: repeat(3, 1fr); padding: 9px 16px; border-top: 1px solid #E3E9EC; background: {{r.bg}}; font-weight: {{r.fw}}"><span role="cell">{{r.a}}</span><span role="cell">{{r.b}}</span><span role="cell">{{r.o}}</span></div>
+</sc-for>
+</div>
+<p style="margin: 0; padding: 12px 16px; font-size: 13px; line-height: 1.6; color: #4A5D6A; border-top: 1px solid #E3E9EC">{{gt.note}}</p>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">เลือกเกต</span>
+<div role="group" aria-label="เลือกเกต" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{gt.gates}}" as="p" hint-placeholder-count="6">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 70px; min-height: 44px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">อินพุต</span>
+<div style="display: flex; gap: 8px">
+<sc-for list="{{gt.inputs}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 0; min-height: 52px; border-radius: 12px; border: 2px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 700; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">ทำไม NAND สำคัญ</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">เกต NAND อย่างเดียวสร้างวงจรตรรกะได้ทุกแบบ (universal gate) และใน CMOS ใช้ทรานซิสเตอร์แค่ 4 ตัว ส่วน AND ต้องใช้ NAND ตามด้วย NOT รวม 6 ตัว ผู้ออกแบบชิปจึงคิดวงจรด้วย NAND และ NOR เป็นหลัก</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">3. วงจรบวกเลข 4 บิต: เกตทำเลขคณิต</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">คอมพิวเตอร์นับเลขฐานสอง บวกทีละหลักเหมือนที่เราบวกเลขในกระดาษ แต่ละหลักใช้วงจรบวกเต็ม (full adder) หนึ่งตัว ผลบวก S = A ⊕ B ⊕ ตัวทด และตัวทดไปหลักถัดไป = A·B + ตัวทด·(A ⊕ B) กดบิตเพื่อเปลี่ยนตัวเลข</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<svg viewBox="0 0 900 300" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{ad.aria}}">
+<sc-for list="{{ad.cols}}" as="c" hint-placeholder-count="4">
+<text x="{{c.cx}}" y="22" font-size="12" text-anchor="middle" fill="#4A5D6A">{{c.place}}</text>
+<rect x="{{c.ax}}" y="34" width="46" height="40" rx="8" fill="{{c.aC}}" stroke="#0F2A3A" stroke-width="1.5"></rect>
+<text x="{{c.axt}}" y="60" font-size="16" text-anchor="middle" fill="{{c.aT}}" font-family="IBM Plex Mono, monospace" font-weight="700">{{c.a}}</text>
+<rect x="{{c.bx}}" y="34" width="46" height="40" rx="8" fill="{{c.bC}}" stroke="#0F2A3A" stroke-width="1.5"></rect>
+<text x="{{c.bxt}}" y="60" font-size="16" text-anchor="middle" fill="{{c.bT}}" font-family="IBM Plex Mono, monospace" font-weight="700">{{c.b}}</text>
+<line x1="{{c.axt}}" y1="74" x2="{{c.axt}}" y2="110" stroke="{{c.aW}}" stroke-width="3"></line>
+<line x1="{{c.bxt}}" y1="74" x2="{{c.bxt}}" y2="110" stroke="{{c.bW}}" stroke-width="3"></line>
+<rect x="{{c.fx}}" y="110" width="130" height="80" rx="10" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></rect>
+<text x="{{c.cx}}" y="146" font-size="13" text-anchor="middle" fill="#0F2A3A" font-weight="700">Full adder</text>
+<text x="{{c.cx}}" y="166" font-size="11" text-anchor="middle" fill="#4A5D6A">{{c.detail}}</text>
+<line x1="{{c.cx}}" y1="190" x2="{{c.cx}}" y2="226" stroke="{{c.sW}}" stroke-width="3"></line>
+<rect x="{{c.sx}}" y="226" width="46" height="40" rx="8" fill="{{c.sC}}" stroke="#0F2A3A" stroke-width="1.5"></rect>
+<text x="{{c.cx}}" y="252" font-size="16" text-anchor="middle" fill="{{c.sT}}" font-family="IBM Plex Mono, monospace" font-weight="700">{{c.s}}</text>
+<line x1="{{c.cinX1}}" y1="150" x2="{{c.cinX2}}" y2="150" stroke="{{c.cW}}" stroke-width="3"></line>
+<text x="{{c.cinTx}}" y="142" font-size="11" text-anchor="middle" fill="{{c.cTc}}" font-weight="700">ทด {{c.cout}}</text>
+</sc-for>
+<text x="40" y="252" font-size="13" fill="#4A5D6A">ผลบวก</text>
+<text x="40" y="60" font-size="13" fill="#4A5D6A">A · B</text>
+</svg>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">ตัวเลข A (กดเพื่อสลับบิต)</span>
+<div style="display: flex; gap: 6px">
+<sc-for list="{{ad.aBits}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" aria-label="{{p.aria}}" style="flex: 1 1 0; min-height: 48px; border-radius: 10px; border: 2px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 700; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">ตัวเลข B</span>
+<div style="display: flex; gap: 6px">
+<sc-for list="{{ad.bBits}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" aria-label="{{p.aria}}" style="flex: 1 1 0; min-height: 48px; border-radius: 10px; border: 2px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 700; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; text-align: center; padding: 8px 0">{{ad.eq}}</div>
+<div style="font-size: 14px; line-height: 1.6; color: {{ad.noteC}}">{{ad.note}}</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">4. หน่วยความจำ: วงจรที่จำค่าได้ด้วยตัวเอง</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">ถ้าย้อนเอาต์พุตของเกตกลับมาเป็นอินพุต วงจรจะค้างสถานะไว้ได้ นี่คือบิตหนึ่งบิตของหน่วยความจำ D flip-flop รับค่า D เข้าไปเก็บเฉพาะจังหวะที่สัญญาณนาฬิกา (clock) เปลี่ยนจาก 0 เป็น 1 ทุกส่วนของ CPU จึงทำงานพร้อมกันเป็นจังหวะ ตัวอย่างนี้ใช้ flip-flop 4 ตัวเป็นรีจิสเตอร์เก็บผลบวกจากข้อ 3</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">แผนภาพเวลา (timing diagram)</span><span style="font-family: 'IBM Plex Mono', monospace">{{ff.regTxt}}</span></div>
+<svg viewBox="0 0 900 250" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{ff.aria}}">
+<sc-for list="{{ff.lanes}}" as="l" hint-placeholder-count="3">
+<text x="16" y="{{l.ty}}" font-size="13" fill="#0F2A3A" font-weight="700">{{l.n}}</text>
+<line x1="100" y1="{{l.base}}" x2="880" y2="{{l.base}}" stroke="#EEF2F4"></line>
+<path d="{{l.d}}" fill="none" stroke="{{l.c}}" stroke-width="3"></path>
+</sc-for>
+<path d="{{ff.edges}}" stroke="#B04A0C" stroke-width="1" stroke-dasharray="3 4"></path>
+<text x="880" y="244" font-size="11" text-anchor="end" fill="#4A5D6A">เส้นประ = จังหวะที่ clock ขึ้น ค่า D ถูกจำลง Q</text>
+</svg>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<button type="button" onClick="{{toggleD}}" aria-pressed="{{ff.dPressed}}" style="min-height: 52px; border-radius: 12px; border: 2px solid #0A6A94; background: {{ff.dBg}}; color: {{ff.dFg}}; font-family: 'IBM Plex Mono', monospace; font-size: 17px; font-weight: 700; cursor: pointer">D = {{ff.d}}</button>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{loadReg}}" onChange="{{toggleLoadReg}}" style="width: 20px; height: 20px; accent-color: #0A6A94">ให้รีจิสเตอร์เก็บผลบวกจากข้อ 3 ทุกจังหวะ clock</label>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="f-clk" style="font-size: 14px; font-weight: 600">ความเร็ว clock (ภาพช้ามาก)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{ff.clkTxt}}</span></div>
+<input id="f-clk" type="range" min="0.3" max="2" step="0.1" value="{{clk}}" onChange="{{setClk}}">
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">CPU จริงมี clock หลายพันล้านจังหวะต่อวินาที (GHz) แต่หลักการเดียวกัน หน่วยความจำ SRAM ในแคชของ CPU ใช้ทรานซิสเตอร์ 6 ตัวต่อบิต ส่วน DRAM ใช้ทรานซิสเตอร์ 1 ตัวกับตัวเก็บประจุเล็ก ๆ 1 ตัว จึงถูกกว่า แต่ต้องเติมประจุซ้ำทุกไม่กี่สิบมิลลิวินาที</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">5. ประกอบเป็น CPU: ดึงคำสั่ง ถอดรหัส แล้วทำงาน</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">CPU ทำงานวนซ้ำสามขั้น: ดึงคำสั่ง (fetch) จากหน่วยความจำตามตำแหน่งในตัวนับโปรแกรม ถอดรหัส (decode) ว่าต้องทำอะไร แล้วทำงาน (execute) ด้วย ALU ซึ่งก็คือวงจรบวกในข้อ 3 กับเกตอื่น ๆ ผลลัพธ์เก็บในรีจิสเตอร์ซึ่งก็คือ flip-flop ในข้อ 4 กดก้าวถัดไปเพื่อดูโปรแกรมเล็ก ๆ ทำงานทีละขั้น</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">{{cpu.phaseTxt}}</span><span style="font-family: 'IBM Plex Mono', monospace">{{cpu.cycle}}</span></div>
+<svg viewBox="0 0 900 330" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{cpu.aria}}">
+<sc-for list="{{cpu.arrows}}" as="a" hint-placeholder-count="6">
+<path d="{{a.d}}" fill="none" stroke="{{a.c}}" stroke-width="{{a.w}}"></path>
+</sc-for>
+<sc-for list="{{cpu.blocks}}" as="b" hint-placeholder-count="6">
+<rect x="{{b.x}}" y="{{b.y}}" width="{{b.w}}" height="{{b.h}}" rx="10" fill="{{b.fill}}" stroke="{{b.stroke}}" stroke-width="2"></rect>
+<text x="{{b.tx}}" y="{{b.ty}}" font-size="13" text-anchor="middle" fill="{{b.tc}}" font-weight="700">{{b.name}}</text>
+<text x="{{b.tx}}" y="{{b.ty2}}" font-size="12" text-anchor="middle" fill="{{b.tc}}" font-family="IBM Plex Mono, monospace">{{b.val}}</text>
+</sc-for>
+<sc-for list="{{cpu.mem}}" as="m" hint-placeholder-count="8">
+<rect x="640" y="{{m.y}}" width="230" height="30" fill="{{m.bg}}" stroke="#C9D4DA"></rect>
+<text x="652" y="{{m.ty}}" font-size="12" fill="#4A5D6A" font-family="IBM Plex Mono, monospace">{{m.addr}}</text>
+<text x="690" y="{{m.ty}}" font-size="12" fill="#0F2A3A" font-family="IBM Plex Mono, monospace" font-weight="{{m.fw}}">{{m.txt}}</text>
+</sc-for>
+<text x="755" y="30" font-size="13" text-anchor="middle" fill="#0F2A3A" font-weight="700">หน่วยความจำ (RAM)</text>
+</svg>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 15px; line-height: 1.7">{{cpu.explain}}</div>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{cpuStep}}" style="flex: 1 1 0; min-height: 48px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">ก้าวถัดไป</button>
+<button type="button" onClick="{{cpuReset}}" style="flex: 1 1 0; min-height: 48px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">เริ่มโปรแกรมใหม่</button>
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{cpuAuto}}" onChange="{{toggleCpuAuto}}" style="width: 20px; height: 20px; accent-color: #0A6A94">เล่นอัตโนมัติ</label>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">6. จากทรานซิสเตอร์หนึ่งตัวถึงชิปทั้งชิ้น</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<sc-for list="{{scale}}" as="c" hint-placeholder-count="8">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 15px; font-weight: 700">{{c.t}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: #0A6A94">{{c.n}}</div>
+<div style="font-size: 13px; line-height: 1.6; color: #4A5D6A">{{c.d}}</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":3600}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      vg: 2.5, gate: 'nand', A: 1, B: 0, a: [0, 0, 1, 1], b: [0, 1, 0, 1],    // bits MSB first: a = 3, b = 5
+      D: 1, clk: 1, loadReg: true, t: 0, Q: 0, reg: 0, hist: [], lastClk: 0,
+      step: 0, cpuAuto: false, cpuAcc: 0, tick: 0
+    };
+  }
+
+  program() {
+    return [
+      { op: 'LOAD', r: 'A', v: 3, txt: 'LOAD A, 3' },
+      { op: 'LOAD', r: 'B', v: 5, txt: 'LOAD B, 5' },
+      { op: 'ADD', txt: 'ADD A, B' },
+      { op: 'STORE', addr: 7, txt: 'STORE A → [7]' },
+      { op: 'HALT', txt: 'HALT' }
+    ];
+  }
+
+  // run the program up to a given micro-step (3 phases per instruction)
+  cpuState(step) {
+    var P = this.program(), st = { PC: 0, IR: '–', A: 0, B: 0, M7: 0, halted: false, phase: 'fetch', last: '' };
+    for (var k = 0; k < step; k++) {
+      var ph = k % 3, ins = P[st.PC];
+      if (st.halted) break;
+      if (ph === 0) { st.IR = ins.txt; st.phase = 'decode'; }
+      else if (ph === 1) { st.phase = 'execute'; }
+      else {
+        if (ins.op === 'LOAD') st[ins.r] = ins.v;
+        else if (ins.op === 'ADD') st.A = (st.A + st.B) & 15;
+        else if (ins.op === 'STORE') st.M7 = st.A;
+        else if (ins.op === 'HALT') st.halted = true;
+        if (!st.halted) st.PC++;
+        st.phase = 'fetch';
+      }
+    }
+    return st;
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      var s = self.state, patch = { tick: s.tick + 1 };
+      if (!self.reduce) {
+        var t = s.t + dt, period = 2 / s.clk, clkNow = (t % period) < period / 2 ? 1 : 0;
+        var Q = s.Q, reg = s.reg;
+        if (clkNow === 1 && s.lastClk === 0) { Q = s.D; if (s.loadReg) reg = self.sum(s).s; }
+        var hist = s.hist.concat([[t, clkNow, s.D, Q]]); while (hist.length && hist[0][0] < t - 8) hist.shift();
+        patch.t = t; patch.Q = Q; patch.reg = reg; patch.hist = hist; patch.lastClk = clkNow;
+        if (s.cpuAuto) { var acc = s.cpuAcc + dt; if (acc > 0.9) { acc = 0; if (!self.cpuState(s.step).halted) patch.step = s.step + 1; } patch.cpuAcc = acc; }
+      }
+      self.setState(patch);
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  sum(s) {
+    var c = 0, bits = [], carries = [];
+    for (var i = 3; i >= 0; i--) { var a = s.a[i], b = s.b[i], x = a ^ b, sm = x ^ c, co = (a & b) | (c & x); bits[i] = sm; carries[i] = { cin: c, cout: co }; c = co; }
+    var A = s.a.reduce(function (v, b) { return v * 2 + b; }, 0), B = s.b.reduce(function (v, b) { return v * 2 + b; }, 0);
+    return { bits: bits, carries: carries, cout: c, A: A, B: B, s: (A + B) & 15, full: A + B };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+    var bitBtn = function (v) { return v ? { bg: '#B04A0C', fg: '#FFFFFF', border: '#B04A0C' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- 1. transistor ----------
+    var Vth = 0.7, k = 0.004, Imax = 0.013;
+    var Id = function (v) { return v <= Vth ? 0 : Math.min(Imax, k * (v - Vth) * (v - Vth)); };
+    var I = Id(s.vg), u = I / Imax;
+    var GX = function (v) { return 40 + 270 * v / 3.3; }, GY = function (i) { return 180 - 165 * i / Imax; };
+    var curve = []; for (var j = 0; j <= 66; j++) { var v = 3.3 * j / 66; curve.push(f1(GX(v)) + ',' + f1(GY(Id(v)))); }
+    var dots = '';
+    if (I > 0) for (var q = 0; q < 6; q++) { var yy = 30 + ((s.t * 40 * (0.3 + u) + q * 41) % 245); dots += 'M' + f1(236) + ',' + f1(yy) + ' a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 '; }
+    var logic = s.vg < 0.8 ? 0 : s.vg > 2.0 ? 1 : null;
+    var tx = {
+      vgTxt: s.vg.toFixed(2) + ' V', iTxt: (I * 1000).toFixed(1) + ' mA', glow: (0.7 * u).toFixed(2), ledC: u > 0.05 ? 'rgb(255,' + Math.round(200 - 60 * u) + ',60)' : '#E3E9EC',
+      chC: I > 0 ? '#B04A0C' : '#C9D4DA', dots: dots || 'M0,0', curve: 'M' + curve.join(' L'), px: f1(GX(s.vg)), py: f1(GY(I)),
+      zone0: f1(GX(0.8) - 40), zone1x: f1(GX(2.0)), zone1w: f1(310 - GX(2.0)),
+      msg: s.vg <= Vth ? 'แรงดันที่ Gate ต่ำกว่าขีดเริ่ม ' + Vth + ' V ยังไม่มีช่องทางนำไฟ สวิตช์เปิดวงจร LED ดับ นี่คือสถานะ 0' : logic === 1 ? 'แรงดันสูงพอ ช่องทางนำไฟเต็มที่ สวิตช์ปิดวงจร กระแสไหลผ่าน LED ติด นี่คือสถานะ 1' : 'อยู่ช่วงกลาง ทรานซิสเตอร์นำไฟบางส่วน วงจรดิจิทัลออกแบบให้ผ่านช่วงนี้เร็วที่สุด เพราะกินไฟและอ่านค่าไม่ชัด',
+      aria: 'ทรานซิสเตอร์ แรงดันเกต ' + s.vg.toFixed(2) + ' โวลต์ กระแส ' + (I * 1000).toFixed(1) + ' มิลลิแอมแปร์'
+    };
+
+    // ---------- 2. CMOS gates ----------
+    var A = s.A, B = s.B, gate = s.gate;
+    var base = { not: 'not', nand: 'nand', nor: 'nor', and: 'nand', or: 'nor', xor: 'nand' }[gate];
+    var defs = {
+      not: { tr: [{ t: 'P', in: 'A', a: 'vdd', b: 'out', x: 178, y: 70 }, { t: 'N', in: 'A', a: 'out', b: 'gnd', x: 178, y: 190 }],
+        wires: [[210, 24, 210, 70, 'vdd'], [210, 110, 210, 150, 'out'], [210, 150, 210, 190, 'out'], [210, 230, 210, 282, 'gnd'], [210, 150, 330, 150, 'out']], outX: 330, outY: 150 },
+      nand: { tr: [{ t: 'P', in: 'A', a: 'vdd', b: 'out', x: 110, y: 60 }, { t: 'P', in: 'B', a: 'vdd', b: 'out', x: 250, y: 60 }, { t: 'N', in: 'A', a: 'out', b: 'm', x: 178, y: 150 }, { t: 'N', in: 'B', a: 'm', b: 'gnd', x: 178, y: 222 }],
+        wires: [[142, 24, 142, 60, 'vdd'], [282, 24, 282, 60, 'vdd'], [142, 100, 142, 124, 'out'], [282, 100, 282, 124, 'out'], [142, 124, 282, 124, 'out'], [210, 124, 210, 150, 'out'], [210, 190, 210, 222, 'm'], [210, 262, 210, 282, 'gnd'], [282, 124, 340, 124, 'out']], outX: 340, outY: 124 },
+      nor: { tr: [{ t: 'P', in: 'A', a: 'vdd', b: 'm', x: 178, y: 40 }, { t: 'P', in: 'B', a: 'm', b: 'out', x: 178, y: 104 }, { t: 'N', in: 'A', a: 'out', b: 'gnd', x: 110, y: 200 }, { t: 'N', in: 'B', a: 'out', b: 'gnd', x: 250, y: 200 }],
+        wires: [[210, 24, 210, 40, 'vdd'], [210, 80, 210, 104, 'm'], [210, 144, 210, 172, 'out'], [142, 172, 282, 172, 'out'], [142, 172, 142, 200, 'out'], [282, 172, 282, 200, 'out'], [142, 240, 142, 282, 'gnd'], [282, 240, 282, 282, 'gnd'], [282, 172, 340, 172, 'out']], outX: 340, outY: 172 }
+    };
+    var D = defs[base], val = { A: A, B: B };
+    // union-find over nets through ON transistors
+    var parent = {}; var find = function (x) { while (parent[x] && parent[x] !== x) x = parent[x]; return x; };
+    ['vdd', 'gnd', 'out', 'm'].forEach(function (n) { parent[n] = n; });
+    var on = D.tr.map(function (t) { return t.t === 'P' ? val[t.in] === 0 : val[t.in] === 1; });
+    D.tr.forEach(function (t, i) { if (on[i]) { var ra = find(t.a), rb = find(t.b); if (ra !== rb) parent[ra] = rb; } });
+    var toVdd = function (n) { return find(n) === find('vdd'); }, toGnd = function (n) { return find(n) === find('gnd'); };
+    var baseOut = toVdd('out') ? 1 : 0;
+    var fn = { not: function (a) { return 1 - a; }, nand: function (a, b) { return 1 - (a & b); }, nor: function (a, b) { return 1 - (a | b); }, and: function (a, b) { return a & b; }, or: function (a, b) { return a | b; }, xor: function (a, b) { return a ^ b; } }[gate];
+    var out = gate === 'not' ? fn(A) : fn(A, B);
+    var wcol = function (n) { return toVdd(n) ? '#B04A0C' : toGnd(n) ? '#0A6A94' : '#9AAAB4'; };
+    var trOut = D.tr.map(function (t, i) {
+      var c = on[i] ? (toVdd(t.a) || toVdd(t.b) ? '#B04A0C' : '#0A6A94') : '#9AAAB4';
+      return { x: t.x, y: t.y, tx: t.x + 32, ty: t.y + 17, ty2: t.y + 32, label: (t.t === 'P' ? 'PMOS ' : 'NMOS ') + t.in, state: on[i] ? 'นำไฟ' : 'ไม่นำไฟ', fill: on[i] ? (c === '#B04A0C' ? '#FCE3CF' : '#DDEFF6') : '#FFFFFF', stroke: c, tc: on[i] ? '#0F2A3A' : '#9AAAB4' };
+    });
+    var notes = {
+      not: 'NOT ใช้ทรานซิสเตอร์ 2 ตัว กลับค่าอินพุต',
+      nand: 'NAND ใช้ 4 ตัว: PMOS ต่อขนานกัน NMOS ต่ออนุกรมกัน เอาต์พุตเป็น 0 เฉพาะเมื่อ A และ B เป็น 1 ทั้งคู่',
+      nor: 'NOR ใช้ 4 ตัว: PMOS ต่ออนุกรม NMOS ต่อขนาน เอาต์พุตเป็น 1 เฉพาะเมื่อ A และ B เป็น 0 ทั้งคู่',
+      and: 'AND = NAND ตามด้วย NOT (6 ตัว) ภาพแสดงขั้น NAND ซึ่งให้ค่า ' + baseOut + ' แล้ว NOT กลับเป็น ' + out,
+      or: 'OR = NOR ตามด้วย NOT (6 ตัว) ภาพแสดงขั้น NOR ซึ่งให้ค่า ' + baseOut + ' แล้ว NOT กลับเป็น ' + out,
+      xor: 'XOR เป็น 1 เมื่ออินพุตต่างกัน สร้างจาก NAND 4 ตัว (16 ทรานซิสเตอร์) ใช้มากในวงจรบวก ภาพแสดง NAND ตัวแรกของวงจร'
+    };
+    var rows = (gate === 'not' ? [[0], [1]] : [[0, 0], [0, 1], [1, 0], [1, 1]]).map(function (r) {
+      var o = gate === 'not' ? fn(r[0]) : fn(r[0], r[1]), cur = r[0] === A && (gate === 'not' || r[1] === B);
+      return { a: r[0], b: gate === 'not' ? '–' : r[1], o: o, bg: cur ? '#FFF1CC' : '#FFFFFF', fw: cur ? 700 : 500 };
+    });
+    var gt = {
+      title: { not: 'NOT', nand: 'NAND', nor: 'NOR', and: 'AND (ขั้น NAND)', or: 'OR (ขั้น NOR)', xor: 'XOR (NAND ตัวแรก)' }[gate] + ' · ระดับทรานซิสเตอร์',
+      out: out, outC: out ? '#B04A0C' : '#0A6A94', outX: D.outX, outY: D.outY,
+      wires: D.wires.map(function (w) { var c = wcol(w[4]); return { x1: w[0], y1: w[1], x2: w[2], y2: w[3], c: c, sw: c === '#9AAAB4' ? 2.5 : 4.5 }; }),
+      tr: trOut, rows: rows, bHead: gate === 'not' ? '–' : 'B', note: notes[gate],
+      gates: ['not', 'nand', 'nor', 'and', 'or', 'xor'].map(function (g) { var p = pill(s.gate === g); return { name: g.toUpperCase(), pressed: s.gate === g ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ gate: g }); } }; }),
+      inputs: [['A', A], ['B', B]].filter(function (x) { return gate !== 'not' || x[0] === 'A'; }).map(function (x) { var p = bitBtn(x[1]); return { name: x[0] + ' = ' + x[1], pressed: x[1] ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { var o = {}; o[x[0]] = 1 - self.state[x[0]]; self.setState(o); } }; }),
+      aria: 'เกต ' + gate.toUpperCase() + ' อินพุต A ' + A + ' B ' + B + ' เอาต์พุต ' + out
+    };
+
+    // ---------- 3. adder ----------
+    var S = this.sum(s), cols = [];
+    for (var i = 0; i < 4; i++) {
+      var cx = 230 + i * 170, a = s.a[i], b = s.b[i], c = S.carries[i];
+      cols.push({
+        cx: cx, place: 'หลัก ' + Math.pow(2, 3 - i), ax: cx - 52, axt: cx - 29, bx: cx + 6, bxt: cx + 29, a: a, b: b,
+        aC: a ? '#B04A0C' : '#FFFFFF', aT: a ? '#FFFFFF' : '#0F2A3A', bC: b ? '#B04A0C' : '#FFFFFF', bT: b ? '#FFFFFF' : '#0F2A3A',
+        aW: a ? '#B04A0C' : '#C9D4DA', bW: b ? '#B04A0C' : '#C9D4DA', fx: cx - 65, detail: a + ' + ' + b + ' + ทด ' + c.cin + ' = ' + (a + b + c.cin),
+        sW: S.bits[i] ? '#B04A0C' : '#C9D4DA', sx: cx - 23, sC: S.bits[i] ? '#B04A0C' : '#FFFFFF', sT: S.bits[i] ? '#FFFFFF' : '#0F2A3A', s: S.bits[i],
+        cinX1: cx - 65, cinX2: cx - 105, cinTx: cx - 85, cW: c.cout ? '#B04A0C' : '#C9D4DA', cTc: c.cout ? '#B04A0C' : '#9AAAB4', cout: c.cout
+      });
+    }
+    var bin = function (n) { return ('0000' + n.toString(2)).slice(-4); };
+    var ad = {
+      cols: cols,
+      aBits: s.a.map(function (v, i) { var p = bitBtn(v); return { name: v, pressed: v ? 'true' : 'false', aria: 'บิต A หลัก ' + Math.pow(2, 3 - i), bg: p.bg, fg: p.fg, border: p.border, pick: function () { var n = self.state.a.slice(); n[i] = 1 - n[i]; self.setState({ a: n }); } }; }),
+      bBits: s.b.map(function (v, i) { var p = bitBtn(v); return { name: v, pressed: v ? 'true' : 'false', aria: 'บิต B หลัก ' + Math.pow(2, 3 - i), bg: p.bg, fg: p.fg, border: p.border, pick: function () { var n = self.state.b.slice(); n[i] = 1 - n[i]; self.setState({ b: n }); } }; }),
+      eq: bin(S.A) + ' + ' + bin(S.B) + ' = ' + (S.cout ? '1 ' : '') + bin(S.s) + '  (' + S.A + ' + ' + S.B + ' = ' + S.full + ')',
+      note: S.cout ? 'ผลรวมเกิน 15 ซึ่งเป็นค่ามากที่สุดของ 4 บิต ตัวทดสุดท้ายล้นออกไป (overflow) CPU จริงมีบิตแจ้งเตือนเรื่องนี้ และใช้ 64 บิตเพื่อให้นับได้ถึงราว 18 ล้านล้านล้าน' : 'วงจรนี้ใช้เกต 20 ตัว (XOR 2 AND 2 OR 1 ต่อหลัก) ตัวทดต้องวิ่งผ่านทีละหลัก CPU จริงจึงใช้วงจรทำนายตัวทด (carry-lookahead) ให้บวก 64 บิตได้ในจังหวะ clock เดียว',
+      noteC: S.cout ? '#B04A0C' : '#4A5D6A',
+      aria: 'วงจรบวก ' + S.A + ' บวก ' + S.B + ' ได้ ' + S.full
+    };
+
+    // ---------- 4. flip-flop timing ----------
+    var H = s.hist, t0 = s.t - 8;
+    var lanes = [['CLK', 1, '#4A5D6A', 40], ['D', 2, '#0A6A94', 110], ['Q', 3, '#B04A0C', 180]].map(function (L) {
+      var d = '', prevY = null;
+      H.forEach(function (h, idx) { var x = 100 + (h[0] - t0) / 8 * 780, y = L[3] - h[L[1]] * 34; if (idx === 0) d = 'M' + f1(x) + ',' + y; else { if (y !== prevY) d += ' L' + f1(x) + ',' + prevY; d += ' L' + f1(x) + ',' + y; } prevY = y; });
+      return { n: L[0], c: L[2], base: L[3], ty: L[3] - 10, d: d || 'M0,0' };
+    });
+    var edges = ''; for (var e = 1; e < H.length; e++) if (H[e][1] === 1 && H[e - 1][1] === 0) { var xe = 100 + (H[e][0] - t0) / 8 * 780; edges += 'M' + f1(xe) + ',10 L' + f1(xe) + ',200 '; }
+    var ff = {
+      lanes: lanes, edges: edges || 'M0,0', d: s.D, dPressed: s.D ? 'true' : 'false', dBg: s.D ? '#0A6A94' : '#FFFFFF', dFg: s.D ? '#FFFFFF' : '#0A6A94',
+      regTxt: 'Q = ' + s.Q + ' · รีจิสเตอร์ 4 บิต = ' + bin(s.reg) + ' (' + s.reg + ')', clkTxt: s.clk.toFixed(1) + ' จังหวะ/วิ',
+      aria: 'แผนภาพเวลา D flip-flop ค่า Q ' + s.Q
+    };
+
+    // ---------- 5. CPU ----------
+    var C = this.cpuState(s.step), P = this.program(), ph = C.halted ? 'halt' : C.phase;
+    var active = { fetch: ['pc', 'mem', 'ir'], decode: ['ir', 'dec'], execute: ['dec', 'alu', 'reg', 'mem'], halt: [] }[ph];
+    var cur = P[Math.min(C.PC, P.length - 1)];
+    if (ph === 'execute' && cur.op === 'LOAD') active = ['dec', 'reg'];
+    if (ph === 'execute' && cur.op === 'STORE') active = ['dec', 'reg', 'mem'];
+    if (ph === 'execute' && cur.op === 'HALT') active = ['dec'];
+    var isOn = function (id) { return active.indexOf(id) >= 0; };
+    var blk = function (id, name, val, x, y, w, h) { var o = isOn(id); return { x: x, y: y, w: w, h: h, tx: x + w / 2, ty: y + h / 2 - 4, ty2: y + h / 2 + 16, name: name, val: val, fill: o ? '#FFF1CC' : '#FFFFFF', stroke: o ? '#B04A0C' : '#C9D4DA', tc: '#0F2A3A' }; };
+    var blocks = [
+      blk('pc', 'ตัวนับโปรแกรม (PC)', String(C.PC), 30, 40, 180, 70),
+      blk('ir', 'รีจิสเตอร์คำสั่ง (IR)', C.IR, 250, 40, 200, 70),
+      blk('dec', 'ตัวถอดรหัสคำสั่ง', ph === 'halt' ? 'หยุดทำงาน' : ph === 'fetch' ? 'รอคำสั่ง' : cur.op, 250, 150, 200, 70),
+      blk('reg', 'รีจิสเตอร์ A, B', 'A=' + C.A + '  B=' + C.B, 30, 250, 200, 70),
+      blk('alu', 'ALU (วงจรบวกในข้อ 3)', ph === 'execute' && cur.op === 'ADD' ? C.A + ' + ' + C.B : '–', 270, 250, 220, 70)
+    ];
+    var line = function (d, id1, id2) { var o = isOn(id1) && isOn(id2); return { d: d, c: o ? '#B04A0C' : '#C9D4DA', w: o ? 4 : 2 }; };
+    var arrows = [
+      line('M210,75 L250,75', 'pc', 'ir'), line('M450,75 L640,75', 'ir', 'mem'), line('M350,110 L350,150', 'ir', 'dec'),
+      line('M300,220 L300,250 M130,220 L130,250', 'dec', 'reg'), line('M400,220 L400,250', 'dec', 'alu'), line('M230,285 L270,285', 'reg', 'alu'),
+      line('M490,285 L640,285', 'reg', 'mem')
+    ];
+    var mem = [];
+    for (var m = 0; m < 8; m++) { var y = 44 + m * 34, txt = m < P.length ? P[m].txt : m === 7 ? 'ข้อมูล: ' + C.M7 : '–', curRow = m === C.PC && !C.halted; mem.push({ y: y, ty: y + 20, addr: '[' + m + ']', txt: txt, bg: curRow && ph === 'fetch' ? '#FFF1CC' : m === 7 && C.M7 ? '#DDEFF6' : '#FFFFFF', fw: curRow ? 700 : 500 }); }
+    var explain;
+    if (C.halted) explain = 'โปรแกรมจบแล้ว ผลบวก 3 + 5 = 8 ถูกเก็บไว้ในหน่วยความจำตำแหน่ง [7] ใช้ไปทั้งหมด ' + s.step + ' ขั้น CPU จริงทำขั้นเหล่านี้หลายพันล้านครั้งต่อวินาที และทำหลายคำสั่งซ้อนกันเป็นสายพาน (pipeline)';
+    else if (ph === 'fetch') explain = 'ดึงคำสั่ง: ส่งตำแหน่ง ' + C.PC + ' จากตัวนับโปรแกรมไปที่หน่วยความจำ แล้วคัดลอกคำสั่ง "' + cur.txt + '" มาเก็บในรีจิสเตอร์คำสั่ง';
+    else if (ph === 'decode') explain = 'ถอดรหัส: วงจรเกตจำนวนมากอ่านบิตของคำสั่ง แล้วเปิดเส้นทางที่ต้องใช้ คำสั่งนี้คือ ' + cur.op;
+    else explain = { LOAD: 'ทำงาน: ใส่ค่า ' + cur.v + ' ลงรีจิสเตอร์ ' + cur.r + ' แล้วตัวนับโปรแกรมเพิ่มขึ้น 1', ADD: 'ทำงาน: ส่ง A และ B เข้า ALU ซึ่งก็คือวงจรบวกในข้อ 3 แล้วเก็บผลลงรีจิสเตอร์ A ที่จังหวะ clock ถัดไป', STORE: 'ทำงาน: เขียนค่าในรีจิสเตอร์ A ลงหน่วยความจำตำแหน่ง [7]', HALT: 'ทำงาน: คำสั่งหยุดโปรแกรม' }[cur.op];
+    var cpu = {
+      blocks: blocks, arrows: arrows, mem: mem, explain: explain,
+      phaseTxt: { fetch: '1. ดึงคำสั่ง (fetch)', decode: '2. ถอดรหัส (decode)', execute: '3. ทำงาน (execute)', halt: 'โปรแกรมจบแล้ว' }[ph],
+      cycle: 'ขั้นที่ ' + s.step + ' · คำสั่งที่ ' + C.PC,
+      aria: 'แผนภาพ CPU ขั้น ' + ph + ' รีจิสเตอร์ A ' + C.A + ' B ' + C.B
+    };
+    var scale = [
+      { t: 'ทรานซิสเตอร์', n: '1', d: 'สวิตช์เปิด-ปิดด้วยแรงดัน ขนาดในชิปรุ่นใหม่เล็กระดับไม่กี่สิบนาโนเมตร' },
+      { t: 'เกต NAND', n: '4 ตัว', d: 'PMOS 2 ตัว + NMOS 2 ตัว' },
+      { t: 'วงจรบวกเต็ม 1 บิต', n: '~28 ตัว', d: 'แบบ CMOS ที่ใช้กันทั่วไป' },
+      { t: 'หน่วยความจำ SRAM 1 บิต', n: '6 ตัว', d: 'ใช้ในแคชของ CPU เร็วแต่กินพื้นที่' },
+      { t: 'หน่วยความจำ DRAM 1 บิต', n: '1 ตัว + ตัวเก็บประจุ', d: 'แรมของคอมพิวเตอร์และมือถือ' },
+      { t: 'หน่วยความจำแฟลช 1 เซลล์', n: '1 ตัว (เก็บได้หลายบิต)', d: 'SSD และ USB เก็บประจุไว้ในชั้นที่ถูกฉนวนล้อมรอบ เขียนด้วยการทะลุผ่านทางควอนตัม (ดู Quantum Lab)' },
+      { t: 'CPU หรือ GPU ทั้งชิป', n: 'หลายพันล้านถึงหลายหมื่นล้านตัว', d: 'ต่อด้วยสายทองแดงหลายสิบชั้นซ้อนกัน ออกแบบด้วยซอฟต์แวร์ เพราะวาดด้วยมือไม่ไหว' },
+      { t: 'ซอฟต์แวร์', n: 'โปรแกรมที่เราเขียน', d: 'คอมไพเลอร์แปลงโค้ดเป็นคำสั่งเครื่องแบบในข้อ 5 แล้ว CPU ทำงานทีละขั้นด้วยวงจรทั้งหมดข้างบน' }
+    ];
+
+    return {
+      tx: tx, gt: gt, ad: ad, ff: ff, cpu: cpu, scale: scale,
+      vg: s.vg, setVg: function (e) { self.setState({ vg: parseFloat(e.target.value) }); },
+      toggleD: function () { self.setState({ D: 1 - self.state.D }); },
+      loadReg: s.loadReg, toggleLoadReg: function () { self.setState({ loadReg: !self.state.loadReg }); },
+      clk: s.clk, setClk: function (e) { self.setState({ clk: parseFloat(e.target.value) }); },
+      cpuStep: function () { if (!self.cpuState(self.state.step).halted) self.setState({ step: self.state.step + 1 }); },
+      cpuReset: function () { self.setState({ step: 0 }); },
+      cpuAuto: s.cpuAuto, toggleCpuAuto: function () { self.setState({ cpuAuto: !self.state.cpuAuto }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

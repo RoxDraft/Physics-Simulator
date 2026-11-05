@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dynamics: braking and crashes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Mechanics Lab</a><span aria-hidden="true">›</span><span aria-current="page">Dynamics</span><a class="ps-lang" href="../../mechanics-lab/dynamics.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px">
+<nav aria-label="Mechanics Lab topics" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="index.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Machines</a>
+<a href="statics.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Statics</a>
+<a href="dynamics.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Dynamics</a>
+<a href="thermo.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Thermodynamics</a>
+<a href="fluids.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Fluids</a>
+<a href="swim.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Swimming</a>
+</nav>
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">DYNAMICS · Dynamics</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">Forces change velocity: braking distance and crashes</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Newton’s second law, F = m·a, says it takes force to stop something moving, and the shorter the distance or time to stop, the bigger the force. These two experiments are the physics behind traffic rules and car safety equipment</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. Stopping distance: someone steps into the road</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; flex-wrap: wrap">
+<span style="font-family: 'IBM Plex Mono', monospace; font-weight: 600">{{bk.clock}}</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{bk.bg}}; color: {{bk.fg}}">{{bk.badge}}</span>
+</div>
+<svg viewBox="0 0 900 220" style="display: block; width: 100%; height: auto; background: #E9EEF0" role="img" aria-label="{{bk.aria}}">
+<rect x="0" y="60" width="900" height="110" fill="{{bk.road}}"></rect>
+<path d="M0,115 h900" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="26 22"></path>
+<rect x="{{bk.rx}}" y="176" width="{{bk.rw}}" height="12" fill="#F5C77A"></rect>
+<rect x="{{bk.brx}}" y="176" width="{{bk.brw}}" height="12" fill="#0A6A94"></rect>
+<text x="{{bk.rx}}" y="204" font-size="12" fill="#6B4A00">{{bk.rTxt}}</text>
+<text x="{{bk.brTxtX}}" y="204" font-size="12" fill="#0A4F70">{{bk.brTxt}}</text>
+<g transform="translate({{bk.obsX}},0)"><circle cx="0" cy="84" r="8" fill="#B04A0C"></circle><path d="M0,92 L0,118 M0,100 L-9,108 M0,100 L9,94 M0,118 L-8,134 M0,118 L9,132" stroke="#B04A0C" stroke-width="4" stroke-linecap="round" fill="none"></path></g>
+<line x1="{{bk.obsX}}" y1="56" x2="{{bk.obsX}}" y2="170" stroke="#B04A0C" stroke-dasharray="4 4"></line>
+<g transform="translate({{bk.carX}},126)"><rect x="-64" y="-26" width="64" height="26" rx="6" fill="#0F2A3A"></rect><rect x="-48" y="-40" width="34" height="16" rx="4" fill="#0F2A3A"></rect><circle cx="-50" cy="2" r="7" fill="#4A5D6A"></circle><circle cx="-14" cy="2" r="7" fill="#4A5D6A"></circle><rect x="-4" y="-22" width="4" height="8" fill="{{bk.light}}"></rect></g>
+<path d="{{bk.skid}}" stroke="#2F3A40" stroke-width="3" opacity="0.5"></path>
+<text x="12" y="40" font-size="12" fill="#4A5D6A">{{bk.scale}}</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{bk.stats}}" as="r" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: {{bk.msgBg}}; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; color: {{bk.msgFg}}">{{bk.msg}}</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{bk.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<span style="font-size: 14px; font-weight: 600">Driver</span>
+<div role="group" aria-label="Driver reaction time" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{bk.drivers}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 100px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">Road surface</span>
+<div role="group" aria-label="Road surface" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{bk.roads}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 100px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{abs}}" onChange="{{toggleAbs}}" style="width: 20px; height: 20px; accent-color: #0A6A94">ABS brakes</label>
+<button type="button" onClick="{{runBrake}}" style="min-height: 48px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Drive again</button>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">Equations</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">Reaction distance = v · t_r<br>a = g·(μ·cosα + sinα)<br>Braking distance = v² / 2a<br>Impact speed v_impact = √(v² − 2a·d)</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">Braking distance depends on v²: double the speed and it is 4 times longer. Reaction distance depends on v directly; while your eyes have not seen it or your foot has not reached the brake, the car is still at full speed</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. Hitting a wall: why seatbelts, airbags and crumple zones save lives</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">In a crash, the occupant’s momentum must drop to zero in every case (Δp = m·v). What can change is the distance and time taken to stop. Average force F = Δp / Δt, so stretching the stopping time greatly reduces the force on the body. This animation runs 40 times slower than reality, because a real crash is over in about a tenth of a second</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; flex-wrap: wrap">
+<span style="font-family: 'IBM Plex Mono', monospace; font-weight: 600">{{cr.clock}}</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{cr.bg}}; color: {{cr.fg}}">{{cr.badge}}</span>
+</div>
+<svg viewBox="0 0 900 230" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{cr.aria}}">
+<rect x="0" y="180" width="900" height="50" fill="#9AAAB4"></rect>
+<rect x="760" y="40" width="40" height="140" fill="#6B7F8C"></rect>
+<path d="M760,40 v140 M770,40 v140 M780,40 v140 M790,40 v140" stroke="#5A6C78" stroke-width="1"></path>
+<path d="{{cr.car}}" fill="#0A6A94"></path>
+<path d="{{cr.crumple}}" fill="none" stroke="#063F58" stroke-width="2"></path>
+<path d="{{cr.window}}" fill="#CFE6F0"></path>
+<circle cx="{{cr.w1}}" cy="176" r="14" fill="#2F3A40"></circle><circle cx="{{cr.w2}}" cy="176" r="14" fill="#2F3A40"></circle>
+<circle cx="{{cr.bagX}}" cy="112" r="{{cr.bagR}}" fill="#FFFFFF" stroke="#9AAAB4" stroke-width="2" opacity="{{cr.bagO}}"></circle>
+<path d="{{cr.person}}" fill="none" stroke="#F5C77A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="{{cr.headX}}" cy="{{cr.headY}}" r="10" fill="#F5C77A"></circle>
+<path d="{{cr.belt}}" fill="none" stroke="#0F2A3A" stroke-width="3" opacity="{{cr.beltO}}"></path>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{cr.stats}}" as="r" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-weight: 700">Average force on the occupant (multiples of body weight) for each kind of protection at the same speed</span>
+<sc-for list="{{cr.bars}}" as="b" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 10px; font-size: 13px">
+<span style="flex: 0 0 170px; font-weight: 600">{{b.n}}</span>
+<div style="flex: 1 1 auto; height: 18px; background: #F3F6F7; border-radius: 4px; overflow: hidden"><div style="width: {{b.w}}; height: 100%; background: {{b.c}}"></div></div>
+<span style="flex: 0 0 72px; text-align: right; font-family: 'IBM Plex Mono', monospace">{{b.v}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{cr.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<span style="font-size: 14px; font-weight: 600">Protection</span>
+<div role="group" aria-label="Protection" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{cr.protect}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<button type="button" onClick="{{runCrash}}" style="min-height: 48px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Crash again</button>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">Equations</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">F·Δt = Δp = m·v<br>a_average = v² / 2d<br>Δt = 2d / v<br>v = 50 km/h ≈ falling from 10 m</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">d is the distance the occupant moves before stopping. Modern cars have a front that crumples in a controlled way while the passenger cell stays rigid; the belt stretches a little and the airbag cushions the head. Together they make d tens of times longer than hitting the dashboard</p>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1900}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      v: 60, tr: 1.5, driver: 'normal', mu: 0.8, road: 'dry', slope: 0, abs: true, dObs: 45, bt: reduce ? 99 : 0,
+      cv: 50, mass: 1400, prot: 'beltbag', ct: reduce ? 99 : 0, tick: 0
+    };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      if (!self.reduce) {
+        var s = self.state, b = self.brake(s);
+        var patch = { tick: s.tick + 1 };
+        if (s.bt < b.tEnd + 2) patch.bt = s.bt + dt;
+        if (s.ct < 9) patch.ct = s.ct + dt;
+        self.setState(patch);
+      }
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  brake(s) {
+    var g = 9.81, v = s.v / 3.6, al = Math.atan(s.slope / 100);
+    var muE = s.mu * (s.abs ? 0.95 : 0.75);
+    var a = g * (muE * Math.cos(al) + Math.sin(al));
+    var dr = v * s.tr, db = a > 0 ? v * v / (2 * a) : Infinity, tot = dr + db;
+    var hit = tot > s.dObs, vImp = 0;
+    if (hit) { var dleft = s.dObs - dr; vImp = dleft <= 0 ? v : Math.sqrt(Math.max(0, v * v - 2 * a * dleft)); }
+    var tStop = s.tr + v / a;
+    var tHit = null;
+    if (hit) tHit = s.dObs <= dr ? s.dObs / v : s.tr + (v - vImp) / a;
+    return { v: v, a: a, dr: dr, db: db, tot: tot, hit: hit, vImp: vImp, tEnd: hit ? tHit : tStop, tHit: tHit, tStop: tStop };
+  }
+
+  posAt(s, b, t) {
+    if (t <= s.tr) return { x: b.v * t, v: b.v };
+    var tb = Math.min(t - s.tr, b.v / b.a);
+    var x = b.dr + b.v * tb - 0.5 * b.a * tb * tb;
+    return { x: x, v: Math.max(0, b.v - b.a * tb) };
+  }
+
+  crash(s, prot) {
+    var v = s.cv / 3.6, g = 9.81;
+    var P = {
+      none: { c: 0.6, d: 0.05, free: 0.5 },      // unbelted: flies forward, stopped by the dashboard in ~5 cm
+      belt: { c: 0.6, d: 0.25, free: 0 },
+      beltbag: { c: 0.6, d: 0.4, free: 0 },
+      old: { c: 0.15, d: 0.15, free: 0 }         // stiff old car, belt only
+    }[prot];
+    var dTot = P.free > 0 ? P.d : P.c + P.d;     // unbelted: car has already stopped when the body hits
+    var aAvg = v * v / (2 * dTot), dt = 2 * dTot / v;
+    return { v: v, c: P.c, d: P.d, free: P.free, dTot: dTot, a: aAvg, gs: aAvg / g, dt: dt, F: s.mass > 0 ? 75 * aAvg : 0, h: v * v / (2 * g) };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- braking ----------
+    var b = this.brake(s), range = Math.max(60, Math.min(220, Math.ceil(Math.max(b.tot, s.dObs) * 1.15 / 10) * 10));
+    var X0 = 80, SX = 790 / range;
+    var t = Math.min(s.bt, b.tEnd), p = this.posAt(s, b, t);
+    var carX = X0 + Math.min(p.x, s.dObs) * SX;
+    var braking = s.bt > s.tr && p.v > 0;
+    var skid = !s.abs && s.bt > s.tr ? 'M' + f1(X0 + b.dr * SX) + ',132 L' + f1(carX - 14) + ',132 M' + f1(X0 + b.dr * SX) + ',138 L' + f1(carX - 50) + ',138' : 'M0,0';
+    var drivers = [{ id: 'alert', name: 'Attentive 0.75 s', tr: 0.75 }, { id: 'normal', name: 'Typical 1.5 s', tr: 1.5 }, { id: 'phone', name: 'Looking at a phone 2.5 s', tr: 2.5 }];
+    var roads = [{ id: 'dry', name: 'Dry asphalt μ 0.8', mu: 0.8, c: '#4A5560' }, { id: 'wet', name: 'Wet road μ 0.5', mu: 0.5, c: '#3B4F5C' }, { id: 'gravel', name: 'Gravel μ 0.4', mu: 0.4, c: '#8C7A5B' }, { id: 'ice', name: 'Ice μ 0.1', mu: 0.1, c: '#A9C4D1' }];
+    var stopped = !b.hit && s.bt >= b.tStop, crashed = b.hit && s.bt >= b.tHit;
+    var badge = crashed ? 'Hits at ' + (b.vImp * 3.6).toFixed(0) + ' km/h' : stopped ? 'Stops in time, margin ' + (s.dObs - b.tot).toFixed(1) + ' m' : s.bt < s.tr ? 'The driver has seen it and is moving their foot to the brake' : 'Braking';
+    var msg;
+    if (b.hit && b.dr >= s.dObs) msg = 'The car reached the person before the driver even pressed the brake. Reaction time matters as much as the brakes. Try an attentive driver or a lower speed';
+    else if (b.hit) msg = 'Braked but could not stop in time; hits at ' + (b.vImp * 3.6).toFixed(0) + ' km/h, like falling from about ' + (b.vImp * b.vImp / 19.62).toFixed(1) + ' m. Try lowering the speed 10 km/h at a time and see how much faster the impact speed drops than you might expect';
+    else msg = 'Stopped in time. Try a wet road or a driver looking at a phone and see how much longer the total stopping distance gets' + (s.abs ? '' : ' Without ABS the wheels lock and skid, giving less friction than rolling tyres, and you cannot steer around');
+    var bk = {
+      clock: (Math.max(0, s.bt)).toFixed(2) + ' s · ' + (p.v * 3.6).toFixed(0) + ' km/h',
+      road: roads.find(function (r) { return r.id === s.road; }).c,
+      rx: X0, rw: f1(b.dr * SX), brx: f1(X0 + b.dr * SX), brw: f1(Math.min(b.db, range) * SX),
+      rTxt: 'Reaction ' + b.dr.toFixed(1) + ' m', brTxtX: f1(X0 + b.dr * SX + 6), brTxt: 'Braking ' + (isFinite(b.db) ? b.db.toFixed(1) : '∞') + ' m',
+      obsX: f1(X0 + s.dObs * SX + 8), carX: f1(carX), light: braking ? '#FF4D3D' : '#7A2A20', skid: skid,
+      scale: 'Road shown ' + range + ' m · person steps out at ' + s.dObs + ' m',
+      badge: badge, bg: crashed ? '#FCE3CF' : stopped ? '#DDEFF6' : '#FFF1CC', fg: crashed ? '#7E3407' : stopped ? '#0A4F70' : '#6B4A00',
+      msg: msg, msgBg: b.hit ? '#FCE3CF' : '#EAF3F7', msgFg: b.hit ? '#7E3407' : '#0F2A3A',
+      stats: [
+        { k: 'Reaction distance', v: b.dr.toFixed(1) + ' m', sub: 'At full speed for ' + s.tr + ' s', c: '#6B4A00' },
+        { k: 'Braking distance', v: (isFinite(b.db) ? b.db.toFixed(1) : '∞') + ' m', sub: 'Deceleration ' + b.a.toFixed(1) + ' m/s² (' + (b.a / 9.81).toFixed(2) + ' g)', c: '#0A4F70' },
+        { k: 'Total stopping distance', v: (isFinite(b.tot) ? b.tot.toFixed(1) : '∞') + ' m', sub: 'Person is at ' + s.dObs + ' m', c: b.hit ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Impact speed', v: b.hit ? (b.vImp * 3.6).toFixed(0) + ' km/h' : 'No impact', sub: b.hit ? 'From an initial speed of ' + s.v + ' km/h' : 'Stops before reaching the person', c: b.hit ? '#B04A0C' : '#0F2A3A' }
+      ],
+      sliders: [
+        { id: 'b-v', name: 'Speed', label: s.v + ' km/h', min: 20, max: 140, step: 5, v: s.v, set: function (e) { self.setState({ v: parseFloat(e.target.value), bt: 0 }); } },
+        { id: 'b-d', name: 'Distance where the person steps out', label: s.dObs + ' m', min: 10, max: 120, step: 1, v: s.dObs, set: function (e) { self.setState({ dObs: parseFloat(e.target.value), bt: 0 }); } },
+        { id: 'b-s', name: 'Road slope (+ uphill)', label: (s.slope > 0 ? '+' : '') + s.slope + '%', min: -12, max: 12, step: 1, v: s.slope, set: function (e) { self.setState({ slope: parseFloat(e.target.value), bt: 0 }); } }
+      ],
+      drivers: drivers.map(function (d) { var q = pill(s.driver === d.id); return { name: d.name, pressed: s.driver === d.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ driver: d.id, tr: d.tr, bt: 0 }); } }; }),
+      roads: roads.map(function (r) { var q = pill(s.road === r.id); return { name: r.name, pressed: s.road === r.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ road: r.id, mu: r.mu, bt: 0 }); } }; }),
+      aria: 'Car at ' + s.v + ' km/h, total stopping distance ' + (isFinite(b.tot) ? b.tot.toFixed(0) : 'unlimited') + ' m,'
+    };
+
+    // ---------- crash ----------
+    var C = this.crash(s, s.prot), SL = 40;                 // animation slowed 40×
+    var tc = Math.max(0, s.ct - 0.6) / SL;                   // real crash time (s)
+    var PXm = 110;                                            // px per metre in the crash scene
+    var wallX = 760, carLen = 4.2, pre = Math.max(0, 0.6 - s.ct) * 2.5;  // metres before the wall
+    // car front position (metres from the wall, negative = before wall)
+    var ac = C.v * C.v / (2 * C.c), tcStop = C.v / ac, crush = 0;
+    if (s.ct >= 0.6) crush = tc < tcStop ? C.v * tc - 0.5 * ac * tc * tc : C.c;
+    var frontX = wallX - pre * PXm, carDisp = s.ct < 0.6 ? 0 : crush;   // the cabin moves by crush distance
+    var cabinShift = carDisp * PXm;
+    var x0 = wallX - carLen * PXm - pre * PXm + cabinShift;          // rear of car
+    var fx = Math.min(wallX, x0 + carLen * PXm);
+    var carPath = 'M' + f1(x0) + ',172 L' + f1(x0) + ',118 L' + f1(x0 + 110) + ',112 L' + f1(x0 + 170) + ',74 L' + f1(x0 + 300) + ',74 L' + f1(x0 + 360) + ',112 L' + f1(fx) + ',120 L' + f1(fx) + ',172 Z';
+    var crumpled = carDisp > 0.02 ? 'M' + f1(x0 + 360) + ',114 l' + f1((fx - x0 - 360) / 4) + ',8 l' + f1((fx - x0 - 360) / 4) + ',-8 l' + f1((fx - x0 - 360) / 4) + ',8 l' + f1((fx - x0 - 360) / 4) + ',-8' : 'M0,0';
+    var windowP = 'M' + f1(x0 + 178) + ',80 L' + f1(x0 + 292) + ',80 L' + f1(x0 + 340) + ',110 L' + f1(x0 + 128) + ',110 Z';
+    // occupant: relative motion inside the cabin
+    var rel = 0;
+    if (s.ct >= 0.6) {
+      if (C.free > 0) rel = Math.min(C.free, C.v * tc - crush);   // unbelted: keeps moving until the dashboard stops it
+      else { var ap = C.v * C.v / (2 * C.dTot), tps = C.v / ap, xp = tc < tps ? C.v * tc - 0.5 * ap * tc * tc : C.dTot; rel = xp - crush; }
+    }
+    rel = Math.max(0, Math.min(rel, 0.75));
+    var seatX = x0 + 210, hx = seatX + 26 + rel * PXm * 0.9, hy = 92 + (rel > 0.3 ? (rel - 0.3) * 30 : 0);
+    var person = 'M' + f1(seatX) + ',150 L' + f1(seatX + 10 + rel * 60) + ',120 L' + f1(hx - 4) + ',' + f1(hy + 12) + ' M' + f1(seatX + 10 + rel * 60) + ',124 L' + f1(seatX + 70 + rel * 30) + ',122 M' + f1(seatX) + ',150 L' + f1(seatX + 60) + ',152 L' + f1(seatX + 70) + ',168';
+    var bagOn = s.prot === 'beltbag' && s.ct >= 0.6 + 0.015 * SL;
+    var cr = {
+      clock: s.ct < 0.6 ? 'Driving towards the wall at ' + s.cv + ' km/h' : 'Time after impact ' + (tc * 1000).toFixed(0) + ' ms (40× slow motion)',
+      car: carPath, crumple: crumpled, window: windowP, w1: f1(x0 + 75), w2: f1(Math.min(fx - 45, x0 + 340)),
+      bagX: f1(x0 + 300), bagR: bagOn ? 26 : 0, bagO: bagOn ? 0.95 : 0, person: person, headX: f1(hx), headY: f1(hy),
+      belt: s.prot === 'none' ? 'M0,0' : 'M' + f1(seatX - 4) + ',100 L' + f1(seatX + 14 + rel * 60) + ',128 L' + f1(seatX + 4) + ',150', beltO: s.prot === 'none' ? 0 : 1,
+      badge: C.gs > 60 ? 'Likely fatal' : C.gs > 25 ? 'Serious injury' : 'Good chance of survival', bg: C.gs > 25 ? '#FCE3CF' : '#DDEFF6', fg: C.gs > 25 ? '#7E3407' : '#0A4F70',
+      stats: [
+        { k: 'Occupant’s momentum', v: (75 * C.v).toFixed(0) + ' kg·m/s', sub: '75 kg occupant; must drop to 0 in every case', c: '#0F2A3A' },
+        { k: 'Distance the occupant takes to stop', v: (C.dTot * 100).toFixed(0) + ' cm', sub: s.prot === 'none' ? 'Hits the dashboard, which gives only about 5 cm' : 'Front crumples ' + (C.c * 100).toFixed(0) + ' + belt/airbag ' + (C.d * 100).toFixed(0) + ' cm', c: '#0F2A3A' },
+        { k: 'Time to stop', v: (C.dt * 1000).toFixed(0) + ' ms', sub: 'Δt = 2d / v', c: '#0F2A3A' },
+        { k: 'Average force on the body', v: C.gs.toFixed(0) + ' g', sub: '≈ ' + (C.F / 1000).toFixed(1) + ' kN, or about ' + Math.round(C.F / 9.81) + ' kgf', c: C.gs > 25 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Compared with falling', v: C.h.toFixed(1) + ' m', sub: 'A crash at ' + s.cv + ' km/h equals falling from this height', c: '#0F2A3A' }
+      ],
+      sliders: [
+        { id: 'c-v', name: 'Impact speed', label: s.cv + ' km/h', min: 20, max: 120, step: 5, v: s.cv, set: function (e) { self.setState({ cv: parseFloat(e.target.value), ct: 0 }); } },
+        { id: 'c-m', name: 'Car mass', label: s.mass + ' kg', min: 800, max: 2500, step: 100, v: s.mass, set: function (e) { self.setState({ mass: parseFloat(e.target.value) }); } }
+      ],
+      protect: [
+        { id: 'none', name: 'No seatbelt' }, { id: 'old', name: 'Seatbelt, old stiff car with no crumple zone' },
+        { id: 'belt', name: 'Seatbelt, car with a crumple zone' }, { id: 'beltbag', name: 'Seatbelt + airbag + crumple zone' }
+      ].map(function (p) { var q = pill(s.prot === p.id); return { name: p.name, pressed: s.prot === p.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ prot: p.id, ct: 0 }); } }; }),
+      aria: 'Car hits a wall at ' + s.cv + ' km/h, average force ' + C.gs.toFixed(0) + ' times body weight'
+    };
+    var names = { none: 'No seatbelt', old: 'Belt, stiff car', belt: 'Belt + crumple zone', beltbag: 'Belt + airbag' };
+    var gsAll = ['none', 'old', 'belt', 'beltbag'].map(function (id) { return { id: id, g: self.crash(s, id).gs }; });
+    var gMax = Math.max.apply(null, gsAll.map(function (q) { return q.g; }));
+    cr.bars = gsAll.map(function (q) { return { n: names[q.id], w: Math.max(1, q.g / gMax * 100).toFixed(1) + '%', c: q.id === s.prot ? '#0A6A94' : '#9AAAB4', v: q.g.toFixed(0) + ' g' }; });
+    // the car mass changes the car's momentum but not the occupant's deceleration in a wall crash
+    cr.stats.push({ k: 'Car’s momentum', v: (s.mass * C.v / 1000).toFixed(1) + ' t·m/s', sub: 'Against a rigid wall a heavier car needs more force to stop, but the people inside stop over the same distance', c: '#0F2A3A' });
+
+    return {
+      bk: bk, cr: cr, abs: s.abs,
+      toggleAbs: function () { self.setState({ abs: !self.state.abs, bt: 0 }); },
+      runBrake: function () { self.setState({ bt: 0 }); },
+      runCrash: function () { self.setState({ ct: 0 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

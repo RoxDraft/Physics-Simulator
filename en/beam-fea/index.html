@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Beam FEA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><span aria-current="page">Beam FEA</span><a class="ps-lang" href="../../beam-fea/index.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 880px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">BEAM FEA LAB</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">Easy FEA: a loaded beam</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">This page uses a real finite element method: it splits the beam into 40 elements, builds a stiffness matrix and solves K·u = F, just like the FEA software engineers use, but in one dimension. It then colours the stress so you can see where the beam works hardest</p>
+</div>
+<a href="sources.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; text-decoration: none">Sources</a>
+</header>
+
+<div role="group" aria-label="Beam examples from real buildings" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 52px; padding: 8px 16px; border-radius: 14px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.3">{{p.name}}<br><span style="font-size: 12px; font-weight: 500; color: {{p.sub}}">{{p.desc}}</span></button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC">
+<div role="group" aria-label="Display" style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+<button type="button" onClick="{{m.pick}}" aria-pressed="{{m.pressed}}" style="min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid {{m.border}}; background: {{m.bg}}; color: {{m.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{m.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{res.bg}}; color: {{res.fg}}">{{res.badge}}</span>
+</div>
+<svg viewBox="0 0 900 300" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{res.aria}}">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="0">
+<rect x="{{c.x}}" y="{{c.y}}" width="{{c.w}}" height="{{c.h}}" fill="{{c.fill}}" stroke="{{c.stroke}}" stroke-width="0.4"></rect>
+</sc-for>
+<path d="{{res.outline}}" fill="none" stroke="#0F2A3A" stroke-width="1.5"></path>
+<path d="{{res.undeformed}}" fill="none" stroke="#9AAAB4" stroke-width="1" stroke-dasharray="5 4"></path>
+<path d="{{res.supports}}" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></path>
+<path d="{{res.walls}}" fill="none" stroke="#0F2A3A" stroke-width="2"></path>
+<path d="{{res.loads}}" fill="none" stroke="#B04A0C" stroke-width="2.5" stroke-linejoin="round"></path>
+<text x="{{res.pX}}" y="40" font-size="14" text-anchor="middle" fill="#7E3407" font-weight="700">{{res.pLabel}}</text>
+<text x="450" y="70" font-size="13" text-anchor="middle" fill="#7E3407">{{res.wLabel}}</text>
+<text x="50" y="290" font-size="12" fill="#4A5D6A">{{res.scaleNote}}</text>
+</svg>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid #E3E9EC">
+<span style="font-size: 13px; color: #4A5D6A">{{legend.lo}}</span>
+<span style="flex: 1 1 200px; height: 14px; border-radius: 7px; background: {{legend.grad}}"></span>
+<span style="font-size: 13px; color: #4A5D6A">{{legend.hi}}</span>
+</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 15px">Shear force (V) and bending moment (M) diagrams from FEA</div>
+<svg viewBox="0 0 900 240" style="display: block; width: 100%; height: auto" role="img" aria-label="Shear force and bending moment diagrams along the beam">
+<line x1="50" y1="60" x2="850" y2="60" stroke="#C9D4DA"></line>
+<line x1="50" y1="175" x2="850" y2="175" stroke="#C9D4DA"></line>
+<path d="{{dg.v}}" fill="#9FD0E6" fill-opacity="0.6" stroke="#0A6A94" stroke-width="2"></path>
+<path d="{{dg.m}}" fill="#F5C77A" fill-opacity="0.6" stroke="#B04A0C" stroke-width="2"></path>
+<text x="12" y="64" font-size="14" font-weight="700" fill="#0A6A94">V</text>
+<text x="12" y="179" font-size="14" font-weight="700" fill="#B04A0C">M</text>
+<text x="854" y="30" font-size="12" text-anchor="end" fill="#0A4F70">{{dg.vMax}}</text>
+<text x="854" y="140" font-size="12" text-anchor="end" fill="#7E3407">{{dg.mMax}}</text>
+</svg>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{res.rows}}" as="r" hint-placeholder-count="6">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: {{r.color}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 330px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">Beam and supports</h2>
+<div role="group" aria-label="Supports" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{supports}}" as="x" hint-placeholder-count="3">
+<button type="button" onClick="{{x.pick}}" aria-pressed="{{x.pressed}}" style="min-height: 44px; padding: 0 12px; border-radius: 10px; border: 1.5px solid {{x.border}}; background: {{x.bg}}; color: {{x.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{x.name}}</button>
+</sc-for>
+</div>
+<div role="group" aria-label="Material" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{mats}}" as="x" hint-placeholder-count="3">
+<button type="button" onClick="{{x.pick}}" aria-pressed="{{x.pressed}}" style="min-height: 44px; padding: 0 12px; border-radius: 10px; border: 1.5px solid {{x.border}}; background: {{x.bg}}; color: {{x.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{x.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="bm-l" style="font-size: 14px; font-weight: 600">Span (L)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{L.label}}</span></div>
+<input id="bm-l" type="range" min="1" max="14" step="0.1" value="{{L.v}}" onChange="{{setL}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="bm-h" style="font-size: 14px; font-weight: 600">Section depth (h)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{H.label}}</span></div>
+<input id="bm-h" type="range" min="150" max="1000" step="10" value="{{H.v}}" onChange="{{setH}}">
+<div style="font-size: 12px; color: #4A5D6A">{{H.section}}</div>
+</div>
+<h2 style="margin: 6px 0 0; font-size: 17px; font-weight: 700">Loads</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="bm-w" style="font-size: 14px; font-weight: 600">Distributed load (floor, walls, people)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{W.label}}</span></div>
+<input id="bm-w" type="range" min="0" max="60" step="0.5" value="{{W.v}}" onChange="{{setW}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="bm-p" style="font-size: 14px; font-weight: 600">Point load (crane, machinery)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{Pp.label}}</span></div>
+<input id="bm-p" type="range" min="0" max="200" step="1" value="{{Pp.v}}" onChange="{{setP}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="bm-a" style="font-size: 14px; font-weight: 600">Point load position</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{A.label}}</span></div>
+<input id="bm-a" type="range" min="0" max="1" step="0.01" value="{{A.v}}" onChange="{{setA}}">
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" checked="{{selfW}}" onChange="{{toggleSelf}}" style="width: 20px; height: 20px; accent-color: #0A6A94">Include the beam’s self-weight</label>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" checked="{{mesh}}" onChange="{{toggleMesh}}" style="width: 20px; height: 20px; accent-color: #0A6A94">Show the element mesh</label>
+<button type="button" onClick="{{toggleCrane}}" style="min-height: 48px; border-radius: 999px; border: 1.5px solid #0A6A94; background: {{craneBg}}; color: {{craneFg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{craneLabel}}</button>
+</div>
+</div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">How FEA software works</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">1 · Mesh</div><div style="font-weight: 700">Split the part into small pieces</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">This page splits the beam into 40 elements joined at 41 nodes. Each node can move in 2 ways: up-down and rotation</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">2 · Stiffness</div><div style="font-weight: 700">Build the stiffness matrix K</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">Each element has a 4 × 4 matrix from EI/L³, assembled into one large matrix {{dof}} × {{dof}}</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">3 · Solve</div><div style="font-weight: 700">Apply supports, then solve K·u = F</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">Lock the movement at the supports, then solve the linear equations for the deflection and rotation at every node, every time you move a slider</div></div>
+<div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B04A0C">4 · Post-process</div><div style="font-weight: 700">Calculate stress and colour it</div><div style="font-size: 14px; line-height: 1.6; color: #34495A">From the moment and shear we get the stresses σ = M·y/I and τ, combined into von Mises stress and compared with the material strength</div></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #4A5D6A; max-width: 960px">Real programs such as ANSYS, Abaqus or CalculiX use the same idea, but split 3D parts into hundreds of thousands to millions of elements and can handle nonlinear materials, cracks and vibration. This page uses Euler–Bernoulli beam theory for learning, not for real design. Real buildings must be designed by licensed civil engineers according to codes and law</p>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1900}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = { preset: 'condo', sup: 'ss', mat: 'rc', L: 6, h: 600, w: 25, P: 0, a: 0.5, selfW: true, mesh: false, mode: 'vm', crane: false, t: 0 };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.crane) { var t = self.state.t + dt; self.setState({ t: t, a: 0.5 - 0.45 * Math.cos(t * 0.6) }); }
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  presetList() {
+    return [
+      { id: 'condo', name: 'Condo floor beam', desc: 'Reinforced concrete, 6 m span', sup: 'ss', mat: 'rc', L: 6, h: 600, w: 25, P: 0, a: 0.5 },
+      { id: 'crane', name: 'Factory crane runway beam', desc: 'Steel I-beam, moving crane', sup: 'ss', mat: 'steel', L: 8, h: 500, w: 2, P: 80, a: 0.5, crane: true },
+      { id: 'balcony', name: 'Cantilever balcony', desc: 'Cantilever, concrete, 1.8 m', sup: 'cant', mat: 'rc', L: 1.8, h: 350, w: 12, P: 2, a: 1 },
+      { id: 'roof', name: 'Warehouse roof beam', desc: 'Steel, fixed both ends, 12 m span', sup: 'ff', mat: 'steel', L: 12, h: 450, w: 6, P: 0, a: 0.5 },
+      { id: 'timber', name: 'Timber footbridge', desc: 'Timber, 4 m span', sup: 'ss', mat: 'timber', L: 4, h: 250, w: 2, P: 5, a: 0.5 }
+    ];
+  }
+
+  section(mat, hmm) {
+    var h = hmm / 1000;
+    if (mat === 'steel') {
+      var b = 0.5 * h, tf = h / 18, tw = h / 28;
+      var I = (b * h * h * h - (b - tw) * Math.pow(h - 2 * tf, 3)) / 12;
+      var A = 2 * b * tf + (h - 2 * tf) * tw;
+      return { I: I, A: A, h: h, b: b, tf: tf, tw: tw, E: 200e6, f: 275, unitW: 78.5, name: 'Steel I-beam', kind: 'I', note: 'flange width ' + Math.round(b * 1000) + ' mm · yield strength 275 MPa' };
+    }
+    var bw = mat === 'timber' ? 0.4 * h : 0.5 * h;
+    var I2 = bw * h * h * h / 12;
+    if (mat === 'timber') return { I: I2, A: bw * h, h: h, b: bw, E: 11e6, f: 24, unitW: 5, name: 'Timber', kind: 'R', note: 'width ' + Math.round(bw * 1000) + ' mm · bending strength 24 MPa' };
+    return { I: I2, A: bw * h, h: h, b: bw, E: 30e6, f: 13.5, unitW: 24, name: 'Reinforced concrete', kind: 'R', note: 'width ' + Math.round(bw * 1000) + ' mm · allowable stress 13.5 MPa (0.45 f′c of 30 MPa)' };
+  }
+
+  // 1D Euler–Bernoulli beam finite elements
+  solve(sec, L, sup, w, P, a) {
+    var ne = 40, nn = ne + 1, nd = 2 * nn, le = L / ne, EI = sec.E * sec.I;
+    var K = [], F = [], i, j;
+    for (i = 0; i < nd; i++) { K.push(new Float64Array(nd)); F.push(0); }
+    var ke = [[12, 6 * le, -12, 6 * le], [6 * le, 4 * le * le, -6 * le, 2 * le * le], [-12, -6 * le, 12, -6 * le], [6 * le, 2 * le * le, -6 * le, 4 * le * le]];
+    var c = EI / (le * le * le);
+    var feq = [-w * le / 2, -w * le * le / 12, -w * le / 2, w * le * le / 12];
+    for (var e = 0; e < ne; e++) {
+      var d = [2 * e, 2 * e + 1, 2 * e + 2, 2 * e + 3];
+      for (i = 0; i < 4; i++) { F[d[i]] += feq[i]; for (j = 0; j < 4; j++) K[d[i]][d[j]] += c * ke[i][j]; }
+    }
+    // point load placed exactly with the element's Hermite shape functions
+    var xp = Math.min(L - 1e-9, Math.max(0, a * L)), ep = Math.min(ne - 1, Math.floor(xp / le)), xi = (xp - ep * le) / le;
+    var N = [1 - 3 * xi * xi + 2 * xi * xi * xi, le * (xi - 2 * xi * xi + xi * xi * xi), 3 * xi * xi - 2 * xi * xi * xi, le * (-xi * xi + xi * xi * xi)];
+    var fp = N.map(function (n) { return -P * n; });
+    for (i = 0; i < 4; i++) F[2 * ep + i] += fp[i];
+    var fixed = sup === 'ss' ? [0, 2 * ne] : sup === 'cant' ? [0, 1] : [0, 1, 2 * ne, 2 * ne + 1];
+    var Kf = K.map(function (r) { return Float64Array.from(r); }), Ff = F.slice();
+    fixed.forEach(function (k) { for (var q = 0; q < nd; q++) { Kf[k][q] = 0; Kf[q][k] = 0; } Kf[k][k] = 1; Ff[k] = 0; });
+    // Gaussian elimination (the matrix is banded and small, so this is quick)
+    for (i = 0; i < nd; i++) {
+      var piv = Kf[i][i];
+      for (j = i + 1; j < Math.min(nd, i + 5); j++) {
+        var fct = Kf[j][i] / piv;
+        if (fct === 0) continue;
+        for (var q2 = i; q2 < Math.min(nd, i + 6); q2++) Kf[j][q2] -= fct * Kf[i][q2];
+        Ff[j] -= fct * Ff[i];
+      }
+    }
+    var u = new Float64Array(nd);
+    for (i = nd - 1; i >= 0; i--) { var sm = Ff[i]; for (j = i + 1; j < Math.min(nd, i + 6); j++) sm -= Kf[i][j] * u[j]; u[i] = sm / Kf[i][i]; }
+    // internal forces per element (sagging moment positive)
+    var Vs = [], Ms = [];
+    for (var e2 = 0; e2 < ne; e2++) {
+      var ue = [u[2 * e2], u[2 * e2 + 1], u[2 * e2 + 2], u[2 * e2 + 3]], fe = [0, 0, 0, 0];
+      for (i = 0; i < 4; i++) { var s1 = 0; for (j = 0; j < 4; j++) s1 += c * ke[i][j] * ue[j]; fe[i] = s1 - feq[i] - (e2 === ep ? fp[i] : 0); }
+      Vs.push([fe[0], -fe[2]]); Ms.push([-fe[1], fe[3]]);
+    }
+    var R = fixed.map(function (k) { var s2 = 0; for (var q3 = 0; q3 < nd; q3++) s2 += K[k][q3] * u[q3]; return s2 - F[k]; });
+    return { u: u, V: Vs, M: Ms, ne: ne, le: le, nd: nd, R: R, fixed: fixed, ep: ep };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return v.toFixed(1); };
+    var sec = this.section(s.mat, s.h);
+    var wTot = s.w + (s.selfW ? sec.unitW * sec.A : 0);
+    var R = this.solve(sec, s.L, s.sup, wTot, s.P, s.a);
+    var ne = R.ne;
+    // stress per element and height
+    var ny = 12, cells = [], maxVM = 0, maxSig = 0, maxTau = 0, maxM = 0, maxV = 0;
+    var grid = [];
+    for (var e = 0; e < ne; e++) {
+      var Mmid = (R.M[e][0] + R.M[e][1]) / 2 + wTot * R.le * R.le / 8, Vmid = (R.V[e][0] + R.V[e][1]) / 2;
+      maxM = Math.max(maxM, Math.abs(R.M[e][0]), Math.abs(R.M[e][1]), Math.abs(Mmid)); maxV = Math.max(maxV, Math.abs(R.V[e][0]), Math.abs(R.V[e][1]));
+      var col = [];
+      for (var k = 0; k < ny; k++) {
+        var y = sec.h / 2 - (k + 0.5) * sec.h / ny;
+        var sig = -Mmid * y / sec.I / 1000; // MPa (kN/m² → MPa)
+        var tau;
+        if (sec.kind === 'I') tau = Math.abs(y) < sec.h / 2 - sec.tf ? Vmid / (sec.tw * (sec.h - 2 * sec.tf)) / 1000 : 0.1 * Vmid / (sec.tw * (sec.h - 2 * sec.tf)) / 1000;
+        else tau = Vmid * (sec.h * sec.h / 4 - y * y) / (2 * sec.I) / 1000;
+        var vm = Math.sqrt(sig * sig + 3 * tau * tau);
+        maxVM = Math.max(maxVM, vm); maxSig = Math.max(maxSig, Math.abs(sig)); maxTau = Math.max(maxTau, Math.abs(tau));
+        col.push({ sig: sig, vm: vm });
+      }
+      grid.push(col);
+    }
+    var vmax = 0; for (var n = 0; n < R.u.length; n += 2) vmax = Math.max(vmax, Math.abs(R.u[n]));
+    var X0 = 50, BW = 800, BH = 70, Y0 = 150;
+    var defScale = vmax > 0 ? 40 / vmax : 0; // largest sag drawn as 40 px
+    var nodeY = function (i) { return -R.u[2 * i] * defScale; };
+    // colour maps
+    var rainbow = function (t) {
+      t = Math.max(0, Math.min(1, t));
+      var stops = [[13, 71, 161], [2, 136, 209], [0, 172, 140], [124, 179, 66], [253, 216, 53], [251, 140, 0], [198, 40, 40]];
+      var p = t * (stops.length - 1), i0 = Math.floor(p), i1 = Math.min(stops.length - 1, i0 + 1), fr = p - i0;
+      var c = [0, 1, 2].map(function (q) { return Math.round(stops[i0][q] + (stops[i1][q] - stops[i0][q]) * fr); });
+      return 'rgb(' + c.join(',') + ')';
+    };
+    var diverge = function (v) {
+      var t = Math.max(-1, Math.min(1, v));
+      var a = t < 0 ? [10, 106, 148] : [176, 74, 12], wgt = Math.abs(t);
+      var c = [0, 1, 2].map(function (q) { return Math.round(248 + (a[q] - 248) * wgt); });
+      return 'rgb(' + c.join(',') + ')';
+    };
+    var ref = s.mode === 'vm' ? Math.max(sec.f, maxVM) : Math.max(sec.f, maxSig);
+    for (var e3 = 0; e3 < ne; e3++) {
+      var yOff = (nodeY(e3) + nodeY(e3 + 1)) / 2;
+      for (var k2 = 0; k2 < ny; k2++) {
+        var cv = grid[e3][k2];
+        cells.push({
+          x: f1(X0 + e3 * BW / ne), y: f1(Y0 - BH / 2 + k2 * BH / ny + yOff), w: f1(BW / ne + 0.3), h: f1(BH / ny + 0.3),
+          fill: s.mode === 'vm' ? rainbow(cv.vm / ref) : diverge(cv.sig / ref), stroke: s.mesh ? '#0F2A3A' : 'none'
+        });
+      }
+    }
+    var top = [], bot = [], und = 'M' + X0 + ',' + (Y0 - BH / 2) + ' h' + BW + ' v' + BH + ' h' + (-BW) + ' Z';
+    for (var i2 = 0; i2 <= ne; i2++) { var xx = X0 + i2 * BW / ne, yo = i2 < ne ? (nodeY(i2) + nodeY(Math.min(ne, i2 + 1))) / 2 : (nodeY(ne - 1) + nodeY(ne)) / 2; top.push(f1(xx) + ',' + f1(Y0 - BH / 2 + yo)); bot.push(f1(xx) + ',' + f1(Y0 + BH / 2 + yo)); }
+    var outline = 'M' + top.join(' L') + ' L' + bot.reverse().join(' L') + ' Z';
+    // supports
+    var tri = function (x) { return 'M' + x + ',' + (Y0 + BH / 2) + ' l-14,22 l28,0 Z '; };
+    var sup = '', walls = '';
+    if (s.sup === 'ss') sup = tri(X0) + 'M' + (X0 + BW) + ',' + (Y0 + BH / 2 + 11) + ' a11,11 0 1,0 0.01,0 Z';
+    if (s.sup === 'cant' || s.sup === 'ff') { walls += 'M' + X0 + ',' + (Y0 - 70) + ' v140 M' + (X0 - 14) + ',' + (Y0 - 60) + ' l14,-14 M' + (X0 - 14) + ',' + (Y0 - 30) + ' l14,-14 M' + (X0 - 14) + ',' + Y0 + ' l14,-14 M' + (X0 - 14) + ',' + (Y0 + 30) + ' l14,-14 M' + (X0 - 14) + ',' + (Y0 + 60) + ' l14,-14'; }
+    if (s.sup === 'ff') { var xr = X0 + BW; walls += ' M' + xr + ',' + (Y0 - 70) + ' v140 M' + xr + ',' + (Y0 - 46) + ' l14,-14 M' + xr + ',' + (Y0 - 16) + ' l14,-14 M' + xr + ',' + (Y0 + 14) + ' l14,-14 M' + xr + ',' + (Y0 + 44) + ' l14,-14 M' + xr + ',' + (Y0 + 74) + ' l14,-14'; }
+    // loads
+    var loads = '';
+    if (wTot > 0) for (var q = 0; q <= 16; q++) { var lx = X0 + q * BW / 16; loads += 'M' + f1(lx) + ',78 l0,' + (Y0 - BH / 2 - 84) + ' m-4,-7 l4,7 l4,-7 '; }
+    if (wTot > 0) loads += 'M' + X0 + ',78 h' + BW + ' ';
+    var px = X0 + s.a * BW, pyTop = 46;
+    if (s.P > 0) loads += 'M' + f1(px) + ',' + pyTop + ' L' + f1(px) + ',' + f1(Y0 - BH / 2 - 4 + nodeY(Math.round(s.a * ne))) + ' m-8,-12 l8,12 l8,-12 ';
+    // diagrams
+    var vScale = maxV > 0 ? 45 / maxV : 0, mScale = maxM > 0 ? 55 / maxM : 0;
+    var vp = ['50,60'], mp = ['50,175'];
+    for (var e4 = 0; e4 < ne; e4++) {
+      var xa = 50 + e4 * 800 / ne, xb = 50 + (e4 + 1) * 800 / ne;
+      vp.push(f1(xa) + ',' + f1(60 - R.V[e4][0] * vScale)); vp.push(f1(xb) + ',' + f1(60 - R.V[e4][1] * vScale));
+      var mmid = (R.M[e4][0] + R.M[e4][1]) / 2 + wTot * R.le * R.le / 8;
+      mp.push(f1(xa) + ',' + f1(175 - R.M[e4][0] * mScale)); mp.push(f1((xa + xb) / 2) + ',' + f1(175 - mmid * mScale)); mp.push(f1(xb) + ',' + f1(175 - R.M[e4][1] * mScale));
+    }
+    vp.push('850,60'); mp.push('850,175');
+    var dg = { v: 'M' + vp.join(' L') + ' Z', m: 'M' + mp.join(' L') + ' Z', vMax: 'Max V ' + maxV.toFixed(1) + ' kN', mMax: 'Max M ' + maxM.toFixed(1) + ' kN·m' };
+
+    var sf = sec.f / Math.max(maxVM, 1e-9);
+    var lim = s.sup === 'cant' ? s.L / 180 : s.L / 360, defMm = vmax * 1000, limMm = lim * 1000;
+    var ok = sf >= 1.5 && defMm <= limMm;
+    var reactions = R.R.filter(function (v, i) { return R.fixed[i] % 2 === 0; }).map(function (v) { return v.toFixed(1); }).join(' / ');
+    // analytic check for the textbook case: simply supported, central point load only
+    var check = '';
+    if (s.sup === 'ss') {
+      var EI = sec.E * sec.I, an = 5 * wTot * Math.pow(s.L, 4) / (384 * EI);
+      var ap = s.a * s.L, bp = s.L - ap, x = s.L / 2;
+      var pd = s.P > 0 ? (ap >= x ? s.P * bp * x * (s.L * s.L - bp * bp - x * x) / (6 * EI * s.L) : s.P * ap * (s.L - x) * (s.L * s.L - ap * ap - (s.L - x) * (s.L - x)) / (6 * EI * s.L)) : 0;
+      check = 'Textbook formula at midspan: ' + ((an + pd) * 1000).toFixed(2) + ' mm · FEA: ' + (Math.abs(R.u[2 * (ne / 2)]) * 1000).toFixed(2) + ' mm';
+    } else if (s.sup === 'cant') {
+      var EI2 = sec.E * sec.I, ac = wTot * Math.pow(s.L, 4) / (8 * EI2) + (s.P > 0 ? s.P * Math.pow(s.a * s.L, 2) * (3 * s.L - s.a * s.L) / (6 * EI2) : 0);
+      check = 'Textbook formula at the free end: ' + (ac * 1000).toFixed(2) + ' mm · FEA: ' + (Math.abs(R.u[2 * ne]) * 1000).toFixed(2) + ' mm';
+    } else check = 'A beam fixed at both ends deflects about 5 times less than a simply supported beam under the same distributed load';
+    var res = {
+      outline: outline, undeformed: und, supports: sup || 'M0,0', walls: walls || 'M0,0', loads: loads || 'M0,0',
+      pX: f1(px), pLabel: s.P > 0 ? s.P + ' kN' : '', wLabel: wTot > 0 ? 'Total distributed load ' + wTot.toFixed(1) + ' kN/m' : '',
+      badge: sf < 1 ? 'Beam fails: stress exceeds material strength' : !ok ? (sf < 1.5 ? 'Safety factor below 1.5' : 'Deflection exceeds L/' + (s.sup === 'cant' ? 180 : 360)) : 'Passes both strength and deflection',
+      bg: sf < 1 ? '#FCE3CF' : ok ? '#DDEFF6' : '#FFF1CC', fg: sf < 1 ? '#7E3407' : ok ? '#0A4F70' : '#6B4A00',
+      aria: 'Beam' + sec.name + ' , span ' + s.L + ' m, max stress ' + maxVM.toFixed(1) + ' MPa, deflection ' + defMm.toFixed(1) + ' mm',
+      rows: [
+        { k: 'Max bending moment', v: maxM.toFixed(1) + ' kN·m', sub: 'from FEA ' + ne + ' elements', color: '#0F2A3A' },
+        { k: 'Max von Mises stress', v: maxVM.toFixed(1) + ' MPa', sub: 'Material strength used for comparison ' + sec.f + ' MPa', color: sf < 1 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Safety factor (strength ÷ stress)', v: sf > 99 ? '> 99' : sf.toFixed(2), sub: 'This page uses a minimum of 1.5 for learning', color: sf < 1.5 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Max deflection', v: defMm.toFixed(1) + ' mm', sub: 'Limit L/' + (s.sup === 'cant' ? 180 : 360) + ' = ' + limMm.toFixed(1) + ' mm ' + (defMm > limMm ? 'Exceeded: the floor will feel bouncy and walls may crack' : 'Pass'), color: defMm > limMm ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Support reactions', v: reactions + ' kN', sub: 'Sum equals the total load ' + (wTot * s.L + s.P).toFixed(1) + ' kN', color: '#0F2A3A' },
+        { k: 'Check against the textbook formula', v: '', sub: check, color: '#0F2A3A' }
+      ]
+    };
+    res.scaleNote = 'Deflection in the picture is exaggerated · beam depth in the picture is not to scale';
+    var legend = s.mode === 'vm' ? { lo: '0 MPa', hi: ref.toFixed(0) + ' MPa', grad: 'linear-gradient(90deg, rgb(13,71,161), rgb(2,136,209), rgb(0,172,140), rgb(124,179,66), rgb(253,216,53), rgb(251,140,0), rgb(198,40,40))' }
+      : { lo: 'Compression −' + ref.toFixed(0) + ' MPa', hi: 'Tension +' + ref.toFixed(0) + ' MPa', grad: 'linear-gradient(90deg, rgb(10,106,148), rgb(248,248,248), rgb(176,74,12))' };
+
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', sub: '#E1F0F7', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', sub: '#4A5D6A', border: '#C9D4DA' }; };
+    var opt = function (list, key) { return list.map(function (x) { var on = s[key] === x.id, p = pill(on); return { name: x.name, pressed: on ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { var o = {}; o[key] = x.id; o.preset = null; self.setState(o); } }; }); };
+    var set = function (k) { return function (ev) { var o = { preset: null }; o[k] = parseFloat(ev.target.value); if (k === 'a') o.crane = false; self.setState(o); }; };
+    return {
+      presets: this.presetList().map(function (p) { var on = s.preset === p.id, q = pill(on); return { name: p.name, desc: p.desc, pressed: on ? 'true' : 'false', bg: q.bg, fg: q.fg, sub: q.sub, border: q.border, pick: function () { self.setState({ preset: p.id, sup: p.sup, mat: p.mat, L: p.L, h: p.h, w: p.w, P: p.P, a: p.a, crane: !!p.crane && !self.reduce }); } }; }),
+      modes: opt([{ id: 'vm', name: 'von Mises stress' }, { id: 'sig', name: 'Tension / compression' }], 'mode'),
+      supports: opt([{ id: 'ss', name: 'Simply supported' }, { id: 'cant', name: 'Cantilever' }, { id: 'ff', name: 'Fixed both ends' }], 'sup'),
+      mats: opt([{ id: 'rc', name: 'Reinforced concrete' }, { id: 'steel', name: 'Steel I-beam' }, { id: 'timber', name: 'Timber' }], 'mat'),
+      cells: cells, res: res, dg: dg, legend: legend, dof: R.nd,
+      L: { v: s.L, label: s.L.toFixed(1) + ' m' }, H: { v: s.h, label: s.h + ' mm', section: sec.name + ' · ' + sec.note },
+      W: { v: s.w, label: s.w.toFixed(1) + ' kN/m' }, Pp: { v: s.P, label: s.P + ' kN' }, A: { v: s.a, label: (s.a * s.L).toFixed(2) + ' m' },
+      setL: set('L'), setH: set('h'), setW: set('w'), setP: set('P'), setA: set('a'),
+      selfW: s.selfW, mesh: s.mesh,
+      toggleSelf: function () { self.setState({ selfW: !self.state.selfW }); },
+      toggleMesh: function () { self.setState({ mesh: !self.state.mesh }); },
+      toggleCrane: function () { self.setState({ crane: !self.state.crane, P: self.state.P > 0 ? self.state.P : 60 }); },
+      craneLabel: s.crane ? 'Stop the crane' : 'Move the point load back and forth (crane)',
+      craneBg: s.crane ? '#0A6A94' : '#FFFFFF', craneFg: s.crane ? '#FFFFFF' : '#0A6A94'
+    };
+  }
+}
+</script>
+</body>
+</html>

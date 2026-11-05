@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แล็บเคมีและชีววิทยา</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">CHEM · BIO LAB</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">อัตราการเกิดปฏิกิริยา และการแพร่ของโรคในประชากร</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">สองเรื่องนี้ใช้คณิตศาสตร์ชุดเดียวกัน คืออนุภาคหรือคนที่สุ่มชนกัน แล้วบางครั้งการชนนั้นก็ทำให้เกิดการเปลี่ยนแปลง ลองปรับค่า ดูกราฟที่เกิดขึ้นจริงจากการจำลอง แล้ววิเคราะห์ข้อมูลแบบเดียวกับนักระบาดวิทยา</p>
+</div>
+<a href="Sources.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; text-decoration: none">แหล่งข้อมูล</a>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. ทฤษฎีการชน: A + B → C</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 940px">โมเลกุลต้องชนกัน และต้องชนแรงพอจะข้ามพลังงานกระตุ้น (Ea) ปฏิกิริยาจึงจะเกิด อุณหภูมิสูงทำให้โมเลกุลเร็วขึ้นและมีสัดส่วนที่พลังงานเกิน Ea มากขึ้น ความเข้มข้นสูงทำให้ชนบ่อยขึ้น ส่วนตัวเร่งปฏิกิริยาสร้างเส้นทางใหม่ที่ Ea ต่ำลง</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="#0A6A94"></circle></svg>สาร A</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="#B04A0C"></circle></svg>สาร B</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="16" height="12" aria-hidden="true"><circle cx="8" cy="6" r="6" fill="#3F7A4F"></circle></svg>ผลิตภัณฑ์ C</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="none" stroke="#C99A1E" stroke-width="2"></circle></svg>ชนแต่ไม่เกิดปฏิกิริยา</span>
+</div>
+<svg viewBox="0 0 640 340" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{rx.aria}}">
+<rect x="1" y="1" width="638" height="338" fill="none" stroke="#C9D4DA" stroke-width="2"></rect>
+<path d="{{rx.flash}}" fill="none" stroke="#C99A1E" stroke-width="2"></path>
+<path d="{{rx.pA}}" fill="#0A6A94"></path>
+<path d="{{rx.pB}}" fill="#B04A0C"></path>
+<path d="{{rx.pC}}" fill="#3F7A4F"></path>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">จำนวนโมเลกุลเทียบเวลา</span><span style="font-size: 13px; color: #4A5D6A">เส้นฟ้า = A เหลืออยู่ · เส้นเขียว = C ที่เกิดขึ้น</span></div>
+<svg viewBox="0 0 640 180" style="display: block; width: 100%; height: auto" role="img" aria-label="{{rx.chartAria}}">
+<line x1="40" y1="150" x2="630" y2="150" stroke="#9AAAB4"></line>
+<line x1="40" y1="10" x2="40" y2="150" stroke="#9AAAB4"></line>
+<text x="34" y="14" font-size="11" text-anchor="end" fill="#4A5D6A">{{rx.nMax}}</text>
+<text x="34" y="154" font-size="11" text-anchor="end" fill="#4A5D6A">0</text>
+<line x1="40" y1="80" x2="630" y2="80" stroke="#E3E9EC" stroke-dasharray="4 4"></line>
+<text x="630" y="170" font-size="11" text-anchor="end" fill="#4A5D6A">{{rx.tLabel}}</text>
+<path d="{{rx.lineA}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<path d="{{rx.lineC}}" fill="none" stroke="#3F7A4F" stroke-width="2.5"></path>
+<line x1="{{rx.halfX}}" y1="10" x2="{{rx.halfX}}" y2="150" stroke="#B04A0C" stroke-dasharray="3 3" opacity="{{rx.halfO}}"></line>
+<text x="{{rx.halfX}}" y="24" font-size="11" fill="#B04A0C" dx="4" opacity="{{rx.halfO}}">t½</text>
+</svg>
+</div>
+</div>
+
+<div style="flex: 1 1 330px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{rx.sliders}}" as="x" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{cat}}" onChange="{{toggleCat}}" style="width: 20px; height: 20px; accent-color: #0A6A94">เติมตัวเร่งปฏิกิริยา (Ea ลดลง 8 kJ/mol)</label>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{rxReset}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">เริ่มการทดลองใหม่</button>
+<button type="button" onClick="{{rxPause}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{rx.pauseTxt}}</button>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+<sc-for list="{{rx.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px">{{r.v}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 15px">การกระจายพลังงานของโมเลกุล</span>
+<svg viewBox="0 0 320 160" style="display: block; width: 100%; height: auto" role="img" aria-label="{{rx.mbAria}}">
+<path d="{{rx.mbFill}}" fill="#FCE3CF"></path>
+<path d="{{rx.mbLine}}" fill="none" stroke="#0F2A3A" stroke-width="2"></path>
+<line x1="{{rx.eaX}}" y1="16" x2="{{rx.eaX}}" y2="135" stroke="#B04A0C" stroke-width="2"></line>
+<text x="{{rx.eaX}}" y="12" font-size="11" text-anchor="middle" fill="#B04A0C">Ea</text>
+<line x1="10" y1="135" x2="312" y2="135" stroke="#9AAAB4"></line>
+<text x="312" y="152" font-size="11" text-anchor="end" fill="#4A5D6A">พลังงานจลน์ →</text>
+</svg>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">พื้นที่สีส้มคือโมเลกุลที่มีพลังงานเกิน Ea (ภาพประกอบ ไม่ตามสเกล) ส่วนนี้คือ e<sup>−Ea/RT</sup> ในสมการอาร์เรเนียส k = A·e<sup>−Ea/RT</sup></span>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. การแพร่ของโรค: จำลองทีละคน (Agent-based model)</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 940px">ประชากร 300 คนเดินไปมา คนติดเชื้อแพร่เชื้อให้คนที่อยู่ใกล้ หลังรับเชื้อจะมีระยะฟักตัวราว 3 วัน แพร่เชื้อได้ราว 7 วัน แล้วหายและมีภูมิคุ้มกัน (แบบจำลอง SEIR) 1 วินาทีบนจอเท่ากับ 2 วันในแบบจำลอง</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<sc-for list="{{ep.legend}}" as="l" hint-placeholder-count="5">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="{{l.c}}"></circle></svg>{{l.n}} <span style="font-family: 'IBM Plex Mono', monospace">{{l.v}}</span></span>
+</sc-for>
+</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-weight: 600">{{ep.dayTxt}}</span>
+</div>
+<svg viewBox="0 0 640 340" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{ep.aria}}">
+<rect x="1" y="1" width="638" height="338" fill="none" stroke="#C9D4DA" stroke-width="2"></rect>
+<path d="{{ep.ring}}" fill="none" stroke="#B04A0C" stroke-width="1" opacity="0.35"></path>
+<path d="{{ep.pS}}" fill="#0A6A94"></path>
+<path d="{{ep.pV}}" fill="#3F7A4F"></path>
+<path d="{{ep.pR}}" fill="#9AAAB4"></path>
+<path d="{{ep.pE}}" fill="#C99A1E"></path>
+<path d="{{ep.pI}}" fill="#B04A0C"></path>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">จำนวนคนในแต่ละสถานะ และผู้ป่วยใหม่รายวัน</span><span style="font-size: 13px; color: #4A5D6A">แท่ง = ผู้ป่วยใหม่ต่อวัน · เส้นประ = เส้นที่ fit จากช่วงโตแบบเอกซ์โพเนนเชียล</span></div>
+<svg viewBox="0 0 640 200" style="display: block; width: 100%; height: auto" role="img" aria-label="{{ep.chartAria}}">
+<line x1="40" y1="170" x2="630" y2="170" stroke="#9AAAB4"></line>
+<line x1="40" y1="10" x2="40" y2="170" stroke="#9AAAB4"></line>
+<text x="34" y="14" font-size="11" text-anchor="end" fill="#4A5D6A">300</text>
+<text x="34" y="174" font-size="11" text-anchor="end" fill="#4A5D6A">0</text>
+<text x="630" y="188" font-size="11" text-anchor="end" fill="#4A5D6A">{{ep.dMax}}</text>
+<path d="{{ep.bars}}" fill="#FCE3CF"></path>
+<path d="{{ep.lS}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<path d="{{ep.lR}}" fill="none" stroke="#9AAAB4" stroke-width="2.5"></path>
+<path d="{{ep.lI}}" fill="none" stroke="#B04A0C" stroke-width="2.5"></path>
+<path d="{{ep.fit}}" fill="none" stroke="#0F2A3A" stroke-width="1.5" stroke-dasharray="5 4"></path>
+</svg>
+</div>
+</div>
+
+<div style="flex: 1 1 330px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{ep.sliders}}" as="x" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{mask}}" onChange="{{toggleMask}}" style="width: 20px; height: 20px; accent-color: #0A6A94">ทุกคนใส่หน้ากาก (ลดโอกาสแพร่เชื้อ 40%)</label>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{iso}}" onChange="{{toggleIso}}" style="width: 20px; height: 20px; accent-color: #0A6A94">ผู้ป่วยแยกตัวเมื่อมีอาการ (หยุดเดินหลังป่วย 2 วัน)</label>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{epReset}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">เริ่มการระบาดใหม่</button>
+<button type="button" onClick="{{epPause}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{ep.pauseTxt}}</button>
+</div>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">ค่าที่ปรับจะใช้ตอนกดเริ่มใหม่ ยกเว้นหน้ากากและการแยกตัว ซึ่งมีผลทันที</span>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">วิเคราะห์ข้อมูลจากการจำลอง</div>
+<sc-for list="{{ep.stats}}" as="r" hint-placeholder-count="6">
+<div style="display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid #24465A; padding-bottom: 6px"><span style="font-size: 14px; color: #D9E8EF">{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; text-align: right">{{r.v}}</span></div>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">{{ep.method}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">3. แบบจำลองสมการ SEIR: ทำให้กราฟแบนลง</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #34495A">นักระบาดวิทยาใช้สมการเชิงอนุพันธ์กับประชากรทั้งประเทศ แทนการจำลองทีละคน เส้นทึบคือสัดส่วนผู้ติดเชื้อตามค่าที่ตั้งไว้ เส้นประคือกรณีไม่มีวัคซีน ยอดที่ต่ำลงหมายถึงโรงพยาบาลรับผู้ป่วยไหว</p>
+<svg viewBox="0 0 640 230" style="display: block; width: 100%; height: auto" role="img" aria-label="{{od.aria}}">
+<line x1="50" y1="200" x2="630" y2="200" stroke="#9AAAB4"></line>
+<line x1="50" y1="10" x2="50" y2="200" stroke="#9AAAB4"></line>
+<line x1="50" y1="{{od.capY}}" x2="630" y2="{{od.capY}}" stroke="#B04A0C" stroke-dasharray="6 4"></line>
+<text x="626" y="{{od.capY}}" dy="-6" font-size="12" text-anchor="end" fill="#B04A0C">ขีดความสามารถของโรงพยาบาล (สมมติ)</text>
+<text x="44" y="14" font-size="11" text-anchor="end" fill="#4A5D6A">{{od.yMax}}</text>
+<text x="44" y="204" font-size="11" text-anchor="end" fill="#4A5D6A">0</text>
+<text x="630" y="220" font-size="11" text-anchor="end" fill="#4A5D6A">300 วัน</text>
+<path d="{{od.base}}" fill="none" stroke="#9AAAB4" stroke-width="2" stroke-dasharray="5 4"></path>
+<path d="{{od.cur}}" fill="none" stroke="#B04A0C" stroke-width="3"></path>
+</svg>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<sc-for list="{{od.sliders}}" as="x" hint-placeholder-count="2">
+<div style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{od.stats}}" as="r" hint-placeholder-count="4">
+<div style="flex: 1 1 130px; background: #F3F6F7; border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 17px; color: {{r.c}}">{{r.v}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สมการที่ใช้</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.9">dS/dt = −β·S·I<br>dE/dt = β·S·I − σ·E<br>dI/dt = σ·E − γ·I<br>dR/dt = γ·I<br>R0 = β/γ · ภูมิคุ้มกันหมู่ = 1 − 1/R0</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">σ = 1/ระยะฟักตัว (3 วัน) และ γ = 1/ระยะแพร่เชื้อ (7 วัน) ค่า R0 ของโรคจริงแตกต่างกันมาก ไข้หวัดใหญ่ตามฤดูกาลราว 1–2 โควิด-19 สายพันธุ์แรกราว 2–3 และหัดสูงถึง 12–18</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">แบบจำลองนี้ใช้เพื่อการเรียนรู้ แบบจำลองจริงต้องแบ่งกลุ่มอายุ พื้นที่ พฤติกรรม และปรับค่าด้วยข้อมูลผู้ป่วยจริง</p>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2400}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      T: 300, Ea: 50, nA: 40, cat: false, rxPaused: reduce, tick: 0,
+      beta: 0.6, vacc: 0, dist: 0, mask: false, iso: false, epPaused: reduce,
+      R0: 2.5, ov: 0
+    };
+    this.W = 640; this.H = 340;
+    this.rxInit();
+    this.epInit();
+  }
+
+  rand() { this._seed = (this._seed * 1664525 + 1013904223) % 4294967296; return this._seed / 4294967296; }
+
+  rxInit(nA) {
+    var s = this.state, P = [];
+    nA = nA || s.nA;
+    this._seed = this._seed || 12345;
+    var v = 70 * Math.sqrt(s.T / 300);
+    for (var k = 0; k < 2 * nA; k++) {
+      var a = this.rand() * Math.PI * 2, sp = v * (0.5 + this.rand());
+      P.push({ x: 10 + this.rand() * (this.W - 20), y: 10 + this.rand() * (this.H - 20), vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, t: k % 2 ? 'B' : 'A', cd: 0 });
+    }
+    this.rx = { P: P, time: 0, hist: [[0, nA, 0]], col: 0, eff: 0, flashes: [], half: null, colWin: [], n0: nA, sampleT: 0 };
+  }
+
+  pReact() {
+    var s = this.state, R = 8.314, Ea = (s.Ea - (s.cat ? 8 : 0)) * 1000;
+    // 6% of collisions succeed at 50 kJ/mol and 300 K; scaled with Arrhenius
+    return Math.min(1, 0.06 * Math.exp(-Ea / (R * s.T) + 50000 / (R * 300)));
+  }
+
+  rxStep(dt) {
+    var s = this.state, rx = this.rx, P = rx.P, W = this.W, H = this.H, p = this.pReact();
+    var vT = Math.sqrt(s.T / 300);
+    rx.time += dt;
+    for (var i = 0; i < P.length; i++) {
+      var q = P[i];
+      var sc = vT / (q.vs || vT); q.vs = vT; q.vx *= sc; q.vy *= sc;
+      q.x += q.vx * dt; q.y += q.vy * dt;
+      if (q.x < 6) { q.x = 6; q.vx = Math.abs(q.vx); } if (q.x > W - 6) { q.x = W - 6; q.vx = -Math.abs(q.vx); }
+      if (q.y < 6) { q.y = 6; q.vy = Math.abs(q.vy); } if (q.y > H - 6) { q.y = H - 6; q.vy = -Math.abs(q.vy); }
+      if (q.cd > 0) q.cd -= dt;
+    }
+    for (var a = 0; a < P.length; a++) {
+      var A = P[a]; if (A.t !== 'A' || A.cd > 0) continue;
+      for (var b = 0; b < P.length; b++) {
+        var B = P[b]; if (B.t !== 'B' || B.cd > 0) continue;
+        var dx = B.x - A.x, dy = B.y - A.y;
+        if (dx * dx + dy * dy < 100) {
+          rx.col++; rx.colWin.push(rx.time);
+          if (this.rand() < p) {
+            rx.eff++;
+            A.t = 'C'; A.x = (A.x + B.x) / 2; A.y = (A.y + B.y) / 2; A.vx = (A.vx + B.vx) / 2; A.vy = (A.vy + B.vy) / 2;
+            B.t = 'X';
+          } else {
+            // bounce apart
+            var tx = A.vx, ty = A.vy; A.vx = B.vx; A.vy = B.vy; B.vx = tx; B.vy = ty;
+            A.cd = 0.25; B.cd = 0.25;
+            rx.flashes.push({ x: (A.x + B.x) / 2, y: (A.y + B.y) / 2, t: 0.35 });
+          }
+          break;
+        }
+      }
+    }
+    rx.P = P.filter(function (q) { return q.t !== 'X'; });
+    rx.flashes = rx.flashes.filter(function (f) { f.t -= dt; return f.t > 0; });
+    var t0 = rx.time - 2; rx.colWin = rx.colWin.filter(function (t) { return t > t0; });
+    rx.sampleT += dt;
+    if (rx.sampleT > 0.25) {
+      rx.sampleT = 0;
+      var nA = 0, nC = 0; rx.P.forEach(function (q) { if (q.t === 'A') nA++; else if (q.t === 'C') nC++; });
+      rx.hist.push([rx.time, nA, nC]);
+      if (rx.half === null && nA <= rx.n0 / 2) rx.half = rx.time;
+    }
+  }
+
+  epInit() {
+    var s = this.state, A = [];
+    this._seed2 = 98765;
+    var r2 = function (self) { self._seed2 = (self._seed2 * 1664525 + 1013904223) % 4294967296; return self._seed2 / 4294967296; };
+    this.r2 = function () { return r2(this); };
+    for (var k = 0; k < 300; k++) {
+      var a = this.r2() * Math.PI * 2;
+      A.push({ x: 8 + this.r2() * (this.W - 16), y: 8 + this.r2() * (this.H - 16), vx: Math.cos(a) * 30, vy: Math.sin(a) * 30,
+        st: 'S', t: 0, still: this.r2() < s.dist / 100 });
+    }
+    var order = A.map(function (_, i) { return i; });
+    for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(this.r2() * (i + 1)), tmp = order[i]; order[i] = order[j]; order[j] = tmp; }
+    var nV = Math.round(300 * s.vacc / 100);
+    for (var v = 0; v < nV; v++) A[order[v]].st = 'V';
+    for (var w = nV; w < Math.min(300, nV + 3); w++) { A[order[w]].st = 'I'; A[order[w]].t = 0; A[order[w]].still = false; }
+    this.ep = { A: A, day: 0, hist: [], newToday: 0, daily: [], acc: 0, beta: s.beta, vacc: s.vacc, dist: s.dist, done: false };
+    this.epRecord();
+  }
+
+  epCounts() {
+    var c = { S: 0, E: 0, I: 0, R: 0, V: 0 };
+    this.ep.A.forEach(function (a) { c[a.st]++; });
+    return c;
+  }
+
+  epRecord() {
+    var c = this.epCounts();
+    this.ep.hist.push({ d: this.ep.day, S: c.S, E: c.E, I: c.I, R: c.R, V: c.V });
+  }
+
+  epStep(dtDays) {
+    var s = this.state, ep = this.ep, A = ep.A, W = this.W, H = this.H;
+    var beta = ep.beta * (s.mask ? 0.6 : 1), r = 12, r2 = r * r;
+    var sec = dtDays / 2;
+    // move
+    for (var i = 0; i < A.length; i++) {
+      var a = A[i];
+      var stop = a.still || (s.iso && a.st === 'I' && a.t > 2);
+      if (!stop) {
+        a.x += a.vx * sec; a.y += a.vy * sec;
+        if (a.x < 5) { a.x = 5; a.vx = Math.abs(a.vx); } if (a.x > W - 5) { a.x = W - 5; a.vx = -Math.abs(a.vx); }
+        if (a.y < 5) { a.y = 5; a.vy = Math.abs(a.vy); } if (a.y > H - 5) { a.y = H - 5; a.vy = -Math.abs(a.vy); }
+      }
+    }
+    // transmit (grid hash)
+    var cell = {}, key = function (x, y) { return Math.floor(x / r) + ',' + Math.floor(y / r); };
+    A.forEach(function (a, i) { if (a.st === 'S' || a.st === 'V') { var k = key(a.x, a.y); (cell[k] = cell[k] || []).push(i); } });
+    var pInf = 1 - Math.exp(-beta * dtDays);
+    for (var j = 0; j < A.length; j++) {
+      var I = A[j]; if (I.st !== 'I') continue;
+      if (s.iso && I.t > 2) continue; // isolated cases do not mix
+      var cx = Math.floor(I.x / r), cy = Math.floor(I.y / r);
+      for (var gx = cx - 1; gx <= cx + 1; gx++) for (var gy = cy - 1; gy <= cy + 1; gy++) {
+        var lst = cell[gx + ',' + gy]; if (!lst) continue;
+        for (var m = 0; m < lst.length; m++) {
+          var S = A[lst[m]]; if (S.st !== 'S' && S.st !== 'V') continue;
+          var dx = S.x - I.x, dy = S.y - I.y;
+          if (dx * dx + dy * dy < r2) {
+            var pr = S.st === 'V' ? pInf * 0.1 : pInf;
+            if (this.r2() < pr) { S.st = 'E'; S.t = 0; ep.newToday++; }
+          }
+        }
+      }
+    }
+    // progress
+    for (var k = 0; k < A.length; k++) {
+      var b = A[k];
+      if (b.st === 'E' || b.st === 'I') {
+        b.t += dtDays;
+        if (b.st === 'E' && b.t > 3) { b.st = 'I'; b.t = 0; }
+        else if (b.st === 'I' && b.t > 7) { b.st = 'R'; b.t = 0; }
+      }
+    }
+    ep.day += dtDays; ep.acc += dtDays;
+    if (ep.acc >= 1) {
+      ep.acc -= 1;
+      ep.daily.push(ep.newToday); ep.newToday = 0;
+      this.epRecord();
+      var c = this.epCounts();
+      if (c.E + c.I === 0) ep.done = true;
+    }
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      var s = self.state;
+      if (!s.rxPaused) self.rxStep(dt);
+      if (!s.epPaused && !self.ep.done) self.epStep(dt * 2);
+      self.setState({ tick: s.tick + 1 });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  seir(R0, v) {
+    var g = 1 / 7, sg = 1 / 3, b = R0 * g, S = 1 - v - 1e-4, E = 0, I = 1e-4, R = v, dt = 0.25, out = [], peak = 0, peakD = 0;
+    for (var t = 0; t <= 300; t += dt) {
+      if (Math.abs(t - Math.round(t)) < 1e-9) out.push(I);
+      if (I > peak) { peak = I; peakD = t; }
+      var inf = b * S * I * dt, inc = sg * E * dt, rec = g * I * dt;
+      S -= inf; E += inf - inc; I += inc - rec; R += rec;
+    }
+    return { I: out, peak: peak, peakD: peakD, attack: 1 - S - v };
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var circ = function (x, y, r) { return 'M' + f1(x - r) + ',' + f1(y) + ' a' + r + ',' + r + ' 0 1,0 ' + 2 * r + ',0 a' + r + ',' + r + ' 0 1,0 ' + -2 * r + ',0 '; };
+
+    // ---------- reaction ----------
+    var rx = this.rx, pA = '', pB = '', pC = '', fl = '';
+    rx.P.forEach(function (q) { if (q.t === 'A') pA += circ(q.x, q.y, 5); else if (q.t === 'B') pB += circ(q.x, q.y, 5); else pC += circ(q.x, q.y, 7); });
+    rx.flashes.forEach(function (f) { fl += circ(f.x, f.y, 6 + (0.35 - f.t) * 30); });
+    var hist = rx.hist, tSpan = Math.max(20, rx.time), nMax = Math.max(rx.n0, 1);
+    var X = function (t) { return 40 + 590 * t / tSpan; }, Y = function (n) { return 150 - 140 * n / nMax; };
+    var lineA = hist.map(function (h, i) { return (i ? 'L' : 'M') + f1(X(h[0])) + ',' + f1(Y(h[1])); }).join(' ');
+    var lineC = hist.map(function (h, i) { return (i ? 'L' : 'M') + f1(X(h[0])) + ',' + f1(Y(h[2])); }).join(' ');
+    var p = this.pReact();
+    var colRate = rx.colWin.length / Math.min(2, Math.max(rx.time, 0.01));
+    var kRel = Math.exp(-((s.Ea - (s.cat ? 8 : 0)) * 1000) / (8.314 * s.T)) / Math.exp(-50000 / (8.314 * 300));
+    // energy distribution sketch
+    var kT = 40 * s.T / 300, eaX = 10 + Math.min(290, Math.max(0, (s.Ea - (s.cat ? 8 : 0) - 20) * 5)), mbL = [], mbF = [];
+    for (var e = 0; e <= 300; e += 4) {
+      var E = e / 1, fy = (E / kT) * Math.exp(1 - E / kT);
+      var y = 135 - 110 * fy * (300 / s.T);
+      mbL.push(f1(10 + e) + ',' + f1(Math.max(16, y)));
+      if (10 + e >= eaX) mbF.push(f1(10 + e) + ',' + f1(Math.max(16, y)));
+    }
+    var mbFill = mbF.length ? 'M' + f1(eaX) + ',135 L' + mbF.join(' L') + ' L310,135 Z' : 'M0,0';
+    var nAnow = rx.P.filter(function (q) { return q.t === 'A'; }).length;
+    var rxo = {
+      pA: pA || 'M0,0', pB: pB || 'M0,0', pC: pC || 'M0,0', flash: fl || 'M0,0',
+      lineA: lineA, lineC: lineC, nMax: nMax, tLabel: tSpan.toFixed(0) + ' วินาที',
+      halfX: f1(rx.half !== null ? X(rx.half) : 40), halfO: rx.half !== null ? 1 : 0,
+      pauseTxt: s.rxPaused ? 'เล่นต่อ' : 'หยุดชั่วคราว',
+      sliders: [
+        { id: 'rx-t', name: 'อุณหภูมิ', label: s.T + ' K (' + (s.T - 273) + ' °C)', min: 250, max: 400, step: 5, v: s.T, set: function (e) { self.setState({ T: parseFloat(e.target.value) }); } },
+        { id: 'rx-ea', name: 'พลังงานกระตุ้น Ea', label: s.Ea + ' kJ/mol', min: 40, max: 70, step: 1, v: s.Ea, set: function (e) { self.setState({ Ea: parseFloat(e.target.value) }); } },
+        { id: 'rx-n', name: 'ความเข้มข้นเริ่มต้น (จำนวน A และ B)', label: s.nA + ' + ' + s.nA, min: 10, max: 70, step: 5, v: s.nA, set: function (e) { var nv = parseInt(e.target.value, 10); self.rxInit(nv); self.setState({ nA: nv }); } }
+      ],
+      stats: [
+        { k: 'อัตราชนต่อวินาที', v: colRate.toFixed(1) },
+        { k: 'การชนที่สำเร็จ', v: (p * 100).toFixed(p < 0.1 ? 1 : 0) + '%' },
+        { k: 'k เทียบกับ 300 K, 50 kJ', v: '× ' + (kRel < 10 ? kRel.toFixed(2) : kRel.toFixed(0)) },
+        { k: 'ครึ่งชีวิตที่วัดได้', v: rx.half !== null ? rx.half.toFixed(1) + ' s' : 'A เหลือ ' + nAnow }
+      ],
+      mbLine: 'M' + mbL.join(' L'), mbFill: mbFill, eaX: f1(eaX),
+      aria: 'กล่องโมเลกุล สาร A เหลือ ' + nAnow + ' โมเลกุล',
+      chartAria: 'กราฟจำนวนโมเลกุลเทียบเวลา', mbAria: 'กราฟการกระจายพลังงานโมเลกุล'
+    };
+
+    // ---------- epidemic ----------
+    var ep = this.ep, P = { S: '', E: '', I: '', R: '', V: '' }, ring = '';
+    ep.A.forEach(function (a) { P[a.st] += circ(a.x, a.y, 4); if (a.st === 'I' && !(s.iso && a.t > 2)) ring += circ(a.x, a.y, 12); });
+    var c = this.epCounts(), H = ep.hist, dMax = Math.max(60, Math.ceil(ep.day / 20) * 20);
+    var XD = function (d) { return 40 + 590 * d / dMax; }, YD = function (n) { return 170 - 160 * n / 300; };
+    var ln = function (k) { return H.map(function (h, i) { return (i ? 'L' : 'M') + f1(XD(h.d)) + ',' + f1(YD(h[k] + (k === 'I' ? h.E : 0))); }).join(' '); };
+    var bw = 590 / dMax, bars = '', maxDaily = 0;
+    ep.daily.forEach(function (n, d) { if (n > maxDaily) maxDaily = n; var h = 160 * n / 300 * 3; bars += 'M' + f1(XD(d)) + ',170 h' + f1(Math.max(1, bw - 1)) + ' v' + f1(-Math.min(160, h)) + ' h' + f1(-Math.max(1, bw - 1)) + ' Z '; });
+    // data analytics: log-linear fit on the early growth phase of active cases
+    var peakI = 0, peakD = 0; H.forEach(function (h) { if (h.I + h.E > peakI) { peakI = h.I + h.E; peakD = h.d; } });
+    var pts = H.filter(function (h) { var a = h.I + h.E; return a >= 5 && a <= 60 && h.d <= peakD; });
+    var fit = 'M0,0', rG = null, Rfit = null;
+    if (pts.length >= 8 && peakD > 0) {
+      var n = pts.length, sx = 0, sy = 0, sxx = 0, sxy = 0;
+      pts.forEach(function (h) { var y = Math.log(h.I + h.E); sx += h.d; sy += y; sxx += h.d * h.d; sxy += h.d * y; });
+      rG = (n * sxy - sx * sy) / (n * sxx - sx * sx);
+      var b0 = (sy - rG * sx) / n;
+      if (rG > 0) {
+        Rfit = (1 + rG * 3) * (1 + rG * 7);
+        var d0 = pts[0].d, d1 = Math.min(pts[pts.length - 1].d + 6, dMax), fp = [];
+        for (var d = d0; d <= d1; d += 0.5) { var yv = Math.exp(b0 + rG * d); if (yv > 300) break; fp.push(f1(XD(d)) + ',' + f1(YD(yv))); }
+        if (fp.length > 1) fit = 'M' + fp.join(' L');
+      }
+    }
+    var infected = c.E + c.I + c.R;
+    var rTheory = 300 * Math.PI * 144 / (640 * 340) * ep.beta * (s.mask ? 0.6 : 1) * 7;
+    var epo = {
+      pS: P.S || 'M0,0', pE: P.E || 'M0,0', pI: P.I || 'M0,0', pR: P.R || 'M0,0', pV: P.V || 'M0,0', ring: ring || 'M0,0',
+      legend: [
+        { n: 'เสี่ยง (S)', c: '#0A6A94', v: c.S }, { n: 'ฟักตัว (E)', c: '#C99A1E', v: c.E }, { n: 'ติดเชื้อ (I)', c: '#B04A0C', v: c.I },
+        { n: 'หายแล้ว (R)', c: '#9AAAB4', v: c.R }, { n: 'ได้วัคซีน (V)', c: '#3F7A4F', v: c.V }
+      ],
+      dayTxt: 'วันที่ ' + Math.floor(ep.day) + (ep.done ? ' · การระบาดจบแล้ว' : ''),
+      lS: ln('S'), lI: ln('I'), lR: ln('R'), bars: bars || 'M0,0', fit: fit, dMax: dMax + ' วัน',
+      pauseTxt: s.epPaused ? 'เล่นต่อ' : 'หยุดชั่วคราว',
+      sliders: [
+        { id: 'ep-b', name: 'โอกาสแพร่เชื้อต่อวันที่อยู่ใกล้กัน', label: s.beta.toFixed(2), min: 0.1, max: 1.5, step: 0.05, v: s.beta, set: function (e) { self.setState({ beta: parseFloat(e.target.value) }); } },
+        { id: 'ep-v', name: 'ฉีดวัคซีนแล้ว (ป้องกัน 90%)', label: s.vacc + '%', min: 0, max: 90, step: 5, v: s.vacc, set: function (e) { self.setState({ vacc: parseInt(e.target.value, 10) }); } },
+        { id: 'ep-d', name: 'เว้นระยะห่าง (สัดส่วนคนที่อยู่กับที่)', label: s.dist + '%', min: 0, max: 90, step: 5, v: s.dist, set: function (e) { self.setState({ dist: parseInt(e.target.value, 10) }); } }
+      ],
+      stats: [
+        { k: 'อัตราการเติบโต r (fit)', v: rG !== null && rG > 0 ? rG.toFixed(3) + ' /วัน' : 'รอข้อมูล' },
+        { k: 'เวลาเพิ่มเป็นสองเท่า', v: rG !== null && rG > 0 ? (Math.LN2 / rG).toFixed(1) + ' วัน' : '–' },
+        { k: 'R0 ประมาณจากข้อมูล', v: Rfit !== null ? Rfit.toFixed(2) : '–' },
+        { k: 'R0 ถ้าทุกคนคลุกคลีกันทั่วถึง', v: '≈ ' + rTheory.toFixed(2) },
+        { k: 'ยอดผู้ติดเชื้อสูงสุด', v: peakI + ' คน · วันที่ ' + Math.round(peakD) },
+        { k: 'ผู้ป่วยใหม่สูงสุดต่อวัน', v: maxDaily + ' คน' },
+        { k: 'ติดเชื้อสะสม', v: infected + ' คน (' + Math.round(infected / 3) + '%)' }
+      ],
+      method: 'วิธีวิเคราะห์: เลือกช่วงต้นที่ผู้ติดเชื้อยังน้อย (5–60 คน) แล้ว fit เส้นตรงกับ ln(จำนวนผู้ติดเชื้อ) เทียบกับวัน ความชันคืออัตราการเติบโต r จากนั้นแปลงเป็น R0 ด้วยสูตรสำหรับ SEIR: R0 ≈ (1 + r·3)(1 + r·7) วิธีเดียวกันนี้ใช้กับข้อมูลผู้ป่วยจริงในช่วงต้นของการระบาด ต้องมีข้อมูลอย่างน้อย 8 วันจึงเริ่ม fit และค่าจะแกว่งเมื่อจำนวนคนน้อย ลองกดเริ่มใหม่หลายรอบแล้วเทียบกัน ค่าที่ได้มักต่ำกว่าค่าแบบคลุกคลีทั่วถึง เพราะคนรอบตัวผู้ป่วยติดเชื้อไปก่อนแล้ว เชื้อจึงแพร่เป็นกลุ่มก้อน',
+      aria: 'ประชากร 300 คน ติดเชื้อ ' + c.I + ' คน', chartAria: 'กราฟจำนวนคนในแต่ละสถานะตามวัน'
+    };
+
+    // ---------- SEIR ODE ----------
+    var v = s.ov / 100 * 0.9, cur = this.seir(s.R0, v), base = this.seir(s.R0, 0);
+    var yMax = Math.max(0.05, Math.ceil(base.peak * 20) / 20);
+    var XO = function (d) { return 50 + 580 * d / 300; }, YO = function (fr) { return 200 - 190 * fr / yMax; };
+    var path = function (arr) { return arr.map(function (fr, d) { return (d ? 'L' : 'M') + f1(XO(d)) + ',' + f1(YO(fr)); }).join(' '); };
+    var cap = 0.03, herd = s.R0 > 1 ? 1 - 1 / s.R0 : 0, Reff = s.R0 * (1 - v);
+    var odo = {
+      cur: path(cur.I), base: path(base.I), capY: f1(Math.max(12, YO(cap))), yMax: Math.round(yMax * 100) + '%',
+      sliders: [
+        { id: 'od-r', name: 'R0 ของโรค', label: s.R0.toFixed(1), min: 1, max: 8, step: 0.1, v: s.R0, set: function (e) { self.setState({ R0: parseFloat(e.target.value) }); } },
+        { id: 'od-v', name: 'ฉีดวัคซีน (ป้องกัน 90%)', label: s.ov + '%', min: 0, max: 100, step: 5, v: s.ov, set: function (e) { self.setState({ ov: parseInt(e.target.value, 10) }); } }
+      ],
+      stats: [
+        { k: 'R ที่มีผลจริง', v: Reff.toFixed(2), c: Reff < 1 ? '#3F7A4F' : '#B04A0C' },
+        { k: 'ภูมิคุ้มกันหมู่ที่ต้องการ', v: Math.round(herd * 100) + '%', c: '#0F2A3A' },
+        { k: 'ยอดผู้ติดเชื้อพร้อมกัน', v: (cur.peak * 100).toFixed(1) + '%', c: cur.peak > cap ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ติดเชื้อสะสมทั้งหมด', v: Math.round(cur.attack * 100) + '%', c: '#0F2A3A' }
+      ],
+      aria: 'กราฟ SEIR ยอดผู้ติดเชื้อ ' + (cur.peak * 100).toFixed(1) + ' เปอร์เซ็นต์'
+    };
+
+    return {
+      rx: rxo, ep: epo, od: odo,
+      cat: s.cat, toggleCat: function () { self.setState({ cat: !self.state.cat }); },
+      rxReset: function () { self.rxInit(); self.setState({ rxPaused: false }); },
+      rxPause: function () { self.setState({ rxPaused: !self.state.rxPaused }); },
+      mask: s.mask, toggleMask: function () { self.setState({ mask: !self.state.mask }); },
+      iso: s.iso, toggleIso: function () { self.setState({ iso: !self.state.iso }); },
+      epReset: function () { self.epInit(); self.setState({ epPaused: false }); },
+      epPause: function () { self.setState({ epPaused: !self.state.epPaused }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

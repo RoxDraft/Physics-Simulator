@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แหล่งข้อมูลและการเข้าถึง</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><a href="index.html">Chem · Bio Lab</a><span aria-hidden="true">›</span><span aria-current="page">แหล่งข้อมูล</span><a class="ps-lang" href="../en/chem-bio-lab/sources.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="เปลี่ยนเป็นภาษาอังกฤษ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>English</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">← กลับไปที่แล็บเคมีและชีววิทยา</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">CHEM · BIO LAB · แหล่งข้อมูล</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">แหล่งข้อมูลและการเข้าถึง</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">แล็บนี้ใช้ทฤษฎีการชน สมการอาร์เรเนียส และแบบจำลองระบาดวิทยา SEIR ซึ่งเป็นเนื้อหามาตรฐาน วิธีวิเคราะห์อัตราการเติบโตมาจากงานวิจัยที่ใช้จริงในการระบาด แต่พารามิเตอร์ในตัวจำลองเป็นค่าตัวอย่าง ไม่ใช่ข้อมูลของโรคใดโรคหนึ่ง</p>
+</header>
+<div role="group" aria-label="กรองตามการเข้าถึง" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>ใช้กับ:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>การเข้าถึง:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">ตรวจสอบลิงก์เมื่อเดือนพฤศจิกายน 2569 ถ้าพบข้อมูลผิดหรือมีแหล่งที่ดีกว่า แจ้งได้ใน GitHub ของโปรเจกต์</p>
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "OpenStax Chemistry 2e บทที่ 12: จลนศาสตร์เคมี", "used": "ทฤษฎีการชน พลังงานกระตุ้น สมการอาร์เรเนียส และตัวเร่งปฏิกิริยา", "access": "ตำราเปิด สัญญาอนุญาต CC BY 4.0", "url": "https://openstax.org/books/chemistry-2e/pages/12-introduction"}, {"title": "Kermack, W. O. & McKendrick, A. G. (1927). A contribution to the mathematical theory of epidemics. Proc. R. Soc. A 115", "used": "ต้นแบบของแบบจำลองแบ่งกลุ่ม SIR/SEIR", "access": "บทความเปิดให้อ่านฟรีบนเว็บไซต์ Royal Society", "url": "https://doi.org/10.1098/rspa.1927.0118"}, {"title": "Wallinga, J. & Lipsitch, M. (2007). How generation intervals shape the relationship between growth rates and reproductive numbers. Proc. R. Soc. B 274", "used": "สูตรแปลงอัตราการเติบโต r เป็น R0 ≈ (1 + r/σ)(1 + r/γ)", "access": "บทความเปิดให้อ่านฟรีบนเว็บไซต์ Royal Society", "url": "https://doi.org/10.1098/rspb.2006.3754"}, {"title": "Our World in Data: COVID-19, Influenza, Measles", "used": "ตัวอย่างข้อมูลผู้ป่วยจริงที่ใช้วิธีวิเคราะห์แบบเดียวกันได้", "access": "ข้อมูลเปิด สัญญาอนุญาต CC BY 4.0", "url": "https://ourworldindata.org/coronavirus"}, {"title": "กรมควบคุมโรค กระทรวงสาธารณสุข", "used": "ข้อมูลเฝ้าระวังโรคติดต่อในประเทศไทย", "access": "รายงานเผยแพร่บนเว็บไซต์หน่วยงาน", "url": "https://ddc.moph.go.th/"}, {"title": "องค์การอนามัยโลก (WHO)", "used": "ภูมิคุ้มกันหมู่ และประสิทธิภาพของวัคซีนกับมาตรการทางสังคม", "access": "ข้อมูลเปิดบนเว็บไซต์", "url": "https://www.who.int/"}], "restricted": [{"title": "Anderson, R. M. & May, R. M. Infectious Diseases of Humans: Dynamics and Control", "used": "ค่า R0 ของโรคต่าง ๆ และภูมิคุ้มกันหมู่ 1 − 1/R0", "access": "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด", "url": ""}, {"title": "Guerra, F. M. et al. (2017). The basic reproduction number (R0) of measles: a systematic review. Lancet Infectious Diseases 17", "used": "ช่วง R0 ของหัด 12–18 ที่มักอ้างถึง", "access": "บทความวารสาร ต้องสมัครสมาชิกหรือซื้อบทความ", "url": ""}, {"title": "ข้อมูลผู้ป่วยรายบุคคล", "used": "การสอบสวนโรคและการหาห่วงโซ่การแพร่เชื้อจริง", "access": "เป็นข้อมูลส่วนบุคคล เข้าถึงได้เฉพาะหน่วยงานสาธารณสุขและนักวิจัยที่ได้รับอนุญาต", "url": ""}], "none": [{"title": "พารามิเตอร์ปฏิกิริยา A + B → C", "used": "Ea 50 kJ/mol ความน่าจะเป็นในการเกิดปฏิกิริยา 6% ต่อการชนที่ 300 K และตัวเร่งลด Ea 8 kJ/mol", "access": "ค่าสมมติ ไม่ใช่ปฏิกิริยาเคมีจริงใด ๆ ความเร็วโมเลกุลในภาพช้ากว่าจริงมาก", "url": ""}, {"title": "กราฟการกระจายพลังงาน", "used": "รูปกราฟและตำแหน่ง Ea", "access": "วาดเป็นภาพประกอบ ไม่ตามสเกล", "url": ""}, {"title": "พารามิเตอร์ของโรคในการจำลองทีละคน", "used": "รัศมีแพร่เชื้อ โอกาสแพร่ต่อวัน ระยะฟักตัว 3 วัน ระยะแพร่เชื้อ 7 วัน", "access": "ค่าตัวอย่าง ไม่ใช่โรคใดโรคหนึ่ง", "url": ""}, {"title": "ประสิทธิภาพของมาตรการ", "used": "หน้ากากลดการแพร่ 40% วัคซีนป้องกัน 90%", "access": "ค่าสมมติเพื่อเปรียบเทียบ ค่าจริงต่างกันตามโรค สายพันธุ์ ชนิดวัคซีน และการใช้งานจริง", "url": ""}, {"title": "ขีดความสามารถของโรงพยาบาล", "used": "เส้น 3% ของประชากรในกราฟ SEIR", "access": "ค่าสมมติเพื่อแสดงแนวคิดการทำให้กราฟแบนลง", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'เปิดเผย', title: 'ข้อมูลที่หาได้และใช้ได้ฟรี', desc: 'ใครก็ตรวจสอบได้ทันทีผ่านลิงก์', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'จำกัดการเข้าถึง', title: 'มีข้อมูลอยู่ แต่ต้องลงทะเบียน ซื้อ หรือเฉพาะหน่วยงาน', desc: 'ข้อมูลเหล่านี้มีอยู่จริง แต่เราใส่ได้แค่ส่วนที่เผยแพร่ทั่วไป หรือไม่ได้ใส่เลยเพราะเงื่อนไขการใช้งาน', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'ไม่มีข้อมูลเปิดเผย', title: 'ไม่มีข้อมูลที่ใช้ได้ ตัวจำลองจึงใช้ค่าประมาณ', desc: 'ตัวเลขในส่วนเหล่านี้เป็นค่าตัวอย่างหรือสมมติของเรา เพื่อให้เห็นหลักการ ไม่ควรนำไปใช้เป็นข้อมูลจริง', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' รายการ', items: items };
+    });
+    var fl = [{ id: 'all', name: 'ทั้งหมด' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แหล่งข้อมูลและการเข้าถึง</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="Main.dc.html" style="min-height: 44px; display: inline-flex; align-items: center">← กลับไปที่แล็บวงจรไฟฟ้า</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">CIRCUIT LAB · แหล่งข้อมูล</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">แหล่งข้อมูลและการเข้าถึง</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">แล็บวงจรใช้กฎของโอห์ม กฎของเคอร์ชอฟฟ์ และวงจร RC จากตำราฟิสิกส์ 2 ส่วนตู้ไฟในบ้านอ้างอิงหลักการของมาตรฐานการติดตั้งไฟฟ้า แต่ตัวเลขถูกทำให้ง่ายขึ้น งานไฟฟ้าจริงต้องทำโดยช่างที่มีใบอนุญาต</p>
+</header>
+<div role="group" aria-label="กรองตามการเข้าถึง" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>ใช้กับ:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>การเข้าถึง:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">ตรวจสอบลิงก์เมื่อเดือนพฤศจิกายน 2569 ถ้าพบข้อมูลผิดหรือมีแหล่งที่ดีกว่า แจ้งได้ใน GitHub ของโปรเจกต์</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "OpenStax University Physics Volume 2 บทที่ 9–10: กระแสไฟฟ้าและวงจรไฟฟ้ากระแสตรง", "used": "กฎของโอห์ม วงจรอนุกรมและขนาน กำลังไฟฟ้า และวงจร RC", "access": "ตำราเปิด สัญญาอนุญาต CC BY 4.0", "url": "https://openstax.org/books/university-physics-volume-2/pages/10-introduction"}, {"title": "Falstad Circuit Simulator", "used": "แนวคิดการแสดงกระแสเป็นจุดที่วิ่งตามสาย", "access": "ใช้ได้ฟรีบนเว็บ ซอร์สโค้ดเปิด", "url": "https://www.falstad.com/circuit/"}, {"title": "PhET Circuit Construction Kit: DC", "used": "แนวคิดการต่อวงจรและวัดค่าแบบแล็บ", "access": "ใช้ได้ฟรี สัญญาอนุญาต CC BY 4.0", "url": "https://phet.colorado.edu/en/simulations/circuit-construction-kit-dc"}, {"title": "การไฟฟ้านครหลวง (MEA) และการไฟฟ้าส่วนภูมิภาค (PEA)", "used": "แรงดันไฟบ้าน 230 V 50 Hz อัตราค่าไฟ และคำแนะนำความปลอดภัย", "access": "ข้อมูลเปิดบนเว็บไซต์หน่วยงาน", "url": "https://www.mea.or.th/"}], "restricted": [{"title": "IEC 60479-1 Effects of current on human beings and livestock", "used": "ระดับกระแสที่เป็นอันตรายต่อหัวใจ และความต้านทานร่างกาย", "access": "มาตรฐาน IEC ต้องซื้อ ตัวเลขทั่วไปถูกอ้างในตำราความปลอดภัยไฟฟ้า", "url": ""}, {"title": "มาตรฐานการติดตั้งทางไฟฟ้าสำหรับประเทศไทย (วสท. 2001) และ IEC 60364", "used": "ขนาดเบรกเกอร์ สายไฟ สายดิน และเครื่องตัดไฟรั่ว 30 mA", "access": "มาตรฐานต้องซื้อ หน้านี้ใช้เพียงหลักการทั่วไป", "url": ""}, {"title": "IEC 60898 และ IEC 61008/61009", "used": "เส้นโค้งการตัดของเบรกเกอร์ และเวลาตัดของเครื่องตัดไฟรั่ว", "access": "มาตรฐานต้องซื้อ", "url": ""}], "none": [{"title": "ค่าไฟต่อหน่วย", "used": "ค่าเริ่มต้น 4.20 บาทต่อหน่วย", "access": "ค่าสมมติ อัตราจริงเป็นแบบขั้นบันไดและมีค่า Ft ซึ่งเปลี่ยนทุกงวด ปรับค่าได้ด้วยแถบเลื่อน", "url": ""}, {"title": "พิกัดกระแสสายไฟ", "used": "1.5 mm² = 15 A, 2.5 mm² = 21 A, 4 mm² = 28 A และความยาวสาย 20 ม.", "access": "ค่าประมาณ พิกัดจริงขึ้นกับชนิดสาย วิธีติดตั้ง และอุณหภูมิ", "url": ""}, {"title": "ความต้านทานร่างกายและเส้นทางกระแสรั่ว", "used": "ร่างกาย 2,000 Ω และสายดิน 20 Ω", "access": "ค่าตัวอย่าง ความต้านทานจริงเปลี่ยนตามความชื้น แรงดัน และเส้นทางผ่านร่างกาย", "url": ""}, {"title": "เวลาตัดของเบรกเกอร์ในภาพ", "used": "ตัดแบบความร้อนหลังเกินพิกัดราว 2.5 วินาที และตัดทันทีเมื่อเกิน 5 เท่า", "access": "ย่อเวลาให้เห็นผลเร็ว เบรกเกอร์จริงอาจใช้เวลาหลายนาทีเมื่อเกินพิกัดไม่มาก", "url": ""}, {"title": "กำลังไฟฟ้าของเครื่องใช้ไฟฟ้า", "used": "ทีวี ตู้เย็น กาต้มน้ำ แอร์ และอื่น ๆ", "access": "ค่าทั่วไป เครื่องจริงดูได้จากป้ายบนตัวเครื่อง แอร์และตู้เย็นยังมีกระแสกระชากตอนเริ่มทำงาน", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'เปิดเผย', title: 'ข้อมูลที่หาได้และใช้ได้ฟรี', desc: 'ใครก็ตรวจสอบได้ทันทีผ่านลิงก์', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'จำกัดการเข้าถึง', title: 'มีข้อมูลอยู่ แต่ต้องลงทะเบียน ซื้อ หรือเฉพาะหน่วยงาน', desc: 'ข้อมูลเหล่านี้มีอยู่จริง แต่เราใส่ได้แค่ส่วนที่เผยแพร่ทั่วไป หรือไม่ได้ใส่เลยเพราะเงื่อนไขการใช้งาน', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'ไม่มีข้อมูลเปิดเผย', title: 'ไม่มีข้อมูลที่ใช้ได้ ตัวจำลองจึงใช้ค่าประมาณ', desc: 'ตัวเลขในส่วนเหล่านี้เป็นค่าตัวอย่างหรือสมมติของเรา เพื่อให้เห็นหลักการ ไม่ควรนำไปใช้เป็นข้อมูลจริง', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' รายการ', items: items };
+    });
+    var fl = [{ id: 'all', name: 'ทั้งหมด' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

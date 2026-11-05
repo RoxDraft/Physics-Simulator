@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Swim start and dolphin kick</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Mechanics Lab</a><span aria-hidden="true">›</span><span aria-current="page">Swim start</span><a class="ps-lang" href="../../mechanics-lab/swim.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">MECHANICS LAB · Fluid mechanics</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">The first 15 metres: dive, glide and underwater dolphin kick</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">Two swimmers start together. The blue one uses your settings and the orange one is the comparison. Find how long to glide before kicking, how deep to go, and where to surface to reach 15 metres fastest</p>
+</div>
+<a href="index.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; text-decoration: none">← Mechanics Lab</a>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="22" height="10" aria-hidden="true"><line x1="2" y1="5" x2="20" y2="5" stroke="#0A6A94" stroke-width="6" stroke-linecap="round"></line></svg>Your settings</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="22" height="10" aria-hidden="true"><line x1="2" y1="5" x2="20" y2="5" stroke="#B04A0C" stroke-width="6" stroke-linecap="round" opacity="0.6"></line></svg>Comparison</span>
+</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-weight: 600">{{sc.clock}}</span>
+</div>
+<svg viewBox="0 0 900 290" style="display: block; width: 100%; height: auto" role="img" aria-label="{{sc.aria}}">
+<rect x="0" y="0" width="900" height="110" fill="#F4F9FC"></rect>
+<rect x="0" y="110" width="900" height="180" fill="#BFE0EE"></rect>
+<rect x="0" y="250" width="900" height="40" fill="#9FC6D8"></rect>
+<path d="{{sc.ripples}}" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.9"></path>
+<rect x="40" y="58" width="36" height="52" fill="#8A97A0"></rect>
+<rect x="0" y="58" width="60" height="232" fill="#D5DEE3"></rect>
+<sc-for list="{{sc.marks}}" as="m" hint-placeholder-count="4">
+<line x1="{{m.x}}" y1="30" x2="{{m.x}}" y2="250" stroke="{{m.c}}" stroke-dasharray="4 5" stroke-width="{{m.w}}"></line>
+<text x="{{m.x}}" y="24" font-size="12" text-anchor="middle" fill="{{m.c}}" font-weight="600">{{m.t}}</text>
+</sc-for>
+<path d="{{sc.ghost}}" fill="none" stroke="#B04A0C" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"></path>
+<circle cx="{{sc.gHeadX}}" cy="{{sc.gHeadY}}" r="7" fill="#B04A0C" opacity="0.55"></circle>
+<path d="{{sc.body}}" fill="none" stroke="#0A6A94" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="{{sc.headX}}" cy="{{sc.headY}}" r="7" fill="#0A6A94"></circle>
+<text x="70" y="284" font-size="12" fill="#2F5E73">Pool wall · depth in the picture exaggerated 1.7 times</text>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">Horizontal speed vs. distance</span><span style="font-size: 13px; color: #4A5D6A">Circle = starts kicking · square = surfaces to swim</span></div>
+<svg viewBox="0 0 640 200" style="display: block; width: 100%; height: auto" role="img" aria-label="Graph of speed vs. distance for both swimmers">
+<line x1="44" y1="170" x2="630" y2="170" stroke="#9AAAB4"></line>
+<line x1="44" y1="10" x2="44" y2="170" stroke="#9AAAB4"></line>
+<sc-for list="{{ch.yTicks}}" as="t" hint-placeholder-count="5">
+<line x1="44" y1="{{t.y}}" x2="630" y2="{{t.y}}" stroke="#E3E9EC"></line>
+<text x="38" y="{{t.y}}" dy="4" font-size="11" text-anchor="end" fill="#4A5D6A">{{t.v}}</text>
+</sc-for>
+<sc-for list="{{ch.xTicks}}" as="t" hint-placeholder-count="4">
+<text x="{{t.x}}" y="186" font-size="11" text-anchor="middle" fill="#4A5D6A">{{t.v}}</text>
+</sc-for>
+<text x="630" y="198" font-size="11" text-anchor="end" fill="#4A5D6A">Distance from the wall (m)</text>
+<text x="8" y="12" font-size="11" fill="#4A5D6A">m/s</text>
+<path d="{{ch.ghost}}" fill="none" stroke="#B04A0C" stroke-width="2" opacity="0.7"></path>
+<path d="{{ch.mine}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<path d="{{ch.marks}}" fill="#0F2A3A"></path>
+<line x1="{{ch.nowX}}" y1="10" x2="{{ch.nowX}}" y2="170" stroke="#0F2A3A" stroke-width="1" opacity="0.35"></line>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow-x: auto">
+<div role="table" aria-label="Start results" style="min-width: 560px; display: flex; flex-direction: column; font-size: 14px">
+<div role="row" style="display: grid; grid-template-columns: 1.6fr repeat(3, minmax(0, 1fr)) 1.3fr 1fr; gap: 8px; padding: 10px 16px; background: #F3F6F7; font-weight: 700"><span role="columnheader">Swimmer</span><span role="columnheader">At 5 m</span><span role="columnheader">At 10 m</span><span role="columnheader">At 15 m</span><span role="columnheader">Speed when kicking starts</span><span role="columnheader">Surfaces at</span></div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="2">
+<div role="row" style="display: grid; grid-template-columns: 1.6fr repeat(3, minmax(0, 1fr)) 1.3fr 1fr; gap: 8px; padding: 10px 16px; border-top: 1px solid #E3E9EC; font-family: 'IBM Plex Mono', monospace"><span role="cell" style="font-family: 'IBM Plex Sans Thai', sans-serif; font-weight: 700; color: {{r.c}}">{{r.name}}</span><span role="cell">{{r.t5}}</span><span role="cell">{{r.t10}}</span><span role="cell" style="font-weight: 700">{{r.t15}}</span><span role="cell">{{r.vk}}</span><span role="cell">{{r.bo}}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="background: {{verdict.bg}}; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; color: {{verdict.fg}}">{{verdict.text}}</div>
+</div>
+
+<div style="flex: 1 1 330px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700; color: #0A6A94">Your settings (blue)</h2>
+<sc-for list="{{sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+<span style="font-size: 12px; color: #4A5D6A">{{x.hint}}</span>
+</div>
+</sc-for>
+<span style="font-size: 14px; font-weight: 600">Streamline position</span>
+<div role="group" aria-label="Streamline position" style="display: flex; gap: 6px">
+<sc-for list="{{postures}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 0; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<button type="button" onClick="{{useBest}}" style="min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{bestTxt}}</button>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700; color: #B04A0C">Comparison (orange)</h2>
+<div role="group" aria-label="Comparison" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{ghosts}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.4">{{p.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{replay}}" style="flex: 1 1 0; min-height: 48px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Start again</button>
+<button type="button" onClick="{{toggleSlow}}" aria-pressed="{{slowPressed}}" style="flex: 1 1 0; min-height: 48px; border-radius: 999px; border: 1.5px solid #0A6A94; background: {{slowBg}}; color: {{slowFg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Slow motion ×0.25</button>
+</div>
+</div>
+</div>
+
+<section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px">
+<sc-for list="{{notes}}" as="n" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 17px; font-weight: 700">{{n.t}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #0A6A94">{{n.f}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #34495A">{{n.d}}</p>
+</div>
+</sc-for>
+</section>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">This model is simplified for learning: drag F = k·v², where k depends on body position and depth; kick thrust falls as the body approaches the speed of the wave it makes; and surface swimming speed is fixed at 2.1 m/s. The numbers are estimates; world-class swimmers reach 15 metres faster (about 5–5.5 seconds)</p>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1900}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = { glide: 0.2, f: 2.0, d: 0.5, D: 8, tight: false, ghost: 'pro', t: reduce ? 99 : 0, slow: false, tick: 0 };
+    this._cache = {};
+  }
+
+  ghostParams(id) {
+    return {
+      surface: { glide: 0.6, f: 2.0, d: 0.4, D: 5, tight: true },
+      pro: { glide: 0.6, f: 2.5, d: 0.8, D: 13, tight: true },
+      early: { glide: 0.0, f: 2.5, d: 0.8, D: 13, tight: true }
+    }[id];
+  }
+
+  // simulate one start; returns samples every 1/120 s
+  sim(p) {
+    var key = [p.glide, p.f, p.d, p.D, p.tight].join('|');
+    if (this._cache[key]) return this._cache[key];
+    var dt = 1 / 240, k = 0.14 * (p.tight ? 1 : 1.35), vk = 0.95 * p.f, vw = 1.3 * vk, c = 2.17 * k, vs = 2.1;
+    var S = [], t = 0, x = 0.5, y = 1.05, vx = 4.8, vy = 0.3, mode = 'block', v = 0, xe = 0, te = 0, n = 0;
+    var res = { t5: null, t10: null, t15: null, vKick: null, xKick: null, xBo: null };
+    var push = function (th, depth, kick) { if (n % 2 === 0) S.push({ t: t, x: x, y: depth, v: mode === 'air' ? vx : v, th: th, mode: mode, kick: kick }); n++; };
+    while (t < 12 && x < 16) {
+      if (mode === 'block') {
+        push(-0.7, 0.85, false);
+        if (t >= 0.65) mode = 'air';
+      } else if (mode === 'air') {
+        x += vx * dt; vy -= 9.81 * dt; y += vy * dt;
+        push(Math.atan2(vy, vx), y, false);
+        if (y <= 0) { mode = 'under'; xe = x; te = t; v = 4.8 * (p.tight ? 0.82 : 0.74); }
+      } else if (mode === 'under') {
+        var u = x - xe, depth = p.d * (1 - Math.exp(-u / 0.8)), th = -Math.atan(p.d / 0.8 * Math.exp(-u / 0.8));
+        if (x > p.D - 2.5) { depth *= Math.max(0, (p.D - x) / 2.5); th = Math.atan(p.d / 2.5); }
+        var fd = 1 + 0.9 * Math.exp(-depth / 0.22);
+        var kick = t - te >= p.glide;
+        if (kick && res.vKick === null) { res.vKick = v; res.xKick = x; }
+        var a = kick ? c * Math.max(0, vw * vw - v * v) * (1 + 0.6 * Math.sin(2 * Math.PI * p.f * (t - te))) - 1.5 * k * fd * v * v : -k * fd * v * v;
+        v += a * dt; x += v * Math.cos(th) * dt;
+        push(th, -depth, kick);
+        if (x >= p.D) { mode = 'swim'; res.xBo = x; }
+      } else {
+        v += 1.5 * (vs - v) * dt; x += v * dt;
+        push(0, -0.12, false);
+      }
+      t += dt;
+      if (res.t5 === null && x >= 5) res.t5 = t;
+      if (res.t10 === null && x >= 10) res.t10 = t;
+      if (res.t15 === null && x >= 15) res.t15 = t;
+    }
+    var out = { S: S, res: res };
+    this._cache[key] = out;
+    return out;
+  }
+
+  bestGlide(p) {
+    var best = 0, bt = 1e9;
+    for (var g = 0; g <= 2.0001; g += 0.1) { var r = this.sim(Object.assign({}, p, { glide: Math.round(g * 10) / 10 })).res.t15; if (r < bt) { bt = r; best = Math.round(g * 10) / 10; } }
+    return { g: best, t: bt };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      if (!self.reduce) {
+        var s = self.state, nt = s.t + dt * (s.slow ? 0.25 : 1);
+        if (nt > 10.5) nt = 0;   // loop the race after a pause at the finish
+        self.setState({ t: nt, tick: s.tick + 1 });
+      }
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+    var mineP = { glide: s.glide, f: s.f, d: s.d, D: s.D, tight: s.tight }, ghostP = this.ghostParams(s.ghost);
+    var A = this.sim(mineP), B = this.sim(ghostP);
+    var PX = function (x) { return 60 + x * 41; }, PY = function (y) { return 110 - y * 70; };
+    var at = function (S, t) { var i = Math.min(S.length - 1, Math.max(0, Math.floor(t * 120))); return S[i]; };
+
+    // swimmer figure: hands → head → shoulders → hips → knees → feet along the body axis
+    var figure = function (q, t, f) {
+      var ax = Math.cos(q.th), ay = Math.sin(q.th), nx = -ay, ny = ax;
+      var pts = [];
+      if (q.mode === 'block') {
+        var bx = 0.1, by = 0.85;
+        pts = [[bx + 0.55, by + 0.05], [bx + 0.45, by + 0.25], [bx + 0.32, by + 0.3], [bx, by + 0.35], [bx + 0.1, by + 0.05], [bx + 0.05, 0.76]];
+        return { d: 'M' + pts.map(function (p) { return f1(PX(p[0])) + ',' + f1(PY(p[1])); }).join(' L'), hx: f1(PX(bx + 0.47)), hy: f1(PY(by + 0.33)) };
+      }
+      var sPts = [1.15, 0.55, 0.4, 0, -0.5, -0.95];
+      var swim = q.mode === 'swim';
+      pts = sPts.map(function (sp, i) {
+        var w = 0;
+        if (q.kick) { var fromHead = (1.15 - sp) / 2.1; w = (0.02 + 0.16 * fromHead * fromHead) * Math.sin(2 * Math.PI * f * t - 2 * Math.PI * (1.15 - sp) / 1.6); }
+        if (swim && i >= 4) w = 0.05 * Math.sin(2 * Math.PI * 3 * t + i);
+        return [q.x + sp * ax + w * nx, q.y + sp * ay + w * ny];
+      });
+      if (swim) {
+        // freestyle: one arm recovers over the water while the other pulls underneath
+        var sh = pts[2], ph = 2 * Math.PI * 0.85 * t, la = 0.68;
+        var a1 = [sh[0] + la * Math.cos(ph), sh[1] + la * Math.sin(ph)];
+        var a2 = [sh[0] + la * Math.cos(ph + Math.PI), sh[1] + la * Math.sin(ph + Math.PI)];
+        pts[0] = a1;
+        var d = 'M' + [a1, pts[1], pts[2], pts[3], pts[4], pts[5]].map(function (p) { return f1(PX(p[0])) + ',' + f1(PY(p[1])); }).join(' L') + ' M' + f1(PX(sh[0])) + ',' + f1(PY(sh[1])) + ' L' + f1(PX(a2[0])) + ',' + f1(PY(a2[1]));
+        return { d: d, hx: f1(PX(pts[1][0] + 0.12)), hy: f1(PY(pts[1][1] + 0.05)) };
+      }
+      return { d: 'M' + pts.map(function (p) { return f1(PX(p[0])) + ',' + f1(PY(p[1])); }).join(' L'), hx: f1(PX(pts[1][0])), hy: f1(PY(pts[1][1] + 0.03)) };
+    };
+    var qa = at(A.S, s.t), qb = at(B.S, s.t);
+    var FA = figure(qa, s.t, s.f), FB = figure(qb, s.t, ghostP.f);
+    var ripples = '';
+    [qa, qb].forEach(function (q) { if (q.mode === 'swim' || (q.mode === 'under' && q.y > -0.35)) { var xp = PX(q.x); ripples += 'M' + f1(xp - 60) + ',110 q15,-6 30,0 q15,6 30,0 q15,-6 30,0 q15,6 30,0 '; } });
+    var res = A.res, rb = B.res;
+    var sc = {
+      body: FA.d, headX: FA.hx, headY: FA.hy, ghost: FB.d, gHeadX: FB.hx, gHeadY: FB.hy, ripples: ripples || 'M0,0',
+      clock: s.t < 0.65 ? 'Get set…' : (s.t - 0.0).toFixed(2) + ' s',
+      marks: [
+        { x: f1(PX(5)), t: '5 m', c: '#9AAAB4', w: 1 }, { x: f1(PX(10)), t: '10 m', c: '#9AAAB4', w: 1 },
+        { x: f1(PX(15)), t: '15 m (underwater limit)', c: '#B04A0C', w: 2 }, { x: f1(PX(s.D)), t: 'Surface', c: '#0A6A94', w: 1 }
+      ],
+      aria: 'Two swimmers starting from the blocks, time ' + s.t.toFixed(1) + ' s'
+    };
+    // chart: speed vs distance
+    var CX = function (x) { return 44 + 586 * x / 15; }, CY = function (v) { return 170 - 160 * v / 6; };
+    var line = function (S, tmax) { var p = []; S.forEach(function (q) { if (q.mode !== 'block' && q.t <= tmax && q.x <= 15) p.push(f1(CX(q.x)) + ',' + f1(CY(q.v))); }); return p.length > 1 ? 'M' + p.join(' L') : 'M0,0'; };
+    var tm = this.reduce ? 99 : s.t;
+    var mk = '';
+    var addMk = function (S, r) {
+      if (r.xKick !== null && r.xKick <= 15) { var q = S.find(function (z) { return z.kick; }); if (q && q.t <= tm) mk += 'M' + f1(CX(q.x) - 4) + ',' + f1(CY(q.v)) + ' a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 '; }
+      if (r.xBo !== null && r.xBo <= 15) { var b = S.find(function (z) { return z.mode === 'swim'; }); if (b && b.t <= tm) mk += 'M' + f1(CX(b.x) - 4) + ',' + f1(CY(b.v) - 4) + ' h8 v8 h-8 z '; }
+    };
+    addMk(A.S, res); addMk(B.S, rb);
+    var ch = {
+      mine: line(A.S, tm), ghost: line(B.S, tm), marks: mk || 'M0,0', nowX: f1(CX(Math.min(15, qa.x))),
+      yTicks: [0, 1.5, 3, 4.5, 6].map(function (v) { return { y: f1(CY(v)), v: v }; }),
+      xTicks: [0, 5, 10, 15].map(function (x) { return { x: f1(CX(x)), v: x }; })
+    };
+    var fmtT = function (t) { return t === null ? '–' : t.toFixed(2) + ' s'; };
+    var gNames = { surface: 'Glide, then surface at 5 m', pro: 'Competitive swimmer', early: 'Kicks as soon as they enter the water' };
+    var rows = [
+      { name: 'Your settings', c: '#0A6A94', t5: fmtT(res.t5), t10: fmtT(res.t10), t15: fmtT(res.t15), vk: res.vKick !== null && res.xKick < s.D ? res.vKick.toFixed(2) + ' m/s' : 'No kick', bo: s.D + ' m' },
+      { name: gNames[s.ghost], c: '#B04A0C', t5: fmtT(rb.t5), t10: fmtT(rb.t10), t15: fmtT(rb.t15), vk: rb.vKick !== null && rb.xKick < ghostP.D ? rb.vKick.toFixed(2) + ' m/s' : 'No kick', bo: ghostP.D + ' m' }
+    ];
+    var best = this.bestGlide(mineP), diff = res.t15 - rb.t15;
+    var vk = 0.95 * s.f, tips = [];
+    if (s.glide < best.g - 0.15) tips.push('Kicking too early: the body is still faster than the legs can push water, so the legs act as a brake');
+    if (s.glide > best.g + 0.25) tips.push('Gliding too long: speed drops below what the kick can maintain');
+    if (s.d < 0.35) tips.push('Too shallow: the body still makes surface waves, so drag is high');
+    if (s.d > 1.2) tips.push('Too deep: distance is lost diving down and climbing back up at a steep angle');
+    if (s.D > 11 && vk < 2.1) tips.push('Your kick is slower than surface swimming speed (' + vk.toFixed(2) + ' < 2.1 m/s), so staying under longer makes you slower. Surface earlier or train a stronger kick');
+    if (!s.tight) tips.push('Loose streamline: about 35% more drag');
+    var verdict = {
+      text: (diff <= 0 ? 'Faster than the comparison by ' + (-diff).toFixed(2) + ' s. ' : 'Slower than the comparison by ' + diff.toFixed(2) + ' s. ') + (tips.length ? tips.join(' · ') : 'These settings are already close to the best for this kick strength'),
+      bg: diff <= 0 ? '#DDEFF6' : '#FFF1CC', fg: diff <= 0 ? '#0A4F70' : '#6B4A00'
+    };
+    var sliders = [
+      { id: 's-g', name: 'Glide before kicking', label: s.glide.toFixed(1) + ' s', min: 0, max: 2, step: 0.1, v: s.glide, hint: 'Counted from entering the water', set: function (e) { self.setState({ glide: parseFloat(e.target.value), t: 0 }); } },
+      { id: 's-f', name: 'Dolphin kick frequency', label: s.f.toFixed(1) + ' kicks/s', min: 1.4, max: 3, step: 0.1, v: s.f, hint: 'Top kicking speed about ' + vk.toFixed(2) + ' m/s (beginner ~1.6 · competitive ~2.5)', set: function (e) { self.setState({ f: parseFloat(e.target.value), t: 0 }); } },
+      { id: 's-d', name: 'Underwater depth', label: s.d.toFixed(1) + ' m', min: 0.2, max: 1.6, step: 0.1, v: s.d, hint: 'Measured at the middle of the body', set: function (e) { self.setState({ d: parseFloat(e.target.value), t: 0 }); } },
+      { id: 's-D', name: 'Surface to swim at', label: s.D + ' m', min: 4, max: 15, step: 1, v: s.D, hint: 'Rules allow at most 15 m underwater', set: function (e) { self.setState({ D: parseFloat(e.target.value), t: 0 }); } }
+    ];
+    var postures = [{ id: true, name: 'Tight: hands stacked, arms squeezing the ears' }, { id: false, name: 'Loose: arms apart, head up' }].map(function (p) { var q = pill(s.tight === p.id); return { name: p.name, pressed: s.tight === p.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ tight: p.id, t: 0 }); } }; });
+    var ghosts = ['pro', 'surface', 'early'].map(function (id) { var q = pill(s.ghost === id); return { name: gNames[id] + { pro: ' (2.5 kicks/s to 13 m)', surface: ' (no underwater kick)', early: ' (otherwise like the competitive swimmer)' }[id], pressed: s.ghost === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ ghost: id, t: 0 }); } }; });
+    var notes = [
+      { t: 'Why glide first', f: 'F_drag = k·v²', d: 'After the dive the body moves at about 3.5–4 m/s, faster than the legs can push water backwards. Kicking now turns the legs into a brake, so hold the most streamlined position to keep k low, and start kicking when speed drops close to your kicking speed' },
+      { t: 'Why underwater is faster than the surface', f: 'k_surface ≈ 1.9 × k_underwater', d: 'A body at the surface has to push water into waves, and that energy is lost with the waves. About half a metre down, wave drag almost disappears, but going too deep costs distance on the way down and back up' },
+      { t: 'How the dolphin kick creates thrust', f: 'thrust ∝ v_wave² − v²', d: 'The wave running from the chest to the toes pushes water backwards. The wave must be faster than the body to keep pushing water; the closer the body gets to the wave speed, the less thrust it makes. A higher kick frequency therefore lets you go faster and farther underwater' },
+      { t: 'When to surface', f: 'v_kick vs. v_surface swim', d: 'If you kick faster underwater than you swim on the surface, stay under close to 15 metres. If your kick is slower, surface early. That is why each swimmer has a different best breakout distance. Try lowering the kick frequency and see which distance is best' }
+    ];
+    return {
+      sc: sc, ch: ch, rows: rows, verdict: verdict, sliders: sliders, postures: postures, ghosts: ghosts, notes: notes,
+      bestTxt: 'Use the best glide time (' + best.g.toFixed(1) + ' s → ' + best.t.toFixed(2) + ' s)',
+      useBest: function () { self.setState({ glide: best.g, t: 0 }); },
+      replay: function () { self.setState({ t: 0 }); },
+      toggleSlow: function () { self.setState({ slow: !self.state.slow }); },
+      slowPressed: s.slow ? 'true' : 'false', slowBg: s.slow ? '#0A6A94' : '#FFFFFF', slowFg: s.slow ? '#FFFFFF' : '#0A6A94'
+    };
+  }
+}
+</script>
+</body>
+</html>

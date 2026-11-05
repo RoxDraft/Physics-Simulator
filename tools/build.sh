@@ -94,6 +94,12 @@ lab() {
     "Home=../index.html" "$name=index.html" "Sources="
 }
 lab mechanics-lab "Mechanics Lab"
+RENAMES=(--rename Main.dc.html=index.html --rename Swim.dc.html=swim.html --rename Sources.dc.html=sources.html)
+page src/mechanics-lab/Main.dc.html mechanics-lab/index.html mechanics-lab/index.html \
+  "หน้าหลัก=../index.html" "Mechanics Lab=" -- "Home=../index.html" "Mechanics Lab="
+page src/mechanics-lab/Swim.dc.html mechanics-lab/swim.html mechanics-lab/swim.html \
+  "หน้าหลัก=../index.html" "Mechanics Lab=index.html" "ออกตัวว่ายน้ำ=" -- \
+  "Home=../index.html" "Mechanics Lab=index.html" "Swim start="
 lab beam-fea "Beam FEA"
 lab circuit-lab "Circuit Lab"
 lab chem-bio-lab "Chem · Bio Lab"

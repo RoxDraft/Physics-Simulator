@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Rebuild every simulator page, in Thai and English, from the canvas sources in src/.
-#   Thai pages:    ocean-waves/  camera-lab/
-#   English pages: en/index.html  en/ocean-waves/  en/camera-lab/
+#   Thai pages:    <sim>/ for every simulator in src/
+#   English pages: en/index.html  en/<sim>/
 # English text comes from tools/i18n/en.json; the build stops if any Thai text has
 # no translation, so add new strings there when you add or edit a page.
 # Usage: bash tools/build.sh
@@ -79,6 +79,21 @@ page src/plate-tectonics/Safety.dc.html plate-tectonics/safety.html plate-tecton
 page src/plate-tectonics/Sources.dc.html plate-tectonics/sources.html plate-tectonics/sources.html \
   "หน้าหลัก=../index.html" "Plate Tectonics Lab=index.html" "แหล่งข้อมูล=" -- \
   "Home=../index.html" "Plate Tectonics Lab=index.html" "Sources="
+
+# ---------- Engineering labs (one main page + sources each) ----------
+lab() {
+  local dir=$1 name=$2
+  RENAMES=(--rename Main.dc.html=index.html --rename Sources.dc.html=sources.html)
+  page "src/$dir/Main.dc.html" "$dir/index.html" "$dir/index.html" \
+    "หน้าหลัก=../index.html" "$name=" -- "Home=../index.html" "$name="
+  page "src/$dir/Sources.dc.html" "$dir/sources.html" "$dir/sources.html" \
+    "หน้าหลัก=../index.html" "$name=index.html" "แหล่งข้อมูล=" -- \
+    "Home=../index.html" "$name=index.html" "Sources="
+}
+lab mechanics-lab "Mechanics Lab"
+lab beam-fea "Beam FEA"
+lab circuit-lab "Circuit Lab"
+lab chem-bio-lab "Chem · Bio Lab"
 
 # ---------- English landing page ----------
 $PY index.html en/index.html --plain --lang en --dict tools/i18n/en.json \

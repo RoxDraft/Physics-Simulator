@@ -29,13 +29,16 @@ page() {
 }
 
 # ---------- Ocean Wave Simulator ----------
-RENAMES=(--rename Main.dc.html=index.html --rename Uses.dc.html=uses.html --rename Sources.dc.html=sources.html)
+RENAMES=(--rename Main.dc.html=index.html --rename Uses.dc.html=uses.html --rename Coast.dc.html=coast.html --rename Sources.dc.html=sources.html)
 page src/ocean-waves/Main.dc.html ocean-waves/index.html ocean-waves/index.html \
   "หน้าหลัก=../index.html" "Ocean Wave Simulator=" -- \
   "Home=../index.html" "Ocean Wave Simulator="
 page src/ocean-waves/Uses.dc.html ocean-waves/uses.html ocean-waves/uses.html \
   "หน้าหลัก=../index.html" "Ocean Wave Simulator=index.html" "ประโยชน์ของคลื่นทะเล=" -- \
   "Home=../index.html" "Ocean Wave Simulator=index.html" "Uses of ocean waves="
+page src/ocean-waves/Coast.dc.html ocean-waves/coast.html ocean-waves/coast.html \
+  "หน้าหลัก=../index.html" "Ocean Wave Simulator=index.html" "คลื่นใกล้ฝั่งและแมงกะพรุน=" -- \
+  "Home=../index.html" "Ocean Wave Simulator=index.html" "Near-shore waves and jellyfish="
 page src/ocean-waves/Sources.dc.html ocean-waves/sources.html ocean-waves/sources.html \
   "หน้าหลัก=../index.html" "Ocean Wave Simulator=index.html" "แหล่งข้อมูล=" -- \
   "Home=../index.html" "Ocean Wave Simulator=index.html" "Sources="

@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>คลื่นใกล้ฝั่ง ชายหาด และแมงกะพรุน</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 900px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">OCEAN WAVE SIMULATOR · ใกล้ฝั่ง</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">เมื่อคลื่นถึงฝั่ง: การซัด การกัดเซาะ ชีวิตบนหาด และแมงกะพรุน</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">คลื่นที่เดินทางมาจากกลางทะเลจะสูงขึ้นเมื่อน้ำตื้น แล้วแตกและวิ่งขึ้นหาด พลังงานที่เหลือย้ายทรายไปมา บางฤดูหาดกว้างขึ้น บางฤดูหาดหายไป และคลื่นกับลมชุดเดียวกันนี้ก็พาแมงกะพรุนมาเกยหาด</p>
+</div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; background: #0F2A3A; color: #FFFFFF; font-weight: 600; text-decoration: none">คลื่นกลางทะเล</a>
+<a href="Sources.dc.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; text-decoration: none">แหล่งข้อมูล</a>
+</div>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. คลื่นเข้าฝั่ง แตก และซัดขึ้นหาด</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; flex-wrap: wrap">
+<span style="font-weight: 700">ภาพตัดขวางชายหาด</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{bp.bg}}; color: {{bp.fg}}">{{bp.badge}}</span>
+</div>
+<svg viewBox="0 0 900 340" style="display: block; width: 100%; height: auto; background: #EEF6FA" role="img" aria-label="{{bp.aria}}">
+<rect x="0" y="0" width="900" height="340" fill="#F4F9FC"></rect>
+<path d="{{bp.water}}" fill="#9CCBE0" opacity="0.85"></path>
+<path d="{{bp.swash}}" fill="#BFE0EE" opacity="0.9"></path>
+<path d="{{bp.foam}}" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"></path>
+<path d="{{bp.oldSand}}" fill="none" stroke="#B9A57A" stroke-width="1.5" stroke-dasharray="5 4"></path>
+<path d="{{bp.sand}}" fill="#E8D7A8" stroke="#B89B5E" stroke-width="2"></path>
+<rect x="{{bp.wallX}}" y="{{bp.wallY}}" width="16" height="{{bp.wallH}}" fill="#8A97A0" opacity="{{bp.wallO}}"></rect>
+<line x1="0" y1="{{bp.swlY}}" x2="900" y2="{{bp.swlY}}" stroke="#0A6A94" stroke-dasharray="4 5" stroke-width="1"></line>
+<text x="8" y="{{bp.swlY}}" dy="-6" font-size="12" fill="#0A4F70">ระดับน้ำ (รวมน้ำขึ้นน้ำลง)</text>
+<line x1="{{bp.ruX}}" y1="{{bp.ruY}}" x2="{{bp.ruX}}" y2="{{bp.ruY2}}" stroke="#B04A0C" stroke-width="2"></line>
+<text x="{{bp.ruX}}" y="{{bp.ruY}}" dy="-8" font-size="12" text-anchor="middle" fill="#B04A0C" font-weight="600">ขอบน้ำซัดสูงสุด</text>
+<line x1="{{bp.brX}}" y1="40" x2="{{bp.brX}}" y2="{{bp.swlY}}" stroke="#4A5D6A" stroke-dasharray="3 4"></line>
+<text x="{{bp.brX}}" y="34" font-size="12" text-anchor="middle" fill="#4A5D6A">คลื่นแตก</text>
+<sc-for list="{{bp.life}}" as="l" hint-placeholder-count="5">
+<g opacity="{{l.o}}"><circle cx="{{l.x}}" cy="{{l.y}}" r="7" fill="{{l.fill}}" stroke="#0F2A3A" stroke-width="1.5"></circle><text x="{{l.x}}" y="{{l.ty}}" font-size="11" text-anchor="middle" fill="#0F2A3A" font-weight="600">{{l.n}}</text></g>
+</sc-for>
+<text x="10" y="328" font-size="12" fill="#4A5D6A">ทะเลลึก ←</text>
+<text x="890" y="328" font-size="12" text-anchor="end" fill="#4A5D6A">→ แผ่นดิน · ความสูงขยาย 10 เท่า</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px">
+<sc-for list="{{bp.stats}}" as="r" hint-placeholder-count="6">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: {{bp.msgBg}}; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; color: {{bp.msgFg}}">{{bp.msg}}</div>
+</div>
+
+<div style="flex: 1 1 330px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 600">สถานการณ์ตัวอย่าง</span>
+<div role="group" aria-label="สถานการณ์ตัวอย่าง" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{bp.presets}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 140px; min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{bp.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{wall}}" onChange="{{toggleWall}}" style="width: 20px; height: 20px; accent-color: #0A6A94">สร้างกำแพงกันคลื่นบนหาด</label>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{resetBeach}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">คืนหาดเป็นแบบเดิม</button>
+<button type="button" onClick="{{pauseBeach}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{bp.pauseTxt}}</button>
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สูตรที่ใช้</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9">L0 = g·T²/2π<br>Hb = 0.39·g^0.2·(T·H0²)^0.4<br>ξ = tanβ / √(H0/L0)<br>R2% = 1.1·(0.35·tanβ·√(H0·L0) + ½·√(H0·L0·(0.563·tan²β + 0.004)))<br>Ω = Hb / (ws·T)</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">Hb คือความสูงคลื่นตอนแตก (Komar & Gaudiano) ξ คือเลขอิริบาร์เรนที่บอกชนิดคลื่นแตก R2% คือระยะน้ำซัดขึ้นที่คลื่น 2% สูงกว่านี้ (Stockdon และคณะ 2006) Ω คือเลขดีนที่บอกว่าหาดจะถูกกัดเซาะหรือสะสมทราย ws คือความเร็วตกตะกอนของทราย ราว 0.04 ม./วินาทีสำหรับทรายขนาดกลาง</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. ชีวิตบนชายหาดได้รับผลอย่างไร</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
+<sc-for list="{{lifeCards}}" as="c" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline"><span style="font-size: 17px; font-weight: 700">{{c.name}}</span><span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}; white-space: nowrap">{{c.state}}</span></div>
+<div style="font-size: 13px; font-weight: 600; color: #0A6A94">{{c.zone}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #34495A">{{c.text}}</p>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">3. ทำไมแมงกะพรุนเกยหาด: ลอยตามลม หรือว่ายมาเอง</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">แมงกะพรุนส่วนใหญ่ว่ายน้ำได้อ่อน จึงไปตามกระแสน้ำ ลม และคลื่น แต่ไม่ใช่ทุกชนิด ลองเปลี่ยนลมและอาหารใกล้ฝั่ง แล้วดูว่าแต่ละชนิดไปจบที่ไหน ภาพมองจากด้านบน ฝั่งอยู่ด้านล่าง</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; justify-content: space-between">
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<sc-for list="{{jf.legend}}" as="l" hint-placeholder-count="3">
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="{{l.c}}"></circle></svg>{{l.n}}</span>
+</sc-for>
+</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-weight: 600">{{jf.clock}}</span>
+</div>
+<svg viewBox="0 0 900 320" style="display: block; width: 100%; height: auto" role="img" aria-label="{{jf.aria}}">
+<rect x="0" y="0" width="900" height="320" fill="#CFE6F0"></rect>
+<path d="{{jf.beach}}" fill="#EAD9AA"></path>
+<path d="M660,320 C670,286 700,270 720,262 L760,262 C780,270 800,290 810,320 Z" fill="#B7D3C4"></path>
+<text x="735" y="300" font-size="12" text-anchor="middle" fill="#2F5E46" font-weight="600">ปากแม่น้ำ</text>
+<path d="{{jf.food}}" fill="#6E8B3D" opacity="0.6"></path>
+<path d="{{jf.waves}}" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.8"></path>
+<g transform="translate(60,54)"><circle r="26" fill="#FFFFFF" opacity="0.85"></circle><path d="{{jf.arrow}}" fill="none" stroke="#0F2A3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><text y="44" font-size="12" text-anchor="middle" fill="#0F2A3A" font-weight="600">{{jf.windTxt}}</text></g>
+<path d="{{jf.pPhys}}" fill="#5B4FC4"></path>
+<path d="{{jf.pAur}}" fill="#E6A6C0" stroke="#B5527D" stroke-width="1"></path>
+<path d="{{jf.pBox}}" fill="#B04A0C"></path>
+<path d="{{jf.pStr}}" fill="#7A6A55" opacity="0.75"></path>
+<text x="16" y="{{jf.shoreTxtY}}" font-size="12" fill="#6B5A35">ชายหาด · จุดสีน้ำตาล = แมงกะพรุนที่เกยแล้ว</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<sc-for list="{{jf.counts}}" as="r" hint-placeholder-count="3">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #4A5D6A"><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="{{r.c}}"></circle></svg>{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="background: #EAF3F7; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7">{{jf.msg}}</div>
+</div>
+
+<div style="flex: 1 1 330px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 600">สถานการณ์ตัวอย่าง</span>
+<div role="group" aria-label="สถานการณ์แมงกะพรุน" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{jf.presets}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.4">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{jf.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{food}}" onChange="{{toggleFood}}" style="width: 20px; height: 20px; accent-color: #0A6A94">มีกุ้งและปลาเล็กใกล้ปากแม่น้ำ (หลังฝนตก)</label>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{jfReset}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">เริ่มใหม่</button>
+<button type="button" onClick="{{jfPause}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{jf.pauseTxt}}</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">4. แมงกะพรุนพิษในทะเลไทยมาจากไหน</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px">
+<sc-for list="{{facts}}" as="f" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-top: 5px solid {{f.c}}; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: {{f.c}}">{{f.tag}}</div>
+<div style="font-size: 18px; font-weight: 700; line-height: 1.4">{{f.title}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.75; color: #34495A">{{f.text}}</p>
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 20px 22px; display: flex; flex-wrap: wrap; gap: 24px">
+<div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สรุปคำตอบ</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.75; color: #D9E8EF">มีทั้งสองแบบ ขึ้นกับชนิด แมงกะพรุนที่ว่ายได้อ่อนและเรือรบโปรตุเกสถูกลม คลื่น และกระแสน้ำพามา จึงเกยหาดเป็นฤดูตามลมมรสุม ส่วนแมงกะพรุนกล่องพิษร้ายแรงในอ่าวไทยเป็นสัตว์ประจำถิ่น ว่ายน้ำได้ดี และเข้ามาใกล้ฝั่งตามแหล่งอาหารและน้ำตื้น ไม่ได้ลอยมาจากที่ไกล</p>
+</div>
+<div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #F5C77A">ถ้าโดนแมงกะพรุน</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.75; color: #D9E8EF">ขึ้นจากน้ำ อย่าขยี้ อย่าล้างด้วยน้ำจืด โทร 1669 แมงกะพรุนกล่อง: ราดน้ำส้มสายชูนานอย่างน้อย 30 วินาที (หาดหลายแห่งมีเสาน้ำส้มสายชู) แล้วเฝ้าดูการหายใจ เรือรบโปรตุเกส: ล้างด้วยน้ำทะเล เอาหนวดออกด้วยของที่ไม่ใช่มือเปล่า อย่าจับตัวที่เกยหาดแม้จะตายแล้ว เพราะเข็มพิษยังทำงาน</p>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2600}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      t: 0, H0: 0.6, T: 11, slope: 25, tide: 0.2, wall: false, preset: 'calm', storm: 0, days: 0, beachPaused: reduce,
+      wind: 4, wdir: 'on', food: false, jPreset: 'mild', jPaused: reduce, jt: 0, tick: 0
+    };
+    this.jfInit();
+  }
+
+  // ---------- beach physics ----------
+  beach(s) {
+    var g = 9.81, L0 = g * s.T * s.T / (2 * Math.PI), tb = 1 / s.slope;
+    var Hb = 0.39 * Math.pow(g, 0.2) * Math.pow(s.T * s.H0 * s.H0, 0.4);
+    var xi = tb / Math.sqrt(s.H0 / L0);
+    var HL = Math.sqrt(s.H0 * L0);
+    var setup = 0.35 * tb * HL, swash = Math.sqrt(s.H0 * L0 * (0.563 * tb * tb + 0.004));
+    var R2 = 1.1 * (setup + swash / 2);
+    var omega = Hb / (0.04 * s.T);
+    var type = xi < 0.5 ? 'spill' : xi < 3.3 ? 'plunge' : 'surge';
+    var target = omega > 6 ? 1 : omega < 2.5 ? 0 : (omega - 2.5) / 3.5;  // 1 = storm (barred) profile, 0 = calm (bermed)
+    var P = 0.5 * 1025 * g * g * s.H0 * s.H0 * s.T / (32 * Math.PI) / 1000; // deep-water wave power kW/m (Hrms ≈ H0)
+    return { L0: L0, Hb: Hb, db: Hb / 0.78, xi: xi, R2: R2, omega: omega, type: type, target: target, P: P, tb: tb };
+  }
+
+  // profile elevation z(x) in m, x in px (0.5 m per px), shoreline (z=0) at x=560 for the calm profile
+  zAt(x, s, st) {
+    var m = s.slope, dx = (x - 560) * 0.5, z;
+    if (dx < 0) z = Math.max(-9, dx / m);
+    else z = Math.min(2.2, dx / (m * 0.6));
+    if (x > 840) z = Math.min(5.5, 2.2 + (x - 840) * 0.06);  // dune
+    // storm profile: sand moves from the berm to an offshore bar
+    var cut = st * 1.6 * Math.exp(-Math.pow((x - 660) / 90, 2));
+    var bar = st * 1.0 * Math.exp(-Math.pow((x - 430) / 45, 2));
+    z = z - cut + bar;
+    if (x > 840) z -= st * 0.8 * Math.exp(-Math.pow((x - 850) / 25, 2));
+    if (s.wall) {
+      if (x >= 700) z = Math.max(z, x < 716 ? 3.8 : 2.4 + (x > 840 ? (x - 840) * 0.06 : 0));
+      else z -= st * 1.1 * Math.exp(-Math.pow((x - 690) / 22, 2)); // scour at the toe
+    }
+    return z;
+  }
+
+  // ---------- jellyfish ----------
+  rnd() { this._s = (this._s * 1664525 + 1013904223) % 4294967296; return this._s / 4294967296; }
+
+  jfInit() {
+    this._s = 4242;
+    var J = [];
+    for (var i = 0; i < 14; i++) J.push({ k: 'phys', x: this.rnd() * 900, y: 10 + this.rnd() * 90, sail: this.rnd() < 0.5 ? 1 : -1 });
+    for (var j = 0; j < 22; j++) J.push({ k: 'aur', x: this.rnd() * 900, y: 30 + this.rnd() * 170, ph: this.rnd() * 6 });
+    for (var b = 0; b < 8; b++) J.push({ k: 'box', x: 100 + this.rnd() * 700, y: 150 + this.rnd() * 80, hd: this.rnd() * 6.28 });
+    this.jf = { J: J, stranded: [], cnt: { phys: 0, aur: 0, box: 0 }, t: 0 };
+  }
+
+  jfStep(dt) {
+    var s = this.state, jf = this.jf, self = this;
+    var dirs = { on: [0, 1], off: [0, -1], along: [1, 0.25] };
+    var d = dirs[s.wdir], wx = d[0] * s.wind, wy = d[1] * s.wind;
+    var shoreY = 262 - s.tide * 10;
+    var waveDrift = s.wdir === 'on' ? 0.012 * s.wind * s.wind : 0.004 * s.wind * s.wind; // Stokes drift from waves pushes towards shore
+    var K = 9; // px per (m/s)
+    jf.t += dt;
+    jf.J.forEach(function (q) {
+      var vx = 0, vy = 0;
+      if (q.k === 'phys') {
+        // sail: drifts at a few % of wind speed, angled left or right of the wind
+        var a = q.sail * 0.6, c = Math.cos(a), sn = Math.sin(a);
+        vx = 0.04 * (wx * c - wy * sn); vy = 0.04 * (wx * sn + wy * c) + waveDrift * 0.4;
+      } else if (q.k === 'aur') {
+        q.ph += dt;
+        vx = 0.02 * wx + 0.12 * Math.sin(q.ph * 0.7); vy = 0.02 * wy + waveDrift * 0.6 + 0.12 * Math.cos(q.ph * 0.5);
+      } else {
+        // box jellyfish: strong swimmers, head for prey near the river mouth in calm water, move offshore when waves are big
+        var tx, ty;
+        var rough = s.wind > 9;
+        if (rough) { tx = q.x; ty = 120; }
+        else if (s.food) { tx = 735 + 60 * Math.cos(q.hd); ty = 225 + 18 * Math.sin(q.hd); }
+        else { tx = q.x + 40 * Math.cos(q.hd); ty = 195 + 25 * Math.sin(q.hd); }
+        q.hd += dt * (0.4 + self.rnd() * 0.3);
+        var dx = tx - q.x, dy = ty - q.y, L = Math.hypot(dx, dy) || 1, sp = L > 8 ? 0.5 : 0.15;
+        vx = sp * dx / L + 0.01 * wx; vy = sp * dy / L + 0.01 * wy;
+      }
+      q.x += vx * K * dt; q.y += vy * K * dt;
+      if (q.x < -10) q.x += 920; if (q.x > 910) q.x -= 920;
+      if (q.k === 'box' && q.y > shoreY - 18) q.y = shoreY - 18; // swimmers keep off the sand
+      if (q.y < -20) { q.y = 320; q.x = self.rnd() * 900; q.gone = true; }
+      if (q.y >= shoreY - 2 && q.k !== 'box') {
+        jf.cnt[q.k]++;
+        jf.stranded.push({ x: q.x, y: shoreY + 4 + self.rnd() * 22 });
+        if (jf.stranded.length > 90) jf.stranded.shift();
+        q.gone = true;
+      }
+    });
+    // replace jellyfish that left the scene: Physalia arrive from the open sea, moon jellies from the bloom offshore
+    jf.J = jf.J.map(function (q) {
+      if (!q.gone) return q;
+      if (q.k === 'phys') return { k: 'phys', x: self.rnd() * 900, y: -5, sail: self.rnd() < 0.5 ? 1 : -1 };
+      return { k: 'aur', x: self.rnd() * 900, y: 0, ph: self.rnd() * 6 };
+    });
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      var s = self.state, patch = { tick: s.tick + 1 };
+      if (!s.beachPaused) {
+        var b = self.beach(s);
+        patch.t = s.t + dt;
+        patch.days = s.days + dt;           // 1 s on screen ≈ 1 day of this wave climate
+        patch.storm = s.storm + (b.target - s.storm) * Math.min(1, dt * 0.12);
+      }
+      if (!s.jPaused) self.jfStep(dt * 1.5);
+      self.setState(patch);
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+    var circ = function (x, y, r) { return 'M' + f1(x - r) + ',' + f1(y) + ' a' + r + ',' + r + ' 0 1,0 ' + 2 * r + ',0 a' + r + ',' + r + ' 0 1,0 ' + -2 * r + ',0 '; };
+
+    // ---------- 1. beach profile ----------
+    var b = this.beach(s), VS = 10, Y0 = 150; // 10 px per metre vertically (≈ 20× the horizontal 0.5 m/px → exaggerated)
+    var Y = function (z) { return Y0 - z * VS; };
+    var swl = s.tide, sand = [], old = [];
+    for (var x = 0; x <= 900; x += 6) { sand.push(f1(x) + ',' + f1(Y(this.zAt(x, s, s.storm)))); old.push(f1(x) + ',' + f1(Y(this.zAt(x, s, 0)))); }
+    // shoreline (where the profile meets still water)
+    var xs = 560; for (var xx = 300; xx <= 900; xx += 2) { if (this.zAt(xx, s, s.storm) >= swl) { xs = xx; break; } }
+    // break point: depth = db
+    var xb = 0; for (var xq = 0; xq < xs; xq += 2) { if (swl - this.zAt(xq, s, s.storm) <= b.db) { xb = xq; break; } }
+    // wave surface: shoaling (Green's law) up to the break point, then height limited to 0.78·depth
+    var omega = 2 * Math.PI / s.T, t = s.t, surf = [], foam = '', phase = 0;
+    var dRef = Math.max(0.5, swl - this.zAt(0, s, s.storm));
+    var prevX = 0;
+    for (var xw = 0; xw <= xs; xw += 4) {
+      var dep = Math.max(0.05, swl - this.zAt(xw, s, s.storm));
+      var c = Math.sqrt(9.81 * Math.min(dep, b.L0 / 2));
+      phase += (xw - prevX) * 0.5 / (c * s.T) * 2 * Math.PI; prevX = xw;
+      var H = xw < xb ? Math.min(s.H0 * Math.pow(dRef / dep, 0.25), 0.78 * dep) : 0.78 * dep * 0.8;
+      var eta = H / 2 * Math.cos(phase - omega * t * 0.6);
+      surf.push(f1(xw) + ',' + f1(Y(swl + eta)));
+      if (xw >= xb && Math.cos(phase - omega * t * 0.6) > 0.85) foam += 'M' + f1(xw - 6) + ',' + f1(Y(swl + eta) - 2) + ' l12,0 ';
+    }
+    var water = 'M0,340 L0,' + f1(Y(swl)) + ' L' + surf.join(' L') + ' L' + xs + ',340 Z';
+    // swash: thin sheet running up the beach to the run-up limit and back
+    var ru = swl + b.R2, xr = xs;
+    for (var xz = xs; xz <= 900; xz += 2) { if (this.zAt(xz, s, s.storm) >= ru) { xr = xz; break; } xr = xz; }
+    var swPhase = 0.5 - 0.5 * Math.cos(omega * t * 0.6), xNow = xs + (xr - xs) * swPhase;
+    var sw = 'M' + xs + ',' + f1(Y(swl));
+    for (var xv = xs; xv <= xNow; xv += 4) sw += ' L' + f1(xv) + ',' + f1(Y(this.zAt(xv, s, s.storm)) - 3);
+    sw += ' L' + f1(xNow) + ',' + f1(Y(this.zAt(xNow, s, s.storm))) + ' L' + xs + ',' + f1(Y(this.zAt(xs, s, s.storm))) + ' Z';
+    // beach life markers
+    var life = [
+      { id: 'clam', x: Math.min(xs + 22, 880), n: 'หอยเสียบ', z: null },
+      { id: 'crab', x: 735, n: 'ปูลม', z: null },
+      { id: 'plover', x: 790, n: 'รังนก', z: null },
+      { id: 'turtle', x: 830, n: 'รังเต่า', z: null },
+      { id: 'vine', x: 868, n: 'ผักบุ้งทะเล', z: null }
+    ];
+    var lifeState = {};
+    life.forEach(function (l) {
+      if (s.wall && l.x > 700 && l.id !== 'clam') l.x = Math.max(l.x, 760);
+      l.z = self.zAt(l.x, s, s.storm);
+      var drop = self.zAt(l.x, s, 0) - l.z, wet = ru > l.z, lost = l.id !== 'clam' && drop > 0.35;
+      if (s.wall && l.id === 'clam' && s.storm > 0.5) lost = true;
+      lifeState[l.id] = l.id === 'clam' ? (lost ? 'lost' : 'ok') : lost ? 'lost' : wet ? 'wet' : 'ok';
+    });
+    var lifeOut = life.map(function (l) {
+      var st = lifeState[l.id];
+      return { x: f1(l.x), y: f1(Y(l.z) - 10), ty: f1(Y(l.z) - 22), n: l.n, o: st === 'lost' ? 0.35 : 1, fill: st === 'ok' ? '#7FBF7F' : st === 'wet' ? '#F5C77A' : '#E07A5F' };
+    });
+    var xs0 = 560; for (var x0 = 300; x0 <= 900; x0 += 2) { if (this.zAt(x0, s, 0) >= swl) { xs0 = x0; break; } }
+    var retreat = (xs - xs0) * 0.5;
+    var typeTxt = { spill: 'คลื่นแตกแบบม้วนล้น (spilling)', plunge: 'คลื่นแตกแบบม้วนตัว (plunging)', surge: 'คลื่นซัดตรงขึ้นหาด (surging)' }[b.type];
+    var trend = b.omega > 6 ? 'erode' : b.omega < 2.5 ? 'build' : 'mid';
+    var badge = trend === 'erode' ? 'หาดกำลังถูกกัดเซาะ' : trend === 'build' ? 'หาดกำลังสะสมทราย' : 'หาดอยู่ในช่วงกลาง';
+    var msg;
+    if (s.wall && s.storm > 0.4) msg = 'กำแพงสะท้อนคลื่นกลับ แทนที่คลื่นจะค่อย ๆ หมดแรงบนหาด แรงสะท้อนกวาดทรายหน้ากำแพงออกไป หาดหน้ากำแพงจึงต่ำลงและแคบลงเรื่อย ๆ และทรายหลังกำแพงก็มาเติมหาดไม่ได้ ชายฝั่งไทยหลายแห่งจึงหันมาใช้การเติมทรายหรือแนวพืชชายหาดแทน';
+    else if (trend === 'erode') msg = 'คลื่นสูงและคาบสั้นแบบลมมรสุม คลื่นแตกห่างฝั่งและกระแสน้ำย้อนกลับที่ก้นทะเล (undertow) ลากทรายจากหาดออกไปกองเป็นสันทรายใต้น้ำ หาดจึงชันน้อยลงและแคบลง เส้นประคือรูปหาดเดิม';
+    else if (trend === 'build') msg = 'คลื่นเล็กคาบยาวช่วงลมสงบ น้ำที่ซัดขึ้นพาทรายขึ้นหาดแต่ไหลกลับช้าและซึมลงทราย ทรายจึงค้างอยู่บนหาด หาดกว้างและชันขึ้น สันทรายที่ถูกพาออกไปช่วงมรสุมจะค่อย ๆ กลับเข้าฝั่ง';
+    else msg = 'คลื่นขนาดกลาง ทรายเคลื่อนไปมาทั้งสองทาง หาดจึงเปลี่ยนไม่มาก ลองเลือกสถานการณ์คลื่นลมมรสุม แล้วดูหาดเปลี่ยนรูปทีละวัน';
+    var presets = [
+      { id: 'calm', name: 'ลมสงบ คลื่นสเวลล์เล็ก', v: { H0: 0.6, T: 11, tide: 0.2 } },
+      { id: 'monsoon', name: 'คลื่นลมมรสุม น้ำขึ้นสูง', v: { H0: 2.6, T: 8, tide: 0.9 } },
+      { id: 'mid', name: 'คลื่นลมปานกลาง', v: { H0: 1.2, T: 7, tide: 0.4 } }
+    ];
+    var bp = {
+      water: water, swash: sw, foam: foam || 'M0,0', sand: 'M0,340 L' + sand.join(' L') + ' L900,340 Z', oldSand: 'M' + old.join(' L'),
+      swlY: f1(Y(swl)), ruX: f1(xr), ruY: f1(Y(ru) - 4), ruY2: f1(Y(ru) + 18), brX: f1(xb),
+      wallX: 700, wallY: f1(Y(3.8)), wallH: f1(3.8 * VS + 40), wallO: s.wall ? 1 : 0,
+      life: lifeOut, badge: badge,
+      bg: trend === 'erode' ? '#FCE3CF' : trend === 'build' ? '#DDEFF6' : '#FFF1CC', fg: trend === 'erode' ? '#7E3407' : trend === 'build' ? '#0A4F70' : '#6B4A00',
+      msg: msg, msgBg: s.wall && s.storm > 0.4 ? '#FCE3CF' : '#EAF3F7', msgFg: s.wall && s.storm > 0.4 ? '#7E3407' : '#0F2A3A',
+      pauseTxt: s.beachPaused ? 'เล่นต่อ' : 'หยุดชั่วคราว',
+      stats: [
+        { k: 'ความสูงคลื่นตอนแตก', v: b.Hb.toFixed(2) + ' ม.', sub: 'แตกที่ความลึกราว ' + b.db.toFixed(1) + ' ม. · ' + typeTxt, c: '#0F2A3A' },
+        { k: 'น้ำซัดขึ้นหาด (R2%)', v: b.R2.toFixed(2) + ' ม.', sub: 'สูงกว่าระดับน้ำ ขอบน้ำซัดอยู่ที่ ' + (swl + b.R2).toFixed(2) + ' ม. เหนือระดับน้ำทะเลปานกลาง', c: (swl + b.R2) > 2.2 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'กำลังคลื่นที่เข้ามา', v: b.P.toFixed(1) + ' kW/ม.', sub: 'ต่อความยาวชายฝั่ง 1 เมตร', c: '#0F2A3A' },
+        { k: 'เลขดีน Ω', v: b.omega.toFixed(1), sub: 'น้อยกว่า 2.5 = สะสมทราย · มากกว่า 6 = กัดเซาะ', c: trend === 'erode' ? '#B04A0C' : '#0F2A3A' },
+        { k: 'แนวชายฝั่งถอยร่น', v: Math.max(0, retreat).toFixed(0) + ' ม.', sub: retreat > 2 ? 'ขอบน้ำขยับเข้าแผ่นดิน เทียบกับหาดเดิมที่ระดับน้ำเดียวกัน' : 'แทบไม่เปลี่ยน เทียบกับหาดเดิมที่ระดับน้ำเดียวกัน', c: retreat > 2 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'เวลาที่ผ่านไป', v: Math.floor(s.days) + ' วัน', sub: '1 วินาทีบนจอ ≈ 1 วันที่คลื่นแบบนี้ต่อเนื่อง', c: '#0F2A3A' }
+      ],
+      presets: presets.map(function (p) { var q = pill(s.preset === p.id); return { name: p.name, pressed: s.preset === p.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { var o = Object.assign({ preset: p.id }, p.v); self.setState(o); } }; }),
+      sliders: [
+        { id: 'b-h', name: 'ความสูงคลื่นนอกฝั่ง H0', label: s.H0.toFixed(1) + ' ม.', min: 0.2, max: 4, step: 0.1, v: s.H0, set: function (e) { self.setState({ H0: parseFloat(e.target.value), preset: '' }); } },
+        { id: 'b-t', name: 'คาบคลื่น T', label: s.T + ' วินาที', min: 4, max: 16, step: 1, v: s.T, set: function (e) { self.setState({ T: parseFloat(e.target.value), preset: '' }); } },
+        { id: 'b-s', name: 'ความชันหาด', label: '1 : ' + s.slope, min: 8, max: 50, step: 1, v: s.slope, set: function (e) { self.setState({ slope: parseFloat(e.target.value) }); } },
+        { id: 'b-w', name: 'ระดับน้ำขึ้นน้ำลง', label: (s.tide >= 0 ? '+' : '') + s.tide.toFixed(1) + ' ม.', min: -1, max: 1.5, step: 0.1, v: s.tide, set: function (e) { self.setState({ tide: parseFloat(e.target.value), preset: '' }); } }
+      ],
+      aria: 'ภาพตัดขวางชายหาด คลื่นสูง ' + s.H0 + ' เมตร ' + badge
+    };
+    var lsTxt = { ok: 'ปลอดภัย', wet: 'น้ำซัดถึง', lost: 'ทรายถูกกัดหาย' };
+    var lsCol = { ok: ['#DDEFF6', '#0A4F70'], wet: ['#FFF1CC', '#6B4A00'], lost: ['#FCE3CF', '#7E3407'] };
+    var cards = [
+      { id: 'clam', name: 'หอยเสียบและปูทราย', zone: 'เขตน้ำซัด', text: 'ฝังตัวในทรายที่เปียกตลอด แล้วโผล่ขึ้นมากรองอาหารเมื่อน้ำซัดขึ้น ย้ายตัวขึ้นลงตามน้ำได้ แต่ถ้าหน้าหาดถูกกัดจนเหลือแต่กำแพง ที่อยู่ของพวกมันจะหายไป' },
+      { id: 'crab', name: 'ปูลม', zone: 'หาดตอนบน', text: 'ขุดรูในทรายแห้งเหนือแนวน้ำขึ้น ออกหากินกลางคืน ปูลมเป็นตัวชี้วัดสุขภาพหาด เพราะจำนวนลดลงเมื่อหาดแคบ มีคนเหยียบ หรือมีแสงไฟและรถวิ่งบนหาด' },
+      { id: 'plover', name: 'นกหัวโตมลายู', zone: 'สันหาดและเนินทราย', text: 'วางไข่บนพื้นทรายโล่ง ไข่สีกลืนกับทรายจึงถูกเหยียบง่าย ถ้าน้ำซัดสูงกว่าสันหาดช่วงคลื่นลมแรง ไข่จะถูกพัดหาย' },
+      { id: 'turtle', name: 'เต่าทะเล', zone: 'เหนือแนวน้ำขึ้นสูงสุด', text: 'แม่เต่าขึ้นมาวางไข่บนหาดทรายฝั่งอันดามันและบางเกาะในอ่าวไทย ไข่ต้องอยู่ในทรายราว 2 เดือน ถ้าน้ำทะเลท่วมรังไข่อาจไม่ฟัก และหาดที่มีกำแพงกันคลื่นมักไม่มีทรายแห้งให้วางไข่' },
+      { id: 'vine', name: 'ผักบุ้งทะเลและพืชเนินทราย', zone: 'เนินทรายด้านหลัง', text: 'รากยึดทรายไว้และดักทรายที่ลมพัดมา ทำให้เนินทรายสูงขึ้นเป็นแนวกันคลื่นตามธรรมชาติ ช่วงมรสุมเนินทรายจะเสียทรายให้หาด แล้วได้คืนช่วงลมสงบ' }
+    ];
+    var lifeCards = cards.map(function (c) { var st = lifeState[c.id] || 'ok'; return { name: c.name, zone: c.zone, text: c.text, state: lsTxt[st], bg: lsCol[st][0], fg: lsCol[st][1] }; });
+
+    // ---------- 3. jellyfish ----------
+    var jf = this.jf, shoreY = 262 - s.tide * 10, pP = '', pA = '', pB = '', pS = '';
+    jf.J.forEach(function (q) {
+      if (q.k === 'phys') pP += 'M' + f1(q.x - 6) + ',' + f1(q.y + 3) + ' q6,-12 12,0 z ' + circ(q.x, q.y + 3, 3);
+      else if (q.k === 'aur') pA += circ(q.x, q.y, 6);
+      else pB += 'M' + f1(q.x - 5) + ',' + f1(q.y - 5) + ' h10 v10 h-10 z ';
+    });
+    jf.stranded.forEach(function (q) { pS += circ(q.x, q.y, 3.5); });
+    var beachPath = 'M0,320 L0,' + f1(shoreY) + ' C200,' + f1(shoreY - 4) + ' 500,' + f1(shoreY + 4) + ' 900,' + f1(shoreY) + ' L900,320 Z';
+    var waves = '';
+    var nW = Math.round(2 + s.wind / 2);
+    for (var w = 0; w < nW; w++) { var wy = shoreY - 10 - w * 14, off = (jf.t * 20 * (s.wdir === 'on' ? 1 : 0.3)) % 60; waves += 'M' + f1(20 + off + w * 37) + ',' + f1(wy) + ' q20,-5 40,0 M' + f1(330 + off - w * 23) + ',' + f1(wy + 3) + ' q20,-5 40,0 M' + f1(600 + off + w * 11) + ',' + f1(wy - 2) + ' q20,-5 40,0 '; }
+    var food = '';
+    if (s.food) for (var k = 0; k < 26; k++) { var a = k * 2.4, r = 20 + (k * 7) % 55; food += circ(735 + r * Math.cos(a) * 1.3, 232 + r * Math.sin(a) * 0.3, 2.2); }
+    var dirs = { on: [0, 1], off: [0, -1], along: [1, 0.25] }, dv = dirs[s.wdir], L = Math.hypot(dv[0], dv[1]);
+    var ax = dv[0] / L * 18, ay = dv[1] / L * 18;
+    var arrow = s.wind < 0.5 ? 'M-4,0 L4,0' : 'M' + f1(-ax) + ',' + f1(-ay) + ' L' + f1(ax) + ',' + f1(ay) + ' M' + f1(ax - ay * 0.4 - ax * 0.4) + ',' + f1(ay + ax * 0.4 - ay * 0.4) + ' L' + f1(ax) + ',' + f1(ay) + ' L' + f1(ax + ay * 0.4 - ax * 0.4) + ',' + f1(ay - ax * 0.4 - ay * 0.4);
+    var nBoxNear = jf.J.filter(function (q) { return q.k === 'box' && q.y > shoreY - 60; }).length;
+    var jmsg;
+    if (s.wind > 9 && s.wdir === 'on') jmsg = 'ลมแรงพัดเข้าฝั่งแบบลมมรสุม เรือรบโปรตุเกสที่มีถุงลมเป็นใบเรือถูกลมพัดเข้าหาดเป็นกลุ่ม แมงกะพรุนที่ว่ายน้ำได้อ่อนถูกคลื่นดันเข้าฝั่ง ส่วนแมงกะพรุนกล่องว่ายหนีออกไปที่น้ำลึกกว่า';
+    else if (s.wdir === 'off') jmsg = 'ลมพัดออกจากฝั่ง แมงกะพรุนที่ลอยตามลมถูกพาออกทะเล แทบไม่มีตัวไหนเกยหาด นี่คือเหตุที่บางหาดเจอแมงกะพรุนเฉพาะบางฤดู';
+    else if (s.food && nBoxNear > 2) jmsg = 'น้ำค่อนข้างนิ่งและมีกุ้งกับปลาเล็กใกล้ปากแม่น้ำ แมงกะพรุนกล่องว่ายเข้ามาหากินในน้ำตื้นเอง ไม่ได้ถูกพัดมา ช่วงนี้จึงเสี่ยงที่สุดสำหรับคนลงเล่นน้ำ แม้หาดจะดูสงบ';
+    else jmsg = 'ลมเบา แมงกะพรุนลอยไปมาช้า ๆ ลองเลือกลมมรสุมพัดเข้าฝั่ง หรือเปิดอาหารใกล้ปากแม่น้ำ แล้วดูว่าแต่ละชนิดเคลื่อนที่ต่างกันอย่างไร';
+    var jPresets = [
+      { id: 'monsoon', name: 'ลมมรสุมพัดเข้าฝั่ง (เช่นอันดามันช่วงมรสุมตะวันตกเฉียงใต้)', v: { wind: 12, wdir: 'on', food: false, tide: 0.8 } },
+      { id: 'calmfood', name: 'ลมสงบหลังฝนตก มีอาหารใกล้ปากแม่น้ำ', v: { wind: 2, wdir: 'along', food: true, tide: 0.2 } },
+      { id: 'offshore', name: 'ลมพัดออกจากฝั่ง', v: { wind: 7, wdir: 'off', food: false, tide: 0 } }
+    ];
+    var wdTxt = { on: 'เข้าฝั่ง', off: 'ออกจากฝั่ง', along: 'ขนานฝั่ง' };
+    var jfo = {
+      legend: [{ n: 'เรือรบโปรตุเกส (ลอยตามลม)', c: '#5B4FC4' }, { n: 'แมงกะพรุนพระจันทร์ (ว่ายได้อ่อน)', c: '#E6A6C0' }, { n: 'แมงกะพรุนกล่อง (ว่ายเก่ง)', c: '#B04A0C' }],
+      clock: '≈ ' + Math.floor(jf.t / 6) + ' ชม.',
+      beach: beachPath, waves: waves || 'M0,0', food: food || 'M0,0', arrow: arrow,
+      windTxt: s.wind.toFixed(0) + ' ม./วิ ' + wdTxt[s.wdir],
+      pPhys: pP || 'M0,0', pAur: pA || 'M0,0', pBox: pB || 'M0,0', pStr: pS || 'M0,0', shoreTxtY: f1(shoreY + 52),
+      counts: [
+        { k: 'เรือรบโปรตุเกสเกยหาด', v: jf.cnt.phys + ' ตัว', sub: 'ว่ายไม่ได้ ไปตามลมราว 3–4% ของความเร็วลม', c: '#5B4FC4' },
+        { k: 'แมงกะพรุนพระจันทร์เกยหาด', v: jf.cnt.aur + ' ตัว', sub: 'ว่ายได้แต่สู้คลื่นและกระแสน้ำไม่ได้', c: '#E6A6C0' },
+        { k: 'แมงกะพรุนกล่องใกล้ชายฝั่ง', v: nBoxNear + ' ตัว', sub: 'ว่ายเลือกทิศได้ จึงไม่ค่อยเกยหาด แต่เข้ามาในน้ำตื้นเอง', c: '#B04A0C' }
+      ],
+      msg: jmsg, pauseTxt: s.jPaused ? 'เล่นต่อ' : 'หยุดชั่วคราว',
+      presets: jPresets.map(function (p) { var q = pill(s.jPreset === p.id); return { name: p.name, pressed: s.jPreset === p.id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState(Object.assign({ jPreset: p.id }, p.v)); } }; }),
+      sliders: [
+        { id: 'j-w', name: 'ความเร็วลม', label: s.wind.toFixed(0) + ' ม./วินาที', min: 0, max: 15, step: 1, v: s.wind, set: function (e) { self.setState({ wind: parseFloat(e.target.value), jPreset: '' }); } },
+        { id: 'j-d', name: 'ทิศลม: เข้าฝั่ง · ขนานฝั่ง · ออกจากฝั่ง', label: wdTxt[s.wdir], min: 0, max: 2, step: 1, v: { on: 0, along: 1, off: 2 }[s.wdir], set: function (e) { self.setState({ wdir: ['on', 'along', 'off'][parseInt(e.target.value, 10)], jPreset: '' }); } }
+      ],
+      aria: 'ภาพมุมบนของอ่าว ลม ' + s.wind + ' เมตรต่อวินาที แมงกะพรุนเกยหาด ' + (jf.cnt.phys + jf.cnt.aur) + ' ตัว'
+    };
+
+    var facts = [
+      { tag: 'สัตว์ประจำถิ่น', c: '#B04A0C', title: 'แมงกะพรุนกล่องในอ่าวไทย', text: 'การสำรวจปี 2009–2016 ใน 15 จังหวัดรอบอ่าวไทยพบแมงกะพรุนกล่อง 3 ชนิด รวมถึง Chironex indrasaksajiae ที่ตั้งชื่อใหม่จากไทย สกุล Chironex พบเฉพาะตั้งแต่สุราษฎร์ธานี (ราวละติจูด 9° เหนือ) ขึ้นไป พบมากเดือนกรกฎาคมถึงกันยายน และผู้ที่บาดเจ็บรุนแรงหรือเสียชีวิตทุกรายอยู่ในพื้นที่ที่พบ Chironex แปลว่าพวกมันอาศัยและเติบโตในอ่าวไทยเอง ไม่ได้ถูกพัดมาจากที่ไกล' },
+      { tag: 'ลอยตามลม', c: '#5B4FC4', title: 'เรือรบโปรตุเกส (Physalia)', text: 'อาศัยอยู่ที่ผิวมหาสมุทรเปิด ว่ายน้ำไม่ได้เลย มีถุงลมทำหน้าที่เหมือนใบเรือ ลมจึงเป็นตัวกำหนดว่าจะไปทางไหน เมื่อมรสุมตะวันตกเฉียงใต้พัดเข้าฝั่งอันดามัน จึงเกยหาดภูเก็ตและหาดใกล้เคียงเป็นช่วง ๆ และบางปีพบที่ชายฝั่งอ่าวไทยตอนล่างช่วงมรสุม' },
+      { tag: 'ตามอาหาร', c: '#3F7A4F', title: 'ว่ายมาหาอาหารและน้ำตื้น', text: 'แมงกะพรุนกล่องมีตาที่ซับซ้อนและว่ายเลือกทิศได้ จับกุ้งและปลาเล็กเป็นอาหาร หลังฝนตก น้ำจากแม่น้ำพาธาตุอาหารลงทะเล แพลงก์ตอน กุ้ง และปลาเล็กเพิ่มขึ้นใกล้ฝั่ง ผู้ล่าจึงตามเข้ามาด้วย บริเวณน้ำตื้นใกล้ปากแม่น้ำและหาดที่น้ำนิ่งจึงต้องระวังเป็นพิเศษ' },
+      { tag: 'ทำไมพบบ่อยขึ้น', c: '#0A6A94', title: 'แมงกะพรุนสะพรั่ง (bloom)', text: 'งานทบทวนงานวิจัยพบว่าการบานสะพรั่งของแมงกะพรุนเกี่ยวกับน้ำทะเลอุ่นขึ้น ธาตุอาหารจากน้ำเสียและการเกษตร (ทำให้แพลงก์ตอนเพิ่ม) การจับปลามากเกินจนคู่แข่งและผู้ล่าแมงกะพรุนลดลง และสิ่งก่อสร้างชายฝั่งที่เป็นที่เกาะของระยะตัวอ่อน เมื่อมีแมงกะพรุนในทะเลมาก ลมและคลื่นก็พาขึ้นหาดมากตามไปด้วย' }
+    ];
+
+    return {
+      bp: bp, lifeCards: lifeCards, jf: jfo, facts: facts,
+      wall: s.wall, toggleWall: function () { self.setState({ wall: !self.state.wall }); },
+      resetBeach: function () { self.setState({ storm: 0, days: 0 }); },
+      pauseBeach: function () { self.setState({ beachPaused: !self.state.beachPaused }); },
+      food: s.food, toggleFood: function () { self.setState({ food: !self.state.food, jPreset: '' }); },
+      jfReset: function () { self.jfInit(); self.setState({ jPaused: false }); },
+      jfPause: function () { self.setState({ jPaused: !self.state.jPaused }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

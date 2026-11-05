@@ -397,7 +397,7 @@ class Component extends DCLogic {
         { name: 'หลอด 2', r: s.R2 + ' Ω', v: (s.s2 ? b.V23 : 0).toFixed(2) + ' V', i: fmtI(b.I2), p: P2.toFixed(2) + ' W' },
         { name: 'หลอด 3', r: s.R3 + ' Ω', v: (s.s3 ? b.V23 : 0).toFixed(2) + ' V', i: fmtI(b.I3), p: P3.toFixed(2) + ' W' }
       ],
-      rSliders: [['R1', 'หลอด 1'], ['R2', 'หลอด 2'], ['R3', 'หลอด 3']].map(function (q) { return { id: 'c-' + q[0], name: 'ความต้านทาน' + q[1], label: s[q[0]] + ' Ω', v: s[q[0]], set: function (e) { var o = {}; o[q[0]] = parseFloat(e.target.value); self.setState(o); } }; }),
+      rSliders: [['R1', 'ความต้านทานหลอด 1'], ['R2', 'ความต้านทานหลอด 2'], ['R3', 'ความต้านทานหลอด 3']].map(function (q) { return { id: 'c-' + q[0], name: q[1], label: s[q[0]] + ' Ω', v: s[q[0]], set: function (e) { var o = {}; o[q[0]] = parseFloat(e.target.value); self.setState(o); } }; }),
       aria: 'วงจรแบตเตอรี่ ' + s.V + ' โวลต์ กระแสรวม ' + fmtI(b.I)
     };
 

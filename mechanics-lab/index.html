@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แล็บกลศาสตร์</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><span aria-current="page">Mechanics Lab</span><a class="ps-lang" href="../en/mechanics-lab/index.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="เปลี่ยนเป็นภาษาอังกฤษ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>English</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 40px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 860px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">MECHANICS LAB · ฟิสิกส์ 1</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">แล็บกลศาสตร์บนเครื่องจักรจริง</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">โมเมนต์ การหมุน แรงเข้าสู่ศูนย์กลาง และการลอยตัว เหมือนที่ทดลองในแล็บฟิสิกส์ แต่ปรับค่าได้ไม่จำกัดบนรถแบ็คโฮและเรือขนส่งสินค้า ทุกตัวเลขคำนวณจากสูตรฟิสิกส์ 1 ตรง ๆ</p>
+</div>
+<a href="sources.html" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #0F2A3A; color: #0F2A3A; font-weight: 600; text-decoration: none">แหล่งข้อมูล</a>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. รถแบ็คโฮ: โมเมนต์ การพลิกคว่ำ และการหมุนตัว</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 920px">น้ำหนักในบุ้งกี๋ที่ยื่นออกไปไกลสร้างโมเมนต์ (แรง × ระยะ) รอบขอบล้อตีนตะขาบด้านหน้า ถ้าโมเมนต์นี้มากกว่าโมเมนต์ของตัวรถและน้ำหนักถ่วงด้านหลัง รถจะพลิก ส่วนตอนหมุนตัว (slew) ของในบุ้งกี๋ต้องการแรงเข้าสู่ศูนย์กลาง F = mω²r ยิ่งยื่นไกลและหมุนเร็ว แรงยิ่งมาก</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; flex-wrap: wrap">
+<span style="font-weight: 700">มุมมองด้านข้าง</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{ex.bg}}; color: {{ex.fg}}">{{ex.badge}}</span>
+</div>
+<svg viewBox="0 0 720 380" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="{{ex.aria}}">
+<g transform="{{ex.tilt}}">
+<rect x="0" y="330" width="720" height="50" fill="#B89B74"></rect>
+<path d="M168,330 L312,330 L304,306 L176,306 Z" fill="#4A5D6A"></path>
+<circle cx="182" cy="318" r="10" fill="#0F2A3A"></circle><circle cx="298" cy="318" r="10" fill="#0F2A3A"></circle>
+<rect x="176" y="268" width="140" height="38" rx="4" fill="#F5C77A" stroke="#0F2A3A" stroke-width="2"></rect>
+<rect x="150" y="270" width="34" height="34" rx="3" fill="#4A5D6A"></rect>
+<path d="M200,268 L200,226 L250,226 L262,268 Z" fill="#9FD0E6" stroke="#0F2A3A" stroke-width="2"></path>
+<path d="{{ex.boom}}" fill="none" stroke="#F08A3C" stroke-width="14" stroke-linecap="round"></path>
+<path d="{{ex.stick}}" fill="none" stroke="#F08A3C" stroke-width="10" stroke-linecap="round"></path>
+<path d="{{ex.bucket}}" fill="#4A5D6A" stroke="#0F2A3A" stroke-width="2"></path>
+<rect x="{{ex.loadX}}" y="{{ex.loadY}}" width="{{ex.loadW}}" height="{{ex.loadW}}" fill="#7A5A3A" opacity="{{ex.loadO}}"></rect>
+<circle cx="{{ex.pivotX}}" cy="{{ex.pivotY}}" r="6" fill="#FFFFFF" stroke="#0F2A3A" stroke-width="2"></circle>
+<line x1="{{ex.comX}}" y1="286" x2="{{ex.comX}}" y2="352" stroke="#0A6A94" stroke-width="2" stroke-dasharray="5 4"></line>
+<circle cx="{{ex.comX}}" cy="286" r="7" fill="#0A6A94" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="{{ex.comX}}" y="372" font-size="13" text-anchor="end" fill="#0A4F70" font-weight="600" dx="-6">จุดศูนย์ถ่วงรวม</text>
+<path d="M312,336 l-6,10 l12,0 Z" fill="#B04A0C"></path>
+<text x="312" y="364" font-size="12" text-anchor="middle" fill="#7E3407">ขอบพลิก</text>
+<path d="{{ex.forceArrow}}" fill="none" stroke="#B04A0C" stroke-width="2.5"></path>
+</g>
+<text x="16" y="26" font-size="14" fill="#4A5D6A">สเกล: 1 ช่องจอ ≈ 2.5 ซม. (40 ช่อง = 1 ม.)</text>
+</svg>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{ex.rows}}" as="r" hint-placeholder-count="6">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: {{r.color}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">ปรับค่า</h3>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ex-a1" style="font-size: 14px; font-weight: 600">มุมบูม (แขนท่อนแรก)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{ex.a1Label}}</span></div>
+<input id="ex-a1" type="range" min="-20" max="70" step="1" value="{{a1}}" onChange="{{setA1}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ex-a2" style="font-size: 14px; font-weight: 600">มุมแขนอาร์ม (ท่อนที่สอง)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{ex.a2Label}}</span></div>
+<input id="ex-a2" type="range" min="-150" max="-20" step="1" value="{{a2}}" onChange="{{setA2}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ex-m" style="font-size: 14px; font-weight: 600">น้ำหนักในบุ้งกี๋</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{ex.mLabel}}</span></div>
+<input id="ex-m" type="range" min="0" max="6000" step="50" value="{{load}}" onChange="{{setLoad}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ex-w" style="font-size: 14px; font-weight: 600">ความเร็วหมุนตัว (slew)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{ex.wLabel}}</span></div>
+<input id="ex-w" type="range" min="0" max="12" step="0.5" value="{{rpm}}" onChange="{{setRpm}}">
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 15px">มองจากด้านบนขณะหมุนตัว</div>
+<svg viewBox="0 0 320 220" style="display: block; width: 100%; height: auto; background: #EAF3F7" role="img" aria-label="{{ex.topAria}}">
+<circle cx="160" cy="110" r="{{ex.topR}}" fill="none" stroke="#9AAAB4" stroke-width="1.5" stroke-dasharray="4 4"></circle>
+<rect x="138" y="82" width="44" height="56" rx="6" fill="#4A5D6A"></rect>
+<g transform="{{ex.topRot}}">
+<rect x="146" y="96" width="34" height="28" rx="4" fill="#F5C77A" stroke="#0F2A3A" stroke-width="1.5"></rect>
+<line x1="170" y1="110" x2="{{ex.topEnd}}" y2="110" stroke="#F08A3C" stroke-width="7" stroke-linecap="round"></line>
+<circle cx="{{ex.topEnd}}" cy="110" r="7" fill="#7A5A3A"></circle>
+<path d="{{ex.topArrow}}" fill="none" stroke="#B04A0C" stroke-width="2.5"></path>
+</g>
+<circle cx="160" cy="110" r="3" fill="#0F2A3A"></circle>
+</svg>
+<div style="padding: 10px 16px; font-size: 13px; line-height: 1.6; color: #4A5D6A">ลูกศรส้มคือแรงเข้าสู่ศูนย์กลางที่แขนต้องดึงของไว้ ถ้าหยุดหมุนกะทันหัน ของจะเหวี่ยงต่อด้วยความเฉื่อย</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. เรือขนส่งตู้สินค้า: การลอยตัวและเสถียรภาพ</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 920px">เรือลอยได้เพราะแรงลอยตัวเท่ากับน้ำหนักของน้ำที่ถูกแทนที่ (หลักของอาร์คิมีดีส) ยิ่งบรรทุกมาก เรือยิ่งจมลึก ส่วนเรือจะตั้งตรงได้หรือไม่ขึ้นกับตำแหน่ง G (จุดศูนย์ถ่วง) เทียบกับ M (จุดเมตาเซนเตอร์) ถ้า G สูงกว่า M เรือจะพลิก การวางตู้สินค้าซ้อนสูงจึงต้องคำนวณเสมอ</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E9EC; flex-wrap: wrap">
+<span style="font-weight: 700">ภาพตัดขวางกลางลำเรือ</span>
+<span style="font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: {{sh.bg}}; color: {{sh.fg}}">{{sh.badge}}</span>
+</div>
+<svg viewBox="0 0 720 400" style="display: block; width: 100%; height: auto; background: #DCEBF2" role="img" aria-label="{{sh.aria}}">
+<g transform="{{sh.rot}}">
+<path d="{{sh.hull}}" fill="#0F2A3A"></path>
+<path d="{{sh.hold}}" fill="#2E4B5C"></path>
+<path d="{{sh.boxes}}" fill="#F08A3C" stroke="#0F2A3A" stroke-width="1"></path>
+<path d="{{sh.boxes2}}" fill="#0A6A94" stroke="#0F2A3A" stroke-width="1"></path>
+<path d="{{sh.ballast}}" fill="#9FD0E6" opacity="0.85"></path>
+<circle cx="360" cy="{{sh.gY}}" r="7" fill="#B04A0C" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="374" y="{{sh.gY}}" font-size="15" font-weight="700" fill="#FFFFFF" dy="5">G</text>
+<circle cx="360" cy="{{sh.mY}}" r="6" fill="#F5C77A" stroke="#0F2A3A" stroke-width="1.5"></circle>
+<text x="374" y="{{sh.mY}}" font-size="15" font-weight="700" fill="#FFC79A" stroke="#0F2A3A" stroke-width="0.6" dy="5">M</text>
+</g>
+<rect x="0" y="{{sh.wl}}" width="720" height="{{sh.wh}}" fill="#2580AD" opacity="0.55"></rect>
+<line x1="0" y1="{{sh.wl}}" x2="720" y2="{{sh.wl}}" stroke="#0A4F70" stroke-width="2"></line>
+<circle cx="{{sh.bX}}" cy="{{sh.bY}}" r="6" fill="#FFFFFF" stroke="#0A4F70" stroke-width="2"></circle>
+<text x="{{sh.bX}}" y="{{sh.bY}}" font-size="15" font-weight="700" fill="#FFFFFF" dx="12" dy="5">B</text>
+<path d="{{sh.windArrow}}" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<text x="16" y="26" font-size="14" fill="#0F2A3A">เรือกว้าง 40 ม. ลึก 22 ม. ยาว 250 ม. (แบบจำลองเรือท้องกล่อง)</text>
+</svg>
+<div style="padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: #4A5D6A; border-top: 1px solid #E3E9EC">
+<span><strong style="color: #B04A0C">G</strong> จุดศูนย์ถ่วงของเรือและสินค้า</span>
+<span><strong style="color: #0A4F70">B</strong> จุดศูนย์กลางแรงลอยตัว (เลื่อนตามน้ำที่ถูกแทนที่)</span>
+<span><strong style="color: #6B4A00">M</strong> เมตาเซนเตอร์ ต้องอยู่สูงกว่า G</span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{sh.rows}}" as="r" hint-placeholder-count="6">
+<div style="flex: 1 1 190px; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: {{r.color}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700">บรรทุกสินค้า</h3>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sh-t" style="font-size: 14px; font-weight: 600">ตู้บนดาดฟ้า (ชั้นซ้อน)</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{sh.tLabel}}</span></div>
+<input id="sh-t" type="range" min="0" max="9" step="1" value="{{tiers}}" onChange="{{setTiers}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sh-c" style="font-size: 14px; font-weight: 600">น้ำหนักเฉลี่ยต่อตู้</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{sh.cLabel}}</span></div>
+<input id="sh-c" type="range" min="4" max="28" step="1" value="{{boxT}}" onChange="{{setBoxT}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sh-b" style="font-size: 14px; font-weight: 600">น้ำอับเฉา (ballast) ก้นเรือ</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{sh.bLabel}}</span></div>
+<input id="sh-b" type="range" min="0" max="30000" step="500" value="{{ballast}}" onChange="{{setBallast}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="sh-w" style="font-size: 14px; font-weight: 600">ลมด้านข้าง</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{sh.wLabel}}</span></div>
+<input id="sh-w" type="range" min="0" max="45" step="1" value="{{wind}}" onChange="{{setWind}}">
+</div>
+<div role="group" aria-label="ชนิดน้ำ" style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{waters}}" as="x" hint-placeholder-count="2">
+<button type="button" onClick="{{x.pick}}" aria-pressed="{{x.pressed}}" style="min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1.5px solid {{x.border}}; background: {{x.bg}}; color: {{x.fg}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{x.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">สูตรที่ใช้</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.8">Δ = ρ · L · B · T<br>KB = T/2 · BM = B² / (12T)<br>GM = KB + BM − KG<br>tan φ ≈ M_ลม / (Δ · g · GM)</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.65; color: #D9E8EF">ลองเพิ่มตู้บนดาดฟ้าจน GM ต่ำ แล้วเติมน้ำอับเฉา จะเห็นว่าน้ำหนักที่ก้นเรือดึง G ลง ทำให้เรือกลับมาตั้งตรง</p>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2000}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.state = { a1: 20, a2: -90, load: 1500, rpm: 4, t: 0, playing: !reduce, tiers: 4, boxT: 14, ballast: 8000, wind: 15, water: 'sea' };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.1);
+      self._last = now;
+      if (self.state.playing && self.state.rpm > 0) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  setter(k) { var self = this; return function (e) { var o = {}; o[k] = parseFloat(e.target.value); self.setState(o); }; }
+
+  renderVals() {
+    var self = this, s = this.state, PI = Math.PI, g = 9.81;
+    var f1 = function (v) { return v.toFixed(1); };
+    var fmt = function (v, d) { return v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); };
+
+    // ---------- excavator (metres; origin at slew axis on the ground; +x = forward) ----------
+    var SC = 40, X0 = 240, Y0 = 330;
+    var P = function (x, y) { return [X0 + x * SC, Y0 - y * SC]; };
+    var pv = [0.6, 2.0], L1 = 5.7, L2 = 2.9, LB = 1.2;
+    var a1 = s.a1 * PI / 180, a2 = a1 + s.a2 * PI / 180;
+    var bt = [pv[0] + L1 * Math.cos(a1), pv[1] + L1 * Math.sin(a1)];
+    var st = [bt[0] + L2 * Math.cos(a2), bt[1] + L2 * Math.sin(a2)];
+    var a3 = a2 - 1.1;
+    var bk = [st[0] + LB * Math.cos(a3), st[1] + LB * Math.sin(a3)];
+    var masses = [
+      { m: 16500, x: -0.7 },                                   // tracks, upper body and counterweight
+      { m: 1700, x: (pv[0] + bt[0]) / 2 },                     // boom
+      { m: 900, x: (bt[0] + st[0]) / 2 },                      // stick
+      { m: 700, x: (st[0] + bk[0]) / 2 },                      // bucket
+      { m: s.load, x: (st[0] + bk[0]) / 2 }                    // load
+    ];
+    var M = 0, Mx = 0;
+    masses.forEach(function (q) { M += q.m; Mx += q.m * q.x; });
+    var com = Mx / M, edge = 1.8;
+    var stab = 0, over = 0;
+    masses.forEach(function (q) { var arm = edge - q.x; if (arm > 0) stab += q.m * arm; else over += q.m * (-arm); });
+    var sf = over > 0 ? stab / over : Infinity;
+    var lx = masses[4].x;
+    var tipLoad = lx > edge ? (masses.slice(0, 4).reduce(function (a, q) { return a + q.m * (edge - q.x); }, 0)) / (lx - edge) : Infinity;
+    var rated = tipLoad * 0.75;
+    // torque about the boom foot pin from boom, stick, bucket and load
+    var tq = 0;
+    masses.slice(1).forEach(function (q) { tq += q.m * g * (q.x - pv[0]); });
+    var cyl = Math.abs(tq) / 0.9, area = PI * 0.07 * 0.07, press = cyl / area / 1e6;
+    // slewing
+    var w = s.rpm * 2 * PI / 60, r = Math.max(0.5, lx), Fc = s.load * w * w * r;
+    var tipping = com > edge;
+    var tilt = tipping ? 'rotate(' + f1(Math.min(14, (com - edge) * 6)) + ' ' + (X0 + edge * SC) + ' ' + Y0 + ')' : 'rotate(0)';
+    var pp = function (a) { var q = P(a[0], a[1]); return f1(q[0]) + ',' + f1(q[1]); };
+    var lp = P((st[0] + bk[0]) / 2, (st[1] + bk[1]) / 2), lw = Math.min(26, 6 + s.load / 220);
+    var bucketPath = 'M' + pp(st) + ' L' + pp(bk) + ' L' + pp([bk[0] - 0.5 * Math.cos(a2), bk[1] - 0.5 * Math.sin(a2)]) + ' Z';
+    var arrowTop = P(lx, (st[1] + bk[1]) / 2), aLen = Math.min(90, 12 + s.load / 60);
+    var ang = (s.t * w * 180 / PI) % 360, rTop = Math.min(95, 10 + r * 10);
+    var fcLen = Math.min(60, 8 + Fc / 400);
+    var ex = {
+      boom: 'M' + pp(pv) + ' L' + pp(bt), stick: 'M' + pp(bt) + ' L' + pp(st), bucket: bucketPath,
+      loadX: f1(lp[0] - lw / 2), loadY: f1(lp[1] - lw / 2), loadW: f1(lw), loadO: s.load > 0 ? 0.9 : 0,
+      pivotX: f1(P(pv[0], 0)[0]), pivotY: f1(P(0, pv[1])[1]),
+      comX: f1(X0 + com * SC), tilt: tilt,
+      forceArrow: 'M' + f1(arrowTop[0]) + ',' + f1(arrowTop[1] + 14) + ' l0,' + f1(aLen) + ' m-6,-10 l6,10 l6,-10',
+      badge: tipping ? 'รถพลิกคว่ำ' : sf < 1.33 ? 'เกินพิกัดยก (เกิน 75% ของน้ำหนักที่ทำให้พลิก)' : 'มั่นคง',
+      bg: tipping ? '#FCE3CF' : sf < 1.33 ? '#FFF1CC' : '#DDEFF6', fg: tipping ? '#7E3407' : sf < 1.33 ? '#6B4A00' : '#0A4F70',
+      a1Label: s.a1 + '°', a2Label: s.a2 + '°', mLabel: fmt(s.load, 0) + ' กก.', wLabel: s.rpm + ' รอบ/นาที',
+      rows: [
+        { k: 'ระยะยื่นของบุ้งกี๋', v: lx.toFixed(2) + ' ม.', sub: 'วัดจากแกนหมุนตัว ขอบพลิกอยู่ที่ 1.8 ม.', color: '#0F2A3A' },
+        { k: 'อัตราส่วนความปลอดภัยต่อการพลิก', v: isFinite(sf) ? sf.toFixed(2) : '∞', sub: 'โมเมนต์ต้านการพลิก ÷ โมเมนต์ที่ทำให้พลิก ควรไม่ต่ำกว่า 1.33', color: sf < 1 ? '#B04A0C' : sf < 1.33 ? '#8A5A00' : '#0F2A3A' },
+        { k: 'น้ำหนักที่ทำให้พลิกที่ระยะนี้', v: isFinite(tipLoad) ? fmt(Math.max(0, tipLoad), 0) + ' กก.' : 'ไม่พลิก', sub: isFinite(rated) ? 'พิกัดยกปลอดภัย (75%) ≈ ' + fmt(Math.max(0, rated), 0) + ' กก.' : 'บุ้งกี๋อยู่หลังขอบพลิก', color: '#0F2A3A' },
+        { k: 'โมเมนต์รอบสลักโคนบูม', v: fmt(Math.abs(tq) / 1000, 1) + ' kN·m', sub: 'τ = Σ m·g·ระยะ ของแขน บุ้งกี๋ และของ', color: '#0F2A3A' },
+        { k: 'แรงดันไฮดรอลิกโดยประมาณ', v: press.toFixed(1) + ' MPa', sub: 'กระบอกสูบเส้นผ่าน 14 ซม. แขนโมเมนต์ 0.9 ม.' + (press > 35 ? ' เกินระดับใช้งานทั่วไป (~35 MPa)' : ''), color: press > 35 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'แรงเข้าสู่ศูนย์กลางของน้ำหนักขณะหมุนตัว', v: fmt(Fc, 0) + ' N', sub: 'F = mω²r ≈ ' + (Fc / 9.81).toFixed(0) + ' กก.แรง ที่แขนต้องดึงไว้', color: '#0F2A3A' }
+      ],
+      aria: 'รถแบ็คโฮ มุมบูม ' + s.a1 + ' องศา น้ำหนักในบุ้งกี๋ ' + s.load + ' กิโลกรัม ' + (tipping ? 'รถพลิกคว่ำ' : 'ยังมั่นคง'),
+      topR: f1(rTop), topRot: 'rotate(' + f1(ang) + ' 160 110)', topEnd: f1(160 + rTop),
+      topArrow: 'M' + f1(160 + rTop - 6) + ',110 l' + f1(-fcLen) + ',0 m10,-6 l-10,6 l10,6',
+      topAria: 'มุมมองด้านบน แขนหมุนรอบแกนด้วยความเร็ว ' + s.rpm + ' รอบต่อนาที'
+    };
+
+    // ---------- container ship (box hull, metres) ----------
+    var Lh = 250, B = 40, D = 22, rho = s.water === 'sea' ? 1.025 : 1.0;
+    var light = 30000, KGl = 11;                     // tonnes, metres
+    var rowsX = 16, bays = 45, boxH = 2.6;
+    var hold = rowsX * bays * 6 * s.boxT, KGhold = 2 + 6 * boxH / 2;
+    var deck = rowsX * bays * s.tiers * s.boxT, KGdeck = D + 0.5 + s.tiers * boxH / 2;
+    var bal = s.ballast, KGbal = 1.2;
+    var disp = light + hold + deck + bal;
+    var T = disp / (rho * Lh * B);
+    var KB = T / 2, BM = B * B / (12 * T), KM = KB + BM;
+    var KG = (light * KGl + hold * KGhold + deck * KGdeck + bal * KGbal) / disp;
+    var GM = KM - KG;
+    var fb = D - T;
+    var windA = Lh * (fb + s.tiers * boxH), windArm = (fb + s.tiers * boxH) / 2 + T / 2;
+    var Mw = 0.5 * 1.225 * s.wind * s.wind * 1.2 * windA * windArm / 1000; // kN·m
+    var heel, cap = false;
+    if (GM <= 0) { heel = 32; cap = true; }
+    else { heel = Math.atan(Mw / (disp * g * GM)) * 180 / PI; if (heel > 25) cap = true; }
+    var sink = fb <= 0;
+    var SS = 7, cx = 360, keelY = 345, wl = keelY - Math.min(T, D + 2) * SS;
+    var hullPts = [[-B / 2, 0], [B / 2, 0], [B / 2, D], [-B / 2, D]];
+    var mapP = function (q) { return f1(cx + q[0] * SS) + ',' + f1(keelY - q[1] * SS); };
+    var hull = 'M' + hullPts.map(mapP).join(' L') + ' Z';
+    var holdP = 'M' + [[-B / 2 + 1.5, 1.5], [B / 2 - 1.5, 1.5], [B / 2 - 1.5, D - 0.5], [-B / 2 + 1.5, D - 0.5]].map(mapP).join(' L') + ' Z';
+    var boxes = '', boxes2 = '', bw = 2.44;
+    for (var t1 = 0; t1 < 6; t1++) for (var c1 = 0; c1 < rowsX; c1++) {
+      var x0 = -rowsX * bw / 2 + c1 * bw, y0 = 2 + t1 * boxH;
+      boxes2 += 'M' + mapP([x0 + 0.1, y0]) + ' L' + mapP([x0 + bw - 0.1, y0]) + ' L' + mapP([x0 + bw - 0.1, y0 + boxH - 0.1]) + ' L' + mapP([x0 + 0.1, y0 + boxH - 0.1]) + ' Z ';
+    }
+    for (var t2 = 0; t2 < s.tiers; t2++) for (var c2 = 0; c2 < rowsX; c2++) {
+      var x1 = -rowsX * bw / 2 + c2 * bw, y1 = D + 0.5 + t2 * boxH;
+      boxes += 'M' + mapP([x1 + 0.1, y1]) + ' L' + mapP([x1 + bw - 0.1, y1]) + ' L' + mapP([x1 + bw - 0.1, y1 + boxH - 0.1]) + ' L' + mapP([x1 + 0.1, y1 + boxH - 0.1]) + ' Z ';
+    }
+    var balH = Math.min(1.8, bal / (rho * Lh * (B - 3)) );
+    var ballastP = bal > 0 ? 'M' + [[-B / 2 + 1.5, 0.4], [B / 2 - 1.5, 0.4], [B / 2 - 1.5, 0.4 + Math.max(0.3, balH)], [-B / 2 + 1.5, 0.4 + Math.max(0.3, balH)]].map(mapP).join(' L') + ' Z' : 'M0,0';
+    // B shifts toward the low side when heeled (drawn in world frame)
+    var phi = heel * PI / 180, bShift = BM * Math.tan(phi) * 0.5;
+    var bWorld = [cx + bShift * SS, keelY - KB * SS];
+    var arrowY = wl - (fb + s.tiers * boxH) * SS / 2;
+    var sh = {
+      rot: 'rotate(' + f1(heel) + ' ' + cx + ' ' + f1(wl) + ')',
+      hull: hull, hold: holdP, boxes: boxes || 'M0,0', boxes2: boxes2, ballast: ballastP,
+      gY: f1(keelY - KG * SS), mY: f1(keelY - Math.min(KM, 60) * SS),
+      wl: f1(wl), wh: f1(400 - wl), bX: f1(bWorld[0]), bY: f1(bWorld[1]),
+      windArrow: s.wind > 0 ? 'M30,' + f1(arrowY) + ' l' + f1(20 + s.wind * 2) + ',0 m-10,-7 l10,7 l-10,7' : 'M0,0',
+      badge: sink ? 'จม: น้ำท่วมดาดฟ้า' : cap ? 'พลิกคว่ำ: G สูงเกินไป' : GM < 0.15 ? 'อันตราย: GM ต่ำกว่าเกณฑ์ 0.15 ม.' : heel > 10 ? 'เอียงมาก ควรเติมน้ำอับเฉา' : 'ตั้งตรงและปลอดภัย',
+      bg: sink || cap ? '#FCE3CF' : GM < 0.15 || heel > 10 ? '#FFF1CC' : '#DDEFF6', fg: sink || cap ? '#7E3407' : GM < 0.15 || heel > 10 ? '#6B4A00' : '#0A4F70',
+      tLabel: s.tiers + ' ชั้น', cLabel: s.boxT + ' ตัน', bLabel: fmt(s.ballast, 0) + ' ตัน', wLabel: s.wind + ' ม./วินาที',
+      rows: [
+        { k: 'น้ำหนักรวม (ระวางขับน้ำ)', v: fmt(disp, 0) + ' ตัน', sub: 'ตู้ ' + fmt(rowsX * bays * (6 + s.tiers), 0) + ' ใบ · สินค้า ' + fmt(hold + deck, 0) + ' ตัน', color: '#0F2A3A' },
+        { k: 'อัตรากินน้ำลึก (draft)', v: T.toFixed(2) + ' ม.', sub: s.water === 'sea' ? 'ถ้าเข้าแม่น้ำ (น้ำจืด) จะจมลึกขึ้น ≈ ' + (T * 0.025).toFixed(2) + ' ม.' : 'น้ำจืดเบากว่าน้ำทะเล เรือจึงจมลึกกว่า', color: '#0F2A3A' },
+        { k: 'ระยะพ้นน้ำ (freeboard)', v: fb.toFixed(2) + ' ม.', sub: fb < 3 ? 'ต่ำมาก คลื่นซัดขึ้นดาดฟ้าได้ง่าย' : 'ความสูงของดาดฟ้าเหนือผิวน้ำ', color: fb < 3 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ความสูงจุดศูนย์ถ่วง KG', v: KG.toFixed(2) + ' ม.', sub: 'วัดจากกระดูกงูเรือ', color: '#0F2A3A' },
+        { k: 'ความสูงเมตาเซนเตอร์ GM', v: GM.toFixed(2) + ' ม.', sub: 'IMO กำหนด GM เริ่มต้นไม่น้อยกว่า 0.15 ม. ยิ่งมากยิ่งตั้งตรงง่าย แต่โคลงเร็ว', color: GM < 0.15 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'มุมเอียงจากลม', v: cap ? 'พลิก' : heel.toFixed(1) + '°', sub: 'แรงลมกระทำต่อตัวเรือและตู้บนดาดฟ้า', color: heel > 10 || cap ? '#B04A0C' : '#0F2A3A' }
+      ],
+      aria: 'ภาพตัดขวางเรือ ตู้บนดาดฟ้า ' + s.tiers + ' ชั้น GM ' + GM.toFixed(2) + ' เมตร เอียง ' + heel.toFixed(1) + ' องศา'
+    };
+
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+    var waters = [{ id: 'sea', name: 'น้ำทะเล 1,025 กก./ลบ.ม.' }, { id: 'fresh', name: 'น้ำจืด 1,000 กก./ลบ.ม.' }];
+    return {
+      ex: ex, sh: sh,
+      a1: s.a1, a2: s.a2, load: s.load, rpm: s.rpm, tiers: s.tiers, boxT: s.boxT, ballast: s.ballast, wind: s.wind,
+      setA1: this.setter('a1'), setA2: this.setter('a2'), setLoad: this.setter('load'), setRpm: this.setter('rpm'),
+      setTiers: this.setter('tiers'), setBoxT: this.setter('boxT'), setBallast: this.setter('ballast'), setWind: this.setter('wind'),
+      waters: waters.map(function (x) { var p = pill(x.id === s.water); return { name: x.name, pressed: x.id === s.water ? 'true' : 'false', bg: p.bg, fg: p.fg, border: p.border, pick: function () { self.setState({ water: x.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -40,6 +40,10 @@ Open `index.html` in a browser (or enable GitHub Pages: Settings → Pages → D
 | [`ocean-waves/`](ocean-waves/index.html) | **Ocean Wave Simulator** — wind sea, swell, shoaling/breaking, tsunami and tide. Water-particle orbits, wave speed, period and power from the linear dispersion relation, plus how we use ocean waves (wave energy converters, coastlines, warning systems). | 2 |
 | [`plate-tectonics/`](plate-tectonics/index.html) | **Plate Tectonics Lab** — world map of plate boundaries, M ≥ 7 earthquakes (USGS, 1965–2016) and active volcanoes (Smithsonian GVP), statistics by country, plate-boundary animations, seismic waves and epicentre location, early-warning time, response plans by magnitude, building resonance, seismic codes, and ground/satellite sensors. | 4 |
 | [`camera-lab/`](camera-lab/index.html) | **Camera Lab** — six experiments: thin-lens ray diagram (phone camera, microscope, telescope), photon shot noise vs. light level and sensor size, multi-camera zoom and the ISP pipeline, stereo depth and Spatial Photo/Video, OIS vs. EIS stabilisation, and temperature / humidity / radiation effects. | 7 |
+| [`mechanics-lab/`](mechanics-lab/index.html) | **Mechanics Lab** — a backhoe (moments about the tipping edge, ISO 10567 rated lift, boom torque and hydraulic pressure, centripetal force while slewing) and a container ship (Archimedes, draught in sea vs. fresh water, G/B/M and GM against the IMO 0.15 m criterion, wind heel). | 2 |
+| [`beam-fea/`](beam-fea/index.html) | **Beam FEA** — a real 1-D finite element solver (40 Hermite beam elements, K·u = F) with von Mises / bending-stress colour maps, SFD/BMD, deflection limits and a textbook check. Presets: condo floor beam, factory crane runway, balcony, warehouse roof, timber footbridge. | 2 |
+| [`circuit-lab/`](circuit-lab/index.html) | **Circuit Lab** — series/parallel circuit with animated current, a home distribution board (breakers tripping on overload or short circuit, earth leakage with/without earth wire and RCD, wire size, voltage drop, cost per hour) and RC charging. | 2 |
+| [`chem-bio-lab/`](chem-bio-lab/index.html) | **Chem · Bio Lab** — collision-theory particle box with temperature, concentration, Ea and catalyst; an agent-based SEIR epidemic with masks, vaccination, distancing and isolation, plus data analysis (log-linear growth fit, doubling time, R0); and an SEIR ODE "flatten the curve" model. | 2 |
 
 ```
 index.html            landing page linking every simulator
@@ -47,6 +51,7 @@ shared/dc-runtime.js  tiny runtime that renders the pages (no dependencies)
 ocean-waves/          index.html, uses.html
 camera-lab/           index.html, lens.html, sensor.html, fusion.html,
                       spatial.html, stabilize.html, environment.html
+mechanics-lab/ beam-fea/ circuit-lab/ chem-bio-lab/   index.html, sources.html
 src/                  canvas sources (.dc.html) for every page
 tools/build.sh        rebuilds all pages from src/ in Thai and English (home bar + language button)
 tools/i18n/en.json    English text for every Thai string; the build stops if one is missing

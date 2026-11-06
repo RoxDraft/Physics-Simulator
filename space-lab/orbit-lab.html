@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<nav aria-label="ตำแหน่งหน้า" style="max-width:1120px;margin:0 auto;padding:14px 16px 0;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font:14px 'IBM Plex Sans Thai',system-ui,sans-serif;color:#5b6a80"><a href="../index.html" style="color:#0A6A94;font-weight:600;text-decoration:none">หน้าหลัก</a><span aria-hidden="true">/</span><a href="index.html" style="color:#0A6A94;font-weight:600;text-decoration:none">Space Lab</a><span aria-hidden="true">/</span><span aria-current="page">Simulation</span><span style="flex:1"></span><a href="report.html" style="color:#0A6A94;font-weight:600;text-decoration:none">อ่านเอกสารประกอบ →</a></nav>
+<title>ห้องทดลองวงโคจร</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: mission-console split. Orbit scope on the left, control + telemetry column on the right, altitude log below. Stacks on phones. */
+:root {
+  --bg: #eef1f5;
+  --surface: #ffffff;
+  --ink: #142033;
+  --muted: #5b6a80;
+  --line: #d3dae4;
+  --accent: #1f5fd1;
+  --accent-soft: rgba(31,95,209,.12);
+  --warn: #c7741a;
+  --crit: #c2362b;
+  --good: #23824f;
+  --scope: #0e1a2e;
+  --scope-ink: #c9d6ea;
+  --scope-grid: rgba(150,175,215,.14);
+  --earth: #2b6cb0;
+  --earth-2: #1d4f86;
+  --shadow: rgba(0,0,0,.38);
+  --sat: #ffd166;
+  --font-body: "IBM Plex Sans Thai", "Noto Sans Thai", "Leelawadee UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1220; --surface: #121c2e; --ink: #e3eaf5; --muted: #93a3bb; --line: #26344b;
+    --accent: #6ea2ff; --accent-soft: rgba(110,162,255,.16); --warn: #f0a24a; --crit: #ff6f61; --good: #4cc483;
+    --scope: #060b16; --scope-ink: #b9c8e0; --scope-grid: rgba(150,175,215,.10);
+    --earth: #2f74c0; --earth-2: #184677; --shadow: rgba(0,0,0,.5); --sat: #ffd166;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1220; --surface: #121c2e; --ink: #e3eaf5; --muted: #93a3bb; --line: #26344b;
+  --accent: #6ea2ff; --accent-soft: rgba(110,162,255,.16); --warn: #f0a24a; --crit: #ff6f61; --good: #4cc483;
+  --scope: #060b16; --scope-ink: #b9c8e0; --scope-grid: rgba(150,175,215,.10);
+  --earth: #2f74c0; --earth-2: #184677; --shadow: rgba(0,0,0,.5); --sat: #ffd166;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 40px;
+}
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 18px; }
+header h1 { font-size: 1.6rem; margin: 0; line-height: 1.25; text-wrap: balance; font-weight: 700; }
+header p { margin: 4px 0 0; color: var(--muted); max-width: 70ch; }
+.main { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 860px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.scope { position: relative; background: var(--scope); border-radius: 12px; overflow: hidden; aspect-ratio: 1 / 1; max-width: 100%; }
+.scope canvas { display: block; width: 100%; height: 100%; }
+.scope .status { position: absolute; left: 12px; top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { font-size: .78rem; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.1); color: var(--scope-ink); border: 1px solid rgba(255,255,255,.14); font-weight: 500; }
+.pill.good { color: #7fe0a8; border-color: rgba(127,224,168,.4); }
+.pill.warn { color: #ffc27a; border-color: rgba(255,194,122,.45); }
+.pill.crit { color: #ff9a8f; border-color: rgba(255,154,143,.5); }
+.scope .clock { position: absolute; right: 12px; bottom: 10px; font-family: var(--font-mono); font-size: .8rem; color: var(--scope-ink); }
+.panel { display: grid; gap: 14px; min-width: 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 12px; min-width: 0; }
+.card h2 { font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0; font-weight: 600; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+label.field { display: grid; gap: 4px; font-size: .88rem; color: var(--muted); }
+select, button { font: inherit; color: var(--ink); }
+select { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; width: 100%; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+button { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 11px; cursor: pointer; font-size: .88rem; }
+button:hover { border-color: var(--accent); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.seg button { padding: 5px 9px; font-family: var(--font-mono); font-size: .8rem; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: .9rem; }
+.check input { margin-top: 4px; accent-color: var(--accent); }
+.check small { display: block; color: var(--muted); font-size: .8rem; }
+.altval { font-family: var(--font-mono); color: var(--ink); }
+.tele { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+.tele div { display: grid; gap: 1px; min-width: 0; }
+.tele span { font-size: .78rem; color: var(--muted); }
+.tele b { font-family: var(--font-mono); font-weight: 500; font-size: 1.02rem; font-variant-numeric: tabular-nums; }
+.bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--good); width: 50%; transition: width .2s; }
+.chartcard canvas { width: 100%; height: 190px; display: block; }
+.tries { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.try { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 6px; align-content: start; }
+.try b { font-size: .95rem; }
+.try p { margin: 0; color: var(--muted); font-size: .88rem; }
+.try button { justify-self: start; }
+.stages { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: st; }
+.stages li { counter-increment: st; display: grid; grid-template-columns: 26px minmax(0, 1fr); column-gap: 8px; font-size: .86rem; padding: 6px 8px; border-radius: 8px; border: 1px solid transparent; color: var(--muted); }
+.stages li::before { content: counter(st); grid-row: span 2; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font-family: var(--font-mono); font-size: .75rem; }
+.stages li b { color: var(--ink); font-weight: 600; }
+.stages li[aria-current="step"] { border-color: var(--accent); background: var(--accent-soft); }
+.stages li[aria-current="step"]::before { background: var(--accent); border-color: var(--accent); color: #fff; }
+.stages li.done::before { content: "✓"; color: var(--good); border-color: var(--good); }
+.hint { margin: 0; color: var(--muted); font-size: .8rem; }
+.note { color: var(--muted); font-size: .82rem; max-width: 90ch; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>ห้องทดลองวงโคจร</h1>
+    <p>จำลองดาวเทียมรอบโลกแบบ 2 มิติ ตั้งแต่ปล่อยจรวดจนปลดระวาง: แรงโน้มถ่วง แรงต้านอากาศชั้นบน ก๊าซที่พ่นออกตอนจุดเครื่องยนต์ แบตเตอรี่ตอนเข้าเงาโลก และช่วงที่คุยกับสถานีภาคพื้นได้</p>
+  </header>
+
+  <div class="main">
+    <div class="scope" id="scopeWrap">
+      <canvas id="scope" aria-label="ภาพวงโคจรของดาวเทียมรอบโลก" role="img"></canvas>
+      <div class="status" id="pills"></div>
+      <div class="clock" id="clock">วันที่ 0 · 00:00</div>
+    </div>
+
+    <div class="panel">
+      <div class="card">
+        <h2>ภารกิจ</h2>
+        <div class="row" id="presets">
+          <button data-preset="iss">สถานีอวกาศ 420 กม.</button>
+          <button data-preset="starlink">ดาวเทียมสื่อสาร 550 กม.</button>
+          <button data-preset="cube">CubeSat 300 กม.</button>
+          <button data-preset="geo">GEO 35,786 กม.</button>
+          <button data-preset="escape">หลุดจากโลก</button>
+        </div>
+        <label class="field" for="sat">ชนิดยาน
+          <select id="sat">
+            <option value="cubesat">CubeSat 3U · ไม่มีเครื่องยนต์</option>
+            <option value="comsat">ดาวเทียมสื่อสาร LEO · เครื่องยนต์ไอออน</option>
+            <option value="station">สถานีอวกาศ · เครื่องยนต์เคมี (reboost)</option>
+          </select>
+        </label>
+        <label class="field" for="alt">ความสูงเริ่มต้น <span class="altval" id="altOut">400 กม.</span>
+          <input type="range" id="alt" min="0" max="1000" step="1">
+        </label>
+        <label class="field" for="solar">กิจกรรมดวงอาทิตย์ (ทำให้บรรยากาศพองตัว)
+          <select id="solar">
+            <option value="0.5">ต่ำ (ช่วงดวงอาทิตย์สงบ)</option>
+            <option value="1" selected>ปกติ</option>
+            <option value="4">พายุสุริยะ</option>
+          </select>
+        </label>
+        <div class="row">
+          <button class="primary" id="reset">เริ่มใหม่</button>
+          <button id="pause" aria-pressed="false">หยุดชั่วคราว</button>
+        </div>
+      </div>
+
+      <div class="card" id="lifeCard">
+        <h2>วงจรชีวิตภารกิจ</h2>
+        <button class="primary" id="mission">เริ่มภารกิจ LEO ตั้งแต่ปล่อยจรวด</button>
+        <ol class="stages" id="stages">
+          <li data-stage="1"><b>ปล่อยจรวด</b><span>บินขึ้นแนวดิ่ง แล้วค่อยๆ เอียงเข้าแนวนอน (gravity turn)</span></li>
+          <li data-stage="2"><b>เข้าวงโคจรรอและแยกตัว</b><span>ขั้นบนจุดอีกครั้งให้วงโคจรกลม ~250 กม. ปล่อยดาวเทียม แล้วเบรกตัวเองกลับลงมาเผาไหม้</span></li>
+          <li data-stage="3"><b>ยกระดับวงโคจร</b><span>เครื่องยนต์ไอออนแรงน้อย ค่อยๆ ดันขึ้น 550 กม. ใช้เวลาราว 10 วัน</span></li>
+          <li data-stage="4"><b>ปฏิบัติภารกิจ</b><span>ให้บริการและจุดเครื่องยนต์รักษาวงโคจรเป็นระยะ</span></li>
+          <li data-stage="5"><b>ปลดระวาง</b><span>เลือกวิธีด้านล่าง</span></li>
+        </ol>
+        <div class="row">
+          <button id="eolOcean">ตกลงทะเลแบบควบคุม</button>
+          <button id="eolDecay">ปล่อยให้ตกเอง</button>
+          <button id="eolGrave">ดันขึ้นวงโคจรสุสาน</button>
+        </div>
+        <p class="hint" id="eolNote">ตกลงทะเลใช้กับวงโคจรต่ำ · วงโคจรสุสานใช้กับดาวเทียม GEO ที่ไกลเกินกว่าจะเบรกลงมาได้</p>
+      </div>
+
+      <div class="card">
+        <h2>ควบคุม</h2>
+        <label class="check" for="drag"><input type="checkbox" id="drag" checked><span>แรงต้านอากาศ<small>อากาศบางมากแต่ยังมีถึง ~1,000 กม.</small></span></label>
+        <label class="check" for="keep"><input type="checkbox" id="keep" checked><span>รักษาวงโคจรอัตโนมัติ<small>จุดเครื่องยนต์ไปข้างหน้าเมื่อความสูงต่ำกว่าเป้า 2 กม.</small></span></label>
+        <label class="check" for="exag"><input type="checkbox" id="exag" checked><span>ขยายความสูงในภาพ 6 เท่า<small>วงโคจรต่ำจริงๆ อยู่ชิดผิวโลกมากจนมองไม่เห็น</small></span></label>
+        <div class="row">
+          <button id="burnP">จุดไปข้างหน้า +50 m/s</button>
+          <button id="burnR">เบรก −50 m/s</button>
+        </div>
+        <div>
+          <div class="field" style="margin-bottom:4px">เร่งเวลา</div>
+          <div class="seg" id="warp"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Telemetry</h2>
+        <div class="tele">
+          <div><span>ความสูง</span><b id="tAlt">–</b></div>
+          <div><span>ความเร็ว</span><b id="tVel">–</b></div>
+          <div><span>จุดใกล้/ไกลโลก</span><b id="tPA">–</b></div>
+          <div><span>คาบโคจร</span><b id="tPer">–</b></div>
+          <div><span>Δv ที่ใช้ / งบ</span><b id="tDv">–</b></div>
+          <div><span>ติดต่อสถานีภาคพื้น</span><b id="tCon">–</b></div>
+          <div style="grid-column:1/-1"><span>แบตเตอรี่ <em id="tBatTxt" style="font-style:normal"></em></span><div class="bar"><i id="tBat"></i></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card chartcard">
+    <h2>ความสูงตามเวลา</h2>
+    <canvas id="hist" aria-label="กราฟความสูงของดาวเทียมตามเวลา" role="img"></canvas>
+  </div>
+
+  <div>
+    <div class="tries">
+      <div class="try"><b>ดูทั้งชีวิตดาวเทียม</b><p>ปล่อยจรวดจากพื้น ขั้นบนปล่อยดาวเทียม ยกวงโคจรด้วยไอออน (ดูก๊าซสีม่วงพ่นออก) แล้วกด "ตกลงทะเลแบบควบคุม" ระบบจะรอจังหวะให้ชิ้นส่วนตกที่ Point Nemo</p><button data-mission="1">ลองเลย</button></div>
+      <div class="try"><b>ปล่อยให้ CubeSat ตก</b><p>CubeSat ที่ 300 กม. ไม่มีเครื่องยนต์ ดูกราฟความสูงลดลงเร็วขึ้นเรื่อยๆ จนเผาไหม้ แล้วลองเปลี่ยนเป็นพายุสุริยะ</p><button data-preset="cube">ลองเลย</button></div>
+      <div class="try"><b>สถานีอวกาศจุด reboost</b><p>ตั้งที่ 420 กม. เปิดรักษาวงโคจร กราฟจะเป็นฟันเลื่อย: ค่อยๆ ตกแล้วจุดเครื่องยนต์ดันกลับ ดู Δv ที่ใช้เพิ่มขึ้น</p><button data-preset="iss">ลองเลย</button></div>
+      <div class="try"><b>เบรกจนวงโคจรเป็นวงรี</b><p>กดเบรก −50 m/s สามสี่ครั้ง จุดใกล้โลกจะต่ำลงเข้าไปในอากาศหนาแน่น และตกเร็วมาก นี่คือวิธีกำจัดดาวเทียมหมดอายุ</p></div>
+      <div class="try"><b>หลุดจากแรงโน้มถ่วง</b><p>เร็วกว่า 11.2 กม./วินาที ที่ความสูงนี้ วงโคจรเปิดออกเป็นเส้นโค้งไฮเพอร์โบลาและไม่กลับมา</p><button data-preset="escape">ลองเลย</button></div>
+    </div>
+  </div>
+
+  <p class="note">แบบจำลองนี้เป็นระนาบ 2 มิติบนเส้นศูนย์สูตร ใช้ความหนาแน่นอากาศจากตารางบรรยากาศมาตรฐานโดยประมาณ ดวงอาทิตย์อยู่ทางขวาคงที่ และสถานีภาคพื้นอยู่บนผิวโลกที่หมุนไปด้วย เหมาะสำหรับเห็นแนวโน้ม ไม่ใช่สำหรับคำนวณภารกิจจริง</p>
+</div>
+
+<script>
+(() => {
+  const GM = 3.986004418e14, R = 6371e3, WE = 7.2921159e-5, DEG = Math.PI / 180;
+  const ATM = [[0,1.225,7.249],[25,3.899e-2,6.349],[30,1.774e-2,6.682],[40,3.972e-3,7.554],[50,1.057e-3,8.382],[60,3.206e-4,7.714],[70,8.770e-5,6.549],[80,1.905e-5,5.799],[90,3.396e-6,5.382],[100,5.297e-7,5.877],[110,9.661e-8,7.263],[120,2.438e-8,9.473],[130,8.484e-9,12.636],[140,3.845e-9,16.149],[150,2.070e-9,22.523],[180,5.464e-10,29.74],[200,2.789e-10,37.105],[250,7.248e-11,45.546],[300,2.418e-11,53.628],[350,9.518e-12,53.298],[400,3.725e-12,58.515],[450,1.585e-12,60.828],[500,6.967e-13,63.822],[600,1.454e-13,71.835],[700,3.614e-14,88.667],[800,1.170e-14,124.64],[900,5.245e-15,181.05],[1000,3.019e-15,268]];
+  const SATS = {
+    cubesat: { B: 60, thrust: 0, dv: 0, kind: 'none' },
+    comsat: { B: 40, thrust: 2e-4, dv: 500, kind: 'ion' },
+    station: { B: 110, thrust: 0.05, dv: 150, kind: 'chem' }
+  };
+  const PRESETS = {
+    iss: { sat: 'station', alt: 420, warp: 1000 },
+    starlink: { sat: 'comsat', alt: 550, warp: 1000 },
+    cube: { sat: 'cubesat', alt: 300, warp: 100000 },
+    geo: { sat: 'comsat', alt: 35786, warp: 10000 },
+    escape: { sat: 'cubesat', alt: 400, speed: 11300, warp: 100 }
+  };
+  const WARPS = [1, 10, 100, 1000, 10000, 100000, 1000000];
+  const STAGE_OF = { launch: 1, coast: 2, circ: 2, raise: 3, ops: 4, 'deorbit-wait': 5, deorbit: 5, decay: 5, grave1: 5, graveyard: 5 };
+  const $ = id => document.getElementById(id);
+  const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const ALT_MIN = 160, ALT_MAX = 36000;
+  const sliderToAlt = v => ALT_MIN * Math.pow(ALT_MAX / ALT_MIN, v / 1000);
+  const altToSlider = a => Math.round(1000 * Math.log(a / ALT_MIN) / Math.log(ALT_MAX / ALT_MIN));
+  const angDiff = (a, b) => { let d = (a - b) % (2 * Math.PI); if (d > Math.PI) d -= 2 * Math.PI; if (d < -Math.PI) d += 2 * Math.PI; return d; };
+  const zoneAt = t => Math.PI + WE * t; // Point Nemo, opposite the ground station, rotates with Earth
+
+  let cfg = { sat: 'station', alt: 420, speed: null, warp: 1000, solar: 1, drag: true, keep: true, exag: true };
+  let s, stage = null, paused = false, hist = [], recInt = 60, lastRec = 0, trail = [], viewR = null, colors = {}, frame = 0, parts = [], reached = 0;
+
+  function readColors() {
+    const cs = getComputedStyle(document.documentElement);
+    for (const k of ['scope','scope-ink','scope-grid','earth','earth-2','shadow','sat','accent','warn','crit','good','muted','line','ink','surface']) colors[k] = cs.getPropertyValue('--' + k).trim();
+  }
+
+  function rho(hkm) {
+    if (hkm > 1500) return 0;
+    let row = ATM[0];
+    for (const r of ATM) if (hkm >= r[0]) row = r;
+    return row[1] * Math.exp(-(hkm - row[0]) / row[2]) * cfg.solar;
+  }
+
+  function newState(x, y, vx, vy, mode) {
+    return { x, y, vx, vy, t: 0, dvUsed: 0, battery: 80, thrusting: false, contact: 0, status: 'orbit', mode, target: cfg.alt, endT: null, fired: false, fireKind: null, fireDir: [0, 0], burnFx: 0, burnDir: [0, 0], prevRv: 0, pred: null, inZone: null, impactGeo: null, launchT: 0 };
+  }
+  function clearHistory() { hist = []; recInt = 60; lastRec = -1e9; trail = []; lastTrail = null; viewR = null; parts = []; }
+
+  function reset() {
+    const r = R + cfg.alt * 1000;
+    const v = cfg.speed || Math.sqrt(GM / r);
+    s = newState(r, 0, 0, v, 'free');
+    stage = null; reached = 0;
+    clearHistory(); record();
+  }
+
+  function startMission() {
+    cfg.sat = 'comsat'; cfg.alt = 550; cfg.speed = null; cfg.keep = true; $('keep').checked = true;
+    s = newState(R + 1000, 0, 0, R * WE, 'launch');
+    s.target = 550;
+    stage = null; reached = 1;
+    clearHistory(); setWarp(100); syncInputs(); record();
+  }
+
+  function elements(o = s) {
+    const r = Math.hypot(o.x, o.y), v2 = o.vx * o.vx + o.vy * o.vy;
+    const E = v2 / 2 - GM / r;
+    const rv = o.x * o.vx + o.y * o.vy;
+    const ex = ((v2 - GM / r) * o.x - rv * o.vx) / GM, ey = ((v2 - GM / r) * o.y - rv * o.vy) / GM;
+    const e = Math.hypot(ex, ey);
+    const a = E < 0 ? -GM / (2 * E) : Infinity;
+    return { r, v: Math.sqrt(v2), E, e, ex, ey, a, rv, peri: E < 0 ? a * (1 - e) : null, apo: E < 0 ? a * (1 + e) : null };
+  }
+
+  function gravDrag(o, B, drag) {
+    const r = Math.hypot(o.x, o.y), k = -GM / (r * r * r);
+    let ax = k * o.x, ay = k * o.y;
+    if (drag) {
+      const v = Math.hypot(o.vx, o.vy);
+      const d = 0.5 * rho((r - R) / 1000) * v * v / B;
+      ax -= d * o.vx / v; ay -= d * o.vy / v;
+    }
+    return [ax, ay];
+  }
+  function integrate(o, dt, B, drag, th) {
+    let [ax, ay] = gravDrag(o, B, drag);
+    if (th) { ax += th[0]; ay += th[1]; }
+    o.vx += ax * dt / 2; o.vy += ay * dt / 2;
+    o.x += o.vx * dt; o.y += o.vy * dt;
+    [ax, ay] = gravDrag(o, B, drag);
+    if (th) { ax += th[0]; ay += th[1]; }
+    o.vx += ax * dt / 2; o.vy += ay * dt / 2;
+  }
+  const pro = (a, kind) => { const v = Math.hypot(s.vx, s.vy); return [a * s.vx / v, a * s.vy / v, kind]; };
+  function impulse(dv, kind) {
+    const v = Math.hypot(s.vx, s.vy), ux = s.vx / v, uy = s.vy / v;
+    s.vx += dv * ux; s.vy += dv * uy; s.dvUsed += Math.abs(dv);
+    s.burnFx = 1.1; s.burnKind = kind; s.burnDir = dv > 0 ? [ux, uy] : [-ux, -uy];
+  }
+
+  function deploy() {
+    stage = { x: s.x, y: s.y, vx: s.vx, vy: s.vy, alive: true };
+    const v = Math.hypot(stage.vx, stage.vy);
+    stage.vx -= 140 * stage.vx / v; stage.vy -= 140 * stage.vy / v; // upper stage deorbits itself
+    s.mode = 'raise'; s.target = 550; s.launchT = s.t; reached = Math.max(reached, 3);
+    setWarp(100000);
+  }
+
+  function step(dt) {
+    const sat = SATS[cfg.sat];
+    const el = elements();
+    let th = null;
+    switch (s.mode) {
+      case 'launch': {
+        const r = el.r, h = (r - R) / 1000, urx = s.x / r, ury = s.y / r, utx = -ury, uty = urx;
+        const p = Math.min(1, Math.pow(Math.max(h, 0) / 80, 0.4)) * Math.PI / 2;
+        th = [20 * (urx * Math.cos(p) + utx * Math.sin(p)), 20 * (ury * Math.cos(p) + uty * Math.sin(p)), 'rocket'];
+        if (el.apo - R >= 250e3) { s.mode = 'coast'; reached = Math.max(reached, 2); }
+        break;
+      }
+      case 'coast': if (el.rv <= 0) s.mode = 'circ'; break;
+      case 'circ': th = pro(5, 'rocket'); if (el.peri - R >= 240e3) deploy(); break;
+      case 'raise':
+        if (s.dvUsed < sat.dv) th = pro(sat.thrust, 'ion');
+        if ((el.a - R) / 1000 >= s.target) { s.mode = 'ops'; cfg.keep = true; $('keep').checked = true; reached = Math.max(reached, 4); setWarp(1000); }
+        break;
+      case 'grave1':
+        if (s.prevRv > 0 && el.rv <= 0) { const r1 = s.graveFrom, r2 = el.r; impulse(Math.sqrt(GM / r2) * (1 - Math.sqrt(2 * r1 / (r1 + r2))), 'chem'); s.mode = 'graveyard'; }
+        s.prevRv = el.rv; break;
+      case 'ops': case 'free':
+        if (cfg.keep && sat.thrust > 0 && s.dvUsed < sat.dv) {
+          const aAlt = (el.a - R) / 1000;
+          if (!s.thrusting && aAlt < s.target - 2) s.thrusting = true;
+          if (s.thrusting && aAlt >= s.target + 0.5) s.thrusting = false;
+        } else s.thrusting = false;
+        if (s.thrusting) th = pro(sat.thrust, sat.kind);
+        break;
+    }
+    s.thrusting = !!th;
+    if (th) { s.fired = true; s.fireKind = th[2]; const m = Math.hypot(th[0], th[1]); s.fireDir = [th[0] / m, th[1] / m]; }
+    const inAscent = s.mode === 'launch' || s.mode === 'coast' || s.mode === 'circ';
+    integrate(s, dt, sat.B, cfg.drag && !inAscent, th);
+    if (th && th[2] !== 'rocket') s.dvUsed = Math.min(sat.dv || Infinity, s.dvUsed + Math.hypot(th[0], th[1]) * dt);
+    s.t += dt;
+
+    if (stage && stage.alive) {
+      integrate(stage, dt, 50, true, null);
+      if ((Math.hypot(stage.x, stage.y) - R) / 1000 < 100) stage.alive = false;
+    }
+
+    const lit = !(s.x < 0 && Math.abs(s.y) < R);
+    s.battery = Math.max(0, Math.min(100, s.battery + (lit ? 0.012 : -0.012) * dt));
+
+    const r = Math.hypot(s.x, s.y), hk = (r - R) / 1000, vNow = Math.hypot(s.vx, s.vy);
+    const ascentNow = s.mode === 'launch' || s.mode === 'coast' || s.mode === 'circ';
+    s.reentering = !ascentNow && hk < 120;
+    if (s.reentering) {
+      s.heat = rho(hk) * vNow * vNow * vNow;
+      if (hk < 92 && !s.shed) { s.shed = true; s.fxShed = true; }
+      if (hk < 78 && !s.brokeUp) { s.brokeUp = true; s.fxBreak = true; }
+    }
+
+    const ph = WE * s.t, nx = Math.cos(ph), ny = Math.sin(ph);
+    const dx = s.x - R * nx, dy = s.y - R * ny, dl = Math.hypot(dx, dy);
+    s.inContact = (dx * nx + dy * ny) / dl > Math.sin(10 * DEG) && !(s.reentering && hk < 100 && hk > 40);
+    if (s.inContact) s.contact += dt;
+
+    if (hk <= 0) {
+      s.status = 'reentry'; s.endT = s.t; s.vImpact = vNow;
+      const ang = Math.atan2(s.y, s.x);
+      s.impactGeo = ang - WE * s.t;
+      s.inZone = Math.abs(angDiff(ang, zoneAt(s.t))) < 8 * DEG;
+    } else if (r > 150 * R) { s.status = 'escaped'; s.endT = s.t; }
+  }
+
+  // predict where a deorbit burn made now would come down (same physics, 10 s steps)
+  function deorbitDv() { const r = Math.hypot(s.x, s.y), rp = R + 40e3; return Math.sqrt(2 * GM * rp / (r * (r + rp))) - Math.hypot(s.vx, s.vy); }
+  function predict() {
+    const o = { x: s.x, y: s.y, vx: s.vx, vy: s.vy }, dv = deorbitDv(), v = Math.hypot(o.vx, o.vy);
+    o.vx += dv * o.vx / v; o.vy += dv * o.vy / v;
+    const B = SATS[cfg.sat].B;
+    for (let t = 0; t < 4 * 3600;) {
+      const h = (Math.hypot(o.x, o.y) - R) / 1000, dt = h > 130 ? 10 : 1;
+      integrate(o, dt, B, true, null); t += dt;
+      if (h < 20) return { ang: Math.atan2(o.y, o.x), t: s.t + t };
+    }
+    return null;
+  }
+
+  let lastTrail = null;
+  function addTrail() {
+    if (lastTrail) {
+      let d = Math.abs(angDiff(Math.atan2(s.y, s.x), Math.atan2(lastTrail[1], lastTrail[0])));
+      if (d < 0.035 && Math.hypot(s.x - lastTrail[0], s.y - lastTrail[1]) < 40e3) return;
+    }
+    lastTrail = [s.x, s.y]; trail.push(lastTrail); if (trail.length > 170) trail.shift();
+  }
+  function record() {
+    if (s.t - lastRec >= recInt) {
+      hist.push({ t: s.t, h: (Math.hypot(s.x, s.y) - R) / 1000 });
+      lastRec = s.t;
+      if (hist.length > 900) { hist = hist.filter((_, i) => i % 2 === 0); recInt *= 2; }
+    }
+  }
+
+  const K = () => cfg.exag ? 6 : 1;
+  const dispR = r => r <= R ? r : R + (r - R) * K();
+
+  const scope = $('scope'), sctx = scope.getContext('2d');
+  const hcv = $('hist'), hctx = hcv.getContext('2d');
+  function fit(cv) {
+    const dpr = Math.min(2, window.devicePixelRatio || 1), b = cv.getBoundingClientRect();
+    cv.width = Math.max(1, Math.round(b.width * dpr)); cv.height = Math.max(1, Math.round(b.height * dpr));
+    return dpr;
+  }
+  let dprS = fit(scope), dprH = fit(hcv);
+  new ResizeObserver(() => { dprS = fit(scope); dprH = fit(hcv); }).observe(document.body);
+
+  // exhaust particles, in screen pixels
+  const GAS = {
+    ion: { n: 3, speed: [70, 150], life: [0.5, 1.0], size: [1.4, 2.6], colors: ['rgba(176,150,255,', 'rgba(130,170,255,', 'rgba(220,210,255,'] },
+    chem: { n: 5, speed: [50, 130], life: [0.4, 0.9], size: [1.8, 3.6], colors: ['rgba(255,214,140,', 'rgba(255,170,90,', 'rgba(255,245,220,'] },
+    plasma: { n: 6, speed: [20, 90], life: [0.4, 1.1], size: [2, 5], colors: ['rgba(255,236,200,', 'rgba(255,160,80,', 'rgba(255,110,60,', 'rgba(255,210,120,'] },
+    debris: { n: 14, speed: [15, 60], life: [1.2, 3.0], size: [1.5, 3.2], colors: ['rgba(255,180,90,', 'rgba(255,120,60,', 'rgba(255,240,200,'] },
+    shed: { n: 8, speed: [15, 50], life: [1.0, 2.2], size: [1.4, 2.6], colors: ['rgba(200,220,255,', 'rgba(255,200,120,'] },
+    rocket: { n: 9, speed: [60, 170], life: [0.5, 1.2], size: [2.2, 4.6], colors: ['rgba(255,190,100,', 'rgba(255,140,70,', 'rgba(255,240,210,', 'rgba(200,200,210,'] }
+  };
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  function emit(kind, dir, x, y) {
+    const g = GAS[kind]; if (!g) return;
+    const n = reduceMotion ? Math.ceil(g.n / 3) : g.n;
+    const base = Math.atan2(dir[1], -dir[0]); // exhaust opposite thrust; screen y is flipped
+    for (let i = 0; i < n; i++) {
+      const a = base + rnd(-0.28, 0.28), sp = rnd(g.speed[0], g.speed[1]) * dprS, life = rnd(g.life[0], g.life[1]);
+      parts.push({ x: x + Math.cos(a) * 6 * dprS, y: y + Math.sin(a) * 6 * dprS, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life, max: life, size: rnd(g.size[0], g.size[1]) * dprS, c: g.colors[i % g.colors.length] });
+    }
+    if (parts.length > 900) parts.splice(0, parts.length - 900);
+  }
+  function updateParts(dt) {
+    for (const p of parts) { p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.97; p.vy *= 0.97; p.life -= dt; }
+    parts = parts.filter(p => p.life > 0);
+  }
+
+  function drawScope(el, dtReal) {
+    const W = scope.width, H = scope.height, cx = W / 2, cy = H / 2, half = Math.min(W, H) / 2;
+    let want;
+    if (el.E < 0 && el.apo < 40 * R) want = dispR(el.apo);
+    else want = dispR(el.r);
+    want = Math.max(want * 1.12, dispR(R + 800e3) * 1.15);
+    viewR = viewR == null ? want : viewR + (want - viewR) * 0.06;
+    const sc = half / viewR;
+    const P = (x, y) => { const r = Math.hypot(x, y), f = r > 0 ? dispR(r) / r : 1; return [cx + x * f * sc, cy - y * f * sc]; };
+    const font = getComputedStyle(document.body).fontFamily;
+
+    sctx.fillStyle = colors.scope; sctx.fillRect(0, 0, W, H);
+    sctx.strokeStyle = colors['scope-grid']; sctx.lineWidth = 1 * dprS;
+    for (let k = 1; k <= 6; k++) { sctx.beginPath(); sctx.arc(cx, cy, half * k / 6, 0, Math.PI * 2); sctx.stroke(); }
+    const Rs = R * sc;
+    sctx.fillStyle = colors.shadow; sctx.fillRect(0, cy - Rs, cx, 2 * Rs);
+    sctx.fillStyle = colors['scope-ink']; sctx.font = `${12 * dprS}px ${font}`;
+    sctx.textAlign = 'right'; sctx.fillText('แสงอาทิตย์ →', W - 12 * dprS, cy - Rs - 10 * dprS);
+    sctx.textAlign = 'left'; sctx.fillText('เงาโลก', 12 * dprS, cy + 4 * dprS);
+    sctx.strokeStyle = colors.accent; sctx.globalAlpha = 0.35; sctx.lineWidth = 2 * dprS;
+    sctx.beginPath(); sctx.arc(cx, cy, dispR(R + 100e3) * sc, 0, Math.PI * 2); sctx.stroke(); sctx.globalAlpha = 1;
+    const g = sctx.createRadialGradient(cx + Rs * 0.4, cy - Rs * 0.2, Rs * 0.1, cx, cy, Rs);
+    g.addColorStop(0, colors.earth); g.addColorStop(1, colors['earth-2']);
+    sctx.fillStyle = g; sctx.beginPath(); sctx.arc(cx, cy, Rs, 0, Math.PI * 2); sctx.fill();
+    sctx.fillStyle = colors.shadow; sctx.beginPath(); sctx.arc(cx, cy, Rs, Math.PI / 2, Math.PI * 1.5); sctx.fill();
+
+    // Point Nemo ocean zone (rotates with Earth)
+    const z = zoneAt(s.t);
+    sctx.strokeStyle = '#38d6c9'; sctx.lineWidth = 5 * dprS; sctx.globalAlpha = 0.85;
+    sctx.beginPath(); sctx.arc(cx, cy, Rs - 3 * dprS, -(z + 8 * DEG), -(z - 8 * DEG)); sctx.stroke(); sctx.globalAlpha = 1;
+    sctx.fillStyle = '#7fe8df'; sctx.font = `${11 * dprS}px ${font}`; sctx.textAlign = 'center';
+    sctx.fillText('Point Nemo', cx + Math.cos(z) * (Rs - 22 * dprS), cy - Math.sin(z) * (Rs - 22 * dprS) + 4 * dprS);
+
+    // ground station
+    const ph = WE * s.t, gx = cx + Math.cos(ph) * Rs, gy = cy - Math.sin(ph) * Rs;
+    const [sx, sy] = P(s.x, s.y);
+    if (s.inContact && s.status === 'orbit' && s.mode !== 'launch') {
+      sctx.strokeStyle = colors.good; sctx.setLineDash([4 * dprS, 4 * dprS]); sctx.lineWidth = 1.5 * dprS;
+      sctx.beginPath(); sctx.moveTo(gx, gy); sctx.lineTo(sx, sy); sctx.stroke(); sctx.setLineDash([]);
+    }
+    sctx.fillStyle = colors.good; sctx.beginPath(); sctx.arc(gx, gy, 4.5 * dprS, 0, Math.PI * 2); sctx.fill();
+
+    // predicted impact / actual impact
+    const cross = (ang, col) => {
+      const x = cx + Math.cos(ang) * Rs, y = cy - Math.sin(ang) * Rs, k = 6 * dprS;
+      sctx.strokeStyle = col; sctx.lineWidth = 2.5 * dprS;
+      sctx.beginPath(); sctx.moveTo(x - k, y - k); sctx.lineTo(x + k, y + k); sctx.moveTo(x + k, y - k); sctx.lineTo(x - k, y + k); sctx.stroke();
+    };
+    if (s.mode === 'deorbit-wait' && s.pred) { sctx.globalAlpha = 0.6; cross(s.pred.ang - WE * (s.pred.t - s.t), colors.warn); sctx.globalAlpha = 1; }
+    if (s.status === 'reentry' && s.impactGeo != null) cross(s.impactGeo + WE * s.t, s.inZone ? '#38d6c9' : colors.crit);
+
+    // predicted orbit
+    if (el.E < 0 && s.status === 'orbit') {
+      const w = Math.atan2(el.ey, el.ex), p = el.a * (1 - el.e * el.e);
+      sctx.strokeStyle = colors['scope-ink']; sctx.globalAlpha = 0.45; sctx.setLineDash([5 * dprS, 6 * dprS]); sctx.lineWidth = 1.2 * dprS;
+      sctx.beginPath(); let pen = false;
+      for (let i = 0; i <= 240; i++) {
+        const t = i / 240 * Math.PI * 2, r = p / (1 + el.e * Math.cos(t - w));
+        if (r < R) { pen = false; continue; }
+        const [px, py] = P(r * Math.cos(t), r * Math.sin(t));
+        if (!pen) { sctx.moveTo(px, py); pen = true; } else sctx.lineTo(px, py);
+      }
+      sctx.stroke(); sctx.setLineDash([]); sctx.globalAlpha = 1;
+    }
+    if (trail.length > 1) {
+      sctx.lineWidth = 2 * dprS; sctx.strokeStyle = colors.sat;
+      for (let i = 1; i < trail.length; i++) {
+        const [ax, ay] = P(trail[i - 1][0], trail[i - 1][1]), [bx, by] = P(trail[i][0], trail[i][1]);
+        sctx.globalAlpha = (i / trail.length) * 0.8;
+        sctx.beginPath(); sctx.moveTo(ax, ay); sctx.lineTo(bx, by); sctx.stroke();
+      }
+      sctx.globalAlpha = 1;
+    }
+
+    // upper stage
+    if (stage && stage.alive) {
+      const [tx, ty] = P(stage.x, stage.y);
+      sctx.fillStyle = colors['scope-ink']; sctx.globalAlpha = 0.7;
+      sctx.fillRect(tx - 3 * dprS, ty - 3 * dprS, 6 * dprS, 6 * dprS); sctx.globalAlpha = 1;
+      sctx.font = `${10.5 * dprS}px ${font}`; sctx.textAlign = 'left'; sctx.fillStyle = colors['scope-ink'];
+      sctx.fillText('จรวดขั้นบน', tx + 7 * dprS, ty + 4 * dprS);
+    }
+
+    // exhaust
+    if (!paused && s.status === 'orbit') {
+      if (s.fired) emit(s.fireKind, s.fireDir, sx, sy);
+      if (s.burnFx > 0) { emit(s.burnKind || 'chem', s.burnDir, sx, sy); s.burnFx -= dtReal; }
+    }
+    s.fired = false;
+    if (!paused) updateParts(dtReal);
+    sctx.globalCompositeOperation = 'lighter';
+    for (const p of parts) {
+      const a = Math.max(0, p.life / p.max);
+      sctx.fillStyle = p.c + (a * 0.85).toFixed(3) + ')';
+      sctx.beginPath(); sctx.arc(p.x, p.y, p.size * (0.4 + 0.6 * a) + (1 - a) * 2 * dprS, 0, Math.PI * 2); sctx.fill();
+    }
+    sctx.globalCompositeOperation = 'source-over';
+
+    // reentry fire
+    const hk = (el.r - R) / 1000;
+    let I = 0;
+    if (s.reentering && s.status === 'orbit') {
+      I = Math.max(0, Math.min(1, (Math.log10(Math.max(s.heat || 1, 1)) - 4.5) / 3));
+      if (!paused) {
+        const v = Math.hypot(s.vx, s.vy) || 1, dir = [s.vx / v, s.vy / v];
+        if (I > 0.05) { const g = GAS.plasma, n0 = g.n; g.n = Math.max(1, Math.round(n0 * I)); emit('plasma', dir, sx, sy); g.n = n0; }
+        if (s.fxShed) { emitBurst('shed', sx, sy); s.fxShed = false; }
+        if (s.fxBreak) { emitBurst('debris', sx, sy); s.fxBreak = false; }
+      }
+      if (I > 0.02) {
+        const rg = (8 + 30 * I) * dprS, gr = sctx.createRadialGradient(sx, sy, 0, sx, sy, rg);
+        gr.addColorStop(0, `rgba(255,250,235,${0.95 * I})`); gr.addColorStop(0.35, `rgba(255,170,70,${0.75 * I})`); gr.addColorStop(1, 'rgba(255,90,40,0)');
+        sctx.globalCompositeOperation = 'lighter'; sctx.fillStyle = gr;
+        sctx.beginPath(); sctx.arc(sx, sy, rg, 0, Math.PI * 2); sctx.fill(); sctx.globalCompositeOperation = 'source-over';
+      }
+    }
+
+    if (s.status !== 'reentry') {
+      const lit = !(s.x < 0 && Math.abs(s.y) < R);
+      if (s.brokeUp) {
+        sctx.fillStyle = I > 0.15 ? 'rgba(255,200,140,1)' : colors['scope-ink'];
+        for (const [ox, oy] of [[-4, 2], [3, -3], [1, 4]]) { sctx.beginPath(); sctx.arc(sx + ox * dprS, sy + oy * dprS, 2.4 * dprS, 0, Math.PI * 2); sctx.fill(); }
+      } else {
+        sctx.fillStyle = I > 0.3 ? 'rgba(255,240,220,1)' : lit ? colors.sat : colors['scope-ink'];
+        sctx.beginPath(); sctx.arc(sx, sy, 5.5 * dprS, 0, Math.PI * 2); sctx.fill();
+      }
+    }
+    if ((s.reentering || (s.status === 'reentry' && s.mode !== 'launch')) && hk < 160) drawLadder(W, H, Math.max(0, hk), I, font);
+  }
+
+  function emitBurst(kind, x, y) {
+    const g = GAS[kind];
+    for (let i = 0; i < (reduceMotion ? Math.ceil(g.n / 2) : g.n); i++) {
+      const a = Math.random() * Math.PI * 2, sp = rnd(g.speed[0], g.speed[1]) * dprS, life = rnd(g.life[0], g.life[1]);
+      parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life, max: life, size: rnd(g.size[0], g.size[1]) * dprS, c: g.colors[i % g.colors.length] });
+    }
+  }
+
+  const LADDER = [[120, 'เข้าสู่ชั้นบรรยากาศ เริ่มร้อน'], [100, 'พลาสมาห่อหุ้ม ขาดสัญญาณ'], [92, 'แผงโซลาร์ เสาอากาศ ฉนวนหลุด'], [78, 'ตัวยานแตกออกเป็นชิ้น'], [60, 'อะลูมิเนียมส่วนใหญ่ละลายหมด'], [30, 'ชิ้นที่ทนร้อนตกอิสระ (dark flight)'], [0, 'ตกถึงผิวน้ำ / พื้นดิน']];
+  function drawLadder(W, H, hk, I, font) {
+    const d = dprS, pw = 250 * d, ph = 250 * d, x0 = W - pw - 12 * d, y0 = 48 * d;
+    const bx = x0 + pw - 26 * d, top = y0 + 26 * d, bot = y0 + ph - 16 * d;
+    const Y = h => bot - Math.min(h, 140) / 140 * (bot - top);
+    sctx.fillStyle = 'rgba(6,11,22,0.78)'; sctx.strokeStyle = 'rgba(255,255,255,0.14)'; sctx.lineWidth = 1 * d;
+    sctx.beginPath(); sctx.roundRect ? sctx.roundRect(x0, y0, pw, ph, 10 * d) : sctx.rect(x0, y0, pw, ph); sctx.fill(); sctx.stroke();
+    sctx.font = `600 ${11.5 * d}px ${font}`; sctx.fillStyle = '#e6ecf7'; sctx.textAlign = 'left';
+    sctx.fillText(`กลับเข้าบรรยากาศ · ${hk.toFixed(1)} กม.`, x0 + 12 * d, y0 + 18 * d);
+    const gr = sctx.createLinearGradient(0, top, 0, bot);
+    gr.addColorStop(0, 'rgba(110,162,255,0.25)'); gr.addColorStop(1, 'rgba(110,162,255,0.7)');
+    sctx.fillStyle = gr; sctx.fillRect(bx - 3 * d, top, 6 * d, bot - top);
+    sctx.font = `${10.5 * d}px ${font}`; sctx.textAlign = 'right';
+    let lastY = -1e9;
+    for (const [h, lab] of LADDER) {
+      const y = Y(h), past = hk <= h || s.status === 'reentry';
+      const ty = Math.max(y + 3.5 * d, lastY + 14 * d); lastY = ty;
+      sctx.fillStyle = past ? '#ffd9a8' : 'rgba(200,214,234,0.55)';
+      sctx.fillRect(bx - 7 * d, y - 0.5 * d, 14 * d, 1 * d);
+      sctx.fillText(`${lab} · ${h}`, bx - 12 * d, ty);
+    }
+    if (s.status !== 'reentry') {
+      const y = Y(hk), rg = (6 + 14 * I) * d, g = sctx.createRadialGradient(bx, y, 0, bx, y, rg);
+      g.addColorStop(0, 'rgba(255,250,235,1)'); g.addColorStop(0.4, `rgba(255,160,70,${0.4 + 0.6 * I})`); g.addColorStop(1, 'rgba(255,90,40,0)');
+      sctx.fillStyle = g; sctx.beginPath(); sctx.arc(bx, y, rg, 0, Math.PI * 2); sctx.fill();
+    }
+  }
+
+  function drawHist() {
+    const W = hcv.width, H = hcv.height, d = dprH;
+    hctx.clearRect(0, 0, W, H);
+    if (hist.length < 2) return;
+    const L = 56 * d, Rr = 12 * d, T = 12 * d, B = 28 * d;
+    let lo = Infinity, hi = -Infinity;
+    for (const p of hist) { lo = Math.min(lo, p.h); hi = Math.max(hi, p.h); }
+    const showTarget = cfg.keep && SATS[cfg.sat].thrust > 0 && (s.mode === 'free' || s.mode === 'ops' || s.mode === 'raise');
+    if (showTarget) { lo = Math.min(lo, s.target); hi = Math.max(hi, s.target); }
+    if (hi - lo < 4) { const m = (hi + lo) / 2; lo = m - 2; hi = m + 2; }
+    const pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
+    const t0 = hist[0].t, t1 = Math.max(hist[hist.length - 1].t, t0 + 1);
+    const X = t => L + (t - t0) / (t1 - t0) * (W - L - Rr), Y = h => T + (1 - (h - lo) / (hi - lo)) * (H - T - B);
+    hctx.font = `${11 * d}px ${getComputedStyle(document.body).fontFamily}`;
+    hctx.strokeStyle = colors.line; hctx.fillStyle = colors.muted; hctx.lineWidth = 1 * d;
+    for (let i = 0; i <= 3; i++) {
+      const h = lo + (hi - lo) * i / 3, y = Y(h);
+      hctx.beginPath(); hctx.moveTo(L, y); hctx.lineTo(W - Rr, y); hctx.stroke();
+      hctx.textAlign = 'right'; hctx.fillText(Math.round(h).toLocaleString('en-US') + ' กม.', L - 6 * d, y + 4 * d);
+    }
+    const span = t1 - t0, useYears = span > 2 * 365 * 86400, useDays = span > 2 * 86400;
+    hctx.textAlign = 'center';
+    for (let i = 0; i <= 4; i++) {
+      const t = t0 + span * i / 4;
+      const lab = useYears ? (t / (365.25 * 86400)).toFixed(1) + ' ปี' : useDays ? (t / 86400).toFixed(1) + ' วัน' : Math.round(t / 60) + ' นาที';
+      hctx.fillText(lab, Math.min(Math.max(X(t), L + 20 * d), W - Rr - 20 * d), H - 8 * d);
+    }
+    if (showTarget) {
+      hctx.strokeStyle = colors.good; hctx.setLineDash([4 * d, 4 * d]);
+      hctx.beginPath(); hctx.moveTo(L, Y(s.target)); hctx.lineTo(W - Rr, Y(s.target)); hctx.stroke(); hctx.setLineDash([]);
+    }
+    hctx.strokeStyle = colors.accent; hctx.lineWidth = 1.8 * d; hctx.beginPath();
+    hist.forEach((p, i) => { const x = X(p.t), y = Y(p.h); i ? hctx.lineTo(x, y) : hctx.moveTo(x, y); });
+    hctx.stroke();
+  }
+
+  const fmtKm = m => Math.round(m / 1000).toLocaleString('en-US');
+  const fmtDur = t => t < 7200 ? Math.round(t / 60) + ' นาที' : t < 3 * 86400 ? (t / 3600).toFixed(1) + ' ชม.' : t < 2 * 365 * 86400 ? (t / 86400).toFixed(1) + ' วัน' : (t / (365.25 * 86400)).toFixed(1) + ' ปี';
+  function ui(el) {
+    const h = (el.r - R) / 1000;
+    $('tAlt').textContent = (h < 1000 ? h.toFixed(1) : Math.round(h).toLocaleString('en-US')) + ' กม.';
+    $('tVel').textContent = (el.v / 1000).toFixed(3) + ' กม./วิ';
+    if (el.E < 0) {
+      const pa = el.peri - R;
+      $('tPA').textContent = (pa < 0 ? 'ใต้ผิวโลก' : fmtKm(pa)) + ' / ' + fmtKm(el.apo - R) + ' กม.';
+      const T = 2 * Math.PI * Math.sqrt(el.a ** 3 / GM);
+      $('tPer').textContent = T < 7200 * 3 ? (T / 60).toFixed(1) + ' นาที' : (T / 3600).toFixed(2) + ' ชม.';
+    } else { $('tPA').textContent = 'ไม่ปิดวง'; $('tPer').textContent = '∞ (หลุดแล้ว)'; }
+    const sat = SATS[cfg.sat];
+    $('tDv').textContent = sat.dv ? `${s.dvUsed.toFixed(1)} / ${sat.dv} m/s` : `${s.dvUsed.toFixed(0)} m/s · ไม่มีเครื่องยนต์`;
+    $('tCon').textContent = s.t > 0 ? (100 * s.contact / s.t).toFixed(1) + '% ของเวลา' : '–';
+    $('tBat').style.width = s.battery.toFixed(0) + '%';
+    $('tBat').style.background = s.battery < 25 ? 'var(--crit)' : s.battery < 50 ? 'var(--warn)' : 'var(--good)';
+    $('tBatTxt').textContent = s.battery.toFixed(0) + '%';
+    const day = Math.floor(s.t / 86400), hh = Math.floor(s.t % 86400 / 3600), mm = Math.floor(s.t % 3600 / 60);
+    $('clock').textContent = `วันที่ ${day.toLocaleString('en-US')} · ${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')} · ×${cfg.warp.toLocaleString('en-US')}`;
+
+    const pills = [];
+    const lit = !(s.x < 0 && Math.abs(s.y) < R);
+    if (s.status === 'reentry') {
+      if (s.mode === 'deorbit') pills.push(s.inZone ? ['good', 'ชิ้นส่วนที่เหลือตกในเขต Point Nemo มหาสมุทรแปซิฟิกใต้ตามแผน'] : ['warn', 'ตกนอกเขตเป้าหมาย']);
+      pills.push(['crit', `กลับเข้าบรรยากาศ ไหม้เกือบหมด เวลาภารกิจ ${fmtDur(s.endT)}`]);
+      if (s.vImpact != null && s.mode !== 'launch') pills.push(['', `ชิ้นที่เหลือรอดตกด้วยความเร็ว ~${Math.round(s.vImpact * 3.6).toLocaleString('en-US')} กม./ชม.`]);
+    } else if (s.status === 'escaped') pills.push(['warn', 'หลุดจากแรงโน้มถ่วงโลกแล้ว']);
+    else {
+      const modeTxt = {
+        launch: ['warn', 'ปล่อยจรวด: เครื่องยนต์ขั้นแรกทำงาน'],
+        coast: ['', 'ดับเครื่อง ร่อนขึ้นสู่จุดสูงสุด'],
+        circ: ['warn', 'ขั้นบนจุดเครื่องยนต์ทำวงโคจรให้กลม'],
+        raise: ['warn', 'เครื่องยนต์ไอออนยกระดับวงโคจร'],
+        'deorbit-wait': ['warn', 'รอจังหวะจุดเบรกให้ตกที่ Point Nemo (X สีส้ม = จุดตกถ้าเบรกตอนนี้)'],
+        deorbit: ['crit', 'จุดเบรกแล้ว กำลังดิ่งลงสู่บรรยากาศ'],
+        decay: ['', 'ปิดระบบแล้ว ปล่อยให้แรงต้านอากาศดึงลง'],
+        grave1: ['warn', 'จุดครั้งที่ 1 แล้ว ร่อนขึ้นไปจุดครั้งที่ 2'],
+        graveyard: ['good', 'อยู่ในวงโคจรสุสาน ระบายเชื้อเพลิงและตัดแบตแล้ว']
+      }[s.mode];
+      if (s.reentering) {
+        const hk = (el.r - R) / 1000;
+        const cur = LADDER.filter(([h]) => hk <= h).at(-1);
+        pills.push(['crit', cur ? cur[1] : 'กำลังเข้าสู่ชั้นบรรยากาศ']);
+      } else if (modeTxt) pills.push(modeTxt);
+      if (s.mode !== 'launch') pills.push(['', lit ? 'รับแสงอาทิตย์ · ชาร์จแบต' : 'อยู่ในเงาโลก · ใช้แบต']);
+      if (s.inContact && s.mode !== 'launch') pills.push(['good', 'ติดต่อสถานีภาคพื้นได้']);
+      if (s.thrusting && (s.mode === 'free' || s.mode === 'ops')) pills.push(['warn', 'กำลังจุดเครื่องยนต์รักษาวงโคจร']);
+      if (sat.dv && s.dvUsed >= sat.dv) pills.push(['crit', 'เชื้อเพลิงหมด']);
+      if (el.E < 0 && el.peri - R < 200e3 && !['launch', 'coast', 'circ', 'deorbit'].includes(s.mode)) pills.push(['crit', 'จุดใกล้โลกอยู่ในอากาศหนาแน่น']);
+    }
+    $('pills').innerHTML = pills.map(([c, t]) => `<span class="pill ${c}">${t}</span>`).join('');
+
+    const cur = STAGE_OF[s.mode] || 0;
+    document.querySelectorAll('#stages li').forEach(li => {
+      const n = +li.dataset.stage;
+      if (n === cur) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+      li.classList.toggle('done', reached > 0 && n < cur);
+    });
+  }
+
+  let last = performance.now();
+  function loop(now) {
+    const dtReal = Math.min(0.05, (now - last) / 1000); last = now;
+    if (frame++ % 30 === 0) readColors();
+    if (!paused && s.status === 'orbit') {
+      let simDt = dtReal * cfg.warp;
+      const ascent = s.mode === 'launch' || s.mode === 'coast' || s.mode === 'circ';
+      while (simDt > 0 && s.status === 'orbit') {
+        const h0 = (Math.hypot(s.x, s.y) - R) / 1000;
+        const maxStep = ascent ? 1 : h0 < 40 ? 0.2 : h0 < 130 ? 0.5 : h0 < 2000 ? 5 : 20;
+        const hstep = Math.min(maxStep, simDt); step(hstep); simDt -= hstep; record(); addTrail();
+        if (s.reentering && !s.slowed) { s.slowed = true; if (cfg.warp > 100) setWarp(100); simDt = 0; }
+        if (s.reentering && h0 < 100 && !s.slowed2) { s.slowed2 = true; setWarp(10); simDt = 0; }
+        if (s.reentering && h0 < 35 && !s.fastFall) { s.fastFall = true; setWarp(100); simDt = 0; }
+      }
+      if (s.mode === 'deorbit-wait' && s.status === 'orbit') {
+        s.pred = predict();
+        if (s.pred && Math.abs(angDiff(s.pred.ang, zoneAt(s.pred.t))) < 4 * DEG) {
+          impulse(deorbitDv(), 'chem'); s.mode = 'deorbit'; s.pred = null; setWarp(100);
+        }
+      }
+    }
+    const el = elements();
+    drawScope(el, dtReal); drawHist(); ui(el);
+    requestAnimationFrame(loop);
+  }
+
+  // controls
+  const warpEl = $('warp');
+  WARPS.forEach(w => { const b = document.createElement('button'); b.textContent = '×' + w.toLocaleString('en-US'); b.dataset.w = w; b.id = 'warp-' + w; warpEl.appendChild(b); });
+  function syncWarp() { warpEl.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.w === cfg.warp))); }
+  function setWarp(w) { cfg.warp = w; syncWarp(); }
+  warpEl.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; setWarp(+b.dataset.w); });
+
+  function syncInputs() {
+    $('sat').value = cfg.sat; $('alt').value = altToSlider(cfg.alt);
+    $('altOut').textContent = Math.round(cfg.alt).toLocaleString('en-US') + ' กม.' + (cfg.speed ? ` · ความเร็วต้น ${(cfg.speed / 1000).toFixed(1)} กม./วิ` : '');
+    syncWarp();
+  }
+  function applyPreset(name) {
+    const p = PRESETS[name];
+    cfg.sat = p.sat; cfg.alt = p.alt; cfg.speed = p.speed || null; cfg.warp = p.warp;
+    syncInputs(); reset();
+  }
+  const toScope = () => $('scopeWrap').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+  document.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => { applyPreset(b.dataset.preset); toScope(); }));
+  document.querySelectorAll('[data-mission]').forEach(b => b.addEventListener('click', () => { startMission(); toScope(); }));
+  $('mission').addEventListener('click', startMission);
+  $('sat').addEventListener('change', e => { cfg.sat = e.target.value; reset(); });
+  $('alt').addEventListener('input', e => { cfg.alt = sliderToAlt(+e.target.value); cfg.speed = null; syncInputs(); });
+  $('alt').addEventListener('change', reset);
+  $('solar').addEventListener('change', e => { cfg.solar = +e.target.value; });
+  $('drag').addEventListener('change', e => { cfg.drag = e.target.checked; });
+  $('keep').addEventListener('change', e => { cfg.keep = e.target.checked; });
+  $('exag').addEventListener('change', e => { cfg.exag = e.target.checked; viewR = null; });
+  $('reset').addEventListener('click', reset);
+  $('pause').addEventListener('click', e => { paused = !paused; e.target.setAttribute('aria-pressed', String(paused)); e.target.textContent = paused ? 'เล่นต่อ' : 'หยุดชั่วคราว'; });
+
+  const canAct = () => s.status === 'orbit' && !['launch', 'coast', 'circ'].includes(s.mode);
+  function stopKeeping() { cfg.keep = false; $('keep').checked = false; s.thrusting = false; }
+  function burn(dv) {
+    if (!canAct()) return;
+    impulse(dv, 'chem');
+    if (dv > 0) s.target = (elements().a - R) / 1000; else stopKeeping();
+  }
+  $('burnP').addEventListener('click', () => burn(50));
+  $('burnR').addEventListener('click', () => burn(-50));
+
+  const note = t => { $('eolNote').textContent = t; };
+  $('eolOcean').addEventListener('click', () => {
+    if (!canAct()) return note('รอให้ดาวเทียมเข้าวงโคจรก่อน');
+    const el = elements();
+    if (!(el.E < 0) || el.apo - R > 2000e3) return note('วงโคจรนี้สูงเกินไป ต้องใช้เชื้อเพลิงมากจนไม่คุ้ม ดาวเทียม GEO จึงใช้วงโคจรสุสานแทน');
+    stopKeeping(); s.mode = 'deorbit-wait'; reached = Math.max(reached, 5); setWarp(1000);
+    note('ตกลงทะเลแบบควบคุม: ระบบหาจังหวะเบรกให้ชิ้นส่วนที่ไม่ไหม้หมดตกกลางมหาสมุทรแปซิฟิกใต้ ห่างแผ่นดินที่สุด');
+  });
+  $('eolDecay').addEventListener('click', () => {
+    if (!canAct()) return note('รอให้ดาวเทียมเข้าวงโคจรก่อน');
+    stopKeeping(); s.mode = 'decay'; reached = Math.max(reached, 5); setWarp(1000000);
+    note('ปล่อยให้ตกเอง: ใช้กับดาวเทียมเล็กที่ไหม้หมดในบรรยากาศ กฎ FCC ให้ตกภายใน 5 ปีหลังจบภารกิจ ที่ 550 กม. อาจใช้หลายปี');
+  });
+  $('eolGrave').addEventListener('click', () => {
+    if (!canAct()) return note('รอให้ดาวเทียมเข้าวงโคจรก่อน');
+    const el = elements();
+    if (!(el.E < 0) || el.r - R < 2000e3) return note('วงโคจรสุสานใช้กับดาวเทียมวงโคจรสูง ลองกด GEO 35,786 กม. ก่อนแล้วค่อยกดปุ่มนี้');
+    stopKeeping();
+    const r1 = el.r, r2 = r1 + 300e3;
+    s.graveFrom = r1; s.prevRv = 1;
+    impulse(Math.sqrt(GM / r1) * (Math.sqrt(2 * r2 / (r1 + r2)) - 1), 'chem');
+    s.mode = 'grave1'; reached = Math.max(reached, 5); setWarp(1000);
+    note('วงโคจรสุสาน: จุดเครื่องยนต์ 2 ครั้ง ดันขึ้นสูงกว่า GEO ~300 กม. ให้พ้นทางดาวเทียมที่ยังทำงาน แล้วระบายเชื้อเพลิงและตัดแบตกันระเบิด');
+  });
+
+  readColors();
+  applyPreset('iss');
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>

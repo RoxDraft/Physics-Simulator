@@ -45,6 +45,8 @@ Open `index.html` in a browser (or enable GitHub Pages: Settings → Pages → D
 | [`circuit-lab/`](circuit-lab/index.html) | **Circuit Lab** — series/parallel circuit with animated current, a home distribution board (breakers tripping on overload or short circuit, earth leakage with/without earth wire and RCD, wire size, voltage drop, cost per hour), RC charging, and **from circuits to computers**: MOSFET switch, CMOS gates, a 4-bit adder, a D flip-flop register and a tiny fetch–decode–execute CPU. | 3 |
 | [`chem-bio-lab/`](chem-bio-lab/index.html) | **Chem · Bio Lab** — collision-theory particle box with temperature, concentration, Ea and catalyst; an agent-based SEIR epidemic with masks, vaccination, distancing and isolation, plus data analysis (log-linear growth fit, doubling time, R0); and an SEIR ODE "flatten the curve" model. | 2 |
 | [`quantum-lab/`](quantum-lab/index.html) | **Quantum Lab** — photoelectric effect (photon energy vs. work function, camera sensors, solar cells), quantum tunnelling (STM, gate-oxide leakage, flash memory), quantum dots and LED colour, a qubit on the Bloch sphere with H/X/Z/S/T gates and measurement statistics, and photonics: total internal reflection in fibre, attenuation and EDFA amplifiers, DWDM capacity. | 2 |
+| [`space-lab/`](space-lab/index.html) | **Space Lab** — a hub page to choose the **Orbit Lab** simulation (launch, orbit raising, station-keeping with thruster exhaust, end of life over Point Nemo or to a graveyard orbit, re-entry heating and break-up down to the ground) or the **report** on the space industry (launch cost, launches per year, ISS vs Tiangong, propellants and RTGs, re-entry, Falcon 9 reuse, the Space Shuttle). Thai only. | 3 |
+| [`synchrotron-lab/`](synchrotron-lab/index.html) | **Synchrotron Lab** — a hub page to choose the **synchrotron control room** simulation (ring size, energy lost to light per turn, RF cavity on/off, spectrum vs lasers, presets from Siam Photon to the LHC) or the **report** on how synchrotrons work and differ from lasers. Thai only. | 3 |
 
 ```
 index.html            landing page linking every simulator
@@ -55,6 +57,9 @@ camera-lab/           index.html, lens.html, sensor.html, fusion.html,
 mechanics-lab/         index.html, statics.html, dynamics.html, thermo.html, fluids.html, swim.html, sources.html
 circuit-lab/           index.html, computer.html, sources.html
 beam-fea/ chem-bio-lab/ quantum-lab/   index.html, sources.html
+space-lab/            index.html (choose), orbit-lab.html (simulation), report.html (document), img/
+synchrotron-lab/      index.html (choose), simulation.html, report.html, img/
+                      (standalone pages, not built from src/; their English hub pages are en/space-lab/ and en/synchrotron-lab/)
 src/                  canvas sources (.dc.html) for every page
 tools/build.sh        rebuilds all pages from src/ in Thai and English (home bar + language button)
 tools/i18n/en.json    English text for every Thai string; the build stops if one is missing

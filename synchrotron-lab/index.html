@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synchrotron Lab · Physics Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+  :root { --ink: #0F2A3A; --muted: #4A5D6A; --line: #D5DEE3; --bg: #F3F6F7; --card: #FFFFFF; --accent: #0A6A94; --warm: #B04A0C; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 3px solid var(--warm); outline-offset: 2px; }
+  .bar { max-width: 1120px; margin: 0 auto; padding: 18px 16px 0; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 14px; color: var(--muted); }
+  .bar a { text-decoration: none; font-weight: 600; }
+  .bar .sp { flex: 1; }
+  .bar .lang { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--accent); }
+
+  main { max-width: 1120px; margin: 0 auto; padding: 32px 16px 72px; display: flex; flex-direction: column; gap: 32px; }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .08em; color: var(--accent); }
+  h1 { margin: 8px 0 12px; font-size: clamp(30px, 4.5vw, 46px); line-height: 1.2; }
+  .lede { margin: 0; max-width: 760px; font-size: 18px; line-height: 1.7; color: var(--muted); }
+  .grid { display: flex; flex-wrap: wrap; gap: 20px; }
+  .card { flex: 1 1 380px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--ink); }
+  .card:hover { border-color: var(--accent); }
+  .num { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--warm); }
+  .card h2 { margin: 0; font-size: 24px; }
+  .card p { margin: 0; font-size: 16px; line-height: 1.7; color: #34495A; }
+  .go { font-weight: 600; color: var(--accent); }
+  .note { font-size: 14px; line-height: 1.7; color: var(--muted); }
+
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="ตำแหน่งหน้า"><a href="../index.html">หน้าหลัก</a><span aria-hidden="true">/</span><span aria-current="page">Synchrotron Lab</span><span class="sp"></span><a class="lang" href="../en/synchrotron-lab/index.html" data-ps-lang="en">English</a></nav>
+<main>
+  <header>
+    <div class="eyebrow">SYNCHROTRON LAB · เครื่องเร่งอนุภาคและแสง</div>
+    <h1>ซินโครตรอนเทียบเลเซอร์</h1>
+    <p class="lede">อนุภาคมีประจุที่ถูกดัดให้เลี้ยวจะปล่อยแสงออกมา เลือกเปิดห้องควบคุมซินโครตรอน หรืออ่านเอกสารประกอบฉบับเต็ม</p>
+  </header>
+  <section class="grid" aria-label="Synchrotron Lab">
+    <a class="card" href="simulation.html">
+      <span class="num">01 · Simulation</span>
+      <h2>ห้องควบคุมซินโครตรอน</h2>
+      <p>ปรับพลังงานอนุภาค สนามแม่เหล็ก และปิดเปิด RF cavity ดูขนาดวงที่ต้องใช้ พลังงานที่เสียเป็นแสงต่อรอบ และสเปกตรัมแสงซินโครตรอนเทียบกับเลเซอร์ ตั้งแต่ Siam Photon ถึง LHC</p>
+      <span class="go">เปิดการจำลอง →</span>
+    </a>
+    <a class="card" href="report.html">
+      <span class="num">02 · เอกสาร</span>
+      <h2>ซินโครตรอนทำงานอย่างไร และต่างจากเลเซอร์แค่ไหน</h2>
+      <p>ส่วนประกอบของเครื่อง ทำไมต้องเป็นวงกลม เครื่องจริงในไทยและทั่วโลก การใช้งานในการแพทย์และการผลิตชิป ตารางเทียบกับเลเซอร์ X-ray FEL และ laser cooling</p>
+      <span class="go">อ่านเอกสาร →</span>
+    </a>
+  </section>
+  <p class="note">ตัวเลขเป็นค่าประมาณจากสูตรมาตรฐานและความรู้ทั่วไป</p>
+</main>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-ps-lang]');if(a){try{localStorage.setItem('ps-lang',a.getAttribute('data-ps-lang'))}catch(_){}}});</script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<style>body>.ps-nav{margin:-24px calc(-1 * max(16px, env(safe-area-inset-left, 0px))) 20px}</style>
+<style>
+.ps-nav{position:sticky;top:0;z-index:50;background:#ffffff;border-bottom:1px solid #D5DEE3;box-shadow:0 2px 10px rgba(15,42,58,.08);font-family:'IBM Plex Sans Thai',system-ui,sans-serif}
+.ps-nav-in{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.ps-nav a{text-decoration:none}
+.ps-home{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid #0A6A94;color:#0A6A94;font-weight:600;font-size:15px;background:#fff}
+.ps-home:hover{background:#EAF3F7}
+.ps-lab{font-weight:700;font-size:16px;color:#0F2A3A;padding:0 4px}
+.ps-tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:999px;background:#EAF0F3}
+.ps-tab{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:999px;color:#0F2A3A;font-weight:600;font-size:15px}
+.ps-tab:hover{background:#fff}
+.ps-tab[aria-current="page"]{background:#0A6A94;color:#fff}
+.ps-sp{flex:1}
+.ps-lang{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 18px;border-radius:999px;background:#0A6A94;color:#fff;font-weight:700;font-size:15px}
+.ps-lang:hover{background:#08577a}
+.ps-nav a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+@media (max-width:640px){.ps-sp{display:none}.ps-tabs{order:3;width:100%;justify-content:space-between}.ps-tab{flex:1;justify-content:center;padding:0 8px}}
+</style>
+<nav class="ps-nav" aria-label="Menu"><div class="ps-nav-in"><a class="ps-home" href="../index.html">← Home</a><span class="ps-lab">Synchrotron Lab</span><span class="ps-tabs"><a class="ps-tab" href="index.html">Overview</a><a class="ps-tab" href="simulation.html" aria-current="page">Simulation</a><a class="ps-tab" href="report.html">Report</a></span><span class="ps-sp"></span><a class="ps-lang" href="../../synchrotron-lab/simulation.html" hreflang="th" lang="th" data-ps-lang="th"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></div></nav>
+
+<title>Synchrotron Control Room</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a control-room console. Ring scope + instrument readouts side by side, spectrum analyser and wave scope below. */
+:root{
+  --bg:#eef1f4; --panel:#ffffff; --ink:#14202b; --muted:#5a6a78; --line:#d3dae1;
+  --beam:#1f6fd1; --magnet:#1c9a7c; --rf:#d9662b; --warn:#c2410c; --scope:#0d1620; --scope-ink:#cfe3f5; --scope-line:#24384b;
+  --display:"Chakra Petch","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1117; --panel:#121b24; --ink:#e3ebf2; --muted:#93a4b3; --line:#243241;
+  --beam:#5aa2ff; --magnet:#3cc9a4; --rf:#ff8a4c; --warn:#ff9a62; --scope:#060b10; --scope-ink:#cfe3f5; --scope-line:#1d2c3a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1117; --panel:#121b24; --ink:#e3ebf2; --muted:#93a4b3; --line:#243241;
+  --beam:#5aa2ff; --magnet:#3cc9a4; --rf:#ff8a4c; --warn:#ff9a62; --scope:#060b10; --scope-ink:#cfe3f5; --scope-line:#1d2c3a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,38px);line-height:1.2;margin:0;text-wrap:balance}
+header p{margin:6px 0 0;color:var(--muted);max-width:68ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--beam)}
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.panel h2{font-family:var(--display);font-size:19px;font-weight:600;margin:0 0 4px}
+.panel .sub{color:var(--muted);font-size:13.5px;margin:0 0 12px}
+.scope{background:var(--scope);border-radius:8px;position:relative;overflow:hidden}
+canvas{display:block;width:100%}
+.scope-note{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:11.5px;color:#8fa6ba}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font-family:var(--body);font-size:14px;border:1px solid var(--line);background:transparent;color:var(--ink);
+  padding:6px 12px;border-radius:6px;cursor:pointer}
+button:hover{border-color:var(--beam)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--beam);outline-offset:2px}
+button.on{background:var(--beam);border-color:var(--beam);color:#fff}
+.ctl{display:flex;flex-direction:column;gap:4px;margin-top:14px}
+.ctl label{display:flex;justify-content:space-between;gap:8px;font-size:14px}
+.ctl label b{font-family:var(--mono);font-weight:500}
+input[type=range]{width:100%;accent-color:var(--beam)}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.ro{border-top:1px solid var(--line);padding-top:8px;min-width:0}
+.ro .k{font-size:12.5px;color:var(--muted)}
+.ro .v{font-family:var(--mono);font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.ro.big .v{color:var(--beam)}
+.callout{margin-top:14px;font-size:14px;border-left:3px solid var(--rf);padding:6px 10px;background:color-mix(in srgb,var(--rf) 8%,transparent)}
+.sizebar{position:relative;height:112px;margin-top:8px}
+.sizebar .track{position:absolute;left:0;right:0;top:46px;height:4px;background:var(--line);border-radius:2px}
+.mk{position:absolute;top:0;transform:translateX(-50%);font-size:12px;color:var(--muted);text-align:center;white-space:nowrap}
+.mk i{display:block;width:1px;height:14px;background:var(--muted);margin:2px auto 0}
+.mk.lo{top:52px}.mk.lo i{margin:0 auto 2px}
+.mk.cur{color:var(--beam);font-weight:600;z-index:2}
+.mk.cur i{width:3px;height:22px;background:var(--beam)}
+.ticks{position:absolute;left:0;right:0;top:94px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.ticks span{position:absolute;transform:translateX(-50%)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:12px;height:4px;border-radius:2px;margin-right:6px;vertical-align:middle;background:var(--c)}
+svg text{font-family:var(--body)}
+.svgbox{overflow-x:auto}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Synchrotron simulator · English</div>
+    <h1>Synchrotron Control Room</h1>
+    <p>Adjust the particle energy, magnet strength and the RF cavity to see how big the ring must be, how much energy the particles lose as light, and how that light differs from a laser. Numbers come from standard approximate formulas (pure circle, no straight sections)</p>
+  </header>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Storage ring (top view)</h2>
+      <p class="sub">Blue dots are particle bunches, green blocks are bending magnets, orange is the RF cavity. Light shoots out along the tangent every time the beam turns</p>
+      <div class="scope"><canvas id="ring" aria-label="Synchrotron ring animation"></canvas><div class="scope-note" id="ringNote"></div></div>
+      <div class="row" style="margin-top:12px">
+        <button id="rfBtn" class="on" aria-pressed="true">RF cavity: on</button>
+        <button id="injBtn">Inject a new beam</button>
+        <button id="pauseBtn" aria-pressed="false">Pause</button>
+      </div>
+      <div class="callout" id="rfCallout">Try switching the RF cavity off: electrons lose energy to light every turn and spiral inward until they hit the pipe wall (the loss is sped up so you can see it). Protons hardly lose anything</div>
+    </section>
+
+    <section class="panel">
+      <h2>Control panel</h2>
+      <p class="sub">Start from a real machine, then adjust</p>
+      <div class="row" id="presets">
+        <button data-p="slri">Siam Photon (Thailand)</button>
+        <button data-p="esrf">ESRF</button>
+        <button data-p="lep">LEP (CERN)</button>
+        <button data-p="lhc">LHC (CERN)</button>
+      </div>
+      <div class="ctl">
+        <span style="font-size:14px">Particle</span>
+        <div class="row"><button id="pe" class="on">Electron</button><button id="pp">Proton</button></div>
+      </div>
+      <div class="ctl">
+        <label for="eSl">Kinetic energy <b id="eVal"></b></label>
+        <input type="range" id="eSl" min="0" max="1000" step="1">
+      </div>
+      <div class="ctl">
+        <label for="bSl">Bending field <b id="bVal"></b></label>
+        <input type="range" id="bSl" min="0.05" max="10" step="0.01">
+      </div>
+      <div class="readouts">
+        <div class="ro big"><div class="k">Bending radius needed ρ</div><div class="v" id="rRho"></div></div>
+        <div class="ro big"><div class="k">Minimum circumference 2πρ</div><div class="v" id="rC"></div></div>
+        <div class="ro"><div class="k">Speed (vs light)</div><div class="v" id="rBeta"></div></div>
+        <div class="ro"><div class="k">Turns per second</div><div class="v" id="rF"></div></div>
+        <div class="ro"><div class="k">Energy lost to light per turn</div><div class="v" id="rU"></div></div>
+        <div class="ro"><div class="k">Critical wavelength λc</div><div class="v" id="rL"></div></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>How big must the ring be</h2>
+    <p class="sub">Minimum circumference for your settings (blue mark) against real machines, on a log scale: each step is 10× bigger. Real rings are longer because they need straight sections for RF, undulators and collision points</p>
+    <div class="sizebar" id="sizebar"><div class="track"></div><div class="ticks" id="ticks"></div></div>
+  </section>
+
+  <section class="panel">
+    <h2>Spectrum: synchrotron vs laser</h2>
+    <p class="sub">The blue curve is the synchrotron spectrum for your settings (very broad, its peak shifts with energy). The orange lines are lasers, each with a single wavelength</p>
+    <div class="svgbox"><svg id="spec" viewBox="0 0 760 300" role="img" aria-label="Synchrotron spectrum compared with laser lines"></svg></div>
+  </section>
+
+  <section class="panel">
+    <h2>Why a laser is "sharper"</h2>
+    <p class="sub">Top: bending-magnet synchrotron light mixes many wavelengths with random phases. Bottom: in a laser every wave has the same length and the crests line up (coherent), so it can be focused to a tiny spot. An X-ray FEL makes an electron beam emit light like the bottom row, in the X-ray band</p>
+    <div class="scope"><canvas id="wave" aria-label="Comparison of synchrotron light waves and laser waves"></canvas></div>
+  </section>
+</div>
+
+<script>
+(() => {
+const ME = 0.000510999, MP = 0.938272, C = 299792458;
+const PRE = { slri:{p:'e',K:1.2,B:1.44}, esrf:{p:'e',K:6,B:0.855}, lep:{p:'e',K:104.5,B:0.11}, lhc:{p:'p',K:6800,B:8.33} };
+const LASERS = [ {n:'EUV chipmaking',l:13.5},{n:'ArF / LASIK',l:193},{n:'LiDAR',l:905},{n:'Fibre metal cutting',l:1070},{n:'Er:YAG surgery',l:2940},{n:'CO₂ cutting/surgery',l:10600} ];
+const S = { p:'e', K:1.2, B:1.44, rf:true, paused:false };
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+function phys(){
+  const m = S.p === 'e' ? ME : MP, E = S.K + m, g = E / m;
+  const p = Math.sqrt(E*E - m*m), rho = 3.33564 * p / S.B, r = m / ME;
+  const omb = g > 1000 ? 1/(2*g*g) : 1 - Math.sqrt(1 - 1/(g*g));
+  const U0 = 88.46 * Math.pow(E,4) / rho / Math.pow(r,4);        // keV per turn
+  const Ec = 2.2183 * Math.pow(E,3) / rho / Math.pow(r,3);       // keV
+  const lc = 1.23984 / Ec;                                       // nm
+  const f = (1-omb) * C / (2*Math.PI*rho);
+  return { m, E, g, p, rho, omb, U0, Ec, lc, f, frac: U0/1e6/E };
+}
+const sig = (x,n=3) => { const s = Number(x.toPrecision(n)); return Math.abs(s) >= 1e5 || (Math.abs(s) < 1e-3 && s !== 0) ? s.toExponential(n-1) : s.toLocaleString('en-US',{maximumSignificantDigits:n}); };
+const fmtLen = m => m < 1 ? sig(m*100)+' cm' : m < 1000 ? sig(m)+' m' : sig(m/1000)+' km';
+const fmtGeV = k => k < 1 ? sig(k*1000)+' MeV' : k < 1000 ? sig(k)+' GeV' : sig(k/1000)+' TeV';
+const fmtEv = keV => { const ev = keV*1000; if (ev < 1e-3) return sig(ev*1e6)+' µeV'; if (ev < 1) return sig(ev*1000)+' meV'; if (ev < 1e3) return sig(ev)+' eV'; if (ev < 1e6) return sig(ev/1e3)+' keV'; if (ev < 1e9) return sig(ev/1e6)+' MeV'; return sig(ev/1e9)+' GeV'; };
+const fmtLam = nm => nm < 1000 ? sig(nm)+' nm' : nm < 1e6 ? sig(nm/1000)+' µm' : nm < 1e9 ? sig(nm/1e6)+' mm' : sig(nm/1e9)+' m';
+const band = nm => nm < 10 ? 'X-ray' : nm < 380 ? 'ultraviolet' : nm < 750 ? 'visible light' : nm < 1e6 ? 'infrared' : 'microwave/radio';
+function betaStr(omb){ if (omb > 1e-3) return ((1-omb)*100).toFixed(2)+'%'; const d = Math.ceil(-Math.log10(omb)); return '99.'+'9'.repeat(Math.max(0,d-3))+'…% (slower than light by '+sig(omb,2)+')'; }
+
+// ---------- controls ----------
+const eSl = $('eSl'), bSl = $('bSl');
+const toSl = K => Math.round((Math.log10(K)+1)/5*1000), fromSl = v => Math.pow(10, v/1000*5 - 1);
+function syncUI(){
+  eSl.value = toSl(S.K); bSl.value = S.B;
+  $('pe').classList.toggle('on', S.p==='e'); $('pp').classList.toggle('on', S.p==='p');
+  update();
+}
+eSl.addEventListener('input', () => { S.K = fromSl(+eSl.value); update(); });
+bSl.addEventListener('input', () => { S.B = +bSl.value; update(); });
+$('pe').onclick = () => { S.p='e'; syncUI(); inject(); };
+$('pp').onclick = () => { S.p='p'; syncUI(); inject(); };
+document.querySelectorAll('#presets button').forEach(b => b.onclick = () => { Object.assign(S, {p:PRE[b.dataset.p].p, K:PRE[b.dataset.p].K, B:PRE[b.dataset.p].B}); syncUI(); inject(); });
+$('rfBtn').onclick = () => { S.rf = !S.rf; const b=$('rfBtn'); b.classList.toggle('on', S.rf); b.setAttribute('aria-pressed', S.rf); b.textContent = 'RF cavity: '+(S.rf?'on':'off'); };
+$('injBtn').onclick = () => inject();
+$('pauseBtn').onclick = () => { S.paused = !S.paused; $('pauseBtn').textContent = S.paused ? 'Resume' : 'Pause'; $('pauseBtn').setAttribute('aria-pressed', S.paused); };
+
+let P = phys();
+function update(){
+  P = phys();
+  $('eVal').textContent = fmtGeV(S.K); $('bVal').textContent = S.B.toFixed(2)+' T';
+  $('rRho').textContent = fmtLen(P.rho); $('rC').textContent = fmtLen(2*Math.PI*P.rho);
+  $('rBeta').textContent = betaStr(P.omb); $('rF').textContent = sig(P.f)+' turns';
+  $('rU').textContent = fmtEv(P.U0)+' ('+sig(P.frac*100,2)+'%)';
+  $('rL').textContent = fmtLam(P.lc)+' · '+band(P.lc);
+  $('ringNote').textContent = 'Not to scale · real ring radius '+fmtLen(P.rho);
+  drawSize(); drawSpec();
+}
+
+// ---------- size bar ----------
+const REF = [ {n:'Football pitch',m:105,lo:true},{n:'Siam Photon',m:81.3},{n:'ESRF',m:844,lo:true},{n:'SPring-8',m:1436},{n:'LHC / LEP',m:26659,lo:true} ];
+const SMIN = -1, SMAX = 6; // 0.1 m .. 1000 km
+const pos = m => Math.min(100, Math.max(0, (Math.log10(m)-SMIN)/(SMAX-SMIN)*100));
+(function initTicks(){ const t=$('ticks'); ['10 cm','1 m','10 m','100 m','1 km','10 km','100 km','1000 km'].forEach((s,i)=>{ const e=document.createElement('span'); e.style.left=(i/(SMAX-SMIN)*100)+'%'; e.textContent=s; if(i===0) e.style.transform='none'; if(i===7) e.style.transform='translateX(-100%)'; t.appendChild(e); }); })();
+function drawSize(){
+  const sb = $('sizebar'); sb.querySelectorAll('.mk').forEach(e=>e.remove());
+  const add = (txt, m, cls) => { const d=document.createElement('div'); d.className='mk '+cls; d.style.left=pos(m)+'%'; d.innerHTML = cls.includes('lo') ? '<i></i>'+txt : txt+'<i></i>'; sb.appendChild(d); };
+  REF.forEach(r => add(r.n+' '+fmtLen(r.m), r.m, r.lo?'lo':''));
+  add('Your setting '+fmtLen(2*Math.PI*P.rho), 2*Math.PI*P.rho, 'cur');
+}
+
+// ---------- spectrum ----------
+const NS='http://www.w3.org/2000/svg';
+function drawSpec(){
+  const svg = $('spec'); svg.innerHTML = '';
+  const x0=40, x1=730, yb=250, yt=90, L0=-2, L1=6; // 0.01 nm .. 1 mm
+  const X = nm => x0 + (Math.log10(nm)-L0)/(L1-L0)*(x1-x0);
+  const el = (t,a,txt) => { const e=document.createElementNS(NS,t); for(const k in a) e.setAttribute(k,a[k]); if(txt!=null) e.textContent=txt; svg.appendChild(e); return e; };
+  const ink=css('--ink'), muted=css('--muted'), line=css('--line'), beam=css('--beam'), rf=css('--rf');
+  // bands
+  [[0.01,10,'X-ray'],[10,380,'UV / EUV'],[380,750,'Visible'],[750,1e6,'infrared']].forEach(([a,b,n],i)=>{
+    if (i===2){ const g=el('defs',{}); g.innerHTML='<linearGradient id="vis"><stop offset="0" stop-color="#7b3fe4"/><stop offset=".3" stop-color="#2f7cf6"/><stop offset=".5" stop-color="#2fbf5b"/><stop offset=".7" stop-color="#f2d22e"/><stop offset="1" stop-color="#e5322d"/></linearGradient>'; el('rect',{x:X(a),y:yt-10,width:X(b)-X(a),height:yb-yt+10,fill:'url(#vis)',opacity:.25}); }
+    el('line',{x1:X(b),x2:X(b),y1:yt-14,y2:yb,stroke:line,'stroke-dasharray':'3 3'});
+    el('text',{x:(X(a)+X(Math.min(b,1e6)))/2,y:yt-20,'text-anchor':'middle','font-size':12,fill:muted},n);
+  });
+  // axis
+  el('line',{x1:x0,x2:x1,y1:yb,y2:yb,stroke:muted});
+  ['0.01 nm','0.1 nm','1 nm','10 nm','100 nm','1 µm','10 µm','100 µm','1 mm'].forEach((s,i)=>{ const x=x0+i/(L1-L0)*(x1-x0); el('line',{x1:x,x2:x,y1:yb,y2:yb+5,stroke:muted}); el('text',{x,y:yb+20,'text-anchor':'middle','font-size':11,fill:muted,'font-family':'IBM Plex Mono, monospace'},s); });
+  el('text',{x:x0,y:yb+40,'font-size':11.5,fill:muted},'Wavelength (log scale) · curve height = relative intensity (peak always scaled to the same height)');
+  // synchrotron curve
+  const norm = Math.pow(1/3,1/3)*Math.exp(-1/3); let d='';
+  for (let i=0;i<=300;i++){ const lg=L0+(L1-L0)*i/300, nm=Math.pow(10,lg), y=P.lc/nm, f=Math.pow(y,1/3)*Math.exp(-y)/norm; d += (i?'L':'M')+X(nm).toFixed(1)+' '+(yb-f*(yb-yt)).toFixed(1); }
+  el('path',{d:d+`L${x1} ${yb}L${x0} ${yb}Z`,fill:beam,'fill-opacity':.15,stroke:'none'});
+  el('path',{d,fill:'none',stroke:beam,'stroke-width':2.5});
+  const lx = Math.min(x1-10, Math.max(x0+10, X(P.lc)));
+  el('line',{x1:lx,x2:lx,y1:yb,y2:yt+4,stroke:beam,'stroke-dasharray':'2 3'});
+  el('text',{x:lx+6,y:yt+16,'font-size':12,fill:beam,'font-weight':600},'λc '+fmtLam(P.lc));
+  // laser lines
+  LASERS.forEach((L,i)=>{ const x=X(L.l), right = L.l===1070, tx = right ? x+13 : x-5, ty = yb-6;
+    el('line',{x1:x,x2:x,y1:yb,y2:yt+30,stroke:rf,'stroke-width':2.5});
+    el('text',{x:tx,y:ty,'font-size':11.5,fill:ink,transform:`rotate(-90 ${tx} ${ty})`},L.n);
+  });
+}
+
+// ---------- ring animation ----------
+const ring = $('ring'), rc = ring.getContext('2d');
+const wave = $('wave'), wc = wave.getContext('2d');
+let W=0,H=0,WW=0,WH=0,dpr=1;
+function resize(){
+  dpr = Math.min(2, window.devicePixelRatio||1);
+  W = ring.clientWidth; H = Math.min(520, Math.max(300, W*0.82));
+  ring.width = W*dpr; ring.height = H*dpr; ring.style.height = H+'px'; rc.setTransform(dpr,0,0,dpr,0,0);
+  WW = wave.clientWidth; WH = 220; wave.width = WW*dpr; wave.height = WH*dpr; wave.style.height = WH+'px'; wc.setTransform(dpr,0,0,dpr,0,0);
+}
+const MAG = Array.from({length:8},(_,k)=>k*Math.PI/4 + Math.PI/8);
+const RFA = 0;
+let bunches=[], photons=[], lostFlash=0;
+function inject(){ bunches = Array.from({length:5},(_,i)=>({th:i*2*Math.PI/5, e:1, alive:true})); }
+function colorFor(nm){
+  if (nm < 10) return 'rgba(200,220,255,'; if (nm < 380) return 'rgba(170,120,255,';
+  if (nm < 750){ const h = 270 - (nm-380)/370*270; return `hsla(${h},90%,60%,`; }
+  return 'rgba(255,90,60,';
+}
+function step(dt){
+  const om = 1.1, R0 = Math.min(W,H)*0.33, vis = Math.min(0.2, P.frac*60);
+  const rate = Math.max(0, Math.min(1, (Math.log10(Math.max(P.U0,1e-12))+5)/7));
+  bunches.forEach(b => { if(!b.alive) return;
+    const th0 = b.th; b.th += om*dt;
+    b.e -= vis * (om*dt) / (2*Math.PI);
+    MAG.forEach(a => { if (crossed(th0,b.th,a) && Math.random() < rate+0.03){ const r=R0*(1-(1-b.e)*2.5), n=1+Math.round(rate*3);
+      for(let j=0;j<n;j++){ const t=b.th+(Math.random()-0.5)*0.12; photons.push({x:Math.cos(t)*r, y:Math.sin(t)*r, vx:-Math.sin(t), vy:Math.cos(t), life:1, c:colorFor(P.lc*Math.exp((Math.random()-0.5)*2))}); } } });
+    if (S.rf && crossed(th0,b.th,RFA)) b.e = 1;
+    if (b.e < 0.9){ b.alive=false; lostFlash=1; }
+  });
+  photons.forEach(p => { p.x += p.vx*dt*260; p.y += p.vy*dt*260; p.life -= dt*0.9; });
+  photons = photons.filter(p => p.life > 0 && Math.abs(p.x) < W && Math.abs(p.y) < H).slice(-600);
+  lostFlash = Math.max(0, lostFlash - dt);
+}
+function crossed(a,b,t){ const n = x => ((x % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI); const A=n(a), B=n(b), T=n(t); return A<=B ? (T>A && T<=B) : (T>A || T<=B); }
+function drawRing(){
+  const cx=W/2, cy=H/2, R0=Math.min(W,H)*0.33;
+  rc.fillStyle = css('--scope'); rc.fillRect(0,0,W,H);
+  // pipe
+  rc.lineWidth = R0*0.36; rc.strokeStyle = '#1a2a3a'; rc.beginPath(); rc.arc(cx,cy,R0*0.88,0,2*Math.PI); rc.stroke();
+  rc.lineWidth = 1; rc.strokeStyle = '#2f4a63'; [0.7,1.06].forEach(f=>{ rc.beginPath(); rc.arc(cx,cy,R0*f,0,2*Math.PI); rc.stroke(); });
+  rc.setLineDash([3,4]); rc.strokeStyle='#35526d'; rc.beginPath(); rc.arc(cx,cy,R0,0,2*Math.PI); rc.stroke(); rc.setLineDash([]);
+  // magnets
+  MAG.forEach(a => { rc.save(); rc.translate(cx+Math.cos(a)*R0*0.88, cy+Math.sin(a)*R0*0.88); rc.rotate(a); rc.fillStyle='rgba(60,201,164,.85)'; rc.fillRect(-R0*0.2,-R0*0.09,R0*0.4,R0*0.18); rc.restore(); });
+  rc.save(); rc.translate(cx+Math.cos(RFA)*R0*0.88, cy+Math.sin(RFA)*R0*0.88); rc.fillStyle='rgba(255,138,76,.95)'; rc.fillRect(-R0*0.2,-R0*0.1,R0*0.4,R0*0.2); rc.fillStyle='#111'; rc.font='600 12px IBM Plex Mono, monospace'; rc.textAlign='center'; rc.textBaseline='middle'; rc.fillText('RF',0,1); rc.restore();
+  // photons
+  photons.forEach(p => { rc.strokeStyle = p.c+(0.85*p.life)+')'; rc.lineWidth=2; rc.beginPath(); rc.moveTo(cx+p.x,cy+p.y); rc.lineTo(cx+p.x-p.vx*14,cy+p.y-p.vy*14); rc.stroke(); });
+  // bunches
+  bunches.forEach(b => { if(!b.alive) return; const r=R0*(1-(1-b.e)*2.5);
+    for(let k=6;k>=0;k--){ const t=b.th-k*0.035; rc.fillStyle=`rgba(90,162,255,${0.15+0.12*(6-k)})`; rc.beginPath(); rc.arc(cx+Math.cos(t)*r, cy+Math.sin(t)*r, k===0?5:3.2, 0, 2*Math.PI); rc.fill(); }
+    rc.fillStyle='#e8f2ff'; rc.beginPath(); rc.arc(cx+Math.cos(b.th)*r, cy+Math.sin(b.th)*r, 2.2, 0, 2*Math.PI); rc.fill();
+  });
+  // center label
+  rc.fillStyle='#cfe3f5'; rc.textAlign='center'; rc.textBaseline='alphabetic';
+  rc.font='600 15px "Chakra Petch", sans-serif'; rc.fillText(S.p==='e'?'Electron '+fmtGeV(S.K):'Proton '+fmtGeV(S.K), cx, cy-6);
+  rc.font='12.5px "IBM Plex Sans Thai", sans-serif'; rc.fillStyle='#8fa6ba';
+  const alive = bunches.filter(b=>b.alive).length;
+  rc.fillText(alive ? `Beam: ${alive} bunches · mean energy ${(100*avgE()).toFixed(1)}%` : 'The whole beam hit the wall · press "Inject a new beam"', cx, cy+16);
+  if (lostFlash>0){ rc.fillStyle=`rgba(255,120,80,${lostFlash*0.25})`; rc.fillRect(0,0,W,H); }
+}
+const avgE = () => { const a=bunches.filter(b=>b.alive); return a.length ? a.reduce((s,b)=>s+b.e,0)/a.length : 0; };
+
+// ---------- wave comparison ----------
+const comps = Array.from({length:7},()=>({k:0.03+Math.random()*0.09, ph:Math.random()*6.28}));
+function drawWave(t){
+  wc.fillStyle = css('--scope'); wc.fillRect(0,0,WW,WH);
+  const rows=[{y:62,lab:'Synchrotron (bending magnet): many colours, phases not aligned'},{y:168,lab:'Laser: one colour, phases aligned'}];
+  wc.font='12.5px "IBM Plex Sans Thai", sans-serif'; wc.textAlign='left';
+  rows.forEach((r,ri)=>{ wc.fillStyle='#8fa6ba'; wc.fillText(r.lab, 12, r.y-38);
+    wc.strokeStyle='#1d2c3a'; wc.lineWidth=1; wc.beginPath(); wc.moveTo(0,r.y); wc.lineTo(WW,r.y); wc.stroke();
+    comps.forEach((c,i)=>{ const k = ri ? 0.07 : c.k, ph = ri ? 0 : c.ph; wc.strokeStyle = ri ? 'rgba(255,138,76,.55)' : `hsla(${200+i*22},80%,65%,.5)`; wc.lineWidth = ri?2:1.4; wc.beginPath();
+      for(let x=0;x<=WW;x+=3){ const y = r.y + Math.sin(k*x - t*3*(ri?1:0.6+k*8) + ph)*22; x?wc.lineTo(x,y):wc.moveTo(x,y); } wc.stroke(); });
+  });
+}
+
+let last = performance.now(), T = 0;
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(now){
+  const dt = Math.min(0.05, (now-last)/1000); last = now;
+  if (!S.paused){ T += dt*(reduce?0.3:1); step(dt*(reduce?0.3:1)); }
+  drawRing(); drawWave(T);
+  requestAnimationFrame(frame);
+}
+window.addEventListener('resize', () => { resize(); });
+const mq = window.matchMedia('(prefers-color-scheme: dark)'); mq.addEventListener && mq.addEventListener('change', update);
+new MutationObserver(update).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+resize(); syncUI(); inject(); requestAnimationFrame(frame);
+})();
+</script>
+
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-ps-lang]');if(a){try{localStorage.setItem('ps-lang',a.getAttribute('data-ps-lang'))}catch(_){}}});</script>
+</body></html>

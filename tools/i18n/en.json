@@ -2901,11 +2901,11 @@
  "กำลังส่ง 0 dBm ตัวรับ −28 dBm เครื่องขยายทุก 80 กม. ชดเชยกลับเป็น 0 dBm และมุมแสงในภาพที่ขยายแนวตั้ง": "0 dBm launch, −28 dBm receiver, amplifiers every 80 km restoring 0 dBm, and a vertically exaggerated light angle",
  "ค่าตัวอย่าง ระบบจริงคิดสัญญาณรบกวนสะสม การกระจายของพัลส์ และงบประมาณกำลังแสงละเอียดกว่านี้": "Example values; real systems account for accumulated noise, pulse spreading and a detailed optical power budget",
  "09 · อวกาศและดาวเทียม": "09 · Space and satellites",
- "ห้องทดลองวงโคจร: ปล่อยจรวด ยกวงโคจร รักษาระดับด้วยก๊าซที่พ่นออกมา จนถึงปลดระวางและลุกไหม้ตอนกลับเข้าบรรยากาศ พร้อมเอกสารอุตสาหกรรมอวกาศ ต้นทุนการส่ง สถานีอวกาศ และจรวดใช้ซ้ำ": "An orbit lab: launch, orbit raising, station-keeping with visible thruster exhaust, through to end of life and burning up on re-entry, plus a report on the space industry, launch costs, space stations and reusable rockets (Thai)",
+ "ห้องทดลองวงโคจร: ปล่อยจรวด ยกวงโคจร รักษาระดับด้วยก๊าซที่พ่นออกมา จนถึงปลดระวางและลุกไหม้ตอนกลับเข้าบรรยากาศ พร้อมเอกสารอุตสาหกรรมอวกาศ ต้นทุนการส่ง สถานีอวกาศ และจรวดใช้ซ้ำ": "An orbit lab: launch, orbit raising, station-keeping with visible thruster exhaust, through to end of life and burning up on re-entry, plus a report on the space industry, launch costs, space stations and reusable rockets",
  "ฟิสิกส์ 1 · แรงโน้มถ่วง": "Physics 1 · Gravitation",
  "เอกสาร": "Report",
  "เลือก Simulation หรือเอกสาร →": "Choose the simulation or the report →",
  "10 · เครื่องเร่งอนุภาคและแสง": "10 · Accelerators and light",
- "ห้องควบคุมซินโครตรอน: ปรับพลังงานอนุภาคและสนามแม่เหล็ก ดูขนาดวง พลังงานที่เสียเป็นแสง และสเปกตรัมเทียบกับเลเซอร์ ตั้งแต่ Siam Photon ถึง LHC พร้อมเอกสารการทำงานและการใช้งานจริง": "A synchrotron control room: set the particle energy and magnetic field, and see the ring size, the energy lost to light and the spectrum compared with lasers, from Siam Photon to the LHC, plus a report on how it works and where it is used (Thai)",
+ "ห้องควบคุมซินโครตรอน: ปรับพลังงานอนุภาคและสนามแม่เหล็ก ดูขนาดวง พลังงานที่เสียเป็นแสง และสเปกตรัมเทียบกับเลเซอร์ ตั้งแต่ Siam Photon ถึง LHC พร้อมเอกสารการทำงานและการใช้งานจริง": "A synchrotron control room: set the particle energy and magnetic field, and see the ring size, the energy lost to light and the spectrum compared with lasers, from Siam Photon to the LHC, plus a report on how it works and where it is used",
  "ฟิสิกส์ 2 · แม่เหล็กไฟฟ้า": "Physics 2 · Electromagnetism"
 }

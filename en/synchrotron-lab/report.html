@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synchrotron vs laser · Physics Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+  :root { --ink: #0F2A3A; --muted: #4A5D6A; --line: #D5DEE3; --bg: #F3F6F7; --card: #FFFFFF; --accent: #0A6A94; --warm: #B04A0C; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 3px solid var(--warm); outline-offset: 2px; }
+
+  article { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; font-size: 17px; line-height: 1.8; }
+  article h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.25; margin: 12px 0 8px; }
+  article h2 { font-size: 26px; line-height: 1.35; margin: 44px 0 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+  article h3 { font-size: 20px; margin: 28px 0 8px; }
+  article .meta { color: var(--muted); font-size: 15px; }
+  article img { max-width: 100%; height: auto; display: block; margin: 8px auto; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+  article p:has(> img) { margin: 18px 0 4px; }
+  .tablewrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  article table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.6; }
+  article th, article td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); min-width: 110px; }
+  article th { background: #EAF3F7; color: #0A4F70; }
+  article td p, article th p, article li p { margin: 0; }
+  article li { margin: 4px 0; }
+  .formula { font-family: 'IBM Plex Mono', monospace; font-size: 16px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 10px 14px; overflow-x: auto; }
+  .simlink { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; padding: 10px 16px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; }
+
+</style>
+</head>
+<body>
+<style>
+.ps-nav{position:sticky;top:0;z-index:50;background:#ffffff;border-bottom:1px solid #D5DEE3;box-shadow:0 2px 10px rgba(15,42,58,.08);font-family:'IBM Plex Sans Thai',system-ui,sans-serif}
+.ps-nav-in{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.ps-nav a{text-decoration:none}
+.ps-home{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid #0A6A94;color:#0A6A94;font-weight:600;font-size:15px;background:#fff}
+.ps-home:hover{background:#EAF3F7}
+.ps-lab{font-weight:700;font-size:16px;color:#0F2A3A;padding:0 4px}
+.ps-tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:999px;background:#EAF0F3}
+.ps-tab{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:999px;color:#0F2A3A;font-weight:600;font-size:15px}
+.ps-tab:hover{background:#fff}
+.ps-tab[aria-current="page"]{background:#0A6A94;color:#fff}
+.ps-sp{flex:1}
+.ps-lang{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 18px;border-radius:999px;background:#0A6A94;color:#fff;font-weight:700;font-size:15px}
+.ps-lang:hover{background:#08577a}
+.ps-nav a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+@media (max-width:640px){.ps-sp{display:none}.ps-tabs{order:3;width:100%;justify-content:space-between}.ps-tab{flex:1;justify-content:center;padding:0 8px}}
+</style>
+<nav class="ps-nav" aria-label="Menu"><div class="ps-nav-in"><a class="ps-home" href="../index.html">← Home</a><span class="ps-lab">Synchrotron Lab</span><span class="ps-tabs"><a class="ps-tab" href="index.html">Overview</a><a class="ps-tab" href="simulation.html">Simulation</a><a class="ps-tab" href="report.html" aria-current="page">Report</a></span><span class="ps-sp"></span><a class="ps-lang" href="../../synchrotron-lab/report.html" hreflang="th" lang="th" data-ps-lang="th"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></div></nav>
+<article>
+<h1
+id="how-a-synchrotron-works-and-how-it-differs-from-an-ordinary-laser">How
+a synchrotron works, and how it differs from an ordinary laser</h1>
+<p class="meta">6 Nov 2026 · Companion to <a href="simulation.html">the synchrotron control room (Simulation)</a></p>
+<h2 id="in-short">In short</h2>
+<p>A synchrotron accelerates charged particles to nearly the speed of
+light and uses magnets to steer them around a ring. Every time an
+electron is bent into a turn, it gives off light along the tangent. This
+"synchrotron light" is millions of times brighter than a hospital X-ray
+tube and covers everything from infrared to X-rays.</p>
+<ul>
+<li><strong>CERN's LHC works on the same principle.</strong> It is also
+a synchrotron, but it accelerates protons to collide them. The light is
+not used; it counts as lost energy.</li>
+<li><strong>It has to be a ring</strong> because the particles pass the
+same accelerating section millions of times, and the beam can be stored
+for hours.</li>
+<li><strong>The ring has to be big</strong> because magnets have a
+strength limit. The higher the energy, the harder a particle is to bend,
+and a small ring makes electrons lose too much energy as light.</li>
+<li><strong>It differs from a laser</strong> because synchrotron light
+comes from free electrons being bent, giving a broad spectrum you can
+tune. A laser comes from stimulated emission in a material, giving one
+sharp, straight wavelength.</li>
+<li><strong>A common misconception:</strong> ASML's EUV machines in chip
+fabs do not use a synchrotron. They fire a laser at tin droplets to make
+a plasma. Synchrotrons are used for research, inspection and making tiny
+parts with LIGA.</li>
+</ul>
+<p>The figures in this document are approximate, from general knowledge,
+and have not been checked against original sources one by one.</p>
+<h2 id="how-a-synchrotron-works">How a synchrotron works</h2>
+<p>At its heart is one law of physics: <strong>an accelerated electric
+charge (including one forced to change direction) emits electromagnetic
+waves.</strong> If the electron is moving close to light speed, that
+light comes out as a narrow forward beam and can reach X-ray
+energies.</p>
+<p><img src="img/synchrotron-layout.svg"
+alt="Principle of a synchrotron light source · not to scale" /></p>
+<p>Principle of a synchrotron light source · not to scale</p>
+<ol type="1">
+<li><strong>Electron gun:</strong> heats a cathode until electrons come
+off.</li>
+<li><strong>Linac (linear accelerator):</strong> uses radio-frequency
+(RF) electric fields to push the electrons along in bunches, faster and
+faster.</li>
+<li><strong>Booster:</strong> a small ring that keeps accelerating them
+up to the target energy (for example 1.2 GeV at the Synchrotron Light
+Research Institute in Korat, Thailand).</li>
+<li><strong>Storage ring:</strong> has three kinds of magnets. Bending
+magnets (dipoles) make the turns, quadrupoles and sextupoles focus the
+beam so it does not spread, and undulators or wigglers flip polarity so
+the electrons wiggle and give off much more intense light. An RF cavity
+puts the lost energy back every turn.</li>
+<li><strong>Beamlines and experiment stations:</strong> collect the
+light leaving tangentially from the ring, pass it through a
+monochromator to pick the wavelength needed, and shine it onto the
+sample.</li>
+</ol>
+<p>The name "synchrotron" comes from the fact that the magnetic field
+and the RF frequency must be <strong>synchronised</strong> with the
+particle energy: as the particles gain energy, the magnets must get
+stronger to keep the ring radius the same.</p>
+<h2 id="why-it-runs-in-a-circle-and-why-the-ring-is-so-big">Why it runs
+in a circle, and why the ring is so big</h2>
+<p><strong>A circle lets you reuse the same accelerator over and
+over.</strong> A linear accelerator gives energy only once per metre of
+length; for very high energy it has to be kilometres long. Bend it into
+a ring and the particles pass the same RF cavity millions of times a
+second, the beam can be stored for hours, and dozens of experiment
+stations around the ring get light at the same time.</p>
+<p><strong>Reason 1: magnets have a ceiling.</strong> The bending radius
+depends on the momentum divided by the magnetic field.</p>
+<p class="formula">ρ [m] ≈ 3.336 × p [GeV/c] ÷ B [T]</p>
+
+<p>Ordinary electromagnets reach about 1.5 tesla. The LHC's
+superconducting magnets, cooled to 1.9 K, reach about 8.3 tesla. A 6.8
+TeV proton therefore needs a bending radius of about 2.7 km; add
+straight sections for equipment and the circumference comes to 26.7 km.
+To reach higher energy without a bigger ring, you need stronger
+magnets.</p>
+<p><strong>Reason 2: the tighter the turn, the more energy is lost as
+light.</strong> The energy an electron loses per turn rises with the
+fourth power of its energy.</p>
+<p class="formula">U₀ [keV] ≈ 88.5 × E⁴ [GeV] ÷ ρ [m]</p>
+
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Example</th>
+<th>Energy</th>
+<th>Bending radius</th>
+<th>Energy lost per turn (approx.)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Electrons, SLRI Korat</td>
+<td>1.2 GeV</td>
+<td>~2.8 m</td>
+<td>~66 keV (0.006%)</td>
+</tr>
+<tr class="even">
+<td>Electrons, LEP at CERN (closed 2000)</td>
+<td>104.5 GeV</td>
+<td>~3.1 km</td>
+<td>~3.4 GeV (3%)</td>
+</tr>
+<tr class="odd">
+<td>Protons, LHC</td>
+<td>6,800 GeV</td>
+<td>~2.8 km</td>
+<td>~7 keV (almost zero)</td>
+</tr>
+</tbody>
+</table></div>
+<p>LEP lost 3% of its energy every turn even with a 27 km ring, so it
+could not push electrons any higher. CERN switched to protons, which are
+1,836 times heavier than electrons and radiate roughly ten trillion
+times less at the same energy. What is "waste" for collider builders is
+the "product" for light-source builders.</p>
+<h2 id="do-cerns-accelerators-use-the-same-principle">Do CERN's
+accelerators use the same principle?</h2>
+<p><strong>Yes. The LHC is the largest synchrotron in the
+world.</strong> Its bending magnets, focusing magnets and RF cavities
+work the same way. Even the acceleration chain is similar: Linac4 → PS
+Booster → PS → SPS → LHC, just like gun → linac → booster → storage
+ring. What differs is <strong>the goal and the particle.</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Machine</th>
+<th>Particle</th>
+<th>Energy</th>
+<th>Circumference</th>
+<th>What it is for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Siam Photon Source (Synchrotron Light Research Institute, Nakhon
+Ratchasima)</td>
+<td>Electrons</td>
+<td>1.2 GeV</td>
+<td>~81 m</td>
+<td>Light for research and industry</td>
+</tr>
+<tr class="even">
+<td>Siam Photon Source II (new project, EEC, Rayong)</td>
+<td>Electrons</td>
+<td>3 GeV</td>
+<td>~320 m</td>
+<td>Higher-energy X-rays</td>
+</tr>
+<tr class="odd">
+<td>ESRF-EBS (France)</td>
+<td>Electrons</td>
+<td>6 GeV</td>
+<td>~844 m</td>
+<td>High-brightness X-ray source</td>
+</tr>
+<tr class="even">
+<td>SPring-8 (Japan)</td>
+<td>Electrons</td>
+<td>8 GeV</td>
+<td>~1.4 km</td>
+<td>Very high-energy X-rays</td>
+</tr>
+<tr class="odd">
+<td>LEP (CERN, 1989–2000)</td>
+<td>Electrons + positrons</td>
+<td>up to 104.5 GeV</td>
+<td>26.7 km</td>
+<td>Particle collisions (light was a loss)</td>
+</tr>
+<tr class="even">
+<td>LHC (CERN, in LEP's old tunnel)</td>
+<td>Protons</td>
+<td>6.8 TeV per beam</td>
+<td>26.7 km</td>
+<td>Collisions to find new particles such as the Higgs boson</td>
+</tr>
+</tbody>
+</table></div>
+<p>One more key difference: the LHC has two beams running in opposite
+directions, made to collide at four detectors (ATLAS, CMS, ALICE, LHCb).
+A synchrotron light source has a single beam that never collides,
+designed to be as small and steady as possible so the light is
+sharp.</p>
+<h2 id="what-it-is-used-for">What it is used for</h2>
+<p>Synchrotron light is more an "atomic-scale microscope" than a
+production tool. Most work is looking at the structure and composition
+of things too small for other instruments to see.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>What it does</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Medicine: drug design</td>
+<td>Finds the 3-D structure of proteins by X-ray diffraction (X-ray
+crystallography), then designs drugs that fit the active site</td>
+<td>HIV protease inhibitors, the structure of the COVID virus</td>
+</tr>
+<tr class="even">
+<td>Medicine: imaging and therapy (research)</td>
+<td>Phase-contrast X-rays show soft tissue more clearly at lower dose;
+microbeam radiation therapy</td>
+<td>Breast imaging at the Elettra synchrotron (Italy), research at
+ESRF</td>
+</tr>
+<tr class="odd">
+<td>Medicine: particle therapy for cancer</td>
+<td>Uses a synchrotron to accelerate protons or carbon ions straight at
+a tumour (the particles are used, not the light)</td>
+<td>HIT Heidelberg, CNAO Italy, HIMAC Japan</td>
+</tr>
+<tr class="even">
+<td>Chipmaking: EUV research</td>
+<td>Tests mirrors, masks and photoresists with precisely tunable 13.5 nm
+light</td>
+<td>PTB laboratory at BESSY II (Germany), ALS (USA)</td>
+</tr>
+<tr class="odd">
+<td>Chipmaking: inspection</td>
+<td>3-D imaging inside chips without cutting them, measuring strain in
+silicon, checking thin films and atomic-level contamination</td>
+<td>3-D images of processors by X-ray ptychography at PSI
+(Switzerland)</td>
+</tr>
+<tr class="even">
+<td>Making tiny parts</td>
+<td>LIGA X-ray lithography builds tall structures with perfectly
+straight walls for MEMS, micro-gears and nozzles</td>
+<td>The LIGA beamline at SLRI, Korat</td>
+</tr>
+<tr class="odd">
+<td>Energy and materials</td>
+<td>Watching batteries while they charge, catalysts, solar cells</td>
+<td>Lithium-ion batteries, hydrogen catalysts</td>
+</tr>
+<tr class="even">
+<td>Agriculture, food, gems</td>
+<td>Seeing nutrients in seeds, checking the origin and colour treatment
+of gemstones</td>
+<td>Work on rice, rubber and gemstones at SLRI, Korat</td>
+</tr>
+<tr class="odd">
+<td>Archaeology and art</td>
+<td>Seeing through paint layers without damaging the work</td>
+<td>Hidden paintings under Van Gogh's works, ancient scrolls</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Common misconceptions:</strong></p>
+<ul>
+<li>The ASML EUV machines that TSMC, Samsung and Intel use for 3 nm
+chips make 13.5 nm light by firing a CO₂ laser at molten tin droplets,
+about 50,000 droplets a second (laser-produced plasma). They do not use
+a synchrotron, because the source has to fit in one cabinet and a fab
+runs dozens of machines.</li>
+<li>Some research groups and start-ups (for example at KEK in Japan) are
+studying free-electron lasers on electron accelerators as a high-power
+EUV source for a whole fab, but this is still a future idea.</li>
+<li>Radiotherapy in ordinary hospitals uses a room-sized linac, not a
+synchrotron.</li>
+</ul>
+<h2 id="how-it-differs-from-other-lasers">How it differs from other
+lasers</h2>
+<p><strong>The difference is the source of the light.</strong> A
+synchrotron uses free electrons bent by magnets, so it produces many
+colours mixed together, like sunlight but far brighter, and the wanted
+wavelength is filtered out afterwards. A laser uses electrons bound to
+atoms dropping between fixed energy levels (stimulated emission), so it
+gives one colour with waves in phase (coherent) and can be built in a
+small box.</p>
+<p><img src="img/wavelength-coverage.svg"
+alt="Approximate values from general knowledge · many lasers also come in versions at other wavelengths" /></p>
+<p>Approximate values from general knowledge · many lasers also come in
+versions at other wavelengths</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Synchrotron</th>
+<th>X-ray FEL</th>
+<th>Rangefinder laser</th>
+<th>Cutting laser</th>
+<th>Surgical laser</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Light source</td>
+<td>Free electrons bent by magnets</td>
+<td>Free electrons in a long undulator; the light amplifies itself</td>
+<td>Semiconductor laser diode</td>
+<td>Rare-earth-doped fibre, or CO₂ gas</td>
+<td>CO₂ gas, Er:YAG / Nd:YAG crystal, excimer gas</td>
+</tr>
+<tr class="even">
+<td>Wavelength</td>
+<td>Very broad, selectable</td>
+<td>Tunable with the electron energy</td>
+<td>905 nm or 1550 nm</td>
+<td>1.07 µm (fibre), 10.6 µm (CO₂)</td>
+<td>Chosen for the tissue that should absorb it</td>
+</tr>
+<tr class="odd">
+<td>Directionality / coherence</td>
+<td>Very directional, only partly coherent</td>
+<td>Almost fully coherent (a true laser)</td>
+<td>Coherent</td>
+<td>Coherent</td>
+<td>Coherent</td>
+</tr>
+<tr class="even">
+<td>Power</td>
+<td>Very bright, but only milliwatts to watts per beamline</td>
+<td>Femtosecond pulses with extremely high peak power</td>
+<td>Milliwatts (eye-safe Class 1)</td>
+<td>Thousands of watts continuous</td>
+<td>A few watts to tens of watts</td>
+</tr>
+<tr class="odd">
+<td>How it is used</td>
+<td>Light passes through or scatters from atoms and reveals
+structure</td>
+<td>Images single molecules and chemical reactions in slow motion</td>
+<td>Times the light's round trip (time of flight), halved, × speed of
+light</td>
+<td>Focuses heat until the material melts or vaporises</td>
+<td>Water in tissue absorbs the light, cutting and sealing at once;
+excimer breaks molecular bonds in the cornea</td>
+</tr>
+<tr class="even">
+<td>Size</td>
+<td>A building 80 m to 1.4 km around</td>
+<td>A tunnel up to 3.4 km long (European XFEL)</td>
+<td>Fits in a phone</td>
+<td>A machine cabinet</td>
+<td>An operating-room machine</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The X-ray FEL is where the two worlds meet.</strong> It uses
+an electron accelerator like a synchrotron, but sends the beam through a
+very long undulator, where the emitted light organises the electrons
+into thin slices that then radiate in phase. The result is an "X-ray
+laser", something ordinary lasers cannot do because no mirror or gain
+medium works at those wavelengths.</p>
+<p>A nice fact: the 193 nm ArF laser used for LASIK eye surgery is the
+same type of light source as the DUV lithography machines that print
+most of the world's chips.</p>
+<h2 id="lasers-that-cool-things-down-laser-cooling">Lasers that cool
+things down (laser cooling)</h2>
+<p><strong>Yes, lasers really can cool, and they reach the coldest
+temperatures known in the universe.</strong> Temperature is how fast
+atoms jiggle or move about at random. If you can "brake" the atoms, they
+get colder. Light carries momentum, so every time an atom absorbs a
+photon it gets a gentle push. The lasers used are low-power, milliwatt
+lasers tuned very precisely, the opposite of a metal-cutting laser of
+thousands of watts.</p>
+<p><img src="img/cooling-temperatures.svg"
+alt="Approximate values from general knowledge · numbers depend on the atom and the experiment" /></p>
+<p>Approximate values from general knowledge · numbers depend on the
+atom and the experiment</p>
+<p><strong>How it works (Doppler cooling)</strong></p>
+<ol type="1">
+<li>Tune the laser <strong>slightly below the frequency the atom likes
+to absorb</strong> (red-detuned), so an atom at rest hardly absorbs
+it.</li>
+<li>An atom moving towards the beam sees a higher frequency because of
+the Doppler effect (like an ambulance siren rising in pitch as it comes
+towards you). That matches what it absorbs, so it takes in a photon and
+is pushed against its motion.</li>
+<li>The atom re-emits the photon in a random direction, so the kicks
+from emission cancel out on average, leaving only the braking force.
+This repeats tens of thousands of times a second.</li>
+<li>Fire six beams from every direction (up, down, left, right, front,
+back) and the atoms behave as if stuck in syrup, called <strong>optical
+molasses</strong>. Add a gradient magnetic field and the atoms can also
+be held in the middle of the chamber: a <strong>MOT</strong>
+(magneto-optical trap).</li>
+</ol>
+<p>This method won the 1997 Nobel Prize in Physics (Steven Chu, Claude
+Cohen-Tannoudji, William Phillips). Later, laser cooling followed by
+"evaporating" away the hottest atoms produced the first Bose-Einstein
+condensate in 1995 (Nobel Prize 2001).</p>
+<p><strong>Laser cooling of solids (optical refrigeration)</strong>
+works differently: a crystal doped with ytterbium (Yb) absorbs light at
+slightly lower energy than the light it fluoresces. The extra energy
+comes from the crystal's vibrations (anti-Stokes fluorescence), so the
+light carries heat away. It reaches about 90 K with no moving parts and
+no vibration.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Use</th>
+<th>Why it needs to be cold</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Atomic clocks</td>
+<td>Nearly still atoms give a sharper frequency signal; the clock drifts
+less than a second in hundreds of millions of years</td>
+<td>Caesium fountain clocks that define standard time, strontium optical
+clocks; they sit behind GPS time and mobile networks</td>
+</tr>
+<tr class="even">
+<td>Quantum computers</td>
+<td>Cold ions or atoms vibrate little, so qubit states last long and can
+be controlled precisely</td>
+<td>Trapped ions (Quantinuum, IonQ), atoms in optical tweezers (QuEra,
+Pasqal, Atom Computing)</td>
+</tr>
+<tr class="odd">
+<td>Fundamental physics</td>
+<td>Making BECs and studying quantum matter</td>
+<td>Laser cooling of antihydrogen at CERN (ALPHA experiment, 2021)</td>
+</tr>
+<tr class="even">
+<td>High-precision sensors</td>
+<td>Cold atoms act as rulers for measuring gravity and rotation</td>
+<td>Atom gravimeters for underground surveys, navigation that does not
+rely on GPS</td>
+</tr>
+<tr class="odd">
+<td>Vibration-free cooling</td>
+<td>No compressor or refrigerant</td>
+<td>Research on cooling infrared sensors on satellites</td>
+</tr>
+</tbody>
+</table></div>
+<p>Compared with the synchrotron: both use the interaction between light
+and particles, but in opposite directions. A synchrotron turns the
+energy of very fast particles into light, while laser cooling uses light
+to pull energy out of atoms that are almost at rest.</p>
+<h2 id="simulation-and-references">Simulation and references</h2>
+<p><a href="simulation.html"><strong>Synchrotron control room
+(Simulation)</strong></a>: pick Siam Photon, ESRF, LEP or the LHC, then
+adjust the energy and magnetic field to see the ring radius needed, the
+energy lost to light per turn, and how the spectrum shifts compared with
+each type of laser. Switch the RF cavity off to watch the electrons run
+out of energy and hit the pipe wall.</p>
+<p>All the numbers in this document and in the simulation come from
+standard formulas and general knowledge and have not been checked
+against original sources. Places to check before citing them:</p>
+<ul>
+<li>Synchrotron Light Research Institute (Public Organization),
+slri.or.th: Siam Photon Source and the Siam Photon Source II
+project</li>
+<li>CERN, home.cern: the LHC, LEP and the accelerator complex</li>
+<li>ESRF, esrf.fr, and SPring-8, spring8.or.jp</li>
+<li>Bending radius and energy-loss formulas: X-ray Data Booklet
+(Lawrence Berkeley National Laboratory), section on synchrotron
+radiation</li>
+<li>Laser cooling: the 1997 and 2001 Nobel Prize in Physics materials at
+nobelprize.org</li>
+</ul>
+
+</article>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-ps-lang]');if(a){try{localStorage.setItem('ps-lang',a.getAttribute('data-ps-lang'))}catch(_){}}});</script>
+</body>
+</html>

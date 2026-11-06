@@ -1,0 +1,1834 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The space industry and satellites · Physics Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+  :root { --ink: #0F2A3A; --muted: #4A5D6A; --line: #D5DEE3; --bg: #F3F6F7; --card: #FFFFFF; --accent: #0A6A94; --warm: #B04A0C; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 3px solid var(--warm); outline-offset: 2px; }
+
+  article { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; font-size: 17px; line-height: 1.8; }
+  article h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.25; margin: 12px 0 8px; }
+  article h2 { font-size: 26px; line-height: 1.35; margin: 44px 0 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+  article h3 { font-size: 20px; margin: 28px 0 8px; }
+  article .meta { color: var(--muted); font-size: 15px; }
+  article img { max-width: 100%; height: auto; display: block; margin: 8px auto; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+  article p:has(> img) { margin: 18px 0 4px; }
+  .tablewrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  article table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.6; }
+  article th, article td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); min-width: 110px; }
+  article th { background: #EAF3F7; color: #0A4F70; }
+  article td p, article th p, article li p { margin: 0; }
+  article li { margin: 4px 0; }
+  .formula { font-family: 'IBM Plex Mono', monospace; font-size: 16px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 10px 14px; overflow-x: auto; }
+  .simlink { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; padding: 10px 16px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; }
+
+</style>
+</head>
+<body>
+<style>
+.ps-nav{position:sticky;top:0;z-index:50;background:#ffffff;border-bottom:1px solid #D5DEE3;box-shadow:0 2px 10px rgba(15,42,58,.08);font-family:'IBM Plex Sans Thai',system-ui,sans-serif}
+.ps-nav-in{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.ps-nav a{text-decoration:none}
+.ps-home{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid #0A6A94;color:#0A6A94;font-weight:600;font-size:15px;background:#fff}
+.ps-home:hover{background:#EAF3F7}
+.ps-lab{font-weight:700;font-size:16px;color:#0F2A3A;padding:0 4px}
+.ps-tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:999px;background:#EAF0F3}
+.ps-tab{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:999px;color:#0F2A3A;font-weight:600;font-size:15px}
+.ps-tab:hover{background:#fff}
+.ps-tab[aria-current="page"]{background:#0A6A94;color:#fff}
+.ps-sp{flex:1}
+.ps-lang{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 18px;border-radius:999px;background:#0A6A94;color:#fff;font-weight:700;font-size:15px}
+.ps-lang:hover{background:#08577a}
+.ps-nav a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+@media (max-width:640px){.ps-sp{display:none}.ps-tabs{order:3;width:100%;justify-content:space-between}.ps-tab{flex:1;justify-content:center;padding:0 8px}}
+</style>
+<nav class="ps-nav" aria-label="Menu"><div class="ps-nav-in"><a class="ps-home" href="../index.html">← Home</a><span class="ps-lab">Space Lab</span><span class="ps-tabs"><a class="ps-tab" href="index.html">Overview</a><a class="ps-tab" href="orbit-lab.html">Simulation</a><a class="ps-tab" href="report.html" aria-current="page">Report</a></span><span class="ps-sp"></span><a class="ps-lang" href="../../space-lab/report.html" hreflang="th" lang="th" data-ps-lang="th"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></div></nav>
+<article>
+<h1
+id="the-space-industry-and-satellites-an-overview-for-experimenters">The
+space industry and satellites: an overview for experimenters</h1>
+<p class="meta">6 Nov 2026 · Companion to <a href="orbit-lab.html">Orbit Lab (Simulation)</a></p>
+<p>The global space economy is worth about 600 billion US dollars a
+year, and more than half of it comes from services on Earth that use
+satellite data or signals, not from rockets. The figures in this
+document are approximate, from general industry knowledge, and have not
+been checked against original sources one by one. Use them to see
+proportions and orders of magnitude.</p>
+<h2 id="1-what-the-space-industry-covers-today">1. What the space
+industry covers today</h2>
+<p>Roughly, it splits into upstream (building things and sending them
+up) and downstream (using what is up there). Downstream is the largest
+and fastest-growing part.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Segment</th>
+<th>What it does</th>
+<th>Examples from everyday life</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Launch</td>
+<td>Carries satellites, people and cargo to orbit</td>
+<td>Cheaper launches made large numbers of small satellites
+possible</td>
+</tr>
+<tr class="even">
+<td>Satellite and spacecraft manufacturing</td>
+<td>Designs, builds and tests satellites and parts</td>
+<td>Radiation-tolerant chips, solar arrays, antennas</td>
+</tr>
+<tr class="odd">
+<td>Communications (SatCom)</td>
+<td>Internet, satellite TV, satellite phones</td>
+<td>Starlink, satellite-dish TV, satellite SOS on phones</td>
+</tr>
+<tr class="even">
+<td>Navigation (GNSS)</td>
+<td>Broadcasts time and position signals</td>
+<td>GPS in maps, ride-hailing, deliveries, bank timestamps</td>
+</tr>
+<tr class="odd">
+<td>Earth observation</td>
+<td>Optical, radar and infrared imaging</td>
+<td>Weather forecasts, crop insurance, city planning, wildfire
+detection</td>
+</tr>
+<tr class="even">
+<td>Space stations and experiments</td>
+<td>Weightless labs, special materials</td>
+<td>ISS, Tiangong, private stations under construction</td>
+</tr>
+<tr class="odd">
+<td>Space exploration</td>
+<td>Missions to the Moon and Mars, telescopes</td>
+<td>Artemis, JWST</td>
+</tr>
+<tr class="even">
+<td>Security and defence</td>
+<td>Military satellites, missile warning</td>
+<td>Mostly government-funded</td>
+</tr>
+<tr class="odd">
+<td>In-orbit services</td>
+<td>Refuelling, repair, towing dead satellites, debris removal</td>
+<td>A new segment just getting its first customers</td>
+</tr>
+<tr class="even">
+<td>Ground segment and software</td>
+<td>Receiving stations, AI image analysis</td>
+<td>Platforms selling imagery and analytics</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="2-on-earth-versus-in-orbit-effects-on-electronics-and-food">2.
+On Earth versus in orbit: effects on electronics and food</h2>
+<p>The main enemies of chips in space are radiation and heat that cannot
+be carried away. The main enemies of food are long storage and the lack
+of gravity. That is why every part has to pass tests on Earth that
+simulate space before it flies.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Factor</th>
+<th>On Earth</th>
+<th>In low Earth orbit (LEO)</th>
+<th>Effect on electronics</th>
+<th>Countermeasures</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Radiation</td>
+<td>Blocked by the atmosphere and magnetic field</td>
+<td>High-energy particles from the Sun and cosmos, Van Allen belts</td>
+<td>Bit flips (SEU), gradual transistor degradation (TID), burn-out from
+latch-up</td>
+<td>Rad-hard chips, ECC memory, three computers voting, watchdog
+restarts</td>
+</tr>
+<tr class="even">
+<td>Temperature</td>
+<td>Air carries heat away (fans)</td>
+<td>About +120°C in sunlight and −150°C in shadow, alternating every ~90
+minutes</td>
+<td>Fans do not work; heat leaves only by conduction and radiation;
+solder joints crack from expansion</td>
+<td>Radiators, gold MLI blankets, heaters, heat pipes</td>
+</tr>
+<tr class="odd">
+<td>Vacuum</td>
+<td>1 bar of pressure</td>
+<td>Almost no air</td>
+<td>Plastics outgas onto lenses, tin whiskers grow, metal parts stick
+together (cold welding)</td>
+<td>Low-outgassing certified materials, bake-out, leaded solder</td>
+</tr>
+<tr class="even">
+<td>Launch vibration</td>
+<td>None</td>
+<td>Several g of shaking and intense noise in the first 10 minutes</td>
+<td>Broken chip leads, cracked crystals</td>
+<td>Shaker-table testing, epoxy staking</td>
+</tr>
+<tr class="odd">
+<td>Atomic oxygen (200–600 km)</td>
+<td>None</td>
+<td>Erodes plastics and surfaces</td>
+<td>Films and wiring degrade</td>
+<td>Erosion-resistant coatings</td>
+</tr>
+<tr class="even">
+<td>Debris and micrometeoroids</td>
+<td>None</td>
+<td>Tiny fragments at ~7–10 km/s</td>
+<td>Holes in solar arrays, cut wires</td>
+<td>Whipple shields, avoidance manoeuvres on warning</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rad-hard chips are usually several generations slower than desktop
+chips but tens of times more expensive. The RAD750 processor used on
+Mars rovers is comparable to a late-1990s CPU but costs hundreds of
+thousands of baht per board. Small satellites and Starlink take the
+opposite route: cheap commercial chips plus error-correcting software
+and multiple redundancy, because they sit in low orbit where radiation
+is lower and lifetimes are shorter.</p>
+<h3 id="food-and-biological-experiments">Food and biological
+experiments</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Issue</th>
+<th>What happens in space</th>
+<th>How it is handled</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Floating crumbs</td>
+<td>Bread crumbs drift into equipment and eyes</td>
+<td>Tortillas instead of bread, sticky sauces, liquid salt and
+pepper</td>
+</tr>
+<tr class="even">
+<td>Food tastes bland</td>
+<td>Body fluids shift to the head, giving a blocked nose like a
+cold</td>
+<td>Astronauts favour spicy, sour food and chilli sauce</td>
+</tr>
+<tr class="odd">
+<td>Shelf life</td>
+<td>A Mars mission needs food that lasts 3–5 years; some vitamins break
+down quickly under radiation</td>
+<td>Freeze-drying, thermostabilisation, oxygen-barrier packaging</td>
+</tr>
+<tr class="even">
+<td>Growing plants</td>
+<td>Water does not drain; roots drown or dry out and grow towards light
+instead of down</td>
+<td>The Veggie unit on the ISS uses soil pillows and red-blue LEDs</td>
+</tr>
+<tr class="odd">
+<td>Germs</td>
+<td>Some bacteria become more aggressive in weightlessness and
+astronauts' immunity weakens</td>
+<td>HACCP food-safety standards, which NASA actually helped invent in
+the 1960s and which became the norm in food factories worldwide</td>
+</tr>
+</tbody>
+</table></div>
+<p>Weightlessness also has benefits. Protein crystals for drug
+development grow more evenly, and companies are experimenting with
+making ZBLAN optical fibre and semiconductor crystals in orbit, because
+there is no sedimentation or convection to distort the crystals.</p>
+<h2 id="3-what-is-inside-a-satellite">3. What is inside a satellite</h2>
+<p>Every satellite has two parts: the <strong>payload</strong>, the
+equipment that does the mission (cameras, communication antennas, atomic
+clocks), and the <strong>bus</strong>, the spacecraft that keeps the
+payload running. Think of a smartphone: battery, antenna and CPU are the
+bus, and the camera is the payload.</p>
+<h3 id="types-by-use">Types by use</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Common orbit</th>
+<th>Main payload</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Communications</td>
+<td>LEO 550 km (large constellations) or GEO 35,786 km (large satellites
+that stay over one spot)</td>
+<td>Phased-array antennas, transponders, laser links between
+satellites</td>
+</tr>
+<tr class="even">
+<td>Earth imaging</td>
+<td>LEO sun-synchronous orbit (SSO), 500–800 km</td>
+<td>Visible-light cameras, multispectral/hyperspectral imagers, SAR
+radar</td>
+</tr>
+<tr class="odd">
+<td>Weather</td>
+<td>GEO (same region every 10 minutes) + polar LEO</td>
+<td>Infrared and microwave radiometers, GPS radio-occultation
+receivers</td>
+</tr>
+<tr class="even">
+<td>Navigation</td>
+<td>MEO ~20,000 km</td>
+<td>Atomic clocks, L-band transmitters</td>
+</tr>
+<tr class="odd">
+<td>Science / astronomy</td>
+<td>LEO, or L2 1.5 million km away</td>
+<td>Telescopes, particle detectors</td>
+</tr>
+<tr class="even">
+<td>Technology demonstration (IOD)</td>
+<td>Low LEO</td>
+<td>New parts that need to prove they work in space</td>
+</tr>
+<tr class="odd">
+<td>Crew / cargo vehicles</td>
+<td>LEO 400 km to the station</td>
+<td>Life support, a heat shield for the return, docking systems</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="bus-subsystems-and-sensors">Bus subsystems and sensors</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Subsystem</th>
+<th>Job</th>
+<th>Sensors and hardware</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ADCS, attitude control</td>
+<td>Points cameras and antennas the right way, to thousandths of a
+degree</td>
+<td>Star trackers, sun sensors, magnetometers, gyroscopes; actuators are
+reaction wheels and magnetorquers</td>
+</tr>
+<tr class="even">
+<td>GNC, navigation</td>
+<td>Knows position and velocity</td>
+<td>Space-grade GPS receivers (unlocked from the 515 m/s speed limit
+placed on civilian units)</td>
+</tr>
+<tr class="odd">
+<td>EPS, power</td>
+<td>Generates, stores and distributes power</td>
+<td>Solar arrays, lithium batteries, MPPT circuits, current and voltage
+sensors</td>
+</tr>
+<tr class="even">
+<td>OBC, on-board computer</td>
+<td>The satellite's brain, deciding for itself when out of
+ground-station range</td>
+<td>MCU/FPGA, dozens of temperature sensors</td>
+</tr>
+<tr class="odd">
+<td>COMMS</td>
+<td>Receives commands (uplink) and sends data (downlink)</td>
+<td>UHF/S/X/Ka-band radios and antennas</td>
+</tr>
+<tr class="even">
+<td>Thermal control</td>
+<td>Keeps the battery at 0–30°C</td>
+<td>Thermistors, heaters, radiators</td>
+</tr>
+<tr class="odd">
+<td>Propulsion</td>
+<td>Keeps and adjusts the orbit, dodges debris</td>
+<td>Hydrazine thrusters, ion/Hall thrusters (xenon, krypton, argon)</td>
+</tr>
+<tr class="even">
+<td>Structure</td>
+<td>Takes the launch loads and holds everything together</td>
+<td>See the materials table below</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="structural-materials">Structural materials</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Material</th>
+<th>Where it is used</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Aluminium 6061/7075</td>
+<td>CubeSat frames, mounting plates</td>
+<td>Light, easy to machine, cheap</td>
+</tr>
+<tr class="even">
+<td>Aluminium honeycomb sandwich</td>
+<td>Walls of medium and large satellites</td>
+<td>Very stiff for its weight</td>
+</tr>
+<tr class="odd">
+<td>Carbon fibre (CFRP)</td>
+<td>Camera structures, array arms, rocket tanks</td>
+<td>Almost zero thermal expansion, so the camera stays sharp</td>
+</tr>
+<tr class="even">
+<td>Titanium</td>
+<td>High-pressure propellant tanks, fasteners</td>
+<td>Strong and heat-resistant</td>
+</tr>
+<tr class="odd">
+<td>Zerodur/ULE glass-ceramics, beryllium</td>
+<td>Telescope mirrors</td>
+<td>Keep their shape when temperature changes</td>
+</tr>
+<tr class="even">
+<td>MLI blankets (multi-layer aluminised Kapton)</td>
+<td>Wrapping the satellite (the gold you see)</td>
+<td>Block heat in and out</td>
+</tr>
+<tr class="odd">
+<td>304L stainless steel + heat-shield tiles</td>
+<td>The Starship rocket body</td>
+<td>Cheap, easy to weld, stronger at low temperature</td>
+</tr>
+</tbody>
+</table></div>
+<h2
+id="4-why-satellites-come-in-many-sizes-and-what-tiny-satellites-do">4.
+Why satellites come in many sizes, and what tiny satellites do</h2>
+<p>Size is set mainly by the physics of the payload: a camera's
+sharpness depends on its aperture, and signal strength depends on
+antenna size and power. Tiny satellites win on numbers and revisit
+frequency; big satellites win on sharpness and power.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Mass</th>
+<th>Size comparison</th>
+<th>Used for</th>
+<th>Satellite cost (approx.)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PocketQube / ChipSat</td>
+<td>0.01–0.5 kg</td>
+<td>A 5 cm box or a single circuit board</td>
+<td>Education, chip testing</td>
+<td>Tens of thousands of dollars</td>
+</tr>
+<tr class="even">
+<td>CubeSat 1U</td>
+<td>~1.3 kg</td>
+<td>A 10 cm cube</td>
+<td>University satellites, amateur radio, sensor tests</td>
+<td>$50,000–150,000</td>
+</tr>
+<tr class="odd">
+<td>CubeSat 3U–16U</td>
+<td>4–25 kg</td>
+<td>Bread box to suitcase</td>
+<td>3–5 m imaging (Planet Dove), ship tracking (AIS), IoT, weather
+(Spire)</td>
+<td>$0.5–5 million</td>
+</tr>
+<tr class="even">
+<td>Microsat</td>
+<td>10–100 kg</td>
+<td>A small fridge</td>
+<td>SAR radar (ICEYE, Capella), 50 cm imaging (SkySat)</td>
+<td>$5–30 million</td>
+</tr>
+<tr class="odd">
+<td>Smallsat</td>
+<td>100–500 kg</td>
+<td>A household fridge</td>
+<td>Starlink V2 mini (~800 kg, slightly over), Pelican, resource
+satellites such as THEOS-2</td>
+<td>$0.5 million (mass-produced) to $100 million</td>
+</tr>
+<tr class="even">
+<td>Large satellite</td>
+<td>1,000–6,500 kg</td>
+<td>A bus, with arrays spanning 30–40 m</td>
+<td>GEO communications, GOES/Himawari weather, 30 cm imaging
+(WorldView)</td>
+<td>$150–500 million</td>
+</tr>
+<tr class="odd">
+<td>Science flagship</td>
+<td>6,000+ kg</td>
+<td>A building</td>
+<td>JWST, Hubble</td>
+<td>$1–10 billion</td>
+</tr>
+</tbody>
+</table></div>
+<p>The tiny satellites you see most often do one of four things:</p>
+<ol type="1">
+<li><strong>In-orbit demonstration (IOD)</strong> of new technology such
+as AI chips, small ion engines or laser communications, before it goes
+into a large satellite a thousand times more expensive, because
+companies rarely accept parts without flight heritage.</li>
+<li><strong>Frequent imaging.</strong> Planet's flock of 200 satellites
+images all of Earth's land almost every day, though less sharply than
+large satellites.</li>
+<li><strong>Listening to radio from Earth</strong>, such as ship AIS,
+aircraft ADS-B and IoT sensors on farms.</li>
+<li><strong>Education.</strong> They can be designed in 1–2 years from
+off-the-shelf parts and ride spare seats on rockets (rideshare), for
+example Falcon 9 Transporter missions starting at about $6,000 per
+kg.</li>
+</ol>
+<h2
+id="5-how-spacecraft-stay-in-orbit-without-falling-or-flying-away">5.
+How spacecraft stay in orbit without falling or flying away</h2>
+<p>A satellite does not "float". It is "falling all the time but missing
+the Earth" because it moves sideways fast enough. At 400 km it needs
+about 7.67 km/s (once around Earth every ~92 minutes). Slower, and it
+gradually sinks; faster than 11.2 km/s, and it leaves Earth.</p>
+<p class="formula">v = √(GM / r) &nbsp;&nbsp;&nbsp; T = 2π √(r³ / GM)</p>
+
+<h3 id="what-pulls-a-satellite-out-of-its-orbit">What pulls a satellite
+out of its orbit</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Perturbation</th>
+<th>Where it matters</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Air drag</td>
+<td>Below ~600 km</td>
+<td>Altitude drops every day; the ISS sinks about 2 km a month. Solar
+storms make the atmosphere swell: in February 2022 Starlink lost 38
+satellites to a geomagnetic storm</td>
+</tr>
+<tr class="even">
+<td>Earth's oblateness (J2)</td>
+<td>Every orbit</td>
+<td>The orbital plane slowly rotates; engineers use this to make
+sun-synchronous orbits that pass over each place at the same time every
+day</td>
+</tr>
+<tr class="odd">
+<td>Moon and Sun</td>
+<td>GEO</td>
+<td>Pull the orbit north-south; correcting it takes ~50 m/s per
+year</td>
+</tr>
+<tr class="even">
+<td>Solar radiation pressure</td>
+<td>Satellites with large arrays for their mass</td>
+<td>Nudges the position little by little</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="how-orbits-are-maintained-station-keeping">How orbits are
+maintained (station-keeping)</h3>
+<ol type="1">
+<li><strong>Fire forward to speed up</strong> (prograde burn) when the
+altitude drops below a threshold. The ISS uses the engines of docked
+cargo ships; Starlink uses Hall thrusters that run for a long time at
+low thrust.</li>
+<li><strong>Reduce the area facing the flow</strong> by turning the
+solar arrays edge-on to the air (the "open book" attitude) when the
+atmosphere swells.</li>
+<li><strong>Fly higher.</strong> Satellites without engines usually sit
+at 500–600 km, which lasts several years but no more than 25 years under
+debris-mitigation rules (the US FCC has cut this to 5 years after the
+end of the mission).</li>
+<li><strong>Dodge debris.</strong> Space-tracking agencies send warnings
+when a collision probability is high; Starlink makes tens of thousands
+of automatic avoidance manoeuvres a year.</li>
+<li><strong>End of life.</strong> Low LEO satellites are lowered to burn
+up in the atmosphere; GEO satellites are pushed up to a "graveyard
+orbit" ~300 km higher because they cannot come down.</li>
+</ol>
+<p>You can see this in the simulation (last section): switch the engine
+off and watch the satellite slowly fall, or speed up past 11.2 km/s and
+watch it escape.</p>
+<h2 id="6-how-power-and-signals-in-space-differ-from-earth">6. How power
+and signals in space differ from Earth</h2>
+<p>Space has no power sockets and no nearby cell towers, so every watt
+and every bit is expensive. A LEO satellite spends about 35 minutes in
+Earth's shadow every orbit and sees each ground station for only 5–10
+minutes at a time.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Topic</th>
+<th>On Earth</th>
+<th>In space</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Power source</td>
+<td>Power plants, 220 V AC mains</td>
+<td>Solar arrays only (sunlight stronger than at ground level, ~1,361
+W/m², with no clouds); deep-space probes use RTGs powered by
+plutonium-238 heat</td>
+</tr>
+<tr class="even">
+<td>Solar cell type</td>
+<td>Silicon, ~22%, cheap</td>
+<td>Triple-junction gallium arsenide, ~30%, radiation-tolerant but about
+100× more expensive per watt; Starlink uses silicon to cut cost</td>
+</tr>
+<tr class="odd">
+<td>Energy storage</td>
+<td>Batteries charged once a day</td>
+<td>Lithium batteries cycle ~5,500 times a year, so only 20–30% of
+capacity is used to make them last for years</td>
+</tr>
+<tr class="even">
+<td>Power bus</td>
+<td>High-voltage AC</td>
+<td>28 V DC (older satellites), 100 V (new large satellites), 3.3/5 V
+(CubeSats)</td>
+</tr>
+<tr class="odd">
+<td>Heat from electronics</td>
+<td>Removed by fans</td>
+<td>Every watt used becomes heat that must be radiated away by
+radiators</td>
+</tr>
+<tr class="even">
+<td>Link distance</td>
+<td>Wi-Fi 50 m, mobile 1–30 km</td>
+<td>LEO 550–2,000 km, GEO 36,000 km (round-trip delay ~0.5 s)</td>
+</tr>
+<tr class="odd">
+<td>Antennas</td>
+<td>Fixed masts</td>
+<td>Satellite antennas and ground dishes must track each other; phased
+arrays steer the beam electronically with no moving parts</td>
+</tr>
+<tr class="even">
+<td>Signal distortion</td>
+<td>Small</td>
+<td>Doppler shifts of tens of kHz at 7.5 km/s need constant frequency
+correction; heavy rain absorbs Ka-band (a big issue in Thailand's rainy
+season)</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td>Allocated nationally (by the NBTC in Thailand)</td>
+<td>Must be registered with the ITU worldwide and licensed in every
+country served</td>
+</tr>
+<tr class="even">
+<td>Interconnection</td>
+<td>Fibre-optic cable</td>
+<td>Laser inter-satellite links (optical ISL) relay data from satellite
+to satellite before reaching the ground; light in vacuum is ~30% faster
+than in glass fibre</td>
+</tr>
+</tbody>
+</table></div>
+<h2
+id="7-how-satellites-photograph-the-same-city-sharply-despite-speed-and-clouds">7.
+How satellites photograph the same city sharply despite speed and
+clouds</h2>
+<p>Short answer: control the orbit so it passes the same place at the
+same time, use sensors that accumulate light at the ground speed, and
+use radar when clouds are in the way. Almost nobody cleans the lens, so
+the focus is on keeping it clean in the first place.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>Why it is hard</th>
+<th>What is actually done</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>High speed</td>
+<td>The ground point moves ~7 km/s; a 50 cm image blurs if the shutter
+is open longer than ~70 microseconds</td>
+<td>Push-broom sensors that capture one line at a time like a scanner,
+TDI that accumulates light over several lines as the scene moves,
+rotating the satellite to compensate (back-scan)</td>
+</tr>
+<tr class="even">
+<td>Satellite vibration</td>
+<td>Spinning reaction wheels cause small vibrations (jitter)</td>
+<td>Isolation mounts, switching some wheels off during imaging,
+high-accuracy star trackers</td>
+</tr>
+<tr class="odd">
+<td>Comparing the same place</td>
+<td>Camera angle and shadows differ every time</td>
+<td>Sun-synchronous orbits pass at the same local time (for example
+10:30) every time; orthorectification with an elevation model (DEM) and
+pixel co-registration before AI looks for changes</td>
+</tr>
+<tr class="even">
+<td>Clouds</td>
+<td>Tropical places like Thailand are very cloudy in the monsoon</td>
+<td>SAR radar sees through clouds and at night; imaging often and
+stitching cloud-free pixels (cloud-free mosaic)</td>
+</tr>
+<tr class="odd">
+<td>Smoke and haze</td>
+<td>Wash out colours</td>
+<td>Atmospheric correction, short-wave infrared (SWIR) bands</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="how-dirty-lenses-are-cleaned">How dirty lenses are cleaned</h3>
+<p>Space has none of the dust and water spots we have on Earth. The real
+contamination is vapour from the satellite itself settling on the
+optics, and water freezing onto very cold mirrors.</p>
+<ol type="1">
+<li><strong>Assemble in a cleanroom</strong> (ISO 5–8) and bake out the
+vapour in a vacuum chamber before launch.</li>
+<li><strong>Lens covers</strong> stay closed during launch and the early
+period of heavy outgassing, and open weeks later.</li>
+<li><strong>Sun shades and long baffles</strong> block direct sunlight
+and micrometeoroids.</li>
+<li><strong>Heat the optics (decontamination)</strong> when sensitivity
+drops, so the ice sublimates; the Gaia telescope did this several
+times.</li>
+<li><strong>On-orbit calibration:</strong> image the Moon, deserts or a
+reference plate inside the camera, and let software compensate for lost
+sensitivity.</li>
+<li><strong>If it really breaks</strong>, usually nothing can be done.
+Hubble is the exception: astronauts fitted corrective optics in 1993.
+Today a replacement satellite is usually launched instead of a
+repair.</li>
+</ol>
+<h2 id="8-example-companies-in-each-segment">8. Example companies in
+each segment</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Segment</th>
+<th>International companies</th>
+<th>In Thailand / ASEAN</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Launch</td>
+<td>SpaceX, Rocket Lab, Blue Origin, ULA (Boeing + Lockheed),
+Arianespace, ISRO, CASC (China)</td>
+<td>None yet; foreign launch services are used</td>
+</tr>
+<tr class="even">
+<td>Large satellite builders</td>
+<td>Airbus Defence and Space, Thales Alenia Space, Boeing, Lockheed
+Martin, Maxar, Northrop Grumman</td>
+<td>Thailand hired Airbus to build THEOS-2 with technology transfer</td>
+</tr>
+<tr class="odd">
+<td>Small satellite / component builders</td>
+<td>Surrey Satellite (SSTL), Terran Orbital, Apex, EnduroSat, GomSpace,
+ISISpace</td>
+<td>mu Space, NBSpace, KMUTNB/Mahidol students (KNACKSAT, JAIKIT),
+GISTDA</td>
+</tr>
+<tr class="even">
+<td>Communications</td>
+<td>Starlink (SpaceX), Amazon Kuiper, OneWeb–Eutelsat, SES, Viasat, AST
+SpaceMobile, Iridium</td>
+<td>Thaicom (Thaicom GEO satellites)</td>
+</tr>
+<tr class="odd">
+<td>Optical imaging</td>
+<td>Planet Labs, Maxar (WorldView), Airbus (Pléiades Neo), Satellogic,
+BlackSky</td>
+<td>GISTDA (THEOS-1/2)</td>
+</tr>
+<tr class="even">
+<td>SAR radar</td>
+<td>ICEYE, Capella Space, Umbra, Synspective</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Weather</td>
+<td>NOAA (GOES), EUMETSAT, JMA (Himawari, used by Thailand), Spire
+Global, Tomorrow.io</td>
+<td>The Thai Meteorological Department uses Himawari images</td>
+</tr>
+<tr class="even">
+<td>Imagery analytics</td>
+<td>Orbital Insight, Descartes Labs, Google Earth Engine, EOS Data
+Analytics</td>
+<td>Precision-agriculture start-ups using Sentinel imagery</td>
+</tr>
+<tr class="odd">
+<td>In-orbit services / debris</td>
+<td>Astroscale, Northrop MEV, LeoLabs, Starfish Space</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Private space stations</td>
+<td>Axiom Space, Vast, Voyager/Starlab, Varda (making drugs in
+space)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>Real weather forecasts come from two layers. GEO satellites such as
+Himawari watch the clouds over a whole continent every 10 minutes, while
+LEO satellites measure temperature and humidity layer by layer and feed
+supercomputers running weather models (such as ECMWF), which are now
+starting to be helped by AI such as GraphCast.</p>
+<h2 id="9-costs-from-the-nasaboeingairbus-era-to-spacex">9. Costs: from
+the NASA–Boeing/Airbus era to SpaceX</h2>
+<p>Costs fell because three things changed at once: how contracts are
+paid (from actual cost to fixed price), reusing rockets, and mass
+production. Launch to low orbit dropped from tens of thousands of
+dollars per kg to thousands.</p>
+<p><img src="img/launch-cost.svg"
+alt="Approximate, from widely quoted industry figures (for example price per launch ÷ maximum payload to LEO), not checked against original sources · year of first flight" /></p>
+<p>Approximate, from widely quoted industry figures (for example price
+per launch ÷ maximum payload to LEO), not checked against original
+sources · year of first flight</p>
+<p>The peak is the "reusable" Space Shuttle, which needed major
+refurbishment after every flight and was therefore the most expensive.
+The lesson is that reuse only saves money when you can fly again quickly
+with little repair, which Falcon 9 does by flying the same booster more
+than 20 times.</p>
+<h3 id="comparing-the-eras">Comparing the eras</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Era</th>
+<th>Who built it</th>
+<th>Contract type</th>
+<th>Approximate cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Starship (2020s)</td>
+<td>SpaceX</td>
+<td>Private funding + a lunar lander contract of ~$2.9 billion</td>
+<td>Target under $100 million per flight; still in testing</td>
+</tr>
+<tr class="even">
+<td>SLS/Artemis (2011–present)</td>
+<td>Boeing, Northrop Grumman, Aerojet</td>
+<td>Cost-plus</td>
+<td>About $2–4 billion per launch</td>
+</tr>
+<tr class="odd">
+<td>Commercial Crew (2014)</td>
+<td>Boeing Starliner and SpaceX Crew Dragon</td>
+<td>Fixed-price</td>
+<td>Boeing ~<span
+class="math inline">4.2<em>b</em><em>i</em><em>l</em><em>l</em><em>i</em><em>o</em><em>n</em>, <em>S</em><em>p</em><em>a</em><em>c</em><em>e</em><em>X</em> </span>2.6
+billion; Dragon flew crew in 2020 while Starliner ran late and over
+budget</td>
+</tr>
+<tr class="even">
+<td>COTS cargo (2006–2012)</td>
+<td>SpaceX Falcon 9 + Dragon</td>
+<td>Paid on milestones</td>
+<td>Falcon 9 development ~<span
+class="math inline">390<em>m</em><em>i</em><em>l</em><em>l</em><em>i</em><em>o</em><em>n</em>, <em>v</em><em>e</em><em>r</em><em>s</em><em>u</em><em>s</em><em>N</em><em>A</em><em>S</em><em>A</em>′<em>s</em><em>e</em><em>s</em><em>t</em><em>i</em><em>m</em><em>a</em><em>t</em><em>e</em><em>o</em><em>f</em> </span>4
+billion the traditional way</td>
+</tr>
+<tr class="odd">
+<td>European Ariane (1979–2023)</td>
+<td>Aérospatiale, later Airbus/ArianeGroup</td>
+<td>European governments invest through ESA; Arianespace sells
+commercially</td>
+<td>Ariane 5 about $150–200 million per flight</td>
+</tr>
+<tr class="even">
+<td>Space Shuttle (1981–2011)</td>
+<td>NASA + Rockwell (later part of Boeing)</td>
+<td>Cost-plus</td>
+<td>Whole programme ~$200 billion / 135 flights ≈ $1.5 billion per
+flight</td>
+</tr>
+<tr class="odd">
+<td>Apollo (1961–1972)</td>
+<td>NASA + Boeing, North American, Grumman, Douglas</td>
+<td>Cost-plus: government pays actual cost plus profit</td>
+<td>~$25.8 billion at the time (about $250 billion today)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Why SpaceX is cheaper:</p>
+<ul>
+<li><strong>Reusable boosters.</strong> The first stage is about 60–70%
+of the rocket's price.</li>
+<li><strong>Building almost everything in-house</strong> (vertical
+integration) instead of buying through layers of suppliers that each add
+a margin.</li>
+<li><strong>Commercial parts + redundancy</strong> instead of expensive
+space-grade parts.</li>
+<li><strong>Break it and fix it fast</strong> (hardware-rich testing)
+instead of years of analysis on paper.</li>
+<li><strong>Its own customer.</strong> Starlink provides enough flights
+to drive the cost per flight down.</li>
+</ul>
+<h3 id="satellite-component-costs">Satellite component costs</h3>
+<p>An Earth-observation satellite's budget typically splits into roughly
+30–40% camera/payload, 25–35% bus, 10–25% launch, ~10% integration,
+testing and insurance, and 10–15% ground segment and operations.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>CubeSat (commercial parts)</th>
+<th>Large satellite (space-grade)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Camera / payload</td>
+<td>$50,000–500,000</td>
+<td>$50–200 million (30 cm imaging)</td>
+</tr>
+<tr class="even">
+<td>X-band radio</td>
+<td>$20,000–100,000</td>
+<td>$1 million and up</td>
+</tr>
+<tr class="odd">
+<td>Star tracker</td>
+<td>$20,000–50,000</td>
+<td>$200,000–1 million</td>
+</tr>
+<tr class="even">
+<td>Reaction wheels (set of 3–4)</td>
+<td>$10,000–40,000</td>
+<td>$500,000 and up</td>
+</tr>
+<tr class="odd">
+<td>Solar arrays</td>
+<td>$10,000–50,000 (tens of watts)</td>
+<td>Millions (several kilowatts)</td>
+</tr>
+<tr class="even">
+<td>On-board computer</td>
+<td>$5,000–20,000</td>
+<td>RAD750 about $200,000 and up</td>
+</tr>
+<tr class="odd">
+<td>Vibration / vacuum / EMC testing</td>
+<td>$20,000–100,000 (renting a lab)</td>
+<td>Millions</td>
+</tr>
+</tbody>
+</table></div>
+<p>The figures in this section are rough ranges from general knowledge;
+real prices depend on the vendor, quantity and qualification level.</p>
+<h2
+id="10-what-aerospace-engineering-covers-and-where-career-changers-start">10.
+What aerospace engineering covers, and where career-changers start</h2>
+<p>Most people working in space did not study space directly.
+Electrical, computer and mechanical engineers are the core workforce,
+because a satellite is electronics plus software in a box that survives
+a harsh environment.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Year</th>
+<th>Core courses</th>
+<th>Where it connects to satellites</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Calculus, physics, programming, CAD drawing</td>
+<td>Foundations for everything</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Statics/dynamics, mechanics of materials, thermodynamics, electric
+circuits</td>
+<td>Structures and thermal</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Fluid mechanics/aerodynamics, propulsion, control theory, orbital
+mechanics</td>
+<td>Rockets, ADCS, orbit planning</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Spacecraft design, systems engineering; final projects are often a
+CubeSat or small rocket</td>
+<td>Putting it all together into a mission</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="common-career-change-paths">Common career-change paths</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Background</th>
+<th>Jobs you can get into quickly</th>
+<th>What to learn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Electrical / electronics engineer</td>
+<td>EPS, OBC and RF board design</td>
+<td>Radiation-tolerant parts, ECSS/NASA standards, link budgets</td>
+</tr>
+<tr class="even">
+<td>Software engineer</td>
+<td>Flight firmware, ground systems, image processing</td>
+<td>RTOS, F Prime/cFS (NASA's open-source frameworks)</td>
+</tr>
+<tr class="odd">
+<td>Data analyst / AI</td>
+<td>Satellite image analysis</td>
+<td>GIS, SAR radar, Google Earth Engine</td>
+</tr>
+<tr class="even">
+<td>Mechanical / industrial</td>
+<td>Structures, manufacturing, testing</td>
+<td>FEA, vibration and vacuum testing</td>
+</tr>
+<tr class="odd">
+<td>Management / law</td>
+<td>Business development, spectrum licensing</td>
+<td>Space law, the ITU, satellite data markets</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Resources career-changers often use:</strong> the textbook
+<em>Space Mission Engineering: The New SMAD</em> (the satellite design
+bible), MIT OpenCourseWare 16.851 Satellite Engineering, NASA's Small
+Spacecraft Technology State of the Art report (updated yearly, free),
+the game Kerbal Space Program for a hands-on feel for orbital mechanics,
+educational CubeSat kits such as ArduSat and open-source boards, and
+amateur radio: receiving NOAA weather satellites with an RTL-SDR costing
+a few hundred baht, which fits this project's tinkering theme
+perfectly.</p>
+<h2 id="11-the-satellite-lifecycle-from-launch-to-retirement">11. The
+satellite lifecycle: from launch to retirement</h2>
+<p>Every satellite must have a disposal plan before launch, because
+regulators make it a licence condition. You can watch every step in the
+simulation's "Start a LEO mission from launch" mode.</p>
+<ol type="1">
+<li><strong>Launch.</strong> Climb vertically to get out of the thick
+air, then tilt over gradually (gravity turn), because reaching orbit
+means gaining ~7.8 km/s of sideways speed, not just height. The first
+stage burns for about 2–3 minutes, and orbit is reached within ~10
+minutes.</li>
+<li><strong>Parking orbit and separation.</strong> The upper stage fires
+again at apogee to circularise the orbit, releases the satellite, then
+brakes itself down to burn up so it does not become debris. GEO
+satellites are released into an elliptical GTO instead (low point ~250
+km, high point ~36,000 km).</li>
+<li><strong>Commissioning.</strong> Deploy the solar arrays, set the
+attitude and test every system before service starts; this takes weeks
+to months.</li>
+<li><strong>Orbit raising.</strong> Starlink uses ion engines to push
+slowly from ~300 to 550 km over several weeks; GEO satellites use
+chemical engines for days or electric propulsion for months.</li>
+<li><strong>Operations.</strong> LEO satellites last about 5–7 years,
+GEO about 15 years or more. Lifetime is limited by remaining propellant,
+battery wear and radiation damage.</li>
+<li><strong>Retirement.</strong> Propellant is reserved from the start
+for one of the methods below, followed by passivation: venting
+propellant and disconnecting the batteries so the satellite cannot
+explode into thousands of fragments.</li>
+</ol>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Disposal method</th>
+<th>Used for</th>
+<th>How</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Controlled ocean re-entry</td>
+<td>Large spacecraft that do not burn up completely (titanium tanks,
+steel engines)</td>
+<td>A strong braking burn at a calculated moment lowers perigee to ~0–50
+km; surviving debris falls at Point Nemo in the South Pacific, ~2,700 km
+from the nearest land</td>
+<td>The Mir station (2001), Progress/Cygnus cargo ships, the ISS as
+planned around 2030</td>
+</tr>
+<tr class="even">
+<td>Natural decay</td>
+<td>Small LEO satellites that burn up completely</td>
+<td>Lower the altitude and let drag pull it down; US FCC rules require
+re-entry within 5 years (the earlier international guideline was 25
+years)</td>
+<td>Hundreds of Starlink satellites a year, CubeSats</td>
+</tr>
+<tr class="odd">
+<td>Graveyard orbit</td>
+<td>GEO satellites</td>
+<td>Braking down from 36,000 km would take ~1,500 m/s of propellant, but
+raising the orbit ~300 km takes only ~11 m/s in two burns</td>
+<td>Almost every GEO communications satellite, including Thaicom</td>
+</tr>
+<tr class="even">
+<td>Departure into deep space</td>
+<td>Spacecraft that are already far away</td>
+<td>Left to orbit the Sun or leave the Solar System</td>
+<td>Kepler, Voyager 1–2, upper stages that sent probes to the
+planets</td>
+</tr>
+<tr class="odd">
+<td>Removal by another spacecraft (in development)</td>
+<td>Dangerous dead satellites</td>
+<td>A servicer docks and drags it down, or docks to extend its life</td>
+<td>Astroscale ELSA-d, Northrop MEV-1/2 (extending Intelsat
+satellites)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="12-launches-per-year-and-what-they-carry">12. Launches per year,
+and what they carry</h2>
+<p>Launches have had two golden ages: the Cold War, when governments
+competed, and today, led by private companies. 2025 saw about 320
+launches, almost half of them SpaceX Falcon 9s.</p>
+<p><img src="img/launches-per-year.svg"
+alt="Approximate, from general knowledge (counting every orbital launch attempt), not checked against databases such as Jonathan&#39;s Space Report · selected years, 1957–2025" /></p>
+<p>Approximate, from general knowledge (counting every orbital launch
+attempt), not checked against databases such as Jonathan's Space Report
+· selected years, 1957–2025</p>
+<p>The number of satellites launched has grown much faster than the
+number of flights, because one rocket carries dozens of them (Starlink
+about 20–30 per flight, rideshares more than 100). Thousands of
+satellites now go up each year, compared with a few hundred in the
+past.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>What is launched</th>
+<th>Examples</th>
+<th>Current share of flights (rough)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Internet constellations</td>
+<td>Starlink, Kuiper, China's Guowang/Qianfan</td>
+<td>More than half</td>
+</tr>
+<tr class="even">
+<td>Government and military</td>
+<td>Reconnaissance satellites, GPS/BeiDou navigation, missile
+warning</td>
+<td>~15–20%</td>
+</tr>
+<tr class="odd">
+<td>Earth imaging and small satellites</td>
+<td>Rideshare flights carrying university and start-up CubeSats</td>
+<td>~10%</td>
+</tr>
+<tr class="even">
+<td>Crew and cargo to stations</td>
+<td>Crew/Cargo Dragon, Soyuz, Progress, Shenzhou, Tianzhou</td>
+<td>~5–8% (~15–20 flights a year)</td>
+</tr>
+<tr class="odd">
+<td>GEO communications satellites</td>
+<td>Satellite TV, in-flight internet</td>
+<td>~5%</td>
+</tr>
+<tr class="even">
+<td>Science and deep space</td>
+<td>Telescopes, Moon and Mars missions</td>
+<td>A few percent</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="13-the-iss-and-chinas-tiangong-space-station">13. The ISS and
+China's Tiangong space station</h2>
+<p>The ISS is about four times bigger than Tiangong but took almost 13
+years to assemble with five main partners. Tiangong belongs to China
+alone, and its three modules were assembled in ~18 months.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>ISS</th>
+<th>Tiangong</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Owners</td>
+<td>USA, Russia, Europe (ESA), Japan, Canada</td>
+<td>China (CMSA)</td>
+</tr>
+<tr class="even">
+<td>Assembly</td>
+<td>Nov 1998 – 2011 (additions until 2021), about 40 assembly flights,
+mostly by the Space Shuttle</td>
+<td>Apr 2021 – Oct 2022, with 3 Long March 5B launches</td>
+</tr>
+<tr class="odd">
+<td>Pressurised modules</td>
+<td>~16 modules + a ~109 m truss</td>
+<td>3 modules in a T shape</td>
+</tr>
+<tr class="even">
+<td>Mass</td>
+<td>~420 tonnes</td>
+<td>~100 tonnes (including docked vehicles)</td>
+</tr>
+<tr class="odd">
+<td>Resident crew</td>
+<td>6–7</td>
+<td>3 (6 during handovers)</td>
+</tr>
+<tr class="even">
+<td>Altitude</td>
+<td>~410–420 km</td>
+<td>~380–400 km</td>
+</tr>
+<tr class="odd">
+<td>Orbital inclination</td>
+<td>51.6°</td>
+<td>41.5°</td>
+</tr>
+<tr class="even">
+<td>Visiting vehicles</td>
+<td>Soyuz, Crew Dragon, Starliner (crew); Progress, Cargo Dragon,
+Cygnus, HTV-X (cargo)</td>
+<td>Shenzhou (crew), Tianzhou (cargo)</td>
+</tr>
+<tr class="odd">
+<td>Future plans</td>
+<td>Retirement around 2030 with SpaceX's US Deorbit Vehicle, falling at
+Point Nemo</td>
+<td>More modules, and the Xuntian telescope flying alongside</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="main-modules-and-their-jobs">Main modules and their jobs</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Station</th>
+<th>Module</th>
+<th>Year added</th>
+<th>Job</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ISS Russian segment</td>
+<td>Zarya</td>
+<td>1998</td>
+<td>The first piece; originally power and propulsion, now storage</td>
+</tr>
+<tr class="even">
+<td>ISS Russian segment</td>
+<td>Zvezda</td>
+<td>2000</td>
+<td>Heart of the Russian side: living quarters, life support,
+attitude-control engines</td>
+</tr>
+<tr class="odd">
+<td>ISS Russian segment</td>
+<td>Poisk, Rassvet, Nauka, Prichal</td>
+<td>2009–2021</td>
+<td>Docking ports, airlock, Russian lab (Nauka)</td>
+</tr>
+<tr class="even">
+<td>ISS US segment</td>
+<td>Unity, Harmony, Tranquility (Nodes 1–3)</td>
+<td>1998–2010</td>
+<td>Connectors and docking ports; Tranquility has air revitalisation,
+the toilet and the Cupola window</td>
+</tr>
+<tr class="odd">
+<td>ISS US segment</td>
+<td>Destiny</td>
+<td>2001</td>
+<td>The main US laboratory</td>
+</tr>
+<tr class="even">
+<td>ISS US segment</td>
+<td>Quest</td>
+<td>2001</td>
+<td>Airlock for spacewalks</td>
+</tr>
+<tr class="odd">
+<td>ISS Europe</td>
+<td>Columbus</td>
+<td>2008</td>
+<td>ESA laboratory</td>
+</tr>
+<tr class="even">
+<td>ISS Japan</td>
+<td>Kibo</td>
+<td>2008–2009</td>
+<td>The largest lab, with an external experiment platform and robotic
+arm; can deploy CubeSats</td>
+</tr>
+<tr class="odd">
+<td>ISS structure</td>
+<td>Integrated Truss + 8 solar array wings + Canadarm2</td>
+<td>2000–2009</td>
+<td>~240 kW of power, heat rejection, the Canadian robotic arm that
+captures vehicles</td>
+</tr>
+<tr class="even">
+<td>Tiangong</td>
+<td>Tianhe</td>
+<td>2021</td>
+<td>Core module: living quarters, control, life support, Hall thrusters
+and 3 docking ports</td>
+</tr>
+<tr class="odd">
+<td>Tiangong</td>
+<td>Wentian</td>
+<td>2022</td>
+<td>Biology lab, spacewalk airlock and backup control for Tianhe</td>
+</tr>
+<tr class="even">
+<td>Tiangong</td>
+<td>Mengtian</td>
+<td>2022</td>
+<td>Physics and materials lab, atomic clocks, cargo airlock</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Why the orbits differ:</strong> a rocket cannot reach an
+orbit inclined less than its launch site's latitude without spending a
+lot of propellant. The ISS is at 51.6° so Russia can launch from
+Baikonur (latitude 45.6°), and it passes over areas where 95% of the
+world's people live. Tiangong's 41.5° suits the Jiuquan (40.9°N) and
+Wenchang launch sites. An altitude of ~400 km is a balance: lower means
+much more drag, higher means stronger radiation and less payload for
+crew vehicles.</p>
+<h2 id="14-rocket-and-satellite-propellants">14. Rocket and satellite
+propellants</h2>
+<p>The key number is <strong>Isp (specific impulse)</strong>, in
+seconds: how long 1 kg of propellant can produce thrust. Higher is more
+efficient. Rockets need enormous thrust, so they use chemical
+propellants; satellites have plenty of time, so they can use electric
+propulsion.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Fuel + oxidiser</th>
+<th>Approx. Isp (s)</th>
+<th>Strengths / weaknesses</th>
+<th>Where it is used</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Solid</td>
+<td>Aluminium powder + ammonium perchlorate in a rubber binder</td>
+<td>240–270</td>
+<td>Huge thrust, long storage / cannot be shut off once lit</td>
+<td>SLS and Ariane 6 side boosters, small rockets</td>
+</tr>
+<tr class="even">
+<td>Refined kerosene</td>
+<td>RP-1 + liquid oxygen</td>
+<td>280–340</td>
+<td>Dense and cheap / leaves soot in the engine</td>
+<td>Falcon 9, Soyuz, Saturn V first stage</td>
+</tr>
+<tr class="odd">
+<td>Methane</td>
+<td>Liquid methane + liquid oxygen</td>
+<td>330–380</td>
+<td>Burns cleaner, suits reuse, could be made on Mars</td>
+<td>Starship (Raptor), Vulcan (BE-4), China's Zhuque-2</td>
+</tr>
+<tr class="even">
+<td>Liquid hydrogen</td>
+<td>Liquid hydrogen (−253°C) + liquid oxygen</td>
+<td>420–465</td>
+<td>Most efficient chemical option / huge tanks, leaks easily, must be
+very cold</td>
+<td>SLS core stage, Ariane, Centaur, Space Shuttle</td>
+</tr>
+<tr class="odd">
+<td>Hypergolic (ignites on contact)</td>
+<td>Hydrazine (MMH/UDMH) + N₂O₄</td>
+<td>300–330</td>
+<td>Stores for years, reliable restarts / highly toxic</td>
+<td>GEO satellites, Dragon/Soyuz spacecraft, older Chinese rockets,
+Proton</td>
+</tr>
+<tr class="even">
+<td>Monopropellant</td>
+<td>Hydrazine over a catalyst</td>
+<td>220–235</td>
+<td>Simple, one tank</td>
+<td>Small attitude-control thrusters on ordinary satellites</td>
+</tr>
+<tr class="odd">
+<td>Green propellant</td>
+<td>LMP-103S, ASCENT (AF-M315E)</td>
+<td>230–260</td>
+<td>Less toxic than hydrazine, easier to load</td>
+<td>New small satellites</td>
+</tr>
+<tr class="even">
+<td>Cold gas</td>
+<td>Pressurised nitrogen/butane, no combustion</td>
+<td>50–70</td>
+<td>Safest / weak and runs out fast</td>
+<td>CubeSats</td>
+</tr>
+<tr class="odd">
+<td>Electric: Hall thruster</td>
+<td>Xenon/krypton/argon accelerated by an electric field</td>
+<td>1,500–2,500</td>
+<td>5–8× more efficient than chemical / thrust about the weight of a
+sheet of paper, needs lots of power</td>
+<td>Starlink, Tiangong, all-electric GEO satellites</td>
+</tr>
+<tr class="even">
+<td>Electric: gridded ion</td>
+<td>Xenon accelerated by high-voltage grids</td>
+<td>3,000–4,000</td>
+<td>Most efficient / very low thrust</td>
+<td>Dawn, BepiColombo, DART</td>
+</tr>
+</tbody>
+</table></div>
+<p>The purple gas in the simulation is the plasma of a Hall thruster,
+and the orange is chemical engines and rockets, matching real photos
+from test chambers.</p>
+<h2 id="15-nuclear-power-compared-with-solar-cells-and-batteries">15.
+Nuclear power compared with solar cells and batteries</h2>
+<p>Almost every satellite around Earth uses solar cells + lithium
+batteries. Nuclear power is used when sunlight is not enough, for
+example beyond Jupiter (1/25 of the sunlight at Earth) or on Mars with
+its dust storms.</p>
+<h3 id="how-an-rtg-works">How an RTG works</h3>
+<p>An RTG (radioisotope thermoelectric generator) is not a reactor:
+there is no chain reaction and no moving parts.</p>
+<ol type="1">
+<li>Pellets of plutonium-238 oxide decay naturally, emitting alpha
+particles that turn into heat (the pellets glow red). The half-life is
+87.7 years.</li>
+<li>The heat flows through hundreds of thermocouples (semiconductors
+such as PbTe or SiGe) to cooling fins outside. The temperature
+difference produces a voltage (the Seebeck effect), the same principle
+as the Peltier modules sold everywhere, run in reverse.</li>
+<li>Only ~6% of the heat becomes electricity. For example, the MMRTG on
+the Curiosity/Perseverance rovers uses 4.8 kg of Pu-238 for ~110 W at
+the start; the leftover heat keeps the equipment warm.</li>
+<li>Power falls every year from both decay and thermocouple wear.
+Voyager 1–2 (launched 1977) still work, but instruments have to be
+switched off one by one.</li>
+</ol>
+<p>This is different from a real nuclear fission reactor using
+uranium-235, which the Soviet Union flew on more than 30 RORSAT
+ocean-surveillance radar satellites (one of them, Kosmos 954, fell on
+Canada in 1978 and scattered radioactive material). NASA is now
+developing a ~40 kW Fission Surface Power reactor for a lunar base,
+because a lunar night lasts 14 days.</p>
+<h3 id="comparing-power-sources">Comparing power sources</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Power source</th>
+<th>Power per unit</th>
+<th>Lifetime</th>
+<th>Advantages</th>
+<th>Disadvantages</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Triple-junction GaAs solar + lithium battery</td>
+<td>A few watts to ~240 kW (ISS)</td>
+<td>5–15+ years</td>
+<td>Light, no refuelling, scalable</td>
+<td>Useless in shadow, degrades ~0.5–1% a year from radiation</td>
+<td>Almost every satellite, the ISS</td>
+</tr>
+<tr class="even">
+<td>Silicon solar + lithium battery</td>
+<td>Several kW per satellite</td>
+<td>~5 years</td>
+<td>Much cheaper, mass-producible</td>
+<td>Lower efficiency, less radiation-tolerant</td>
+<td>Starlink</td>
+</tr>
+<tr class="odd">
+<td>Nickel-hydrogen (Ni-H₂) battery</td>
+<td>—</td>
+<td>Tens of thousands of cycles</td>
+<td>Extremely durable</td>
+<td>Heavy, stores about half as much energy as lithium</td>
+<td>Hubble, the original ISS batteries (replaced with lithium
+2017–2021)</td>
+</tr>
+<tr class="even">
+<td>Primary (single-use) battery</td>
+<td>—</td>
+<td>Hours to days</td>
+<td>High energy storage</td>
+<td>Done when empty</td>
+<td>The Huygens lander on Titan, rockets</td>
+</tr>
+<tr class="odd">
+<td>H₂ + O₂ fuel cell</td>
+<td>2–12 kW</td>
+<td>As long as the carried fuel (weeks)</td>
+<td>Produces drinking water as a by-product</td>
+<td>Only for short missions</td>
+<td>Apollo, the Space Shuttle</td>
+</tr>
+<tr class="even">
+<td>RTG (Pu-238)</td>
+<td>100–300 W</td>
+<td>Decades</td>
+<td>Works in dark, cold and dust; free heat to warm the spacecraft</td>
+<td>Pu-238 is scarce and expensive; launch needs presidential-level
+approval</td>
+<td>Voyager, Cassini, New Horizons, Curiosity, Perseverance</td>
+</tr>
+<tr class="odd">
+<td>Fission reactor</td>
+<td>3–40 kW</td>
+<td>Years</td>
+<td>Very high power for its weight</td>
+<td>Radioactive risk if it falls</td>
+<td>Soviet RORSATs, SNAP-10A (USA, 1965)</td>
+</tr>
+</tbody>
+</table></div>
+<h2
+id="16-satellites-burning-up-on-re-entry-at-what-altitude-and-which-parts-go-first">16.
+Satellites burning up on re-entry: at what altitude, and which parts go
+first</h2>
+<p>A low-orbit satellite travels at about 7.8 km/s (roughly 28,000
+km/h). The heat of re-entry mostly does not come from "friction", as is
+often thought, but from the air in front being violently compressed into
+a shock wave. The compressed air reaches thousands of degrees Celsius,
+becomes glowing plasma, and transfers heat into the spacecraft's
+skin.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Approximate altitude</th>
+<th>What happens</th>
+<th>Parts affected</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>~120 km</td>
+<td>The "entry interface": the air is thick enough to matter; the
+spacecraft starts heating and slowing</td>
+<td>The front surface starts to warm</td>
+</tr>
+<tr class="even">
+<td>~100 km</td>
+<td>The Kármán line; plasma surrounds the spacecraft and radio usually
+blacks out from about 90 to 40 km</td>
+<td>Antennas, signal cables</td>
+</tr>
+<tr class="odd">
+<td>~95 to 85 km</td>
+<td>Drag and heat tear off protruding parts first</td>
+<td>Solar arrays, booms, antennas, gold MLI foil insulation</td>
+</tr>
+<tr class="even">
+<td>~78 km</td>
+<td>The main body breaks up (the standard value ESA uses in its
+calculations)</td>
+<td>Structure, joints, equipment boxes come apart</td>
+</tr>
+<tr class="odd">
+<td>~70 to 60 km</td>
+<td>The hottest phase; aluminium (melting point 660°C) almost completely
+melts away</td>
+<td>Aluminium structure, circuit boards, wiring</td>
+</tr>
+<tr class="even">
+<td>~40 to 20 km</td>
+<td>Surviving pieces slow below the speed of sound, stop glowing and
+fall in "dark flight"</td>
+<td>Titanium tanks, steel, reaction-wheel bearings, lenses,
+ceramics</td>
+</tr>
+<tr class="odd">
+<td>0 km</td>
+<td>They hit the sea or ground at a terminal speed of about 100 to 300
+km/h depending on size and shape</td>
+<td>Heat-resistant parts</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Burns first:</strong> thin, light parts with a lot of
+surface area for their mass, such as solar arrays, insulation and
+antennas.</li>
+<li><strong>Can survive:</strong> materials with high melting points or
+thick walls, such as titanium propellant tanks, carbon-wrapped pressure
+vessels (COPVs), steel shafts, and camera glass and ceramics. A large
+satellite may have 10 to 40% of its mass reach the ground.</li>
+<li><strong>Debris footprint:</strong> fragments spread along a strip
+hundreds of km to about 1,000 km long under the orbit track. That is why
+re-entries are aimed at the middle of the ocean (Point Nemo).</li>
+<li><strong>Design for demise:</strong> new satellites such as Starlink
+are designed with materials that burn up completely, so nothing reaches
+the ground.</li>
+</ul>
+<p>In the simulation, once the satellite drops below 120 km, time
+automatically slows down and it shows glowing plasma (its brightness
+follows ρv³, which scales with the heating rate), sparks as parts tear
+off at 92 km, the break-up at 78 km, and an altitude ladder marking each
+phase until the surviving pieces hit the sea.</p>
+<h2 id="17-launch-vehicle-types-and-reuse">17. Launch vehicle types and
+reuse</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Approach</th>
+<th>Examples</th>
+<th>What is reused</th>
+<th>Strengths / limits</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Expendable rocket</td>
+<td>Ariane 5/6, Atlas V, Soyuz, Long March, H3</td>
+<td>Nothing</td>
+<td>Simple design, but all hardware is thrown away every flight</td>
+</tr>
+<tr class="even">
+<td>Reusable first stage</td>
+<td>Falcon 9, Falcon Heavy, New Glenn</td>
+<td>First stage + payload fairing</td>
+<td>Much lower cost per flight; the second stage is still discarded</td>
+</tr>
+<tr class="odd">
+<td>Spaceplane</td>
+<td>Space Shuttle (1981 to 2011), X-37B, Buran (flew once)</td>
+<td>Orbiter + solid boosters</td>
+<td>Can bring people and large cargo back down, but refurbishment was
+very expensive</td>
+</tr>
+<tr class="even">
+<td>Capsule</td>
+<td>Dragon, Soyuz, Shenzhou, Orion</td>
+<td>Dragon is reusable</td>
+<td>Ablative heat shield + parachutes, lands at sea or on land</td>
+</tr>
+<tr class="odd">
+<td>Air launch</td>
+<td>Pegasus (under an L-1011)</td>
+<td>The carrier aircraft</td>
+<td>Flexible launch location, but small payloads</td>
+</tr>
+<tr class="even">
+<td>Fully reusable (in development)</td>
+<td>Starship</td>
+<td>Both stages (caught by the launch tower's arms)</td>
+<td>Aims for the lowest cost; still in testing</td>
+</tr>
+</tbody>
+</table></div>
+<h3
+id="falcon-9-how-the-first-stage-flies-back-and-what-gets-inspected">Falcon
+9: how the first stage flies back, and what gets inspected</h3>
+<p>After stage separation at about 65 to 80 km, the first stage flips
+around and fires its engines in three phases: the
+<strong>boostback</strong> burn (back towards the launch site, for land
+landings), the <strong>entry burn</strong> (slowing down before the
+thick air to reduce heating) and the <strong>landing burn</strong> (a
+single engine at the end). Titanium <strong>grid fins</strong> steer it,
+and it deploys landing legs to touch down on a drone ship at sea or a
+landing pad on land. Some first stages have now flown more than 30
+times, and the fastest turnaround is down to a few weeks.</p>
+<p>What is inspected and repaired between flights (an overview from
+published information):</p>
+<ul>
+<li><strong>The nine Merlin engines:</strong> borescope inspection of
+turbopumps, injectors, combustion chambers and nozzles, replacing worn
+parts. The engines are the most expensive part.</li>
+<li><strong>Thermal protection at the engine base:</strong> the base is
+hit by its own exhaust during the entry burn, so heat blankets and
+panels are replaced.</li>
+<li><strong>Grid fins and landing legs:</strong> checked for scorching,
+wear in the folding mechanisms, and the hydraulics.</li>
+<li><strong>Tanks and pressure lines:</strong> leak checks of the COPV
+helium tanks and valves, and cleaning off RP-1 soot.</li>
+<li><strong>Electrical systems / software:</strong> checks of sensors,
+wiring and the cold-gas thrusters.</li>
+<li><strong>Payload fairing:</strong> falls into the sea under a
+parafoil, is picked up by ship, washed of salt water and reused.</li>
+<li><strong>Second stage:</strong> still discarded every flight. It
+fires a braking burn to fall into the sea, or is left in orbit to
+decay.</li>
+</ul>
+<h3
+id="the-space-shuttle-why-open-the-bay-doors-and-what-the-robotic-arm-did">The
+Space Shuttle: why open the bay doors, and what the robotic arm did</h3>
+<p>The aircraft-like shape you see is the <strong>Space Shuttle
+Orbiter</strong>, with a payload bay about 18 m long and 4.6 m wide,
+closed by two doors.</p>
+<ul>
+<li><strong>The doors were opened within a few hours of reaching
+orbit,</strong> because the inside of the doors carried the radiators
+for the whole vehicle. If they could not open, the Shuttle would
+overheat and have to return to Earth quickly.</li>
+<li><strong>The Canadarm robotic arm</strong> (about 15 m long with 6
+joints, built by Canada) lifted satellites out of the bay and released
+them, captured satellites for repair (such as the Hubble servicing
+missions), served as a platform for spacewalking astronauts, and lifted
+modules to assemble the ISS. After the Columbia accident it was also
+fitted with an extension boom to inspect the heat-shield tiles
+underneath before every return.</li>
+</ul>
+<h3 id="how-the-black-tiles-underneath-did-not-burn-up">How the black
+tiles underneath did not burn up</h3>
+<ul>
+<li><strong>Black silica tiles (HRSI):</strong> about 24,000 tiles, each
+a unique shape. Inside they are pure silica fibres that are about 90% or
+more "air", so they conduct heat extremely poorly. The surface reaches
+~1,260°C, yet the inside can be held by hand shortly after coming out of
+a furnace.</li>
+<li><strong>Black glass coating:</strong> a high emissivity radiates
+heat back out well, which is why it is used on the underside facing the
+airflow. The upper side uses white tiles rated lower (~650°C) and fabric
+insulation.</li>
+<li><strong>The nose and wing leading edges</strong> are the hottest
+(~1,650°C) and use grey reinforced carbon-carbon (RCC).</li>
+<li>Unlike capsules with an <strong>ablative</strong> shield, such as
+Dragon's PICA-X, the Shuttle's tiles were not designed to wear away, but
+damaged tiles had to be inspected and replaced after every flight, which
+was a big and expensive job.</li>
+<li>The weak point: in 2003, foam from the fuel tank struck Columbia's
+RCC wing edge and made a hole. Hot gas entered the wing during re-entry
+and the Shuttle broke apart in the air.</li>
+</ul>
+<h3 id="gliding-to-a-landing-and-the-drag-chute">Gliding to a landing
+and the drag chute</h3>
+<p>The Shuttle had no engines to help it land: the whole vehicle was a
+<strong>heavy glider</strong>. It fired its braking engines (OMS) about
+an hour before landing, entered the atmosphere nose-up at about 40
+degrees so the underside took the heat, then made S-shaped turns left
+and right to bleed off excess energy. It glided down at a much steeper
+angle than an airliner, with only one chance to land and no go-around,
+touching down at about 340 to 360 km/h on a ~4.6 km runway (Kennedy).
+Then it deployed a <strong>drag chute</strong> to shorten the braking
+distance and reduce brake and tyre wear (added from 1992). Newer
+vehicles such as the uncrewed X-37B glide to a landing in the same way,
+while capsules use several sets of parachutes to land at sea or on land
+instead.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Space Shuttle</th>
+<th>Falcon 9 + Dragon</th>
+<th>Starship (goal)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reused</td>
+<td>Orbiter, solid boosters (recovered from the sea)</td>
+<td>First stage, fairing, Dragon capsule</td>
+<td>Both stages</td>
+</tr>
+<tr class="even">
+<td>Discarded</td>
+<td>The orange fuel tank</td>
+<td>Second stage</td>
+<td>Nothing (by design)</td>
+</tr>
+<tr class="odd">
+<td>How it returns</td>
+<td>Glides to a runway + drag chute</td>
+<td>First stage lands upright under power / Dragon parachutes into the
+sea</td>
+<td>Powered landing / caught by the tower's arms</td>
+</tr>
+<tr class="even">
+<td>Heat protection</td>
+<td>Silica tiles + RCC</td>
+<td>First stage: entry burn + insulation / Dragon: PICA-X</td>
+<td>Hexagonal ceramic tiles</td>
+</tr>
+<tr class="odd">
+<td>Turnaround</td>
+<td>Several months</td>
+<td>A few weeks</td>
+<td>Goal of hours to days</td>
+</tr>
+</tbody>
+</table></div>
+<p>The figures in sections 16 to 17 are approximate, from general
+knowledge, and were not checked against individual sources. Check them
+before citing.</p>
+<h2 id="18-simulation-and-source-notes">18. Simulation and source
+notes</h2>
+<p>The <a href="orbit-lab.html">Orbit Lab</a> simulates three kinds of
+satellite (a CubeSat with no engine, a communications satellite with an
+ion engine, and a space station) so you can see sections 5 and 6 in
+action:</p>
+<ul>
+<li>Altitude dropping because of air drag, and falling faster during a
+solar storm.</li>
+<li>Engine burns to maintain the orbit (the sawtooth graph) and the Δv
+budget gradually running out.</li>
+<li>Braking until the orbit becomes an ellipse and falls, or speeding up
+past 11.2 km/s until it escapes.</li>
+<li>The battery draining in Earth's shadow, and the short windows when
+it can talk to a ground station (about 5% of the time for a single
+station in LEO).</li>
+</ul>
+<p>The simulation also has a "Mission lifecycle" mode following section
+11: launch from the ground, the upper stage releasing the satellite,
+orbit raising with the ion engine (purple gas), then a choice of three
+disposal methods. For ocean disposal, it waits for the right moment so
+the debris falls at Point Nemo.</p>
+<p>The figures in this document are written from general industry
+knowledge and have not been checked against original sources; read them
+as orders of magnitude. Good sources for further checking: the Space
+Foundation's Space Report (market size), CSIS Aerospace Security "Space
+Launch to Low Earth Orbit: How Much Does It Cost?" (cost per kg), NASA
+"Commercial Market Assessment for Crew and Cargo Systems" (2011, Falcon
+9 cost), NASA Small Spacecraft Technology State of the Art (CubeSat
+parts).</p>
+
+</article>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-ps-lang]');if(a){try{localStorage.setItem('ps-lang',a.getAttribute('data-ps-lang'))}catch(_){}}});</script>
+</body>
+</html>

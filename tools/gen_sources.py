@@ -266,6 +266,11 @@ SIMS = {
         "back": ("Main.dc.html", "← กลับไปที่แล็บแสงและจอภาพ"),
         "intro": "แล็บแสงและจอภาพใช้กฎการแผ่รังสีของพลังค์ ฟังก์ชันความไวแสงของตา และเกณฑ์การกระพริบของ IEEE 1789 ส่วนตัวเลขของหลอด จอ กระจก และพลังงาน เป็นค่าประมาณหรือค่าสมมติเพื่อให้เห็นหลักการ ไม่ใช่สเปกของสินค้ารุ่นใด",
         "open": [
+            S("E Ink: What is ePaper", "หลักการแคปซูลเม็ดสีขาวดำ การค้างภาพโดยไม่ใช้ไฟ และการสะท้อนแสงแบบกระดาษ", "หน้าเว็บเปิดของบริษัทผู้ผลิต", "https://www.eink.com/what-is-e-paper.html"),
+            S("E Ink: Color ePaper technology", "E-Ink สีแบบฟิลเตอร์สี (Kaleido) และแบบเม็ดสีหลายสี (Gallery)", "หน้าเว็บเปิดของบริษัทผู้ผลิต", "https://www.eink.com/color-technology.html"),
+            S("Wacom Support: What is the EMR (Electro Magnetic Resonance) method?", "ปากกา EMR ที่ไม่ต้องใช้แบตเตอรี่ วงจรสั่นพ้องในปากกา และแผงขดลวดใต้จอ", "บทความช่วยเหลือเปิด", "https://support.wacom.com/hc/en-us/articles/1500006270401-What-is-the-EMR-Electro-Magnetic-Resonance-method-incorporated-in-a-pen-tablet-"),
+            S("SamMobile: Galaxy S26 Ultra Privacy Display explained", "พิกเซลมุมกว้างและมุมแคบ การหรี่พิกเซลมุมกว้าง และโหมดซ่อนเฉพาะการแจ้งเตือน", "ข่าวเปิด", "https://www.sammobile.com/news/galaxy-s26-ultra-privacy-display-explained/"),
+            S("Vernon Chan: Flex Magic Pixel – how the S26 Ultra's Privacy Display works", "วงแหวนสีดำหลายชั้น (multi-layer black matrix) และค่าทดสอบความสว่างราว 3.5% ที่ 45° และ 0.9% ที่ 60°", "บทความเปิด (อ้างผลทดสอบของ UL Solutions)", "https://vernonchan.com/samsung-galaxy-s26-ultra-privacy-display-flex-magic-pixel/"),
             S("U.S. DOE: Flicker – Understanding the New IEEE Recommended Practice", "เกณฑ์การกระเพื่อมของแสงที่เสี่ยงต่ำตาม IEEE 1789 และการหรี่ไฟ LED ด้วย PWM กับการลดกระแส", "บทความเปิดของกระทรวงพลังงานสหรัฐฯ", "https://www.energy.gov/eere/ssl/articles/flicker-understanding-new-ieee-recommended-practice"),
             S("U.S. DOE: Characterizing Photometric Flicker", "นิยามเปอร์เซ็นต์การกระเพื่อม (percent flicker) และผลของวงจรขับ", "เอกสาร PDF เปิด", "https://www.energy.gov/sites/prod/files/2016/03/f30/characterizing-photometric-flicker.pdf"),
             S("CLASP: Global Leaders Agree to Full Phase-Out of Fluorescent Lighting (COP5 อนุสัญญามินามาตะ)", "การเลิกใช้หลอดฟลูออเรสเซนต์ที่มีปรอท หลอดตะเกียบภายในปี 2025 และหลอดยาวภายในปี 2027", "ข่าวเปิด", "https://www.clasp.ngo/updates/cop5-decision/"),
@@ -273,6 +278,7 @@ SIMS = {
             S("OpenStax University Physics Volume 3 บทที่ 6: Photons and Matter Waves", "การแผ่รังสีของวัตถุดำและกฎของพลังค์", "ตำราเปิด สัญญาอนุญาต CC BY 4.0", "https://openstax.org/books/university-physics-volume-3/pages/6-1-blackbody-radiation"),
         ],
         "restricted": [
+            S("CIE 015:2018 Colorimetry", "แผนภาพสี xy ปริภูมิสี Lab และการคิดค่า ΔE", "มาตรฐาน CIE ต้องซื้อ"),
             S("IEEE Std 1789-2015 Recommended Practices for Modulating Current in High-Brightness LEDs", "เส้นเกณฑ์ 0.025·f และ 0.08·f ในกราฟความเสี่ยงการกระพริบ", "มาตรฐาน IEEE ต้องซื้อหรือเข้าผ่านห้องสมุด", "https://standards.ieee.org/ieee/1789/4480/"),
             S("Schubert, E. F. Light-Emitting Diodes", "ประสิทธิภาพของ LED สีขาวแบบฟอสเฟอร์ และ efficiency droop", "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด"),
             S("Tsujimura, T. OLED Display Fundamentals and Applications", "โครงสร้างจอ OLED วงจรพิกเซล การระเหยผ่านหน้ากากโลหะ และชั้นปิดผนึก", "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด"),
@@ -280,6 +286,9 @@ SIMS = {
             S("Varshneya, A. K. Chemically strengthened glass (บทความทบทวน)", "การแลกเปลี่ยนไอออน K⁺/Na⁺ แรงอัดที่ผิวและความลึกของชั้นอัด", "บทความวารสาร ต้องสมัครสมาชิกหรือซื้อบทความ"),
         ],
         "none": [
+            S("ปากกาบนจอ", "ระยะ hover ของปากกาแต่ละแบบ ขดลวดสูงจากปลาย 6 มม. ความถี่ f₀ 500 kHz และแบบจำลองแรงสัญญาณ", "ค่าสมมติแสดงหลักการ ไม่ใช่สเปกของปากการุ่นใด"),
+            S("สีของจอ", "แม่สีของจอ OLED ความคลาดเคลื่อนของจุดขาวและ gamma ของแต่ละแผง", "ค่าสมมติ ค่า ΔE คิดแบบ CIE76 อย่างง่าย"),
+            S("กราฟมุมมองของจอ privacy", "เส้นโค้งปรับให้ผ่านค่าทดสอบที่ 45° และ 60° ที่มีรายงาน", "แบบจำลอง ไม่ใช่ผลการวัดของ Samsung"),
             S("สเปกตรัมของหลอดในตัวจำลอง", "หลอดฟลูออเรสเซนต์ประกอบจากเส้นสเปกตรัมแบบเกาส์เซียน LED ขาวคือพีคน้ำเงิน 450 nm รวมฟอสเฟอร์", "รูปทรงประมาณ ไม่ใช่สเปกตรัมที่วัดจากหลอดจริง"),
             S("ประสิทธิภาพ อายุ และราคาหลอด", "ไส้ 14 lm/W 1,000 ชม. ถึง LED 130 lm/W 25,000 ชม. ไฟฟ้า 4.2 บาท/หน่วย CO₂ 0.5 กก./kWh", "ค่าตัวอย่างโดยประมาณ ค่าจริงต่างกันตามรุ่นและประเทศ"),
             S("ตัวเลขของจอ", "อัตราแสงผ่านแต่ละชั้น ความหนาแน่นจุดบกพร่อง ต้นทุนแผ่นกระจก 60,000 บาท และกำลังไฟของจอ", "ค่าสมมติเพื่อการเปรียบเทียบ"),

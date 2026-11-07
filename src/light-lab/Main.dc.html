@@ -351,7 +351,7 @@ class Component extends DCLogic {
       ],
       srcs: ['inc', 'hal', 'fl', 'ledw', 'ledc', 'rgb', 'sun'].map(function (id) { var q = pill(s.src === id); return { name: info[id].n, pressed: s.src === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ src: id }); } }; }),
       howTitle: 'สร้างแสงอย่างไร: ' + I.n, how: I.how,
-      aria: 'สเปกตรัมของ' + I.n + ' อุณหภูมิสี ' + Math.round(A.cct) + ' เคลวิน'
+      aria: 'สเปกตรัมของ ' + I.n + ' อุณหภูมิสี ' + Math.round(A.cct) + ' เคลวิน'
     };
 
     // ---------- 2. LED lamp ----------

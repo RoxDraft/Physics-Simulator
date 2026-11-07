@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แล็บวัสดุและโครงสร้าง</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="เส้นทางนำทาง"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>หน้าหลัก</a><span aria-hidden="true">›</span><span aria-current="page">Materials & Structures Lab</span><a class="ps-lang" href="../en/materials-lab/index.html" hreflang="en" lang="en" data-ps-lang="en" aria-label="เปลี่ยนเป็นภาษาอังกฤษ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>English</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 34px">
+
+<nav aria-label="หัวข้อในแล็บวัสดุและโครงสร้าง" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="index.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">ทดสอบวัสดุ</a>
+<a href="tower.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">กระจกและโครงสร้างตึกสูง</a>
+<a href="sources.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">แหล่งข้อมูล</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 920px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">MATERIALS &amp; STRUCTURES LAB · ทดสอบวัสดุ</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">ดึง ดัด อัด จนพัง: วัสดุแข็งแรงได้อย่างไร</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">อะลูมิเนียม ไทเทเนียม สแตนเลส และกระจก แข็งแรงต่างกันเพราะโครงสร้างภายใน และความทนของชิ้นงานจริงยังขึ้นกับผิวด้วย เพราะรอยร้าวส่วนใหญ่เริ่มที่ผิว วิศวกรจึงอบชุบเนื้อวัสดุ ทำให้ผิวถูกอัดค้างไว้ แล้วพิสูจน์ด้วยเครื่องดึง ดัด บิด และทดสอบตก</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. เครื่องทดสอบแรงดึง: กราฟความเค้นกับความเครียด</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">เครื่องทดสอบอเนกประสงค์ (universal testing machine) จับชิ้นทดสอบรูปกระดูกหมาแล้วดึงช้า ๆ วัดแรงและระยะยืดตลอดเวลา ความเค้น = แรง ÷ พื้นที่หน้าตัด ความเครียด = ระยะยืด ÷ ความยาวเดิม ช่วงแรกเป็นเส้นตรง (ยืดหยุ่น ปล่อยแล้วคืนรูป) ความชันคือค่ามอดุลัสของยัง (E) เลยจุดคราก (yield) จะยืดถาวร แข็งขึ้นเรื่อย ๆ จนถึงความแข็งแรงสูงสุด แล้วคอดตรงกลาง (necking) จนขาด ส่วนกระจกขาดทันทีโดยไม่ยืดถาวรเลย</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">ชิ้นทดสอบ: {{ts.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; color: {{ts.stC}}">{{ts.state}}</span></div>
+<svg viewBox="0 0 900 150" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{ts.specAria}}">
+<rect x="{{ts.gL}}" y="40" width="70" height="70" rx="4" fill="#4A5D6A"></rect>
+<rect x="{{ts.gR}}" y="40" width="70" height="70" rx="4" fill="#4A5D6A"></rect>
+<path d="{{ts.spec}}" fill="{{ts.col}}" stroke="#0F2A3A" stroke-width="1.2"></path>
+<text x="450" y="140" font-size="12" text-anchor="middle" fill="#4A5D6A">{{ts.specTxt}}</text>
+</svg>
+<svg viewBox="0 0 900 380" style="display: block; width: 100%; height: auto; border-top: 1px solid #E3E9EC" role="img" aria-label="{{ts.aria}}">
+<path d="{{ts.grid}}" stroke="#E3E9EC"></path>
+<line x1="70" y1="340" x2="870" y2="340" stroke="#9AAAB4"></line>
+<line x1="70" y1="20" x2="70" y2="340" stroke="#9AAAB4"></line>
+<sc-for list="{{ts.ylab}}" as="t" hint-placeholder-count="6">
+<text x="64" y="{{t.y}}" font-size="11" text-anchor="end" fill="#4A5D6A" font-family="IBM Plex Mono, monospace">{{t.v}}</text>
+</sc-for>
+<sc-for list="{{ts.xlab}}" as="t" hint-placeholder-count="6">
+<text x="{{t.x}}" y="356" font-size="11" text-anchor="middle" fill="#4A5D6A" font-family="IBM Plex Mono, monospace">{{t.v}}</text>
+</sc-for>
+<text x="470" y="374" font-size="12" text-anchor="middle" fill="#4A5D6A">ความเครียด (การยืด %)</text>
+<text x="16" y="180" font-size="12" text-anchor="middle" fill="#4A5D6A" transform="rotate(-90 16 180)">ความเค้น (MPa)</text>
+<sc-for list="{{ts.curves}}" as="c" hint-placeholder-count="5">
+<path d="{{c.d}}" fill="none" stroke="{{c.c}}" stroke-width="{{c.w}}" opacity="{{c.o}}"></path>
+<text x="{{c.lx}}" y="{{c.ly}}" font-size="11" fill="{{c.c}}" opacity="{{c.o}}" font-weight="600">{{c.n}}</text>
+</sc-for>
+<path d="{{ts.done}}" fill="none" stroke="{{ts.col}}" stroke-width="4"></path>
+<circle cx="{{ts.px}}" cy="{{ts.py}}" r="6" fill="{{ts.col}}" stroke="#FFFFFF" stroke-width="2"></circle>
+<path d="{{ts.marks}}" fill="#0F2A3A"></path>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+<sc-for list="{{ts.stats}}" as="r" hint-placeholder-count="6">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">วัสดุ</span>
+<div role="group" aria-label="วัสดุ" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{ts.mats}}" as="p" hint-placeholder-count="5">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">ช่วงของกราฟ</span>
+<div role="group" aria-label="ช่วงของกราฟ" style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{ts.zooms}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 80px; min-height: 40px; border-radius: 999px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{tsRun}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{ts.runTxt}}</button>
+<button type="button" onClick="{{tsReset}}" style="flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">ใส่ชิ้นใหม่</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="ts-e" style="font-size: 14px; font-weight: 600">ดึงเอง: ความเครียด</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{ts.epsTxt}}</span></div>
+<input id="ts-e" type="range" min="0" max="{{ts.efMax}}" step="0.0005" value="{{ts.eps}}" onChange="{{setEps}}">
+</div>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{ts.title}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">{{ts.how}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. ทำไมกระจกแตก และการทำให้ผิวถูกอัดช่วยได้อย่างไร</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">กระจกไม่ได้แตกเพราะเนื้อแก้วอ่อน แต่เพราะมีรอยร้าวจิ๋วที่ผิว (จากทราย การขัดถู หรือการตก) เมื่อกระจกโค้งงอ ผิวด้านนูนถูกดึง ปลายรอยร้าวจึงรับความเค้นสูงมาก ถ้าค่าความเข้มของความเค้น K = 1.12·σ·√(πa) เกินความเหนียวต่อการแตกหัก (K<sub>IC</sub>) รอยร้าวจะวิ่งทะลุทันที การทำให้ผิวถูกอัดค้างไว้จึงหักล้างแรงดึงก่อนถึงปลายรอยร้าว ทำได้ด้วยการเป่าลมเย็น (tempered) การแลกเปลี่ยนไอออน หรือแก้วเซรามิกที่มีผลึกนาโนขวางรอยร้าว</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">ความเค้นตามความลึกจากผิว (หนา {{gl.tTxt}})</span><span style="font-family: 'IBM Plex Mono', monospace; color: {{gl.resC}}">{{gl.res}}</span></div>
+<svg viewBox="0 0 900 340" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{gl.aria}}">
+<rect x="70" y="20" width="800" height="{{gl.tensH}}" fill="#FCE3CF" opacity="0.45"></rect>
+<rect x="70" y="{{gl.zeroY}}" width="800" height="{{gl.compH}}" fill="#DDEFF6" opacity="0.6"></rect>
+<line x1="70" y1="{{gl.zeroY}}" x2="870" y2="{{gl.zeroY}}" stroke="#9AAAB4"></line>
+<line x1="70" y1="20" x2="70" y2="300" stroke="#9AAAB4"></line>
+<sc-for list="{{gl.ylab}}" as="t" hint-placeholder-count="5">
+<text x="64" y="{{t.y}}" font-size="11" text-anchor="end" fill="#4A5D6A" font-family="IBM Plex Mono, monospace">{{t.v}}</text>
+</sc-for>
+<text x="76" y="34" font-size="11" fill="#7E3407">ถูกดึง (+)</text>
+<text x="76" y="294" font-size="11" fill="#0A4F70">ถูกอัด (−)</text>
+<path d="{{gl.crack}}" fill="#B04A0C" opacity="0.25"></path>
+<path d="{{gl.app}}" fill="none" stroke="#C99A1E" stroke-width="2" stroke-dasharray="6 4"></path>
+<path d="{{gl.resid}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<path d="{{gl.sum}}" fill="none" stroke="#0F2A3A" stroke-width="3"></path>
+<text x="470" y="322" font-size="12" text-anchor="middle" fill="#4A5D6A">{{gl.xTxt}}</text>
+<text x="70" y="336" font-size="11" fill="#4A5D6A">ผิวที่ถูกดึง</text>
+<text x="870" y="336" font-size="11" text-anchor="end" fill="#4A5D6A">ผิวอีกด้าน</text>
+</svg>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; padding: 0 16px 12px; font-size: 13px; font-weight: 600"><span style="color: #0A6A94">━ ความเค้นค้างจากการทำผิว</span><span style="color: #C99A1E">┅ ความเค้นจากการดัด</span><span style="color: #0F2A3A">━ รวม</span><span style="color: #B04A0C">▮ รอยร้าว</span></div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-weight: 700; font-size: 14px">ความเค้นดัดที่ทำให้แตก เมื่อมีรอยร้าวลึก {{gl.aTxt}}</span>
+<sc-for list="{{gl.bars}}" as="b" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 4px; font-size: 13px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-weight: 600">{{b.n}}</span><span style="font-family: 'IBM Plex Mono', monospace">{{b.v}}</span></div>
+<div style="height: 14px; background: #F3F6F7; border-radius: 4px; overflow: hidden"><div style="width: {{b.w}}; height: 100%; background: {{b.c}}"></div></div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">ความหนากระจก</span>
+<div role="group" aria-label="ความหนากระจก" style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{gl.thick}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 120px; min-height: 44px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">การทำผิว</span>
+<div role="group" aria-label="การทำผิวกระจก" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{gl.treats}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" aria-disabled="{{p.dis}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35; opacity: {{p.op}}">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{gl.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<sc-for list="{{gl.stats}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #E3E9EC; padding-top: 6px"><span>{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace; text-align: right; color: {{r.c}}">{{r.v}}</span></div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{gl.title}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">{{gl.how}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">3. ผิวโลหะ: อะโนไดซ์ การเชื่อมแบบแพร่ และผิวเงาหรือด้าน</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 1 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">อะโนไดซ์อะลูมิเนียม: ภาพตัดชั้นออกไซด์ (ขยายมาก)</div>
+<svg viewBox="0 0 520 260" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{an.aria}}">
+<rect x="20" y="{{an.topY}}" width="480" height="{{an.oxH}}" fill="#E3E9EC"></rect>
+<path d="{{an.pores}}" fill="{{an.dye}}" opacity="{{an.dyeO}}"></path>
+<path d="{{an.poreLines}}" stroke="#9AAAB4" stroke-width="1"></path>
+<rect x="20" y="{{an.topY}}" width="480" height="5" fill="#C9D4DA" opacity="{{an.sealO}}"></rect>
+<rect x="20" y="{{an.barY}}" width="480" height="4" fill="#7D8C96"></rect>
+<rect x="20" y="{{an.metY}}" width="480" height="{{an.metH}}" fill="#B9C3C9"></rect>
+<rect x="20" y="{{an.origY}}" width="480" height="2" fill="#B04A0C" stroke-dasharray="6 4"></rect>
+<text x="496" y="{{an.origTY}}" font-size="10" text-anchor="end" fill="#B04A0C">ผิวเดิมก่อนอะโนไดซ์</text>
+<text x="30" y="{{an.metTY}}" font-size="12" fill="#0F2A3A" font-weight="600">อะลูมิเนียม</text>
+<text x="30" y="{{an.oxTY}}" font-size="12" fill="#0F2A3A" font-weight="600">{{an.oxTxt}}</text>
+</svg>
+<div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 10px">
+<div role="group" aria-label="ชนิดอะโนไดซ์" style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{an.types}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 150px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{an.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<div role="group" aria-label="สีย้อม" style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center">
+<span style="font-size: 14px; font-weight: 600; margin-right: 4px">สีย้อม</span>
+<sc-for list="{{an.dyes}}" as="p" hint-placeholder-count="5">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" aria-label="{{p.name}}" title="{{p.name}}" style="width: 40px; height: 40px; border-radius: 999px; border: 3px solid {{p.border}}; background: {{p.c}}; cursor: pointer"></button>
+</sc-for>
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{aseal}}" onChange="{{toggleSeal}}" style="width: 20px; height: 20px; accent-color: #0A6A94">ปิดรู (seal) ด้วยน้ำร้อนหรือไอน้ำหลังย้อมสี</label>
+<sc-for list="{{an.stats}}" as="r" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #E3E9EC; padding-top: 6px"><span>{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace; text-align: right; color: {{r.c}}">{{r.v}}</span></div>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ชิ้นงานเป็นขั้วบวกในอ่างกรดซัลฟิวริก ออกซิเจนรวมกับอะลูมิเนียมเป็นอะลูมินาที่แข็งเหมือนเซรามิก ชั้นออกไซด์ส่วนหนึ่งงอกลึกเข้าไปในเนื้อโลหะ อีกส่วนพอกออกมา และเป็นรูพรุนเรียงตั้งฉากกับผิว สีย้อมจึงซึมลงไปอยู่ในรู แล้วถูกปิดผนึก ไม่ลอกเหมือนสีทา ความหนาประมาณจากกฎ "720": ราว 0.33 ไมโครเมตร ต่อ (A/dm² × นาที)</p>
+</div>
+</div>
+<div style="flex: 1 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">เชื่อมแบบแพร่ (diffusion bonding): อัดร้อนโดยไม่หลอม</div>
+<svg viewBox="0 0 520 260" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{db.aria}}">
+<rect x="20" y="30" width="480" height="96" fill="{{db.topC}}"></rect>
+<rect x="20" y="130" width="480" height="96" fill="{{db.botC}}"></rect>
+<path d="{{db.voids}}" fill="#FBFCFD" stroke="#7D8C96" stroke-width="0.8"></path>
+<rect x="20" y="{{db.imY}}" width="480" height="{{db.imH}}" fill="#B04A0C" opacity="0.75"></rect>
+<path d="{{db.atomsA}}" fill="{{db.topDot}}"></path>
+<path d="{{db.atomsB}}" fill="{{db.botDot}}"></path>
+<path d="M260,4 v18 M252,14 l8,8 l8,-8 M260,256 v-18 M252,246 l8,-8 l8,8" stroke="#0F2A3A" stroke-width="2.5" fill="none"></path>
+<text x="276" y="18" font-size="11" fill="#0F2A3A">{{db.pTxt}}</text>
+<text x="30" y="50" font-size="12" fill="#FFFFFF" font-weight="700">{{db.topN}}</text>
+<text x="30" y="218" font-size="12" fill="#0F2A3A" font-weight="700">{{db.botN}}</text>
+</svg>
+<div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 10px">
+<div role="group" aria-label="คู่โลหะ" style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{db.pairs}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 150px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{db.sliders}}" as="x" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<sc-for list="{{db.stats}}" as="r" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #E3E9EC; padding-top: 6px"><span>{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace; text-align: right; color: {{r.c}}">{{r.v}}</span></div>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: {{db.verdictC}}; font-weight: 600">{{db.verdict}}</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">ผิวโลหะที่ดูเรียบยังมีปุ่มเล็ก ๆ แตะกันแค่บางจุด แรงอัดและความร้อนทำให้ปุ่มยุบจนช่องว่างปิด แล้วอะตอมแพร่ข้ามรอยต่อจนกลายเป็นเนื้อเดียว ระยะแพร่ ≈ √(D·t) และ D เพิ่มแบบเอกซ์โพเนนเชียลตามอุณหภูมิ (สมการอาร์เรเนียส) ตัวเลขในแบบจำลองนี้เป็นค่าสมมติเพื่อให้เห็นแนวโน้ม</p>
+</div>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 1 1 420px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">ผิวเงา ผิวด้าน: ความขรุขระกระจายแสงสะท้อน</div>
+<svg viewBox="0 0 420 220" style="display: block; width: 100%; height: auto; background: #13212A" role="img" aria-label="{{fn.aria}}">
+<path d="{{fn.lobe}}" fill="#F5C77A" opacity="0.35"></path>
+<line x1="70" y1="40" x2="210" y2="170" stroke="#F5C77A" stroke-width="3"></line>
+<line x1="210" y1="170" x2="350" y2="40" stroke="#F5C77A" stroke-width="3" opacity="{{fn.specO}}"></line>
+<path d="{{fn.surf}}" fill="#9AAAB4"></path>
+<text x="60" y="30" font-size="12" fill="#FFFFFF">แสงเข้า</text>
+<text x="300" y="30" font-size="12" fill="#FFFFFF" opacity="{{fn.specO}}">สะท้อนแบบกระจก</text>
+</svg>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div role="group" aria-label="ผิวสำเร็จ" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{fn.list}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{fn.title}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">{{fn.how}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">4. เทคนิคเดียวกันนี้ใช้ที่ไหนอีกบ้าง</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px">
+<sc-for list="{{apps}}" as="c" hint-placeholder-count="8">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-top: 5px solid {{c.c}}; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700">{{c.t}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #34495A">{{c.d}}</p>
+</div>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #4A5D6A; max-width: 960px">ดูการทดสอบตกของมือถือและกระจกแลกเปลี่ยนไอออนได้ที่ <a href="../light-lab/display.html">Light &amp; Display Lab: จอมือถือ ข้อ 4</a> และการคำนวณคานรับแรงด้วยไฟไนต์เอลิเมนต์ที่ <a href="../beam-fea/index.html">Beam FEA</a></p>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":3600}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      mat: 'al6061', eps: 0, running: false, zoom: 'light',
+      thick: 'phone', treat: 'ix', a: 20, sapp: 200,
+      atype: 'II', aj: 1.5, at: 40, adye: 'blue', aseal: true,
+      pair: 'tial', bT: 550, bP: 10, bt: 60,
+      fin: 'polish'
+    };
+  }
+
+  mats() {
+    return {
+      al6061: { n: 'อะลูมิเนียม 6061-T6', E: 69, sy: 276, su: 310, eu: 0.08, ef: 0.12, rho: 2.70, c: '#0A6A94',
+        how: 'อะลูมิเนียมผสมแมกนีเซียมและซิลิคอน อบชุบแบบ T6 (อบละลายแล้วบ่มให้ตกตะกอน) อนุภาคเล็กมากที่ตกตะกอนขวางการเลื่อนของระนาบผลึก จึงแข็งขึ้นมาก ขึ้นรูปและกลึงง่าย ใช้ทำโครงจักรยาน ตัวเครื่องอุปกรณ์ และชิ้นส่วนทั่วไป' },
+      al7075: { n: 'อะลูมิเนียม 7075-T6', E: 71.7, sy: 503, su: 572, eu: 0.09, ef: 0.11, rho: 2.81, c: '#3F7A4F',
+        how: 'ผสมสังกะสีเป็นหลัก แข็งแรงเกือบเท่าเหล็กกล้าบางชนิดแต่หนักเพียงหนึ่งในสาม ใช้ในโครงสร้างเครื่องบินและชิ้นส่วนที่ต้องเบามาก แลกกับการเชื่อมยากกว่าและต้านการกัดกร่อนได้น้อยกว่า 6061' },
+      ti64: { n: 'ไทเทเนียม Ti-6Al-4V', E: 114, sy: 880, su: 950, eu: 0.08, ef: 0.14, rho: 4.43, c: '#7E3407',
+        how: 'ไทเทเนียมผสมอะลูมิเนียม 6% และวาเนเดียม 4% แข็งแรงสูงต่อน้ำหนัก ทนการกัดกร่อนและร่างกายยอมรับได้ ใช้ในเครื่องบิน รากฟันเทียม ข้อสะโพกเทียม และขอบมือถือ แต่แพงและกลึงยาก เพราะนำความร้อนไม่ดี ทำให้มีดกลึงร้อนจัด' },
+      ss316: { n: 'สแตนเลส 316 (อบอ่อน)', E: 193, sy: 290, su: 580, eu: 0.35, ef: 0.5, rho: 8.0, c: '#5A4A8C',
+        how: 'เหล็กผสมโครเมียมและนิกเกิล มีโมลิบดีนัมช่วยกันสนิมในน้ำเกลือ แข็งตึง (E สูง) และยืดได้มากก่อนขาด จึงดูดซับพลังงานได้มาก แต่หนักเกือบสามเท่าของอะลูมิเนียม ใช้ทำเครื่องมือแพทย์ นาฬิกา ครัว และอุปกรณ์ทางทะเล' },
+      glass: { n: 'กระจกโซดาไลม์ (ไม่ผ่านการเสริมแรง)', E: 70, sy: 0, su: 50, eu: 0, ef: 50 / 70000, rho: 2.5, c: '#C99A1E', brittle: true,
+        how: 'แก้วไม่มีระนาบผลึกให้เลื่อน จึงยืดถาวรไม่ได้เลย เมื่อรอยร้าวจิ๋วที่ผิวรับแรงดึงถึงจุดหนึ่งก็แตกทันที ความแข็งแรงจึงขึ้นกับขนาดรอยร้าวมากกว่าตัวเนื้อแก้ว ตัวเลขนี้เป็นค่าโดยประมาณของกระจกที่มีรอยขีดข่วนทั่วไป ดูข้อ 2' }
+    };
+  }
+
+  sig(m, e) {
+    if (m.brittle) return e <= m.ef ? m.E * 1000 * e : 0;
+    var ey = m.sy / (m.E * 1000);
+    if (e <= ey) return m.E * 1000 * e;
+    if (e <= m.eu) { var k = 4 / (m.eu - ey); return m.sy + (m.su - m.sy) * (1 - Math.exp(-k * (e - ey))) / (1 - Math.exp(-k * (m.eu - ey))); }
+    if (e <= m.ef) { var u = (e - m.eu) / (m.ef - m.eu); return m.su - 0.18 * m.su * u * u; }
+    return 0;
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      var s = self.state;
+      if (s.running) {
+        var m = self.mats()[s.mat], rate = m.ef / 7;
+        var e = s.eps + rate * dt * (s.eps < m.sy / (m.E * 1000) * 3 && !m.brittle ? 0.25 : 1);
+        if (m.brittle) e = s.eps + m.ef / 3 * dt;
+        if (e >= m.ef) self.setState({ eps: m.ef * 1.0001, running: false });
+        else self.setState({ eps: e });
+      }
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- 1. tensile ----------
+    var M = this.mats(), m = M[s.mat];
+    var zooms = { all: [0.55, 'ทั้งหมด 0–55%'], light: [0.16, 'โลหะเบา 0–16%'], el: [0.015, 'ช่วงยืดหยุ่น 0–1.5%'] };
+    var xmax = zooms[s.zoom][0], ymax = 1000;
+    var X = function (e) { return 70 + Math.min(e, xmax) / xmax * 800; }, Y = function (v) { return 340 - v / ymax * 320; };
+    var curve = function (mm, upto) {
+      var pts = [], end = Math.min(upto, mm.ef, xmax), n = 260;
+      var ey = mm.brittle ? mm.ef : mm.sy / (mm.E * 1000);
+      for (var i = 0; i <= n; i++) { var e = end * i / n; pts.push(f1(X(e)) + ',' + f1(Y(self.sig(mm, e)))); }
+      if (ey < end) { /* make sure the elastic corner is drawn sharply */ }
+      if (upto >= mm.ef && mm.ef <= xmax) pts.push(f1(X(mm.ef)) + ',' + f1(Y(0)));
+      return 'M' + pts.join(' L');
+    };
+    var curves = Object.keys(M).map(function (id) {
+      var mm = M[id], le = Math.min(mm.ef, xmax) * 0.98, lv = self.sig(mm, Math.min(mm.ef * 0.6, xmax * 0.9));
+      return { d: curve(mm, 10), c: mm.c, w: id === s.mat ? 1.5 : 1.5, o: id === s.mat ? 0.35 : 0.3, n: mm.n.split(' (')[0], lx: f1(Math.min(820, X(Math.min(mm.ef * 0.55, xmax * 0.85)))), ly: f1(Y(lv) - 8) };
+    });
+    var broken = s.eps >= m.ef;
+    var sNow = this.sig(m, Math.min(s.eps, m.ef)), ey = m.brittle ? m.ef : m.sy / (m.E * 1000);
+    var grid = ''; for (var gy = 200; gy < 1000; gy += 200) grid += 'M70,' + f1(Y(gy)) + ' H870 ';
+    for (var gx = 1; gx <= 4; gx++) grid += 'M' + f1(70 + gx * 160) + ',20 V340 ';
+    var ylab = [0, 200, 400, 600, 800, 1000].map(function (v) { return { y: f1(Y(v) + 4), v: v }; });
+    var xlab = [0, 1, 2, 3, 4, 5].map(function (k) { var e = xmax * k / 5; return { x: f1(70 + 160 * k), v: (e * 100).toFixed(xmax < 0.05 ? 1 : 0) + '%' }; });
+    var marks = '';
+    if (!m.brittle) { marks += 'M' + f1(X(ey) - 4) + ',' + f1(Y(m.sy)) + ' l4,-4 l4,4 l-4,4 z '; if (m.eu <= xmax) marks += 'M' + f1(X(m.eu) - 4) + ',' + f1(Y(m.su)) + ' l4,-4 l4,4 l-4,4 z '; }
+    // specimen
+    var eVis = Math.min(s.eps, m.ef), L0 = 360, Lg = L0 * (1 + Math.min(eVis, 0.55) * 0.9), cx = 450, w0 = 36;
+    var neck = (!m.brittle && eVis > m.eu) ? (eVis - m.eu) / (m.ef - m.eu) * 0.55 : 0;
+    var gap = broken ? 14 : 0;
+    var half = function (sign) {
+      var top = [], bot = [], xa = sign < 0 ? cx - Lg / 2 : cx + gap / 2, xb = sign < 0 ? cx - gap / 2 : cx + Lg / 2;
+      for (var i = 0; i <= 40; i++) {
+        var x = xa + (xb - xa) * i / 40, d = Math.exp(-Math.pow((x - cx) / 26, 2)), w = w0 * (1 - neck * d) * (1 - 0.3 * Math.min(eVis, 0.5) * 0.4);
+        if (broken && Math.abs(x - cx) < gap) w = w0 * (1 - neck) * 0.8;
+        top.push(f1(x) + ',' + f1(75 - w / 2)); bot.unshift(f1(x) + ',' + f1(75 + w / 2));
+      }
+      return 'M' + top.join(' L') + ' L' + bot.join(' L') + ' Z ';
+    };
+    var spec = half(-1) + half(1);
+    var area = 10; // mm^2
+    var tough = 0; for (var i2 = 0; i2 < 400; i2++) { var e1 = m.ef * i2 / 400, e2 = m.ef * (i2 + 1) / 400; tough += (this.sig(m, e1) + this.sig(m, e2)) / 2 * (e2 - e1); }
+    var st = broken ? 'ขาดแล้ว' : s.eps === 0 ? 'พร้อมทดสอบ' : s.eps < ey ? 'ช่วงยืดหยุ่น (คืนรูปได้)' : s.eps < m.eu ? 'ยืดถาวรและแข็งขึ้น' : 'คอดตรงกลาง (necking)';
+    var ts = {
+      name: m.n, col: m.c, state: st, stC: broken ? '#B04A0C' : '#0A6A94', curves: curves, grid: grid, ylab: ylab, xlab: xlab, marks: marks,
+      done: s.eps > 0 ? curve(m, s.eps) : 'M0,0', px: f1(X(Math.min(s.eps, m.ef))), py: f1(Y(broken ? 0 : sNow)),
+      gL: f1(cx - Lg / 2 - 66), gR: f1(cx + Lg / 2 - 4), spec: spec,
+      specTxt: 'ยาวเดิม 50 มม. → ' + (50 * (1 + eVis)).toFixed(1) + ' มม. · แรงดึง ' + (sNow * area / 1000).toFixed(2) + ' kN บนหน้าตัด 10 ตร.มม.' + (broken ? ' · ขาด' : ''),
+      specAria: 'ชิ้นทดสอบ ' + m.n + ' ยืด ' + (eVis * 100).toFixed(1) + ' เปอร์เซ็นต์',
+      stats: [
+        { k: 'ความเค้นตอนนี้', v: Math.round(broken ? 0 : sNow) + ' MPa', sub: 'ความเครียด ' + (Math.min(s.eps, m.ef) * 100).toFixed(2) + '%', c: '#0F2A3A' },
+        { k: 'มอดุลัสของยัง E', v: m.E + ' GPa', sub: 'ยิ่งสูง ยิ่งแข็งตึง งอยาก', c: '#0F2A3A' },
+        { k: 'จุดคราก (เริ่มเสียรูปถาวร)', v: m.brittle ? 'ไม่มี' : m.sy + ' MPa', sub: m.brittle ? 'แตกก่อนจะเสียรูปถาวร' : 'ออกแบบให้ใช้งานต่ำกว่านี้เสมอ', c: '#0F2A3A' },
+        { k: 'ความแข็งแรงสูงสุด', v: m.su + ' MPa', sub: 'ยืดได้ ' + Math.round(m.ef * 1000) / 10 + '% ก่อนขาด', c: '#0F2A3A' },
+        { k: 'แข็งแรงต่อน้ำหนัก', v: Math.round(m.su / m.rho) + ' kN·m/kg', sub: 'ความหนาแน่น ' + m.rho + ' g/cm³', c: '#0A6A94' },
+        { k: 'พลังงานที่ดูดซับได้จนขาด', v: tough.toFixed(tough < 1 ? 3 : 0) + ' MJ/m³', sub: 'พื้นที่ใต้กราฟ (ความเหนียว)', c: '#0F2A3A' }
+      ],
+      mats: Object.keys(M).map(function (id) { var q = pill(s.mat === id); return { name: M[id].n, pressed: s.mat === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ mat: id, eps: 0, running: false }); } }; }),
+      zooms: Object.keys(zooms).map(function (id) { var q = pill(s.zoom === id); return { name: zooms[id][1], pressed: s.zoom === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ zoom: id }); } }; }),
+      runTxt: s.running ? 'หยุดชั่วคราว' : broken ? 'ขาดแล้ว' : 'เริ่มดึง',
+      eps: Math.min(s.eps, m.ef), efMax: (m.ef * 1.001).toFixed(5), epsTxt: (Math.min(s.eps, m.ef) * 100).toFixed(2) + '%',
+      title: m.n, how: m.how,
+      aria: 'กราฟความเค้นกับความเครียดของโลหะและกระจก ' + m.n + ' ความเค้นตอนนี้ ' + Math.round(sNow) + ' เมกะปาสกาล'
+    };
+
+    // ---------- 2. glass residual stress ----------
+    var thick = { phone: [0.6, 'กระจกมือถือ 0.6 มม.'], build: [6, 'กระจกอาคาร/รถยนต์ 6 มม.'] };
+    var t = thick[s.thick][0];
+    var treats = {
+      none: { n: 'ไม่ทำอะไร (annealed)', K: 0.75, title: 'กระจกธรรมดา', how: 'ไม่มีความเค้นค้างที่ผิว แรงดึงจากการดัดไปถึงปลายรอยร้าวเต็ม ๆ รอยร้าวลึกแค่ไม่กี่สิบไมโครเมตรก็ทำให้แตกที่ความเค้นไม่ถึง 100 MPa' },
+      temp: { n: 'อบแล้วเป่าลมเย็น (tempered)', K: 0.75, title: 'กระจกเทมเปอร์', how: 'อบกระจกจนเกือบอ่อนตัว แล้วเป่าลมเย็นที่ผิวทั้งสองด้าน ผิวแข็งตัวก่อน พอเนื้อในเย็นตามและหดตัว ก็ดึงผิวให้ถูกอัดค้างไว้ ได้แรงอัดราว 100 MPa และลึกราว 20% ของความหนา จึงทนรอยร้าวลึกได้ดี และเมื่อแตกจะแตกเป็นเม็ดเล็ก ๆ ไม่คม แต่ทำกับกระจกบางมากไม่ได้ เพราะผิวกับเนื้อในเย็นตัวต่างกันไม่พอ', min: 3 },
+      ix: { n: 'แลกเปลี่ยนไอออน (chemically strengthened)', K: 0.75, title: 'แลกเปลี่ยนไอออน', how: 'แช่กระจกอะลูมิโนซิลิเกตในเกลือโพแทสเซียมหลอมเหลว ไอออนโพแทสเซียมตัวใหญ่แทนที่โซเดียมตัวเล็กที่ผิว จึงได้แรงอัดสูงมาก (หลายร้อย MPa) ใช้กับกระจกบางได้ ชั้นอัดลึกราวหลายสิบไมโครเมตร ทนรอยขีดตื้น ๆ ได้ดีมาก แต่ถ้ารอยร้าวลึกเกินชั้นอัด ก็ยังแตกได้' },
+      gc: { n: 'แก้วเซรามิก + แลกเปลี่ยนไอออน', K: 1.2, title: 'แก้วเซรามิก (เช่น Ceramic Shield)', how: 'อบแก้วให้เกิดผลึกระดับนาโนกระจายในเนื้อแก้ว ผลึกเล็กกว่าความยาวคลื่นแสงจึงยังใส แต่บังคับให้รอยร้าวต้องเลี้ยวอ้อม ค่า K_IC จึงสูงขึ้น แล้วยังแลกเปลี่ยนไอออนได้ลึกกว่า ทนทั้งรอยร้าวตื้นและลึก (ค่าในแบบจำลองเป็นค่าประมาณ)' }
+    };
+    var resid = function (tr, z) {   // z in mm from surface, returns MPa (negative = compression)
+      if (tr === 'none') return 0;
+      if (tr === 'temp') { var u = 2 * z / t - 1; return -100 + 150 * (1 - u * u); }
+      var CS = tr === 'gc' ? 900 : 800, DOL = (tr === 'gc' ? 0.12 : 0.045) * Math.min(1, t / 0.6 + 0.2);
+      var zz = Math.min(z, t - z), CT = CS * DOL / 3 * 2 / Math.max(0.05, t - 2 * DOL);
+      return (zz < DOL ? -CS * Math.pow(1 - zz / DOL, 2) : 0) + CT;
+    };
+    var tok = function (tr) { return !(treats[tr].min && t < treats[tr].min); };
+    var tr = tok(s.treat) ? s.treat : 'none';
+    var a = s.a / 1000, sapp = s.sapp;
+    var avg = function (fn, a2) { var sum = 0, n = 60; for (var i = 0; i < n; i++) sum += fn((i + 0.5) / n * a2); return sum / n; };
+    var Kc = function (tr2, sap) { var aa = Math.min(a, t * 0.95); return 1.12 * (sap * avg(function (z) { return 1 - 2 * z / t; }, aa) + avg(function (z) { return resid(tr2, z); }, aa)) * Math.sqrt(Math.PI * aa / 1000); };
+    var breakS = function (tr2) { var aa = Math.min(a, t * 0.95), B = avg(function (z) { return 1 - 2 * z / t; }, aa), R = avg(function (z) { return resid(tr2, z); }, aa); return (treats[tr2].K / (1.12 * Math.sqrt(Math.PI * aa / 1000)) - R) / B; };
+    var Know = Kc(tr, sapp), Kic = treats[tr].K, fails = Know >= Kic;
+    var gY = function (v) { return 160 - v / 1000 * 140; };  // ±1000 MPa
+    var zX = function (z) { return 70 + z / t * 800; };
+    var pRes = [], pApp = [], pSum = [];
+    for (var k = 0; k <= 300; k++) { var z = t * k / 300, r = resid(tr, z), ap = sapp * (1 - 2 * z / t); pRes.push(f1(zX(z)) + ',' + f1(Math.max(20, Math.min(300, gY(r))))); pApp.push(f1(zX(z)) + ',' + f1(gY(ap))); pSum.push(f1(zX(z)) + ',' + f1(Math.max(20, Math.min(300, gY(r + ap))))); }
+    var crackW = Math.max(3, Math.min(800, a / t * 800));
+    var bmax = 0, bl = Object.keys(treats).map(function (id) { var ok = tok(id), b = ok ? Math.max(0, breakS(id)) : 0; bmax = Math.max(bmax, b); return [id, ok, b]; });
+    var gl = {
+      tTxt: t + ' มม.', res: fails ? 'แตก' : 'ไม่แตก', resC: fails ? '#B04A0C' : '#0A6A94',
+      tensH: 140, zeroY: 160, compH: 140,
+      ylab: [1000, 500, 0, -500, -1000].map(function (v) { return { y: f1(gY(v) + 4), v: v }; }),
+      crack: 'M70,22 h' + f1(crackW) + ' v276 h' + f1(-crackW) + ' z',
+      app: 'M' + pApp.join(' L'), resid: 'M' + pRes.join(' L'), sum: 'M' + pSum.join(' L'),
+      xTxt: 'ความลึกจากผิว (0 ถึง ' + t + ' มม.) · แถบส้ม = รอยร้าวลึก ' + s.a + ' µm',
+      aTxt: s.a + ' µm',
+      bars: bl.map(function (q) { return { n: treats[q[0]].n, v: q[1] ? Math.round(q[2]) + ' MPa' : 'ทำกับกระจกบางขนาดนี้ไม่ได้', w: q[1] ? Math.max(1, q[2] / Math.max(bmax, 1) * 100).toFixed(1) + '%' : '0%', c: q[0] === tr ? '#0A6A94' : '#9FD0E6' }; }),
+      thick: Object.keys(thick).map(function (id) { var q = pill(s.thick === id); return { name: thick[id][1], pressed: s.thick === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ thick: id }); } }; }),
+      treats: Object.keys(treats).map(function (id) { var ok = tok(id), q = pill(tr === id); return { name: treats[id].n + (ok ? '' : ' · ต้องหนา 3 มม. ขึ้นไป'), pressed: tr === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, dis: ok ? 'false' : 'true', op: ok ? 1 : 0.45, pick: function () { if (ok) self.setState({ treat: id }); } }; }),
+      sliders: [
+        { id: 'g-a', name: 'ความลึกของรอยร้าวที่ผิว', label: s.a + ' µm', min: 2, max: 200, step: 1, v: s.a, set: function (e) { self.setState({ a: parseFloat(e.target.value) }); } },
+        { id: 'g-s', name: 'ความเค้นดัดที่ผิว (แรงที่กด)', label: sapp + ' MPa', min: 0, max: 1000, step: 10, v: sapp, set: function (e) { self.setState({ sapp: parseFloat(e.target.value) }); } }
+      ],
+      stats: [
+        { k: 'K ที่ปลายรอยร้าว', v: Know.toFixed(2) + ' MPa√m', c: fails ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ความเหนียวต่อการแตกหัก K_IC', v: Kic.toFixed(2) + ' MPa√m', c: '#0F2A3A' },
+        { k: 'ผล', v: Know < 0 ? 'รอยร้าวถูกบีบปิด' : fails ? 'รอยร้าวขยาย แตก' : 'รอยร้าวไม่ขยาย', c: fails ? '#B04A0C' : '#0A6A94' }
+      ],
+      title: treats[tr].title, how: treats[tr].how,
+      aria: 'กราฟความเค้นค้างและความเค้นดัดตามความลึกของกระจก ' + treats[tr].n + (fails ? ' แตก' : ' ไม่แตก')
+    };
+
+    // ---------- 3a. anodize ----------
+    var types = { II: { n: 'ชนิด II ตกแต่ง (อ่างราว 20°C)', max: 30, hv: '≈ 200–350 HV' }, III: { n: 'ชนิด III ฮาร์ดโค้ต (อ่างเย็นจัดใกล้ 0°C)', max: 110, hv: '≈ 400–500 HV' } };
+    var TY = types[s.atype], raw = 0.33 * s.aj * s.at, th = TY.max * (1 - Math.exp(-raw / TY.max));
+    var scl = Math.min(6, 100 / Math.max(th, 1)), inward = th * 0.5, outward = th - inward;
+    var origY = 125, topY = origY - outward * scl, barY = origY + inward * scl, oxH = barY - topY;
+    var pores = '', plines = '', pitch = s.atype === 'III' ? 16 : 12;
+    for (var px = 26; px < 500; px += pitch) { pores += 'M' + px + ',' + f1(topY) + ' h4 v' + f1(oxH) + ' h-4 z '; plines += 'M' + (px - 3) + ',' + f1(topY) + ' V' + f1(barY) + ' '; }
+    var dyes = { none: ['ไม่ย้อม (สีเงิน)', '#E3E9EC'], black: ['ดำ', '#1B1F22'], blue: ['น้ำเงิน', '#1F5FA8'], gold: ['ทอง', '#C99A1E'], red: ['แดง', '#B0321F'] };
+    var an = {
+      origY: origY - 1, origTY: f1(origY - 5), topY: f1(topY), oxH: f1(oxH), pores: pores, poreLines: plines,
+      dye: dyes[s.adye][1], dyeO: s.adye === 'none' ? 0 : 0.85, sealO: s.aseal ? 1 : 0, barY: f1(barY), metY: f1(barY + 4), metH: f1(Math.max(10, 256 - barY - 4)), metTY: f1(Math.min(248, barY + 26)),
+      oxTY: f1(Math.max(20, topY - 6)), oxTxt: 'ชั้นอะลูมินา ' + th.toFixed(1) + ' µm',
+      types: Object.keys(types).map(function (id) { var q = pill(s.atype === id); return { name: types[id].n, pressed: s.atype === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ atype: id }); } }; }),
+      sliders: [
+        { id: 'a-j', name: 'ความหนาแน่นกระแส', label: s.aj.toFixed(1) + ' A/dm²', min: 0.5, max: 4, step: 0.1, v: s.aj, set: function (e) { self.setState({ aj: parseFloat(e.target.value) }); } },
+        { id: 'a-t', name: 'เวลาในอ่าง', label: s.at + ' นาที', min: 5, max: 120, step: 5, v: s.at, set: function (e) { self.setState({ at: parseFloat(e.target.value) }); } }
+      ],
+      dyes: Object.keys(dyes).map(function (id) { return { name: dyes[id][0], c: dyes[id][1], pressed: s.adye === id ? 'true' : 'false', border: s.adye === id ? '#B04A0C' : '#FFFFFF', pick: function () { self.setState({ adye: id }); } }; }),
+      stats: [
+        { k: 'ความหนาชั้นออกไซด์', v: th.toFixed(1) + ' µm', c: '#0F2A3A' },
+        { k: 'งอกเข้าเนื้อ / พอกออกนอก', v: inward.toFixed(1) + ' / ' + outward.toFixed(1) + ' µm', c: '#0F2A3A' },
+        { k: 'ความแข็งผิวโดยทั่วไป', v: TY.hv, c: '#0F2A3A' },
+        { k: 'สีและการกันคราบ', v: s.aseal ? 'ทนทาน' : 'สีซีดและซึมคราบได้', c: s.aseal ? '#0A6A94' : '#B04A0C' }
+      ],
+      aria: 'ภาพตัดชั้นอะโนไดซ์หนา ' + th.toFixed(1) + ' ไมโครเมตร'
+    };
+    if (raw > TY.max * 0.9 && s.atype === 'II') an.stats[0].v += ' (ใกล้ขีดจำกัด)';
+
+    // ---------- 3b. diffusion bonding ----------
+    var pairs = { titi: { n: 'ไทเทเนียม + ไทเทเนียม (แบบในเครื่องบิน)', topN: 'ไทเทเนียม', botN: 'ไทเทเนียม', topC: '#7E3407', botC: '#C9A27E', Tmax: 1000 }, tial: { n: 'ไทเทเนียม + อะลูมิเนียม (แบบขอบมือถือ)', topN: 'ไทเทเนียม', botN: 'อะลูมิเนียม', topC: '#7E3407', botC: '#B9C3C9', Tmax: 640 } };
+    var PR = pairs[s.pair], TK = s.bT + 273, R = 8.314;
+    var Qd = s.pair === 'tial' ? 140000 : 200000, D0 = s.pair === 'tial' ? 1e-5 : 5e-5;
+    var D = D0 * Math.exp(-Qd / (R * TK)), xd = Math.sqrt(D * s.bt * 60) * 1e6;
+    var Tref = s.pair === 'tial' ? 773 : 1173, cf = 1 - Math.exp(-3 * Math.pow(s.bP / 10, 1.5) * (s.bt / 60) * Math.exp(-160000 / R * (1 / TK - 1 / Tref)));
+    var imT = s.pair === 'tial' ? 2.0 * Math.sqrt(s.bt / 60) * Math.exp(-180000 / (2 * R) * (1 / TK - 1 / 823)) : 0;
+    var melt = s.pair === 'tial' && s.bT >= 600;
+    var verdict, vC = '#B04A0C';
+    if (melt) verdict = 'อุณหภูมิใกล้จุดหลอมเหลวของอะลูมิเนียม (660°C) ชิ้นงานอ่อนตัวและเสียรูป';
+    else if (cf < 0.9) verdict = 'ผิวยังแตะกันไม่ทั่ว เหลือช่องว่างตามรอยต่อ รอยต่อจะอ่อน เพิ่มแรงอัด อุณหภูมิ หรือเวลา';
+    else if (imT > 3) verdict = 'ชั้นสารประกอบ TiAl₃ ที่เปราะหนาเกินไป รอยต่ออาจร้าวง่าย ลดอุณหภูมิหรือเวลา';
+    else { verdict = 'รอยต่อแนบสนิท กลายเป็นเนื้อเดียวกัน'; vC = '#0A6A94'; }
+    var voids = '', atomsA = '', atomsB = '', nV = Math.round((1 - cf) * 22);
+    for (var v2 = 0; v2 < 22; v2++) { if (v2 < nV) { var vx = 34 + v2 * 21.5; voids += 'M' + vx + ',128 a8,3.5 0 1,0 16,0 a8,3.5 0 1,0 -16,0 '; } }
+    var mix = Math.min(1, xd / 20);
+    for (var ax2 = 0; ax2 < 24; ax2++) {
+      var axx = 30 + ax2 * 19.5 + 4;
+      atomsA += 'M' + axx + ',' + f1(128 + 6 + mix * 22 * ((ax2 * 7) % 5) / 4) + ' a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 ';
+      atomsB += 'M' + (axx + 8) + ',' + f1(128 - 6 - mix * 22 * ((ax2 * 3) % 5) / 4) + ' a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 ';
+    }
+    var db = {
+      topC: PR.topC, botC: melt ? '#E8B999' : PR.botC, topN: PR.topN, botN: PR.botN, topDot: '#C9A27E', botDot: '#7D8C96', voids: voids || 'M0,0', atomsA: atomsA, atomsB: atomsB,
+      imY: f1(128 - Math.min(20, imT * 2) / 2), imH: f1(Math.min(20, imT * 2)), pTxt: 'แรงอัด ' + s.bP + ' MPa',
+      pairs: Object.keys(pairs).map(function (id) { var q = pill(s.pair === id); return { name: pairs[id].n, pressed: s.pair === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ pair: id, bT: id === 'tial' ? 550 : 900 }); } }; }),
+      sliders: [
+        { id: 'b-T', name: 'อุณหภูมิ', label: s.bT + ' °C', min: 400, max: PR.Tmax, step: 10, v: s.bT, set: function (e) { self.setState({ bT: parseFloat(e.target.value) }); } },
+        { id: 'b-P', name: 'แรงอัด', label: s.bP + ' MPa', min: 1, max: 30, step: 1, v: s.bP, set: function (e) { self.setState({ bP: parseFloat(e.target.value) }); } },
+        { id: 'b-t', name: 'เวลา', label: s.bt + ' นาที', min: 10, max: 240, step: 10, v: s.bt, set: function (e) { self.setState({ bt: parseFloat(e.target.value) }); } }
+      ],
+      stats: [
+        { k: 'พื้นที่ที่แนบสนิท', v: Math.round(cf * 100) + '%', c: cf < 0.9 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ระยะที่อะตอมแพร่ √(D·t)', v: xd.toFixed(xd < 1 ? 2 : 1) + ' µm', c: '#0F2A3A' },
+        { k: 'ชั้นสารประกอบเปราะ TiAl₃', v: s.pair === 'tial' ? imT.toFixed(1) + ' µm' : 'ไม่มี (โลหะเดียวกัน)', c: imT > 3 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'ค่าสัมประสิทธิ์การแพร่ D', v: D.toExponential(1) + ' m²/s', c: '#0F2A3A' }
+      ],
+      verdict: verdict, verdictC: vC,
+      aria: 'รอยต่อ ' + PR.n + ' แนบสนิท ' + Math.round(cf * 100) + ' เปอร์เซ็นต์'
+    };
+
+    // ---------- 3c. finishes ----------
+    var fins = {
+      polish: { n: 'ขัดเงา (Ra ต่ำกว่า 0.05 µm)', w: 4, rough: 0.3, title: 'ขัดเงาแบบกระจก', how: 'ขัดด้วยผงขัดที่ละเอียดขึ้นเรื่อย ๆ จนรอยบนผิวเล็กกว่าความยาวคลื่นแสง แสงจึงสะท้อนเป็นทิศเดียวเหมือนกระจก เห็นรอยนิ้วมือและรอยขีดข่วนชัด ใช้กับขอบสแตนเลสมือถือรุ่นเก่า นาฬิกา และเครื่องประดับ' },
+      brush: { n: 'ขัดลายเส้น (brushed)', w: 18, rough: 2, title: 'ขัดลายเส้น', how: 'ขัดด้วยสายพานหรือแปรงขัดไปทางเดียว ได้ร่องขนานเล็ก ๆ แสงจึงกระจายเป็นแนวยาวตั้งฉากกับร่อง ช่วยกลบรอยขีดเล็ก ๆ ใช้กับเครื่องใช้ไฟฟ้า ลิฟต์ และหน้าปัดนาฬิกา' },
+      bead: { n: 'พ่นเม็ดแก้ว (bead blasted)', w: 55, rough: 5, title: 'พ่นเม็ดแก้วหรือทราย', how: 'ยิงเม็ดแก้วหรือเม็ดเซรามิกเล็ก ๆ ใส่ผิวด้วยลมแรง ได้หลุมเล็ก ๆ สุ่มทั่วผิว แสงจึงกระจายทุกทิศ ดูด้านนุ่ม ไม่ค่อยเห็นรอยนิ้วมือ ขอบไทเทเนียมและอะลูมิเนียมของมือถือหลายรุ่นทำแบบนี้ก่อนอะโนไดซ์หรือเคลือบ และยังทำให้ผิวถูกอัดเล็กน้อยคล้าย shot peening' },
+      pvd: { n: 'เคลือบ PVD (ไทเทเนียมไนไตรด์ ฯลฯ)', w: 10, rough: 0.6, title: 'เคลือบด้วยไอในสุญญากาศ (PVD)', how: 'ระเหยโลหะหรือสารประกอบอย่างไทเทเนียมไนไตรด์ในสุญญากาศให้เกาะผิวเป็นชั้นบางระดับไมโครเมตร ได้สีทอง ดำ หรือกราไฟต์ที่แข็งมาก ใช้กับนาฬิกา ก๊อกน้ำ ดอกสว่าน และขอบสแตนเลสของมือถือบางรุ่น' }
+    };
+    var FN = fins[s.fin], lobe = '', surf = 'M20,170 ';
+    for (var sx2 = 20; sx2 <= 400; sx2 += 4) surf += 'L' + sx2 + ',' + f1(170 + FN.rough * Math.sin(sx2 * 1.7) * Math.sin(sx2 * 0.37)) + ' ';
+    surf += 'L400,220 L20,220 Z';
+    var spread = FN.w * Math.PI / 180, cAng = 45 * Math.PI / 180;
+    lobe = 'M210,170 L' + f1(210 + 190 * Math.sin(cAng - spread)) + ',' + f1(170 - 190 * Math.cos(cAng - spread)) + ' A190,190 0 0,1 ' + f1(210 + 190 * Math.sin(Math.min(1.5, cAng + spread))) + ',' + f1(170 - 190 * Math.cos(Math.min(1.5, cAng + spread))) + ' Z';
+    if (FN.w > 40) lobe = 'M210,170 L30,170 A180,180 0 0,1 390,170 Z';
+    var fn = {
+      lobe: lobe, surf: surf, specO: FN.w < 12 ? 1 : FN.w < 30 ? 0.5 : 0.1, title: FN.title, how: FN.how,
+      list: Object.keys(fins).map(function (id) { var q = pill(s.fin === id); return { name: fins[id].n, pressed: s.fin === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ fin: id }); } }; }),
+      aria: 'แสงสะท้อนจากผิว ' + FN.n
+    };
+
+    var apps = [
+      { c: '#0A6A94', t: 'แก้วเซรามิก', d: 'หน้าเตาไฟฟ้าและเตาอินดักชันที่ทนร้อนเย็นสลับเร็ว กระจกหน้าเตาผิง ฟันและครอบฟันเซรามิก (ลิเทียมไดซิลิเกต) และกระจกกล้องโทรทรรศน์ที่แทบไม่ขยายตัวเมื่อร้อน' },
+      { c: '#0A6A94', t: 'กระจกแลกเปลี่ยนไอออน', d: 'หน้าจอนาฬิกา แท็บเล็ต โน้ตบุ๊ก จอในรถยนต์ ตู้ ATM กระจกห้องนักบินบางชนิด และขวดยาฉีดที่ต้องไม่แตกระหว่างขนส่ง' },
+      { c: '#C99A1E', t: 'กระจกเทมเปอร์', d: 'ประตูกระจก ฉากกั้นอาบน้ำ หน้าต่างรถด้านข้าง โต๊ะกระจก และผนังกระจกอาคาร (ดูหน้ากระจกและโครงสร้างตึกสูง)' },
+      { c: '#3F7A4F', t: 'อะลูมิเนียมอะโนไดซ์', d: 'โน้ตบุ๊ก กล้องและเลนส์ ชิ้นส่วนเครื่องบินและจักรยาน กระทะ hard anodized กรอบหน้าต่างและแผงผนังอาคาร ไฟฉาย และอุปกรณ์ปีนเขา' },
+      { c: '#7E3407', t: 'ไทเทเนียม', d: 'โครงสร้างและใบพัดเครื่องยนต์เครื่องบิน รากฟันเทียมและข้อเทียม นาฬิกา กรอบแว่น และชิ้นส่วนรถแข่ง' },
+      { c: '#7E3407', t: 'เชื่อมโลหะต่างชนิด', d: 'แผงไทเทเนียมกลวงในเครื่องบินที่ขึ้นรูปพร้อมเชื่อมแบบแพร่ (SPF/DB) หม้อกระทะหลายชั้นสแตนเลสประกบอะลูมิเนียมหรือทองแดง และแผ่นโลหะสองชั้นจากการเชื่อมด้วยระเบิดในโรงงานเคมี' },
+      { c: '#5A4A8C', t: 'สแตนเลสขัดเงา/ด้าน/PVD', d: 'นาฬิกา เครื่องมือแพทย์ อุปกรณ์ครัวและโรงงานอาหาร ราวบันได ลิฟต์ ก๊อกน้ำ และครีบตกแต่งผนังตึกสูง' },
+      { c: '#B04A0C', t: 'ทำผิวให้ถูกอัดในโลหะ (shot peening)', d: 'เฟือง สปริงรถยนต์ เพลา ใบพัดและจานเครื่องยนต์ไอพ่น ยิงเม็ดเหล็กเล็ก ๆ ใส่ผิวให้ถูกอัด รอยร้าวจากความล้าจึงเริ่มยากขึ้นมาก หลักการเดียวกับกระจกเสริมแรง' }
+    ];
+
+    return {
+      ts: ts, gl: gl, an: an, db: db, fn: fn, apps: apps,
+      tsRun: function () { var mm = M[self.state.mat]; if (self.state.eps >= mm.ef) return; if (self.reduce) { self.setState({ eps: mm.ef * 1.0001, running: false }); return; } self.setState({ running: !self.state.running }); },
+      tsReset: function () { self.setState({ eps: 0, running: false }); },
+      setEps: function (e) { self.setState({ eps: parseFloat(e.target.value), running: false }); },
+      aseal: s.aseal, toggleSeal: function () { self.setState({ aseal: !self.state.aseal }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

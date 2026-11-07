@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sources and access</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Materials & Structures Lab</a><span aria-hidden="true">›</span><span aria-current="page">Sources</span><a class="ps-lang" href="../../materials-lab/sources.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="index.html" style="min-height: 44px; display: inline-flex; align-items: center">← Back to the Materials & Structures Lab</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">MATERIALS & STRUCTURES LAB · SOURCES</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">Sources and access</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">The Materials & Structures Lab uses basic mechanics of materials, fracture mechanics and wind dynamics. Material properties are typical textbook values; Burj Khalifa facts come from the articles listed below. Other figures are assumed values to show the principles, not design values for any building or product.</p>
+</header>
+<div role="group" aria-label="Filter by access" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>Used for:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>Access:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">Links checked in November 2026. If you find an error or a better source, please let us know on the project’s GitHub.</p>
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "Architect Magazine: Detail – Burj Khalifa Curtain Wall", "used": "About 28,000 unitized panels, reflective coated glass, stainless steel fins, a 1:500 wind-tunnel model with over 1,000 sensors, a 110 psf design value and 3 full-scale mock-ups", "access": "Open article", "url": "https://www.architectmagazine.com/technology/architectural-detail/detail-burj-khalifa-curtain-wall_o"}, {"title": "Khaleej Times: Burj Khalifa's structural mastermind (Bill Baker) reveals construction journey", "used": "Buttressed hexagonal core, Y plan, setbacks to disrupt vortices, foundation of 194 piles 45 m deep, and about 50 mm of settlement", "access": "Open news article", "url": "https://www.khaleejtimes.com/uae/burj-khalifa/burj-khalifa-structural-engineer-bill-baker-on-the-groundbreaking-systems-that-safeguard-the-buildin"}, {"title": "STRUCTURE magazine: Form Follows Physics", "used": "Setbacks and reorientation of the tower from wind-tunnel tests; vortices and crosswind forces", "access": "Open article", "url": "https://www.structuremag.org/article/form-follows-physics/"}, {"title": "RWDI: Burj Khalifa project page", "used": "Wind-tunnel testing and shape modification", "access": "Open company web page", "url": "https://rwdi.com/en_ca/projects/burj-khalifa"}, {"title": "Putzmeister: Burj Khalifa success story", "used": "Night pumping of high-strength concrete with ice flakes, and the 606 m vertical pumping record", "access": "Open company web page", "url": "https://www.putzmeister.com/web/turk/success-story-detail/-/asset_publisher/clouds-don-t-reach-the-top-but-the-concrete-had-to-1"}, {"title": "OpenStax University Physics Volume 1, Chapter 12: Static Equilibrium and Elasticity", "used": "Stress, strain, Young’s modulus and the elastic limit", "access": "Open textbook, CC BY 4.0 licence", "url": "https://openstax.org/books/university-physics-volume-1/pages/12-3-stress-strain-and-elastic-modulus"}], "restricted": [{"title": "ASTM E8/E8M Standard Test Methods for Tension Testing of Metallic Materials", "used": "Specimen shape and tensile test procedure", "access": "ASTM standard, purchase required", "url": ""}, {"title": "ASTM C1499 (ring-on-ring) and ASTM E1300 (Determining Load Resistance of Glass in Buildings)", "used": "Glass strength testing and calculating the wind load a glass panel can resist", "access": "ASTM standard, purchase required", "url": ""}, {"title": "Callister & Rethwisch, Materials Science and Engineering: An Introduction", "used": "Mechanical properties of metals, precipitation hardening and introductory fracture mechanics", "access": "Books: must be bought or borrowed from a library", "url": ""}, {"title": "Varshneya, A. K. Fundamentals of Inorganic Glasses", "used": "Tempered glass, ion exchange and glass-ceramics", "access": "Books: must be bought or borrowed from a library", "url": ""}, {"title": "Roark's Formulas for Stress and Strain", "used": "β and α coefficients for edge-supported rectangular plates under uniform load", "access": "Books: must be bought or borrowed from a library", "url": ""}, {"title": "Irwin, Baker et al. wind-testing and structural-design reports on the Burj Khalifa", "used": "Details of the wind-tunnel tests and the tower’s natural frequencies", "access": "Academic papers and project reports, subscription or request from the authors required", "url": ""}], "none": [{"title": "Material properties in the tensile chart", "used": "E, yield point, ultimate strength and elongation of each material, and the shape of the hardening and necking parts of the curve", "access": "Approximate typical values; real values depend on manufacturing and heat treatment", "url": ""}, {"title": "Residual stress and cracks in glass", "used": "Surface compression, depth of layer, K_IC and K = 1.12σ√(πa) with depth-averaged stress", "access": "Simple model, not values for any brand of glass", "url": ""}, {"title": "Anodizing and diffusion bonding", "used": "The 720 rule, hardness, diffusion values, gap-closure rate and the TiAl₃ layer", "access": "Assumed values showing trends", "url": ""}, {"title": "Wind and tower sway", "used": "Terrain α, pressure coefficients, natural frequency 46/H, Strouhal number, damping and a 15 milli-g comfort limit", "access": "Approximations and a qualitative model, not Burj Khalifa design values", "url": ""}, {"title": "Glass panels and movement", "used": "Allowable stress of each glass type, joint slip range and clearance around the glass", "access": "Assumed values for comparison", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'Open', title: 'Data that is available and free to use', desc: 'Anyone can check it straight away through the link', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'Restricted access', title: 'The data exists, but requires registration, payment, or is limited to certain organisations', desc: 'This data really exists, but we can only include what is published generally, or not at all because of its terms of use', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'Not publicly available', title: 'No usable data, so the simulator uses estimates', desc: 'The numbers in these parts are our own examples or assumptions to show the principle; don’t use them as real data', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' items', items: items };
+    });
+    var fl = [{ id: 'all', name: 'All' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

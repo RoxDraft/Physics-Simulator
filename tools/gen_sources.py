@@ -296,6 +296,34 @@ SIMS = {
             S("กระแสรั่วของพิกเซล LTPS และออกไซด์", "1 pA เทียบ 0.001 pA กับตัวเก็บประจุ 0.2 pF", "ค่าสมมติแสดงลำดับขนาด ค่าจริงขึ้นกับการออกแบบวงจร"),
         ],
     },
+    "materials-lab": {
+        "eyebrow": "MATERIALS & STRUCTURES LAB · แหล่งข้อมูล",
+        "back": ("Main.dc.html", "← กลับไปที่แล็บวัสดุและโครงสร้าง"),
+        "intro": "แล็บวัสดุและโครงสร้างใช้กลศาสตร์วัสดุ กลศาสตร์การแตกหัก และพลศาสตร์ของลมแบบพื้นฐาน ค่าสมบัติวัสดุเป็นค่าทั่วไปจากตำรา ส่วนข้อมูลของ Burj Khalifa มาจากบทความที่ระบุด้านล่าง ตัวเลขอื่นเป็นค่าสมมติเพื่อให้เห็นหลักการ ไม่ใช่ค่าออกแบบของอาคารหรือผลิตภัณฑ์ใด",
+        "open": [
+            S("Architect Magazine: Detail – Burj Khalifa Curtain Wall", "แผงสำเร็จรูปราว 28,000 แผง กระจกเคลือบสะท้อนแสง ครีบสแตนเลส หุ่นอุโมงค์ลม 1:500 ที่มีเซนเซอร์กว่า 1,000 จุด ค่าออกแบบ 110 psf แผงตัวอย่างขนาดจริง 3 ชุด", "บทความเปิด", "https://www.architectmagazine.com/technology/architectural-detail/detail-burj-khalifa-curtain-wall_o"),
+            S("Khaleej Times: Burj Khalifa's structural mastermind (Bill Baker) reveals construction journey", "แกนหกเหลี่ยมค้ำยัน ผังรูปตัว Y การลดขั้นเพื่อรบกวนกระแสวน ฐานรากเสาเข็ม 194 ต้น ลึก 45 ม. และการทรุดตัวราว 50 มม.", "ข่าวเปิด", "https://www.khaleejtimes.com/uae/burj-khalifa/burj-khalifa-structural-engineer-bill-baker-on-the-groundbreaking-systems-that-safeguard-the-buildin"),
+            S("STRUCTURE magazine: Form Follows Physics", "การลดขั้นและหมุนทิศของตึกจากผลการทดสอบในอุโมงค์ลม กระแสวนและแรงตั้งฉากกับทิศลม", "บทความเปิด", "https://www.structuremag.org/article/form-follows-physics/"),
+            S("RWDI: Burj Khalifa project page", "งานทดสอบอุโมงค์ลมและการปรับรูปทรง", "หน้าเว็บเปิดของบริษัท", "https://rwdi.com/en_ca/projects/burj-khalifa"),
+            S("Putzmeister: Burj Khalifa success story", "การสูบคอนกรีตกำลังอัดสูงกลางคืนพร้อมน้ำแข็งเกล็ด และสถิติสูบขึ้นแนวดิ่ง 606 ม.", "หน้าเว็บเปิดของบริษัท", "https://www.putzmeister.com/web/turk/success-story-detail/-/asset_publisher/clouds-don-t-reach-the-top-but-the-concrete-had-to-1"),
+            S("OpenStax University Physics Volume 1 บทที่ 12: Static Equilibrium and Elasticity", "ความเค้น ความเครียด มอดุลัสของยัง และขีดจำกัดความยืดหยุ่น", "ตำราเปิด สัญญาอนุญาต CC BY 4.0", "https://openstax.org/books/university-physics-volume-1/pages/12-3-stress-strain-and-elastic-modulus"),
+        ],
+        "restricted": [
+            S("ASTM E8/E8M Standard Test Methods for Tension Testing of Metallic Materials", "รูปร่างชิ้นทดสอบและวิธีทดสอบแรงดึง", "มาตรฐาน ASTM ต้องซื้อ"),
+            S("ASTM C1499 (ring-on-ring) และ ASTM E1300 (Determining Load Resistance of Glass in Buildings)", "การทดสอบความแข็งแรงของกระจก และการคำนวณแรงลมที่แผงกระจกรับได้", "มาตรฐาน ASTM ต้องซื้อ"),
+            S("Callister & Rethwisch, Materials Science and Engineering: An Introduction", "สมบัติเชิงกลของโลหะ การอบชุบให้ตกตะกอน และกลศาสตร์การแตกหักเบื้องต้น", "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด"),
+            S("Varshneya, A. K. Fundamentals of Inorganic Glasses", "กระจกเทมเปอร์ การแลกเปลี่ยนไอออน และแก้วเซรามิก", "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด"),
+            S("Roark's Formulas for Stress and Strain", "สัมประสิทธิ์ β และ α ของแผ่นสี่เหลี่ยมยึดขอบรับแรงกระจาย", "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด"),
+            S("Irwin, Baker et al. รายงานการทดสอบลมและการออกแบบโครงสร้าง Burj Khalifa", "รายละเอียดการทดสอบอุโมงค์ลมและความถี่ธรรมชาติของตึก", "บทความวิชาการและรายงานโครงการ ต้องสมัครสมาชิกหรือขอจากผู้จัดทำ"),
+        ],
+        "none": [
+            S("สมบัติวัสดุในกราฟแรงดึง", "E จุดคราก ความแข็งแรงสูงสุด และการยืดของแต่ละวัสดุ รูปร่างกราฟช่วงแข็งขึ้นและคอด", "ค่าทั่วไปโดยประมาณ ค่าจริงขึ้นกับการผลิตและการอบชุบ"),
+            S("ความเค้นค้างและรอยร้าวในกระจก", "แรงอัดที่ผิว ความลึกชั้นอัด K_IC และสมการ K = 1.12σ√(πa) แบบเฉลี่ยความเค้นตามความลึก", "แบบจำลองอย่างง่าย ไม่ใช่ค่าของกระจกยี่ห้อใด"),
+            S("อะโนไดซ์และการเชื่อมแบบแพร่", "กฎ 720 ความแข็ง ค่าการแพร่ อัตราปิดช่องว่าง และชั้น TiAl₃", "ค่าสมมติแสดงแนวโน้ม"),
+            S("ลมและการแกว่งของตึก", "ค่า α ของพื้นที่ สัมประสิทธิ์แรงดัน ความถี่ธรรมชาติ 46/H เลขสตรูฮาล ความหน่วง และเกณฑ์ความสบาย 15 milli-g", "ค่าประมาณและแบบจำลองเชิงคุณภาพ ไม่ใช่ค่าออกแบบของ Burj Khalifa"),
+            S("แผงกระจกและการเลื่อน", "ค่าความเค้นที่ยอมให้ของกระจกแต่ละชนิด ระยะที่ข้อต่อรับได้ และช่องว่างรอบกระจก", "ค่าสมมติเพื่อการเปรียบเทียบ"),
+        ],
+    },
 }
 
 TEMPLATE = r'''<!doctype html>

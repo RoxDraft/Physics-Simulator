@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แหล่งข้อมูลและการเข้าถึง</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+a:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 56px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<nav style="font-size: 15px; font-weight: 600"><a href="Main.dc.html" style="min-height: 44px; display: inline-flex; align-items: center">← กลับไปที่แล็บวัสดุและโครงสร้าง</a></nav>
+<header style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">MATERIALS & STRUCTURES LAB · แหล่งข้อมูล</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 700">แหล่งข้อมูลและการเข้าถึง</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">แล็บวัสดุและโครงสร้างใช้กลศาสตร์วัสดุ กลศาสตร์การแตกหัก และพลศาสตร์ของลมแบบพื้นฐาน ค่าสมบัติวัสดุเป็นค่าทั่วไปจากตำรา ส่วนข้อมูลของ Burj Khalifa มาจากบทความที่ระบุด้านล่าง ตัวเลขอื่นเป็นค่าสมมติเพื่อให้เห็นหลักการ ไม่ใช่ค่าออกแบบของอาคารหรือผลิตภัณฑ์ใด</p>
+</header>
+<div role="group" aria-label="กรองตามการเข้าถึง" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{f.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: {{g.tagBg}}; color: {{g.tagFg}}">{{g.tag}}</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">{{g.title}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5D6A">{{g.count}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A5D6A">{{g.desc}}</p>
+<sc-for list="{{g.items}}" as="x" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-left-color: #D5DEE3; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 16px; font-weight: 700; line-height: 1.5">{{x.title}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>ใช้กับ:</strong> {{x.used}}</div>
+<div style="font-size: 14px; line-height: 1.65; color: #34495A"><strong>การเข้าถึง:</strong> {{x.access}}</div>
+<sc-if value="{{x.url}}" hint-placeholder-val="{{ true }}"><a href="{{x.url}}" target="_blank" rel="noopener" style="font-size: 14px; word-break: break-all">{{x.url}}</a></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #4A5D6A">ตรวจสอบลิงก์เมื่อเดือนพฤศจิกายน 2569 ถ้าพบข้อมูลผิดหรือมีแหล่งที่ดีกว่า แจ้งได้ใน GitHub ของโปรเจกต์</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.state = { filter: 'all' };
+    this.SRC = {"open": [{"title": "Architect Magazine: Detail – Burj Khalifa Curtain Wall", "used": "แผงสำเร็จรูปราว 28,000 แผง กระจกเคลือบสะท้อนแสง ครีบสแตนเลส หุ่นอุโมงค์ลม 1:500 ที่มีเซนเซอร์กว่า 1,000 จุด ค่าออกแบบ 110 psf แผงตัวอย่างขนาดจริง 3 ชุด", "access": "บทความเปิด", "url": "https://www.architectmagazine.com/technology/architectural-detail/detail-burj-khalifa-curtain-wall_o"}, {"title": "Khaleej Times: Burj Khalifa's structural mastermind (Bill Baker) reveals construction journey", "used": "แกนหกเหลี่ยมค้ำยัน ผังรูปตัว Y การลดขั้นเพื่อรบกวนกระแสวน ฐานรากเสาเข็ม 194 ต้น ลึก 45 ม. และการทรุดตัวราว 50 มม.", "access": "ข่าวเปิด", "url": "https://www.khaleejtimes.com/uae/burj-khalifa/burj-khalifa-structural-engineer-bill-baker-on-the-groundbreaking-systems-that-safeguard-the-buildin"}, {"title": "STRUCTURE magazine: Form Follows Physics", "used": "การลดขั้นและหมุนทิศของตึกจากผลการทดสอบในอุโมงค์ลม กระแสวนและแรงตั้งฉากกับทิศลม", "access": "บทความเปิด", "url": "https://www.structuremag.org/article/form-follows-physics/"}, {"title": "RWDI: Burj Khalifa project page", "used": "งานทดสอบอุโมงค์ลมและการปรับรูปทรง", "access": "หน้าเว็บเปิดของบริษัท", "url": "https://rwdi.com/en_ca/projects/burj-khalifa"}, {"title": "Putzmeister: Burj Khalifa success story", "used": "การสูบคอนกรีตกำลังอัดสูงกลางคืนพร้อมน้ำแข็งเกล็ด และสถิติสูบขึ้นแนวดิ่ง 606 ม.", "access": "หน้าเว็บเปิดของบริษัท", "url": "https://www.putzmeister.com/web/turk/success-story-detail/-/asset_publisher/clouds-don-t-reach-the-top-but-the-concrete-had-to-1"}, {"title": "OpenStax University Physics Volume 1 บทที่ 12: Static Equilibrium and Elasticity", "used": "ความเค้น ความเครียด มอดุลัสของยัง และขีดจำกัดความยืดหยุ่น", "access": "ตำราเปิด สัญญาอนุญาต CC BY 4.0", "url": "https://openstax.org/books/university-physics-volume-1/pages/12-3-stress-strain-and-elastic-modulus"}], "restricted": [{"title": "ASTM E8/E8M Standard Test Methods for Tension Testing of Metallic Materials", "used": "รูปร่างชิ้นทดสอบและวิธีทดสอบแรงดึง", "access": "มาตรฐาน ASTM ต้องซื้อ", "url": ""}, {"title": "ASTM C1499 (ring-on-ring) และ ASTM E1300 (Determining Load Resistance of Glass in Buildings)", "used": "การทดสอบความแข็งแรงของกระจก และการคำนวณแรงลมที่แผงกระจกรับได้", "access": "มาตรฐาน ASTM ต้องซื้อ", "url": ""}, {"title": "Callister & Rethwisch, Materials Science and Engineering: An Introduction", "used": "สมบัติเชิงกลของโลหะ การอบชุบให้ตกตะกอน และกลศาสตร์การแตกหักเบื้องต้น", "access": "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด", "url": ""}, {"title": "Varshneya, A. K. Fundamentals of Inorganic Glasses", "used": "กระจกเทมเปอร์ การแลกเปลี่ยนไอออน และแก้วเซรามิก", "access": "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด", "url": ""}, {"title": "Roark's Formulas for Stress and Strain", "used": "สัมประสิทธิ์ β และ α ของแผ่นสี่เหลี่ยมยึดขอบรับแรงกระจาย", "access": "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด", "url": ""}, {"title": "Irwin, Baker et al. รายงานการทดสอบลมและการออกแบบโครงสร้าง Burj Khalifa", "used": "รายละเอียดการทดสอบอุโมงค์ลมและความถี่ธรรมชาติของตึก", "access": "บทความวิชาการและรายงานโครงการ ต้องสมัครสมาชิกหรือขอจากผู้จัดทำ", "url": ""}], "none": [{"title": "สมบัติวัสดุในกราฟแรงดึง", "used": "E จุดคราก ความแข็งแรงสูงสุด และการยืดของแต่ละวัสดุ รูปร่างกราฟช่วงแข็งขึ้นและคอด", "access": "ค่าทั่วไปโดยประมาณ ค่าจริงขึ้นกับการผลิตและการอบชุบ", "url": ""}, {"title": "ความเค้นค้างและรอยร้าวในกระจก", "used": "แรงอัดที่ผิว ความลึกชั้นอัด K_IC และสมการ K = 1.12σ√(πa) แบบเฉลี่ยความเค้นตามความลึก", "access": "แบบจำลองอย่างง่าย ไม่ใช่ค่าของกระจกยี่ห้อใด", "url": ""}, {"title": "อะโนไดซ์และการเชื่อมแบบแพร่", "used": "กฎ 720 ความแข็ง ค่าการแพร่ อัตราปิดช่องว่าง และชั้น TiAl₃", "access": "ค่าสมมติแสดงแนวโน้ม", "url": ""}, {"title": "ลมและการแกว่งของตึก", "used": "ค่า α ของพื้นที่ สัมประสิทธิ์แรงดัน ความถี่ธรรมชาติ 46/H เลขสตรูฮาล ความหน่วง และเกณฑ์ความสบาย 15 milli-g", "access": "ค่าประมาณและแบบจำลองเชิงคุณภาพ ไม่ใช่ค่าออกแบบของ Burj Khalifa", "url": ""}, {"title": "แผงกระจกและการเลื่อน", "used": "ค่าความเค้นที่ยอมให้ของกระจกแต่ละชนิด ระยะที่ข้อต่อรับได้ และช่องว่างรอบกระจก", "access": "ค่าสมมติเพื่อการเปรียบเทียบ", "url": ""}]};
+  }
+
+  renderVals() {
+    var self = this, s = this.state, SRC = this.SRC;
+    var meta = [
+      { id: 'open', tag: 'เปิดเผย', title: 'ข้อมูลที่หาได้และใช้ได้ฟรี', desc: 'ใครก็ตรวจสอบได้ทันทีผ่านลิงก์', tagBg: '#DDEFF6', tagFg: '#0A4F70' },
+      { id: 'restricted', tag: 'จำกัดการเข้าถึง', title: 'มีข้อมูลอยู่ แต่ต้องลงทะเบียน ซื้อ หรือเฉพาะหน่วยงาน', desc: 'ข้อมูลเหล่านี้มีอยู่จริง แต่เราใส่ได้แค่ส่วนที่เผยแพร่ทั่วไป หรือไม่ได้ใส่เลยเพราะเงื่อนไขการใช้งาน', tagBg: '#FFF1CC', tagFg: '#6B4A00' },
+      { id: 'none', tag: 'ไม่มีข้อมูลเปิดเผย', title: 'ไม่มีข้อมูลที่ใช้ได้ ตัวจำลองจึงใช้ค่าประมาณ', desc: 'ตัวเลขในส่วนเหล่านี้เป็นค่าตัวอย่างหรือสมมติของเรา เพื่อให้เห็นหลักการ ไม่ควรนำไปใช้เป็นข้อมูลจริง', tagBg: '#FCE3CF', tagFg: '#7E3407' }
+    ];
+    var groups = meta.filter(function (m) { return s.filter === 'all' || s.filter === m.id; }).map(function (m) {
+      var items = SRC[m.id] || [];
+      return { tag: m.tag, title: m.title, desc: m.desc, tagBg: m.tagBg, tagFg: m.tagFg, count: items.length + ' รายการ', items: items };
+    });
+    var fl = [{ id: 'all', name: 'ทั้งหมด' }].concat(meta.map(function (m) { return { id: m.id, name: m.tag }; }));
+    return {
+      groups: groups,
+      filters: fl.map(function (f) { var on = f.id === s.filter; return { name: f.name, pressed: on ? 'true' : 'false', bg: on ? '#0A6A94' : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F2A3A', border: on ? '#0A6A94' : '#C9D4DA', pick: function () { self.setState({ filter: f.id }); } }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -129,6 +129,16 @@ page src/light-lab/Sources.dc.html light-lab/sources.html light-lab/sources.html
 page src/light-lab/Display.dc.html light-lab/display.html light-lab/display.html \
   "หน้าหลัก=../index.html" "Light & Display Lab=index.html" "จอมือถือและอุปกรณ์=" -- \
   "Home=../index.html" "Light & Display Lab=index.html" "Phone & device screens="
+lab materials-lab "Materials & Structures Lab"
+RENAMES=(--rename Main.dc.html=index.html --rename Tower.dc.html=tower.html --rename Sources.dc.html=sources.html)
+page src/materials-lab/Main.dc.html materials-lab/index.html materials-lab/index.html \
+  "หน้าหลัก=../index.html" "Materials & Structures Lab=" -- "Home=../index.html" "Materials & Structures Lab="
+page src/materials-lab/Sources.dc.html materials-lab/sources.html materials-lab/sources.html \
+  "หน้าหลัก=../index.html" "Materials & Structures Lab=index.html" "แหล่งข้อมูล=" -- \
+  "Home=../index.html" "Materials & Structures Lab=index.html" "Sources="
+page src/materials-lab/Tower.dc.html materials-lab/tower.html materials-lab/tower.html \
+  "หน้าหลัก=../index.html" "Materials & Structures Lab=index.html" "กระจกและโครงสร้างตึกสูง=" -- \
+  "Home=../index.html" "Materials & Structures Lab=index.html" "Tall-building glass & structure="
 
 # ---------- English landing page ----------
 $PY index.html en/index.html --plain --lang en --dict tools/i18n/en.json \

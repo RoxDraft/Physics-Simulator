@@ -119,6 +119,16 @@ page src/circuit-lab/Computer.dc.html circuit-lab/computer.html circuit-lab/comp
   "Home=../index.html" "Circuit Lab=index.html" "From circuits to computers="
 lab chem-bio-lab "Chem · Bio Lab"
 lab quantum-lab "Quantum Lab"
+lab light-lab "Light & Display Lab"
+RENAMES=(--rename Main.dc.html=index.html --rename Display.dc.html=display.html --rename Sources.dc.html=sources.html)
+page src/light-lab/Main.dc.html light-lab/index.html light-lab/index.html \
+  "หน้าหลัก=../index.html" "Light & Display Lab=" -- "Home=../index.html" "Light & Display Lab="
+page src/light-lab/Sources.dc.html light-lab/sources.html light-lab/sources.html \
+  "หน้าหลัก=../index.html" "Light & Display Lab=index.html" "แหล่งข้อมูล=" -- \
+  "Home=../index.html" "Light & Display Lab=index.html" "Sources="
+page src/light-lab/Display.dc.html light-lab/display.html light-lab/display.html \
+  "หน้าหลัก=../index.html" "Light & Display Lab=index.html" "จอมือถือและอุปกรณ์=" -- \
+  "Home=../index.html" "Light & Display Lab=index.html" "Phone & device screens="
 
 # ---------- English landing page ----------
 $PY index.html en/index.html --plain --lang en --dict tools/i18n/en.json \

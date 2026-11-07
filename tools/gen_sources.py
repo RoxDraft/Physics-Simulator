@@ -261,6 +261,32 @@ SIMS = {
             S("ลิงก์ใยแก้วในตัวจำลอง", "กำลังส่ง 0 dBm ตัวรับ −28 dBm เครื่องขยายทุก 80 กม. ชดเชยกลับเป็น 0 dBm และมุมแสงในภาพที่ขยายแนวตั้ง", "ค่าตัวอย่าง ระบบจริงคิดสัญญาณรบกวนสะสม การกระจายของพัลส์ และงบประมาณกำลังแสงละเอียดกว่านี้"),
         ],
     },
+    "light-lab": {
+        "eyebrow": "LIGHT & DISPLAY LAB · แหล่งข้อมูล",
+        "back": ("Main.dc.html", "← กลับไปที่แล็บแสงและจอภาพ"),
+        "intro": "แล็บแสงและจอภาพใช้กฎการแผ่รังสีของพลังค์ ฟังก์ชันความไวแสงของตา และเกณฑ์การกระพริบของ IEEE 1789 ส่วนตัวเลขของหลอด จอ กระจก และพลังงาน เป็นค่าประมาณหรือค่าสมมติเพื่อให้เห็นหลักการ ไม่ใช่สเปกของสินค้ารุ่นใด",
+        "open": [
+            S("U.S. DOE: Flicker – Understanding the New IEEE Recommended Practice", "เกณฑ์การกระเพื่อมของแสงที่เสี่ยงต่ำตาม IEEE 1789 และการหรี่ไฟ LED ด้วย PWM กับการลดกระแส", "บทความเปิดของกระทรวงพลังงานสหรัฐฯ", "https://www.energy.gov/eere/ssl/articles/flicker-understanding-new-ieee-recommended-practice"),
+            S("U.S. DOE: Characterizing Photometric Flicker", "นิยามเปอร์เซ็นต์การกระเพื่อม (percent flicker) และผลของวงจรขับ", "เอกสาร PDF เปิด", "https://www.energy.gov/sites/prod/files/2016/03/f30/characterizing-photometric-flicker.pdf"),
+            S("CLASP: Global Leaders Agree to Full Phase-Out of Fluorescent Lighting (COP5 อนุสัญญามินามาตะ)", "การเลิกใช้หลอดฟลูออเรสเซนต์ที่มีปรอท หลอดตะเกียบภายในปี 2025 และหลอดยาวภายในปี 2027", "ข่าวเปิด", "https://www.clasp.ngo/updates/cop5-decision/"),
+            S("Wyman, Sloan & Shirley (2013). Simple Analytic Approximations to the CIE XYZ Color Matching Functions. JCGT 2(2)", "สูตรฟังก์ชันจับคู่สี CIE ที่ใช้คำนวณ V(λ) สี และอุณหภูมิสี", "บทความวารสารเปิด (open access)", "https://jcgt.org/published/0002/02/01/"),
+            S("OpenStax University Physics Volume 3 บทที่ 6: Photons and Matter Waves", "การแผ่รังสีของวัตถุดำและกฎของพลังค์", "ตำราเปิด สัญญาอนุญาต CC BY 4.0", "https://openstax.org/books/university-physics-volume-3/pages/6-1-blackbody-radiation"),
+        ],
+        "restricted": [
+            S("IEEE Std 1789-2015 Recommended Practices for Modulating Current in High-Brightness LEDs", "เส้นเกณฑ์ 0.025·f และ 0.08·f ในกราฟความเสี่ยงการกระพริบ", "มาตรฐาน IEEE ต้องซื้อหรือเข้าผ่านห้องสมุด", "https://standards.ieee.org/ieee/1789/4480/"),
+            S("Schubert, E. F. Light-Emitting Diodes", "ประสิทธิภาพของ LED สีขาวแบบฟอสเฟอร์ และ efficiency droop", "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด"),
+            S("Tsujimura, T. OLED Display Fundamentals and Applications", "โครงสร้างจอ OLED วงจรพิกเซล การระเหยผ่านหน้ากากโลหะ และชั้นปิดผนึก", "หนังสือ ต้องซื้อหรือยืมจากห้องสมุด"),
+            S("SID Symposium Digest และ Journal of the SID", "งานวิจัยจอ LTPO การขับจอที่รีเฟรชต่ำ และ thin-film encapsulation", "บทความวารสาร ต้องสมัครสมาชิกหรือซื้อบทความ"),
+            S("Varshneya, A. K. Chemically strengthened glass (บทความทบทวน)", "การแลกเปลี่ยนไอออน K⁺/Na⁺ แรงอัดที่ผิวและความลึกของชั้นอัด", "บทความวารสาร ต้องสมัครสมาชิกหรือซื้อบทความ"),
+        ],
+        "none": [
+            S("สเปกตรัมของหลอดในตัวจำลอง", "หลอดฟลูออเรสเซนต์ประกอบจากเส้นสเปกตรัมแบบเกาส์เซียน LED ขาวคือพีคน้ำเงิน 450 nm รวมฟอสเฟอร์", "รูปทรงประมาณ ไม่ใช่สเปกตรัมที่วัดจากหลอดจริง"),
+            S("ประสิทธิภาพ อายุ และราคาหลอด", "ไส้ 14 lm/W 1,000 ชม. ถึง LED 130 lm/W 25,000 ชม. ไฟฟ้า 4.2 บาท/หน่วย CO₂ 0.5 กก./kWh", "ค่าตัวอย่างโดยประมาณ ค่าจริงต่างกันตามรุ่นและประเทศ"),
+            S("ตัวเลขของจอ", "อัตราแสงผ่านแต่ละชั้น ความหนาแน่นจุดบกพร่อง ต้นทุนแผ่นกระจก 60,000 บาท และกำลังไฟของจอ", "ค่าสมมติเพื่อการเปรียบเทียบ"),
+            S("การทดสอบตก", "มือถือ 200 กรัม ระยะหยุดของพื้นและเคส และแบบจำลอง Weibull ของโอกาสแตก", "แบบจำลองของเล่น ไม่ใช่ผลทดสอบของกระจกยี่ห้อใด"),
+            S("กระแสรั่วของพิกเซล LTPS และออกไซด์", "1 pA เทียบ 0.001 pA กับตัวเก็บประจุ 0.2 pF", "ค่าสมมติแสดงลำดับขนาด ค่าจริงขึ้นกับการออกแบบวงจร"),
+        ],
+    },
 }
 
 TEMPLATE = r'''<!doctype html>

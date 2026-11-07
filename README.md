@@ -48,6 +48,7 @@ Open `index.html` in a browser (or enable GitHub Pages: Settings → Pages → D
 | [`space-lab/`](space-lab/index.html) | **Space Lab** — a hub page to choose the **Orbit Lab** simulation (launch, orbit raising, station-keeping with thruster exhaust, end of life over Point Nemo or to a graveyard orbit, re-entry heating and break-up down to the ground) or the **report** on the space industry (launch cost, launches per year, ISS vs Tiangong, propellants and RTGs, re-entry, Falcon 9 reuse, the Space Shuttle). Thai and English (`en/`). | 3 |
 | [`synchrotron-lab/`](synchrotron-lab/index.html) | **Synchrotron Lab** — a hub page to choose the **synchrotron control room** simulation (ring size, energy lost to light per turn, RF cavity on/off, spectrum vs lasers, presets from Siam Photon to the LHC) or the **report** on how synchrotrons work and differ from lasers. Thai and English (`en/`). | 3 |
 | [`light-lab/`](light-lab/index.html) | **Light & Display Lab** — spectra of incandescent, halogen, fluorescent, LED and sunlight (Planck, CIE V(λ), CCT, luminous efficacy); a tunable LED lamp with dimming methods, dim-to-warm and an IEEE 1789 flicker-risk chart; lamp running costs over years; and a **display page**: LCD / Mini-LED / OLED / MicroLED pixel stacks, resolution vs eye acuity, mother-glass yield, drop test with ion-exchanged glass, moisture barriers, capacitive touch scanning, LTPO 1–120 Hz refresh, E-Ink capsules and ghosting, EMR vs active pens (hover, tilt, pressure), colour gamut and factory calibration (ΔE), and a switchable privacy display (wide vs narrow pixels). | 3 |
+| [`materials-lab/`](materials-lab/index.html) | **Materials & Structures Lab** — universal tensile test with stress–strain curves (6061-T6, 7075-T6, Ti-6Al-4V, 316 stainless, soda-lime glass); glass fracture mechanics with residual-stress profiles (tempered, ion-exchanged, glass-ceramic); anodizing layer growth, Ti–Ti and Ti–Al diffusion bonding, polished/brushed/bead-blasted/PVD finishes; and a **tall-building page**: wind profile and façade pressures, vortex shedding vs setbacks and a tuned mass damper, curtain-wall glass under wind load, inter-story drift and thermal movement, with Burj Khalifa’s wind-tunnel testing, foundations, concrete and cladding. | 3 |
 
 ```
 index.html            landing page linking every simulator
@@ -59,6 +60,7 @@ mechanics-lab/         index.html, statics.html, dynamics.html, thermo.html, flu
 circuit-lab/           index.html, computer.html, sources.html
 beam-fea/ chem-bio-lab/ quantum-lab/   index.html, sources.html
 light-lab/            index.html, display.html, sources.html
+materials-lab/        index.html, tower.html, sources.html
 space-lab/            index.html (choose), orbit-lab.html (simulation), report.html (document), img/
 synchrotron-lab/      index.html (choose), simulation.html, report.html, img/
                       (standalone pages, not built from src/; their English hub pages are en/space-lab/ and en/synchrotron-lab/)

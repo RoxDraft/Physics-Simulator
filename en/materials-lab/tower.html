@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tall-building glass & structure</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../shared/dc-runtime.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+<style>
+.ps-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:8px clamp(16px,3vw,40px);background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid #D5DEE3;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;color:#4A5D6A}
+.ps-bar a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;
+  color:#0A6A94;font-weight:600;text-decoration:none}
+.ps-bar a:hover{background:#EAF3F7}
+.ps-bar a:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+.ps-bar .ps-home{background:#0F2A3A;color:#FFFFFF}
+.ps-bar .ps-home:hover{background:#163A4F}
+.ps-bar [aria-current]{font-weight:600;color:#0F2A3A}
+.ps-bar .ps-lang{margin-left:auto;border:1.5px solid #0A6A94}
+</style>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-ps-lang]");if(a){try{localStorage.setItem("ps-lang",a.getAttribute("data-ps-lang"))}catch(_){}}});</script>
+</head>
+<body>
+<nav class="ps-bar" aria-label="Breadcrumb"><a class="ps-home" href="../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M10 21v-6h4v6"></path></svg>Home</a><span aria-hidden="true">›</span><a href="index.html">Materials & Structures Lab</a><span aria-hidden="true">›</span><span aria-current="page">Tall-building glass & structure</span><a class="ps-lang" href="../../materials-lab/tower.html" hreflang="th" lang="th" data-ps-lang="th" aria-label="Switch to Thai"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"></path></svg>ไทย</a></nav>
+<div id="dc-root"></div>
+<template id="dc-template">
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 34px">
+
+<nav aria-label="Materials & Structures Lab sections" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="index.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Materials testing</a>
+<a href="tower.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Tall-building glass & structure</a>
+<a href="sources.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">Sources</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 920px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">MATERIALS &amp; STRUCTURES LAB · TALL BUILDINGS</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">How tall buildings cope with wind, sway and heat</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">The higher you go, the stronger the wind. The tower can sway, and the glass façade must handle wind pressure, suction, floors shifting relative to each other, and thermal expansion. This page simulates each principle, then looks at how the 828-metre Burj Khalifa used simulation, testing and purpose-designed materials.</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. Wind gets stronger with height, so façade pressure varies</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">Near the ground, trees and buildings slow the wind; higher up it is faster, approximately V(z) = V₁₀·(z/10)^α. Wind pressure q = ½ρV² rises with the square of the speed. The windward face is pushed (about +0.8q), the back and sides are sucked outward, and at the corners suction can reach about 1.5q, so glass near the corners and on upper floors takes the most load.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<svg viewBox="0 0 900 420" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{wd.aria}}">
+<path d="{{wd.grid}}" stroke="#E3E9EC"></path>
+<sc-for list="{{wd.hlab}}" as="t" hint-placeholder-count="5">
+<text x="54" y="{{t.y}}" font-size="11" text-anchor="end" fill="#4A5D6A" font-family="IBM Plex Mono, monospace">{{t.v}}</text>
+</sc-for>
+<path d="{{wd.tower}}" fill="#C9D4DA" stroke="#7D8C96"></path>
+<path d="{{wd.arrows}}" stroke="#0A6A94" stroke-width="2" fill="none"></path>
+<path d="{{wd.heads}}" fill="#0A6A94"></path>
+<path d="{{wd.qline}}" fill="none" stroke="#B04A0C" stroke-width="2.5"></path>
+<path d="{{wd.cline}}" fill="none" stroke="#B04A0C" stroke-width="1.5" stroke-dasharray="5 4"></path>
+<line x1="{{wd.desX}}" y1="20" x2="{{wd.desX}}" y2="400" stroke="#3F7A4F" stroke-width="1.5" stroke-dasharray="3 3" opacity="{{wd.desO}}"></line>
+<text x="{{wd.desTX}}" y="34" font-size="11" text-anchor="end" fill="#3F7A4F" opacity="{{wd.desO}}">Burj Khalifa façade design value ≈ 5.3 kPa</text>
+<text x="80" y="414" font-size="11" fill="#0A6A94">Arrows = wind speed</text>
+<text x="560" y="414" font-size="11" fill="#B04A0C">━ Windward pressure ┅ corner suction (kPa)</text>
+<sc-for list="{{wd.qlab}}" as="t" hint-placeholder-count="4">
+<text x="{{t.x}}" y="400" font-size="10" text-anchor="middle" fill="#7E3407" font-family="IBM Plex Mono, monospace">{{t.v}}</text>
+</sc-for>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+<sc-for list="{{wd.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Building height</span>
+<div role="group" aria-label="Building height" style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{wd.heights}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 80px; min-height: 44px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">Surroundings</span>
+<div role="group" aria-label="Terrain" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{wd.terrains}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 40px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left">{{p.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="w-v" style="font-size: 14px; font-weight: 600">Wind at 10 m height</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{wd.vTxt}}</span></div>
+<input id="w-v" type="range" min="10" max="50" step="1" value="{{v10}}" onChange="{{setV10}}">
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">Real design values come from decades to centuries of local wind statistics, including gusts, plus shape effects measured in a wind tunnel. This chart uses simple coefficients to show the trend.</p>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. Vortices behind the tower and sway: why the Burj Khalifa is stepped</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">As wind passes a tower, vortices peel off alternately left and right (vortex shedding), pushing the tower sideways in rhythm at f = St·V/D. If this matches the tower’s natural frequency, the sway builds up like pushing a swing in time. A tower with the same cross-section all the way up sheds vortices in step along its whole height, while a tower that steps in has a different width D at each level, so the vortices shed out of step. The Burj Khalifa’s designers called this "confusing the wind" (confuse the wind)</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Top view: vortices behind the tower</div>
+<svg viewBox="0 0 420 240" style="display: block; width: 100%; height: auto; background: #13212A" role="img" aria-label="{{vx.aria}}">
+<path d="{{vx.stream}}" stroke="#2F4A5A" stroke-width="1.2" fill="none"></path>
+<sc-for list="{{vx.vort}}" as="c" hint-placeholder-count="10">
+<circle cx="{{c.x}}" cy="{{c.y}}" r="{{c.r}}" fill="none" stroke="{{c.c}}" stroke-width="2" opacity="{{c.o}}" stroke-dasharray="{{c.d}}"></circle>
+</sc-for>
+<path d="{{vx.plan}}" fill="#C9D4DA" stroke="#FFFFFF" stroke-width="1.5"></path>
+<text x="12" y="20" font-size="12" fill="#9FD0E6">Wind →</text>
+</svg>
+</div>
+<div style="flex: 1 1 240px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Side view (sway exaggerated 100×)</div>
+<svg viewBox="0 0 240 240" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{vx.sideAria}}">
+<rect x="0" y="226" width="240" height="14" fill="#C8A47A"></rect>
+<path d="{{vx.side}}" fill="#9AAAB4" stroke="#4A5D6A"></path>
+<line x1="120" y1="20" x2="120" y2="226" stroke="#B04A0C" stroke-dasharray="3 4" opacity="0.6"></line>
+</svg>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 14px">Sway at the top vs. wind speed (qualitative model)</span>
+<svg viewBox="0 0 860 250" style="display: block; width: 100%; height: auto" role="img" aria-label="Top-floor sway vs. wind speed for different tower shapes">
+<line x1="60" y1="210" x2="840" y2="210" stroke="#9AAAB4"></line>
+<line x1="60" y1="10" x2="60" y2="210" stroke="#9AAAB4"></line>
+<path d="{{vx.cSq}}" fill="none" stroke="#B04A0C" stroke-width="1.5" opacity="0.7"></path>
+<path d="{{vx.cNow}}" fill="none" stroke="#0A6A94" stroke-width="3"></path>
+<line x1="{{vx.mx}}" y1="10" x2="{{vx.mx}}" y2="210" stroke="#0F2A3A" stroke-dasharray="3 3"></line>
+<line x1="60" y1="{{vx.limY}}" x2="840" y2="{{vx.limY}}" stroke="#3F7A4F" stroke-dasharray="6 4"></line>
+<text x="836" y="{{vx.limTY}}" font-size="11" text-anchor="end" fill="#3F7A4F">Approximate comfort limit (15 milli-g)</text>
+<sc-for list="{{vx.xlab}}" as="t" hint-placeholder-count="6">
+<text x="{{t.x}}" y="228" font-size="11" text-anchor="middle" fill="#4A5D6A" font-family="IBM Plex Mono, monospace">{{t.v}}</text>
+</sc-for>
+<text x="450" y="240" font-size="11" text-anchor="middle" fill="#4A5D6A">Wind speed at the top (m/s)</text>
+<text x="66" y="22" font-size="11" fill="#4A5D6A">Acceleration at the top</text>
+</svg>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; font-weight: 600"><span style="color: #B04A0C">━ Square prism, uniform section, no damper</span><span style="color: #0A6A94">━ Selected design</span></div>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Tower shape</span>
+<div role="group" aria-label="Tower shape" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{vx.shapes}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{tmd}}" onChange="{{toggleTmd}}" style="width: 20px; height: 20px; accent-color: #0A6A94">Add a tuned mass damper</label>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="vx-v" style="font-size: 14px; font-weight: 600">Wind speed at the top</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{vx.vTxt}}</span></div>
+<input id="vx-v" type="range" min="5" max="60" step="1" value="{{vtop}}" onChange="{{setVtop}}">
+</div>
+<sc-for list="{{vx.stats}}" as="r" hint-placeholder-count="5">
+<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #E3E9EC; padding-top: 6px"><span>{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace; text-align: right; color: {{r.c}}">{{r.v}}</span></div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{vx.title}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">{{vx.how}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">3. Glass panels under wind: how thick, and which glass?</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">A curtain wall does not carry the building’s weight, but it must resist wind and pass the load to the aluminium frame and each floor. A glass panel bends like a thin plate; the maximum stress is at the centre, σ ≈ β·q·b²/t², so it drops quickly as the glass gets thicker. Tall-building glass is usually insulated glass (two panes with an air gap), which shares the load and blocks heat. The panel in this example matches a typical Burj Khalifa panel, about 1.37 × 3.25 m.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Glass panel cross-section (deflection exaggerated)</div>
+<svg viewBox="0 0 420 300" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{gp.aria}}">
+<path d="{{gp.windArrows}}" stroke="#0A6A94" stroke-width="2" fill="none"></path>
+<path d="{{gp.paneA}}" fill="none" stroke="{{gp.cA}}" stroke-width="{{gp.wA}}"></path>
+<path d="{{gp.paneB}}" fill="none" stroke="{{gp.cB}}" stroke-width="{{gp.wB}}" opacity="{{gp.oB}}"></path>
+<rect x="180" y="16" width="70" height="20" fill="#7D8C96"></rect>
+<rect x="180" y="264" width="70" height="20" fill="#7D8C96"></rect>
+<text x="268" y="30" font-size="11" fill="#4A5D6A">Aluminium frame + rubber seals</text>
+<text x="20" y="150" font-size="12" fill="#0A6A94" font-weight="600">Wind</text>
+<text x="300" y="150" font-size="12" fill="#4A5D6A">{{gp.dTxt}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{gp.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Glass type</span>
+<div role="group" aria-label="Glass type" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{gp.types}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{gp.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{igu}}" onChange="{{toggleIgu}}" style="width: 20px; height: 20px; accent-color: #0A6A94">Insulated glass (two panes) shares the load</label>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{gp.title}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">{{gp.how}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">4. Towers move and heat up: the curtain wall must slide with them</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">When a tower sways, each floor shifts slightly relative to the one below (inter-story drift). Glass fixed rigidly to both floors would be racked until it broke. A unitized curtain wall therefore hangs each panel from one floor only and links it to its neighbours with slip joints that slide into each other (stack joints), sealed with gaskets. Heat makes the aluminium frame expand almost three times as much as the glass, so a gap is left around the glass and flexible gaskets or silicone are used.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Three floors of curtain wall (movement exaggerated)</div>
+<svg viewBox="0 0 420 345" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{mv.aria}}">
+<sc-for list="{{mv.slabs}}" as="b" hint-placeholder-count="4">
+<rect x="{{b.x}}" y="{{b.y}}" width="300" height="12" fill="#9AAAB4"></rect>
+</sc-for>
+<sc-for list="{{mv.panels}}" as="p" hint-placeholder-count="9">
+<path d="{{p.d}}" fill="{{p.f}}" stroke="{{p.s}}" stroke-width="2"></path>
+</sc-for>
+<sc-for list="{{mv.joints}}" as="j" hint-placeholder-count="6">
+<circle cx="{{j.x}}" cy="{{j.y}}" r="5" fill="{{j.c}}"></circle>
+</sc-for>
+<text x="16" y="338" font-size="11" fill="#4A5D6A">● Slip joints (green = within range · red = beyond range)</text>
+</svg>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{mv.stats}}" as="r" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Glass fixing method</span>
+<div role="group" aria-label="Glass fixing method" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{mv.fixes}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{mv.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #4A5D6A">The slip range of the joints and the clearance around the glass in this model are assumed values; real values come from calculation and full-scale mock-up tests.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">5. What simulations did the Burj Khalifa use, and were materials custom-made?</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">In short: computer simulation, wind tunnels and full-scale mock-ups, alternating with several rounds of reshaping. No new elements were invented, but the concrete mix, the glass and the construction methods were "tailor-made" for this tower and Dubai’s climate.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px">
+<sc-for list="{{bk}}" as="c" hint-placeholder-count="8">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-top: 5px solid {{c.c}}; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: {{c.c}}">{{c.tag}}</div>
+<div style="font-size: 16px; font-weight: 700">{{c.t}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #34495A">{{c.d}}</p>
+</div>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #4A5D6A; max-width: 960px">Try finite-element calculations for beams and frames in <a href="../beam-fea/index.html">Beam FEA</a> and wind, lift and fluids in <a href="../mechanics-lab/index.html">Mechanics Lab</a></p>
+</section>
+
+</div>
+</div>
+</template>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":4200}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      H: 828, terrain: 'open', v10: 30,
+      shape: 'y', tmd: false, vtop: 30,
+      gtype: 'hs', gt: 8, gq: 3, igu: true,
+      fix: 'unit', drift: 2.5, dT: 50,
+      t: 0
+    };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._alive = true; this._last = null;
+    var loop = function (now) {
+      if (!self._alive) return;
+      if (self._last === null) self._last = now;
+      var dt = Math.min((now - self._last) / 1000, 0.05);
+      self._last = now;
+      if (!self.reduce) self.setState({ t: self.state.t + dt });
+      self._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  componentWillUnmount() { this._alive = false; if (this._raf) cancelAnimationFrame(this._raf); }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- 1. wind profile ----------
+    var terr = { open: [0.12, 'Open desert or seashore'], sub: [0.22, 'Suburbs'], city: [0.33, 'Dense city centre'] };
+    var al = terr[s.terrain][0], H = s.H, rho = 1.2;
+    var V = function (z) { return s.v10 * Math.pow(Math.max(z, 10) / 10, al); };
+    var q = function (z) { return 0.5 * rho * V(z) * V(z) / 1000; };  // kPa
+    var Hmax = 900, Yz = function (z) { return 400 - z / Hmax * 380; };
+    var qmax = 6, Xq = function (kp) { return 480 + kp / qmax * 400; };
+    var tw = H > 600 ? 'M120,400 L120,' + f1(Yz(H * 0.35)) + ' L130,' + f1(Yz(H * 0.35)) + ' L130,' + f1(Yz(H * 0.6)) + ' L140,' + f1(Yz(H * 0.6)) + ' L140,' + f1(Yz(H * 0.8)) + ' L148,' + f1(Yz(H * 0.8)) + ' L152,' + f1(Yz(H)) + ' L156,' + f1(Yz(H * 0.8)) + ' L164,' + f1(Yz(H * 0.8)) + ' L164,' + f1(Yz(H * 0.6)) + ' L174,' + f1(Yz(H * 0.6)) + ' L174,' + f1(Yz(H * 0.35)) + ' L184,' + f1(Yz(H * 0.35)) + ' L184,400 Z'
+      : 'M128,400 L128,' + f1(Yz(H)) + ' L176,' + f1(Yz(H)) + ' L176,400 Z';
+    var arrows = '', heads = '';
+    for (var z = 50; z <= Math.max(H, 100); z += Math.max(50, H / 8)) { var L = V(z) * 4.5, y = Yz(z); arrows += 'M' + f1(118 - L) + ',' + f1(y) + ' H116 '; heads += 'M116,' + f1(y - 4) + ' l7,4 l-7,4 z '; }
+    var qp = [], cp = [];
+    for (var zz = 10; zz <= H; zz += H / 60) { qp.push(f1(Xq(0.8 * q(zz))) + ',' + f1(Yz(zz))); cp.push(f1(Xq(Math.min(qmax, 1.5 * q(zz) * 1.4))) + ',' + f1(Yz(zz))); }
+    var grid = ''; [200, 400, 600, 800].forEach(function (h) { grid += 'M60,' + f1(Yz(h)) + ' H880 '; }); [1, 2, 3, 4, 5, 6].forEach(function (k) { grid += 'M' + f1(Xq(k)) + ',20 V400 '; });
+    var qTop = q(H), peakCorner = 1.5 * qTop * 1.4;
+    var wd = {
+      grid: grid, tower: tw, arrows: arrows, heads: heads, qline: 'M' + qp.join(' L'), cline: 'M' + cp.join(' L'),
+      hlab: [0, 200, 400, 600, 800].map(function (h) { return { y: f1(Yz(h) + 4), v: h + ' m' }; }),
+      qlab: [1, 2, 3, 4, 5, 6].map(function (k) { return { x: f1(Xq(k)), v: k }; }),
+      desX: f1(Xq(5.27)), desTX: f1(Xq(5.27) - 4), desO: H === 828 ? 1 : 0.35,
+      stats: [
+        { k: 'Wind at the top', v: V(H).toFixed(0) + ' m/s', sub: '≈ ' + Math.round(V(H) * 3.6) + ' km/h (at 10 m: ' + s.v10 + ' m/s)', c: '#0F2A3A' },
+        { k: 'Wind pressure at the top q', v: qTop.toFixed(2) + ' kPa', sub: 'Equal to the weight of ' + Math.round(qTop * 1000 / 9.81) + ' kg per m²', c: '#0F2A3A' },
+        { k: 'Corner suction (including gusts)', v: peakCorner.toFixed(2) + ' kPa', sub: 'About 1.5 × q × 1.4', c: peakCorner > 5.27 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Force on a 1.37 × 3.25 m glass panel', v: (peakCorner * 1.37 * 3.25).toFixed(1) + ' kN', sub: '≈ ' + Math.round(peakCorner * 1.37 * 3.25 * 1000 / 9.81) + ' kg pulling the panel off the building', c: '#0F2A3A' }
+      ],
+      heights: [[828, 'Burj Khalifa 828 m'], [300, '300 m tower'], [100, '100 m tower']].map(function (h) { var qq = pill(s.H === h[0]); return { name: h[1], pressed: s.H === h[0] ? 'true' : 'false', bg: qq.bg, fg: qq.fg, border: qq.border, pick: function () { self.setState({ H: h[0] }); } }; }),
+      terrains: Object.keys(terr).map(function (id) { var qq = pill(s.terrain === id); return { name: terr[id][1] + ' (α = ' + terr[id][0] + ')', pressed: s.terrain === id ? 'true' : 'false', bg: qq.bg, fg: qq.fg, border: qq.border, pick: function () { self.setState({ terrain: id }); } }; }),
+      vTxt: s.v10 + ' m/s',
+      aria: 'Wind speed and pressure vs. height for a tower of ' + H + ' metres; pressure at the top ' + qTop.toFixed(2) + ' kilopascals'
+    };
+
+    // ---------- 2. vortex shedding ----------
+    var shapes = {
+      sq: { n: 'Square tower, uniform section', spread: 0, k: 1, St: 0.12, title: 'Uniform section: vortices in one rhythm', how: 'Every height has the same width, so vortices shed in step along the whole tower. When the wind speed makes that rhythm match the tower’s natural frequency, the side forces add up every cycle and the sway grows into a sharp peak on the chart.' },
+      taper: { n: 'Stepped tower (setbacks)', spread: 0.55, k: 0.75, St: 0.12, title: 'Stepped: rhythms spread out', how: 'The width drops in steps with height, so each section sheds vortices at a different frequency. The forces do not add up along the whole tower at once, so the peak on the chart is lower and broader. And the narrower top, which sways most, also catches less wind.' },
+      y: { n: 'Y-shaped plan, spiralling setbacks (like the Burj Khalifa)', spread: 0.7, k: 0.5, St: 0.1, title: 'Burj Khalifa style', how: 'A three-winged Y plan around a buttressed hexagonal core makes the tower stiff against twisting. Each wing steps back in turn in a spiral up the tower, so the width the wind sees changes along the height and with wind direction. The designers also rotated the tower so the side most prone to sway does not face the most frequent strong winds, all refined through repeated wind-tunnel tests.' }
+    };
+    var SH = shapes[s.shape], fn = 46 / 828, D = 60, zeta = s.tmd ? 0.045 : 0.015, zSq = 0.015;
+    var resp = function (Vt, shp, z2) {    // top acceleration in milli-g (qualitative)
+      var n = 9, sum = 0;
+      for (var i = 0; i < n; i++) { var Di = D * (1 - shp.spread * i / (n - 1)), Vcr = fn * Di / shp.St, r = Vt / Vcr, w = 1 - 0.5 * i / (n - 1); sum += w * Math.pow(r, 2) / Math.sqrt(Math.pow(1 - r * r, 2) + Math.pow(2 * z2 * r, 2)); }
+      var vortex = 1.6 * shp.k * sum / n * Math.min(1, Math.pow(Vt / 25, 2)), buff = 0.006 * Vt * Vt / 10;
+      return (vortex + buff) * (0.015 / z2 * 0.6 + 0.4);
+    };
+    var VX = function (v) { return 60 + (v - 5) / 55 * 780; }, AY = function (a) { return 210 - Math.min(a, 60) / 60 * 200; };
+    var cNow = [], cSq = [];
+    for (var vv = 5; vv <= 60; vv += 0.5) { cNow.push(f1(VX(vv)) + ',' + f1(AY(resp(vv, SH, zeta)))); cSq.push(f1(VX(vv)) + ',' + f1(AY(resp(vv, shapes.sq, zSq)))); }
+    var aNow = resp(s.vtop, SH, zeta), xTop = aNow * 9.81e-3 / Math.pow(2 * Math.PI * fn, 2);
+    // plan view + vortices
+    var planPath;
+    if (s.shape === 'y') { planPath = ''; [0, 120, 240].forEach(function (ang) { var a = (ang - 90) * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a), px = -sa, py = ca; planPath += 'M' + f1(150 + 9 * px) + ',' + f1(120 + 9 * py) + ' L' + f1(150 + 44 * ca + 9 * px) + ',' + f1(120 + 44 * sa + 9 * py) + ' L' + f1(150 + 44 * ca - 9 * px) + ',' + f1(120 + 44 * sa - 9 * py) + ' L' + f1(150 - 9 * px) + ',' + f1(120 - 9 * py) + ' Z '; }); planPath += 'M150,120 m-14,0 a14,14 0 1,0 28,0 a14,14 0 1,0 -28,0'; }
+    else if (s.shape === 'taper') planPath = 'M118,88 h64 v64 h-64 z M128,98 h44 v44 h-44 z';
+    else planPath = 'M118,88 h64 v64 h-64 z';
+    var fvis = 0.7 * s.vtop / 30, vort = [];
+    for (var k2 = 0; k2 < 10; k2++) {
+      var age = ((s.t * fvis + k2 / 2) % 5), side = k2 % 2 === 0 ? 1 : -1;
+      var jitter = s.shape === 'sq' ? 0 : Math.sin(k2 * 2.3 + Math.floor(s.t * fvis + k2 / 2) * 1.7) * (s.shape === 'y' ? 18 : 10);
+      var r = (s.shape === 'sq' ? 16 : s.shape === 'taper' ? 12 : 9) + age * 3;
+      vort.push({ x: f1(190 + age * 46), y: f1(120 + side * (22 + age * 2) + jitter), r: f1(r), c: side > 0 ? '#F5C77A' : '#9FD0E6', o: (Math.max(0, 1 - age / 5) * (s.shape === 'sq' ? 1 : s.shape === 'taper' ? 0.7 : 0.5)).toFixed(2), d: s.shape === 'sq' ? '0' : '4 3' });
+    }
+    var stream = ''; for (var sl = 0; sl < 7; sl++) stream += 'M0,' + (30 + sl * 30) + ' L110,' + (30 + sl * 30) + ' ';
+    var sway = Math.sin(s.t * 2 * Math.PI * 0.6) * Math.min(60, xTop * 1000 / 10) * 0.9, side = '';
+    if (s.shape === 'sq') side = 'M100,226 L' + f1(100 + sway) + ',30 L' + f1(140 + sway) + ',30 L140,226 Z';
+    else { var segs = [[0, 0.35, 40], [0.35, 0.6, 30], [0.6, 0.8, 20], [0.8, 0.95, 10], [0.95, 1, 3]]; segs.forEach(function (sg) { var y0 = 226 - sg[0] * 196, y1 = 226 - sg[1] * 196, d0 = sway * sg[0] * sg[0], d1 = sway * sg[1] * sg[1]; side += 'M' + f1(120 - sg[2] / 2 + d0) + ',' + f1(y0) + ' L' + f1(120 - sg[2] / 2 + d1) + ',' + f1(y1) + ' L' + f1(120 + sg[2] / 2 + d1) + ',' + f1(y1) + ' L' + f1(120 + sg[2] / 2 + d0) + ',' + f1(y0) + ' Z '; }); }
+    if (s.shape === 'sq') side = 'M100,226 L' + f1(100 + sway) + ',30 L' + f1(140 + sway) + ',30 L140,226 Z';
+    var vx = {
+      vort: vort, plan: planPath, stream: stream, side: side, cNow: 'M' + cNow.join(' L'), cSq: 'M' + cSq.join(' L'), mx: f1(VX(s.vtop)),
+      limY: f1(AY(15)), limTY: f1(AY(15) - 5),
+      xlab: [5, 15, 25, 35, 45, 60].map(function (v) { return { x: f1(VX(v)), v: v }; }),
+      vTxt: s.vtop + ' m/s',
+      stats: [
+        { k: 'Tower natural frequency (approx. 46/H)', v: fn.toFixed(3) + ' Hz', c: '#0F2A3A' },
+        { k: 'Wind speed that matches the vortex rhythm (60 m base)', v: (fn * D / SH.St).toFixed(0) + ' m/s', c: '#0F2A3A' },
+        { k: 'Acceleration at the top', v: aNow.toFixed(1) + ' milli-g', c: aNow > 15 ? '#B04A0C' : '#0A6A94' },
+        { k: 'Approximate sway at the top', v: '±' + (xTop * 100).toFixed(0) + ' cm', c: '#0F2A3A' },
+        { k: 'Structural damping', v: (zeta * 100).toFixed(1) + '%', c: '#0F2A3A' }
+      ],
+      shapes: Object.keys(shapes).map(function (id) { var qq = pill(s.shape === id); return { name: shapes[id].n, pressed: s.shape === id ? 'true' : 'false', bg: qq.bg, fg: qq.fg, border: qq.border, pick: function () { self.setState({ shape: id }); } }; }),
+      title: s.tmd ? 'Tuned mass damper' : SH.title,
+      how: s.tmd ? 'A heavy mass hung or mounted on springs near the top, tuned to sway at the tower’s frequency but out of phase, so it absorbs the sway energy, like the steel pendulum in Taipei 101. The Burj Khalifa instead relied on shaping to reduce wind forces from the design stage.' : SH.how,
+      aria: 'Vortices behind the tower: ' + SH.n + ' Wind ' + s.vtop + ' metres per second', sideAria: 'Tower sway at the top of about ' + (xTop * 100).toFixed(0) + ' centimetres'
+    };
+
+    // ---------- 3. glass pane ----------
+    var gtypes = {
+      an: { n: 'Ordinary glass (annealed)', allow: 20, title: 'Ordinary glass', how: 'Cheapest and flattest, but weak. It breaks into large sharp shards, so it is usually used as a ply in laminated glass, not alone on tall buildings.' },
+      hs: { n: 'Heat-strengthened glass', allow: 40, title: 'Heat-strengthened glass', how: 'Quenched more slowly than tempered glass for moderate surface compression, about twice as strong as ordinary glass. When it breaks, it stays in large pieces in the frame instead of falling as granules, and it is less prone to spontaneous breakage from inclusions than tempered glass, so it is popular on tall-building façades. The Burj Khalifa panels were heat-strengthened in Dubai before assembly.' },
+      ft: { n: 'Fully tempered glass', allow: 80, title: 'Tempered glass', how: 'About four times as strong as ordinary glass and breaks into small blunt granules, but on a tall building the granules can fall to the street, and it can break spontaneously from nickel sulfide inclusions, so it needs heat-soak testing or lamination.' }
+    };
+    var GT = gtypes[s.gtype], b = 1.37, ar = 3.25 / 1.37, beta = 0.6102 + (0.7134 - 0.6102) * (ar - 2), alpha = 0.1110 + (0.1335 - 0.1110) * (ar - 2);
+    var share = s.igu ? 0.5 : 1, qP = s.gq * 1000 * share, tm = s.gt / 1000;
+    var sigma = beta * qP * b * b / (tm * tm) / 1e6, defl = alpha * qP * Math.pow(b, 4) / (70e9 * Math.pow(tm, 3)) * 1000;
+    var defLin = defl, deflShown = Math.min(defl, 120);
+    var ok = sigma <= GT.allow, ratio = sigma / GT.allow;
+    var bow = function (x0, dmm) { var dpx = Math.min(70, dmm * 1.2); return 'M' + x0 + ',30 Q' + f1(x0 + dpx * 2) + ',150 ' + x0 + ',270'; };
+    var wa = ''; for (var wy = 60; wy <= 240; wy += 45) wa += 'M40,' + wy + ' H' + (150 - 8) + ' M' + (150 - 14) + ',' + (wy - 5) + ' l6,5 l-6,5 ';
+    var gp = {
+      windArrows: wa, paneA: bow(200, deflShown), paneB: bow(232, deflShown * (s.igu ? 1 : 0)), oB: s.igu ? 1 : 0,
+      cA: ok ? (ratio > 0.8 ? '#C99A1E' : '#0A6A94') : '#B04A0C', cB: ok ? (ratio > 0.8 ? '#C99A1E' : '#0A6A94') : '#B04A0C', wA: Math.max(2, s.gt / 2), wB: Math.max(2, s.gt / 2),
+      dTxt: 'Deflection ' + defLin.toFixed(0) + ' mm',
+      stats: [
+        { k: 'Maximum stress in the glass', v: sigma.toFixed(1) + ' MPa', sub: 'σ ≈ β·q·b²/t² (β = ' + beta.toFixed(2) + ' for a panel ' + ar.toFixed(1) + ' times as long as it is wide)', c: ok ? '#0F2A3A' : '#B04A0C' },
+        { k: 'Allowable stress (approx.)', v: GT.allow + ' MPa', sub: ok ? 'Using ' + Math.round(ratio * 100) + '% of the allowable stress' : 'Exceeds the allowable stress by ' + Math.round((ratio - 1) * 100) + '%', c: ok ? '#0A6A94' : '#B04A0C' },
+        { k: 'Centre deflection', v: defLin.toFixed(0) + ' mm', sub: defLin > 0.5 * s.gt ? 'Deflection exceeds half the thickness; thin-plate theory starts to overestimate (membrane action helps carry the load)' : 'Thin-plate theory still applies well', c: '#0F2A3A' },
+        { k: 'Glass weight per panel', v: Math.round(1.37 * 3.25 * tm * 2500 * (s.igu ? 2 : 1)) + ' kg', sub: s.igu ? 'Two panes combined' : 'Single pane', c: '#0F2A3A' }
+      ],
+      types: Object.keys(gtypes).map(function (id) { var qq = pill(s.gtype === id); return { name: gtypes[id].n, pressed: s.gtype === id ? 'true' : 'false', bg: qq.bg, fg: qq.fg, border: qq.border, pick: function () { self.setState({ gtype: id }); } }; }),
+      sliders: [
+        { id: 'g-q', name: 'Wind load on the panel', label: s.gq.toFixed(1) + ' kPa', min: 0.5, max: 6, step: 0.1, v: s.gq, set: function (e) { self.setState({ gq: parseFloat(e.target.value) }); } },
+        { id: 'g-t', name: 'Thickness per pane', label: s.gt + ' mm', min: 4, max: 15, step: 1, v: s.gt, set: function (e) { self.setState({ gt: parseFloat(e.target.value) }); } }
+      ],
+      title: GT.title, how: GT.how,
+      aria: 'Glass panel deflects ' + defLin.toFixed(0) + ' mm, stress ' + sigma.toFixed(1) + ' megapascals ' + (ok ? 'Pass' : 'fails')
+    };
+
+    // ---------- 4. movement ----------
+    var fixes = { unit: 'Unitized wall: each panel hangs from one floor, linked by slip joints', rigid: 'Glass fixed rigidly to both the floor above and below' };
+    var hS = 4.0, driftMM = hS * 1000 * s.drift / 1000, therm = 23e-6 * 3250 * s.dT, thermG = 9e-6 * 3250 * s.dT, joint = 15;
+    var unit = s.fix === 'unit', exag = 6;
+    var slabs = [], panels = [], joints = [];
+    for (var fl = 0; fl < 4; fl++) { var off = (3 - fl) * driftMM / 1000 * exag * 50; slabs.push({ x: f1(60 + off), y: 20 + fl * 95 }); }
+    var need = unit ? Math.max(driftMM, therm - thermG) : driftMM;
+    var jOk = unit ? (driftMM <= joint && (therm - thermG) <= 6) : driftMM < 2;
+    for (var fl2 = 0; fl2 < 3; fl2++) {
+      var topOff = (3 - fl2) * driftMM / 1000 * exag * 50, botOff = (2 - fl2) * driftMM / 1000 * exag * 50, y0 = 32 + fl2 * 95, y1 = y0 + 83;
+      for (var pc = 0; pc < 3; pc++) {
+        var x0 = 70 + pc * 95, d;
+        if (unit) d = 'M' + f1(x0 + topOff) + ',' + y0 + ' h88 v83 h-88 z';      // hangs from the slab above, moves as a rigid block
+        else d = 'M' + f1(x0 + topOff) + ',' + y0 + ' h88 L' + f1(x0 + 88 + botOff) + ',' + y1 + ' h-88 z';  // racked
+        panels.push({ d: d, f: '#BFE0EE', s: unit ? '#0A6A94' : (jOk ? '#0A6A94' : '#B04A0C') });
+        if (unit) joints.push({ x: f1(x0 + 44 + botOff), y: y1 + 6, c: jOk ? '#3F7A4F' : '#B04A0C' });
+      }
+    }
+    if (!unit) joints = [{ x: -20, y: -20, c: '#000' }];
+    var mv = {
+      slabs: slabs, panels: panels, joints: joints,
+      stats: [
+        { k: 'Upper floor shift relative to the one below', v: driftMM.toFixed(1) + ' mm', sub: 'Story height 4 m × drift ' + s.drift + '/1000', c: '#0F2A3A' },
+        { k: 'Aluminium frame expansion (3.25 m tall panel)', v: therm.toFixed(1) + ' mm', sub: 'ΔL = α·L·ΔT, α = 23×10⁻⁶ /°C', c: '#0F2A3A' },
+        { k: 'Glass expansion', v: thermG.toFixed(1) + ' mm', sub: 'α ≈ 9×10⁻⁶ /°C, a difference of ' + (therm - thermG).toFixed(1) + ' mm, so a gap is needed around the glass', c: '#0F2A3A' },
+        { k: 'Effect on the glass', v: unit ? (jOk ? 'Slip joints accommodate it' : 'Beyond the joint’s range') : (jOk ? 'Still tolerable' : 'Glass racked, risk of breakage'), sub: unit ? 'Assuming joints slide ±' + joint + ' mm and 6 mm clearance around the glass' : 'The panel is forced to skew with the two floors', c: jOk ? '#0A6A94' : '#B04A0C' },
+        { k: 'Frame surface temperature used', v: (25 + s.dT) + ' °C', sub: 'Assuming installation at 25°C; metal in the sun gets much hotter than the air', c: '#0F2A3A' }
+      ],
+      fixes: Object.keys(fixes).map(function (id) { var qq = pill(s.fix === id); return { name: fixes[id], pressed: s.fix === id ? 'true' : 'false', bg: qq.bg, fg: qq.fg, border: qq.border, pick: function () { self.setState({ fix: id }); } }; }),
+      sliders: [
+        { id: 'm-d', name: 'Inter-story drift', label: s.drift + '/1000', min: 0.5, max: 5, step: 0.5, v: s.drift, set: function (e) { self.setState({ drift: parseFloat(e.target.value) }); } },
+        { id: 'm-t', name: 'Temperature rise since installation', label: '+' + s.dT + ' °C', min: 0, max: 60, step: 5, v: s.dT, set: function (e) { self.setState({ dT: parseFloat(e.target.value) }); } }
+      ],
+      aria: 'Three-storey curtain wall, floors shifting by ' + driftMM.toFixed(1) + ' millimetres'
+    };
+
+    var bk = [
+      { c: '#0A6A94', tag: 'Wind tunnel', t: 'Scale model with a thousand sensors', d: 'Wind engineering firm RWDI tested models in the wind tunnel many times. The cladding-pressure model was 1:500 scale, about 1.5 m tall, with more than 1,000 pressure sensors. The results set the design load for each zone of glass panels (about 110 pounds per square foot, or 5.3 kPa, in both pressure and suction).' },
+      { c: '#0A6A94', tag: 'Reshaping from test results', t: 'Step back, rotate, test again', d: 'SOM added setbacks and reoriented the tower to handle the most frequent strong winds better. As a result, even though the tower became much taller than the first design (from about 518 to 828 m), the wind loads at the foundation stayed close to the original.' },
+      { c: '#3F7A4F', tag: 'Computer simulation', t: 'Finite-element model of the whole tower', d: 'Every tall building gets a finite-element model of its whole structure to compute natural frequencies, deflection under wind and earthquakes, long-term concrete shortening (creep and shrinkage) and settlement, checked against the wind-tunnel results. CFD (computational fluid dynamics) helps study wind around the tower and at pedestrian level.' },
+      { c: '#3F7A4F', tag: 'Structure of', t: 'Hexagonal core buttressed by three wings', d: 'The central core is a hexagon that is stiff against twisting, buttressed by the three wings of the Y plan, like the buttresses of a Gothic cathedral. The three wings work together to resist wind from every direction.' },
+      { c: '#C99A1E', tag: 'Project-specific materials', t: 'High-strength concrete pumped more than 600 m up', d: 'High-strength concrete with a mix designed to flow a long way without separating. Pours were made only at night because daytime was too hot, with ice flakes added to keep the mix cool, using an extra-high-pressure pump built for this project. It set a vertical concrete pumping record of 606 m in 2008.' },
+      { c: '#C99A1E', tag: 'Foundations', t: 'Concrete raft on 194 piles', d: 'The tower stands on a concrete raft supported by 194 concrete piles, each about 45 m deep, reaching a naturally cemented soft rock beneath the sand. The whole tower settled only about 50 mm.' },
+      { c: '#B04A0C', tag: 'Curtain wall', t: 'About 28,000 unitized panels', d: 'Double-glazed panels in extruded aluminium frames, with a reflective coating that lets through about 20% of visible light and about 15% of solar energy to cope with the Dubai sun. Spearhead-shaped stainless steel fins cover the vertical joints. The panels are flat glass set at angles to look curved, because curved glass was over budget.' },
+      { c: '#B04A0C', tag: 'Full-scale testing', t: 'Three full-scale mock-ups', d: 'The client commissioned three full-scale wall mock-ups early in the project to test water and air leakage, wind load and movement before production. For cleaning, automated window-washing machines are stored at several levels, and the façade has no horizontal ledges for dust to collect on.' }
+    ];
+
+    return {
+      wd: wd, vx: vx, gp: gp, mv: mv, bk: bk,
+      v10: s.v10, setV10: function (e) { self.setState({ v10: parseFloat(e.target.value) }); },
+      vtop: s.vtop, setVtop: function (e) { self.setState({ vtop: parseFloat(e.target.value) }); },
+      tmd: s.tmd, toggleTmd: function () { self.setState({ tmd: !self.state.tmd }); },
+      igu: s.igu, toggleIgu: function () { self.setState({ igu: !self.state.igu }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

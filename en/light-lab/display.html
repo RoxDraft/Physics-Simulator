@@ -414,6 +414,287 @@ a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A
 </div>
 </section>
 
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">8. E-Ink: electronic paper that holds an image without power</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">An E-Ink screen emits no light of its own; it reflects ambient light like paper. Each dot is a tiny capsule of clear fluid holding positively charged white particles and negatively charged black particles. Electrodes under the capsule pull the white or black particles to the surface. Once there, the particles stay put even with the power off (bistable), so power is used only when the image changes. It is readable in sunlight, but it changes slowly and can leave a shadow of the previous image (ghosting).</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Front view (every dot is a capsule)</div>
+<svg viewBox="0 0 380 240" style="display: block; width: 100%; height: auto; background: #E9E6DC" role="img" aria-label="{{ek.aria}}">
+<sc-for list="{{ek.cells}}" as="c" hint-placeholder-count="84">
+<circle cx="{{c.x}}" cy="{{c.y}}" r="14" fill="{{c.f}}"></circle>
+</sc-for>
+<rect x="8" y="{{ek.rowY}}" width="364" height="30" fill="none" stroke="#0A6A94" stroke-width="2" stroke-dasharray="5 4"></rect>
+</svg>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{ek.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Cross-section of the dashed row: particles move with the electric field</div>
+<svg viewBox="0 0 900 210" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="Cross-section of E-Ink capsules showing white and black particles moving up and down">
+<rect x="20" y="40" width="860" height="8" fill="#BFE0EE"></rect>
+<text x="20" y="30" font-size="12" fill="#0A4F70">Transparent top electrode (viewing side)</text>
+<path d="{{ek.caps}}" fill="#F7F5EE" stroke="#9AAAB4" stroke-width="1.5"></path>
+<path d="{{ek.white}}" fill="#FFFFFF" stroke="#7D8C96" stroke-width="0.8"></path>
+<path d="{{ek.black}}" fill="#1B1F22"></path>
+<sc-for list="{{ek.pads}}" as="p" hint-placeholder-count="12">
+<rect x="{{p.x}}" y="164" width="56" height="14" rx="3" fill="{{p.c}}"></rect>
+<text x="{{p.tx}}" y="198" font-size="14" text-anchor="middle" font-weight="700" fill="{{p.c}}">{{p.s}}</text>
+</sc-for>
+</svg>
+<div style="padding: 8px 16px 12px; font-size: 13px; line-height: 1.6; color: #4A5D6A">When the electrode under a capsule is positive (+), it pushes the positive white particles to the top, so that dot looks white; when it is negative (−), the black particles rise instead. Greys come from driving the particles part of the way with a designed sequence of voltage pulses (waveform).</div>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Update method</span>
+<div role="group" aria-label="Update method" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{ek.modes}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 14px; font-weight: 600">Turn to page</span>
+<div role="group" aria-label="Image to show" style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{ek.pats}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 70px; min-height: 44px; border-radius: 999px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">{{p.name}}</button>
+</sc-for>
+</div>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">Turn pages quickly several times and watch the shadow of old images build up, then try a full refresh, which flashes black and white first to clear it.</span>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">What E-Ink is good for</div>
+<sc-for list="{{ek.notes}}" as="t" hint-placeholder-count="4">
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">{{t.t}}</p>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">9. Pens on screens: hover, tilt and pressure</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">A finger is detected because it disturbs the electric field of the touch grid, which only works when touching or within a few millimetres. A pen that can hover must therefore send its own signal. An EMR pen (such as the S Pen and Wacom) contains a coil and a capacitor; a coil panel under the display (the digitizer) sends an electromagnetic wave that makes the pen’s circuit resonate, then listens for the echo, so the pen needs no battery. An active pen (AES, MPP, USI) has a battery and sends a signal from its tip into the screen’s existing touch grid.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px; flex-wrap: wrap; gap: 8px"><span style="font-weight: 700">Side view: {{pn.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; color: {{pn.stC}}">{{pn.state}}</span></div>
+<svg viewBox="0 0 900 330" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{pn.aria}}">
+<path d="{{pn.rings}}" fill="none" stroke="#0A6A94" stroke-width="1.2" stroke-dasharray="4 5" opacity="{{pn.ringO}}"></path>
+<rect x="40" y="200" width="820" height="12" fill="#DDEFF6"></rect>
+<rect x="40" y="212" width="820" height="12" fill="#9AAAB4"></rect>
+<path d="{{pn.grid}}" fill="#0A6A94"></path>
+<rect x="40" y="228" width="820" height="10" fill="{{pn.digC}}" opacity="{{pn.digO}}"></rect>
+<path d="{{pn.coils}}" fill="#B04A0C" opacity="{{pn.digO}}"></path>
+<text x="852" y="196" font-size="11" text-anchor="end" fill="#4A5D6A">Glass + touch grid</text>
+<text x="852" y="252" font-size="11" text-anchor="end" fill="#B04A0C" opacity="{{pn.digO}}">EMR coil panel under the display</text>
+<g transform="translate({{pn.tx}},{{pn.ty}}) rotate({{pn.rot}})">
+<sc-for list="{{pn.body}}" as="b" hint-placeholder-count="3">
+<path d="{{b.d}}" fill="{{b.f}}"></path>
+</sc-for>
+</g>
+<path d="{{pn.bars}}" fill="#0A6A94" opacity="0.75"></path>
+<line x1="40" y1="{{pn.thrY}}" x2="860" y2="{{pn.thrY}}" stroke="#B04A0C" stroke-dasharray="6 4"></line>
+<text x="44" y="{{pn.thrTY}}" font-size="11" fill="#B04A0C">Detection threshold</text>
+<path d="{{pn.mark}}" fill="#F5A623" stroke="#7E3407"></path>
+<text x="44" y="322" font-size="11" fill="#4A5D6A">Bars below = signal strength picked up by each wire · orange triangle = position reported by the chip</text>
+</svg>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{pn.stats}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Input device</span>
+<div role="group" aria-label="Pen type" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{pn.kinds}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 40px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left">{{p.name}}</button>
+</sc-for>
+</div>
+<sc-for list="{{pn.sliders}}" as="x" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px; opacity: {{x.op}}">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{pn.title}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">{{pn.how}}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">10. Why screens differ in colour tone: gamut and calibration</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">The red, green and blue of each display model never match the standard exactly, and each panel off the line differs slightly in white point and brightness curve (gamma). Factories therefore measure every panel with a colorimeter and store a correction table in the display driver chip. Colour modes in the settings, such as Vivid and Natural, choose between stretching colours to the panel’s full gamut and converting them to match the standard the image was made for.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">CIE 1931 chromaticity diagram (xy)</div>
+<svg viewBox="0 0 380 370" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{cl.aria}}">
+<path d="{{cl.axes}}" stroke="#D5DEE3" stroke-width="1"></path>
+<path d="{{cl.locus}}" fill="#F3F6F7" stroke="#4A5D6A" stroke-width="1.5"></path>
+<path d="{{cl.native}}" fill="#FCE3CF" fill-opacity="0.6" stroke="#B04A0C" stroke-width="2"></path>
+<path d="{{cl.p3}}" fill="none" stroke="#3F7A4F" stroke-width="1.5" stroke-dasharray="6 3"></path>
+<path d="{{cl.srgb}}" fill="none" stroke="#0A6A94" stroke-width="2" stroke-dasharray="3 3"></path>
+<path d="{{cl.links}}" stroke="#0F2A3A" stroke-width="1.2"></path>
+<sc-for list="{{cl.pts}}" as="p" hint-placeholder-count="12">
+<circle cx="{{p.x}}" cy="{{p.y}}" r="{{p.r}}" fill="{{p.f}}" stroke="#0F2A3A" stroke-width="1.2"></circle>
+</sc-for>
+<text x="40" y="364" font-size="11" fill="#4A5D6A">x</text><text x="8" y="20" font-size="11" fill="#4A5D6A">y</text>
+<text x="220" y="40" font-size="11" fill="#B04A0C" font-weight="600">Panel gamut</text>
+<text x="220" y="56" font-size="11" fill="#3F7A4F" font-weight="600">DCI-P3</text>
+<text x="220" y="72" font-size="11" fill="#0A6A94" font-weight="600">sRGB</text>
+<text x="220" y="88" font-size="11" fill="#0F2A3A">○ original colour ● displayed colour</text>
+</svg>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-weight: 700; font-size: 14px">Original (top) vs. displayed (bottom)</span>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px">
+<sc-for list="{{cl.sw}}" as="w" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 0; font-size: 12px">
+<div style="height: 30px; background: {{w.a}}; border-radius: 6px 6px 0 0"></div>
+<div style="height: 30px; background: {{w.b}}; border-radius: 0 0 6px 6px"></div>
+<span style="margin-top: 3px; font-weight: 600">{{w.n}}</span>
+<span style="font-family: 'IBM Plex Mono', monospace; color: {{w.c}}">ΔE {{w.de}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<sc-for list="{{cl.stats}}" as="r" hint-placeholder-count="3">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Panel state</span>
+<div role="group" aria-label="Colour mode" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{cl.modes}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<button type="button" onClick="{{newPanel}}" style="min-height: 44px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #FFFFFF; color: #0A6A94; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Take a new panel off the line</button>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">What factory calibration does</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">A colorimeter measures every panel at many brightness levels, then computes a 3×3 matrix saying how much of this panel’s red, green and blue to mix for each target colour, plus a table correcting the brightness curve, stored in the display driver chip. The operating system reads the colour-space tag of an image (such as sRGB or Display P3) and converts it for the panel. ΔE is the perceived distance between two colours; below about 2, most people can barely tell them apart.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">11. Anti-snooping screens: a Privacy Display that switches off some pixels</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">The Galaxy S26 Ultra uses an OLED panel that Samsung Display calls Flex Magic Pixel, with two kinds of pixels interleaved. Wide-angle pixels spread light in all directions like a normal display, while narrow-angle pixels are surrounded by a multi-layer black matrix that steers light straight towards the person holding the phone. With privacy mode on, the display dims or switches off the wide-angle pixels, leaving only the narrow ones: the person looking straight on still sees clearly, but people beside them see a much darker screen. It can be turned on just for certain apps or just for notification pop-ups.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-weight: 700; font-size: 14px">Pixel cross-section: light from wide-angle (W) and narrow-angle (N) pixels</div>
+<svg viewBox="0 0 900 250" style="display: block; width: 100%; height: auto; background: #13212A" role="img" aria-label="{{pv.aria}}">
+<path d="{{pv.coneW}}" fill="#F5C77A" opacity="{{pv.wO}}"></path>
+<path d="{{pv.coneN}}" fill="#9FD0E6" opacity="0.35"></path>
+<rect x="40" y="200" width="820" height="14" fill="#2F4A5A"></rect>
+<sc-for list="{{pv.subs}}" as="q" hint-placeholder-count="8">
+<rect x="{{q.x}}" y="192" width="60" height="10" rx="2" fill="{{q.f}}"></rect>
+<text x="{{q.tx}}" y="232" font-size="13" text-anchor="middle" font-weight="700" fill="{{q.tc}}">{{q.n}}</text>
+</sc-for>
+<path d="{{pv.walls}}" fill="#000000" stroke="#4A5D6A"></path>
+<line x1="450" y1="196" x2="{{pv.vx}}" y2="{{pv.vy}}" stroke="{{pv.vC}}" stroke-width="2.5" stroke-dasharray="7 5"></line>
+<circle cx="{{pv.vx}}" cy="{{pv.vy}}" r="9" fill="{{pv.vC}}"></circle>
+<text x="{{pv.vtx}}" y="{{pv.vty}}" font-size="12" fill="#FFFFFF" text-anchor="middle">{{pv.vTxt}}</text>
+</svg>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 14px">Brightness vs. viewing angle (log scale)</span>
+<svg viewBox="0 0 380 210" style="display: block; width: 100%; height: auto" role="img" aria-label="Display brightness vs. viewing angle in normal and privacy modes">
+<path d="{{pv.grid}}" stroke="#E3E9EC"></path>
+<line x1="40" y1="180" x2="370" y2="180" stroke="#9AAAB4"></line>
+<line x1="40" y1="10" x2="40" y2="180" stroke="#9AAAB4"></line>
+<path d="{{pv.cNorm}}" fill="none" stroke="#B04A0C" stroke-width="2"></path>
+<path d="{{pv.cPriv}}" fill="none" stroke="#0A6A94" stroke-width="2.5"></path>
+<line x1="{{pv.mx}}" y1="10" x2="{{pv.mx}}" y2="180" stroke="#0F2A3A" stroke-dasharray="3 3"></line>
+<path d="{{pv.ul}}" fill="#0A6A94"></path>
+<text x="36" y="14" font-size="10" text-anchor="end" fill="#4A5D6A">100%</text>
+<text x="36" y="70" font-size="10" text-anchor="end" fill="#4A5D6A">10%</text>
+<text x="36" y="126" font-size="10" text-anchor="end" fill="#4A5D6A">1%</text>
+<text x="36" y="182" font-size="10" text-anchor="end" fill="#4A5D6A">0.1%</text>
+<text x="40" y="198" font-size="10" fill="#4A5D6A">0°</text>
+<text x="370" y="198" font-size="10" text-anchor="end" fill="#4A5D6A">80°</text>
+</svg>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; font-weight: 600"><span style="color: #B04A0C">━ Normal mode</span><span style="color: #0A6A94">━ Privacy mode</span><span style="color: #0A6A94">● Reported test values at 45° and 60°</span></div>
+</div>
+<div style="flex: 1 1 280px; min-width: 0; display: flex; gap: 12px; justify-content: center">
+<sc-for list="{{pv.phones}}" as="ph" hint-placeholder-count="2">
+<div style="flex: 1 1 0; max-width: 150px; display: flex; flex-direction: column; gap: 6px; align-items: center">
+<svg viewBox="0 0 120 220" style="display: block; width: 100%; height: auto" role="img" aria-label="{{ph.aria}}">
+<g transform="{{ph.tr}}">
+<rect x="4" y="4" width="112" height="212" rx="16" fill="#0F2A3A"></rect>
+<rect x="10" y="12" width="100" height="196" rx="10" fill="#0B0F12"></rect>
+<rect x="16" y="20" width="88" height="30" rx="6" fill="#FFFFFF" opacity="{{ph.nO}}"></rect>
+<rect x="22" y="27" width="50" height="5" rx="2" fill="#0F2A3A" opacity="{{ph.nO}}"></rect>
+<rect x="22" y="37" width="70" height="5" rx="2" fill="#4A5D6A" opacity="{{ph.nO}}"></rect>
+<rect x="40" y="70" width="64" height="26" rx="8" fill="#0A6A94" opacity="{{ph.bO}}"></rect>
+<rect x="16" y="104" width="70" height="26" rx="8" fill="#E3E9EC" opacity="{{ph.bO}}"></rect>
+<rect x="30" y="138" width="74" height="26" rx="8" fill="#0A6A94" opacity="{{ph.bO}}"></rect>
+<rect x="10" y="12" width="100" height="196" rx="10" fill="url(#glare)" opacity="0.18"></rect>
+</g>
+<defs><linearGradient id="glare" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></linearGradient></defs>
+</svg>
+<span style="font-size: 13px; font-weight: 600; text-align: center">{{ph.n}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">Privacy mode</span>
+<div role="group" aria-label="Privacy mode" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{pv.modes}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between"><label for="pv-a" style="font-size: 14px; font-weight: 600">Side viewer’s angle</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{pv.angTxt}}</span></div>
+<input id="pv-a" type="range" min="0" max="80" step="1" value="{{vang}}" onChange="{{setVang}}">
+</div>
+<sc-for list="{{pv.stats}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #E3E9EC; padding-top: 6px"><span>{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace; text-align: right; color: {{r.c}}">{{r.v}}</span></div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">How it differs from a privacy film</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">A privacy film has tiny louvres that block light all the time; it cannot be turned off and it also darkens the screen for the person looking straight on. This display switches on and off in software and can cover just part of the screen. A reported trade-off is a slight colour shift at oblique angles. The chart on this page is a model fitted to the reported test values, not a measurement.</p>
+</div>
+</div>
+</div>
+</section>
+
 </div>
 </div>
 </template>
@@ -431,8 +712,56 @@ class Component extends DCLogic {
       dh: 1.0, floor: 'concrete', glass: 'cs', dcase: false, dropT: 99, broke: false, trials: null,
       gesture: 'swipe', trate: 240, water: false, glove: false, rep: [], lastScan: 0,
       hz: 60, content: 'read', pwm: 480,
+      ink: null, inkPat: 'e', inkMode: 'partial', inkPh: [], inkEl: 0, inkE: 0, inkN: 0,
+      pen: 'emr', ph: 6, tilt: 30, press: 0.4,
+      cmode: 'raw', panel: 3,
+      priv: 'max', vang: 45,
       t: 0, tick: 0
     };
+    this.state.ink = this.inkPat('e');
+  }
+
+  inkPat(name) {
+    var P = {
+      e: ['............', '..########..', '..##........', '..######....', '..##........', '..########..', '............'],
+      ko: ['............', '...######...', '..#......#..', '.....##..#..', '....#.#..#..', '.....#...#..', '............'],
+      smile: ['...######...', '..#......#..', '..#.#..#.#..', '..#......#..', '..#.#..#.#..', '..#..##..#..', '...######...']
+    };
+    var out = []; P[name].forEach(function (r) { for (var i = 0; i < 12; i++) out.push(r.charAt(i) === '#' ? -1 : 1); });
+    return out;
+  }
+
+  inkStep(s, dt) {
+    if (!s.inkPh.length) return null;
+    var ph = s.inkPh[0], pos = s.ink.slice(), done = true, rate = 7;
+    for (var i = 0; i < pos.length; i++) { var d = ph.tgt[i] - pos[i]; if (Math.abs(d) > 1e-3) { done = false; pos[i] += (d > 0 ? 1 : -1) * Math.min(Math.abs(d), rate * dt); } }
+    var el = s.inkEl + dt;
+    if (done && el >= ph.dur) return { ink: pos, inkPh: s.inkPh.slice(1), inkEl: 0 };
+    return { ink: pos, inkEl: el };
+  }
+
+  inkGo(pat, mode) {
+    var s = this.state, tgt = this.inkPat(pat), cur = s.ink, ph, fill = function (v) { return tgt.map(function () { return v; }); };
+    if (mode === 'full') ph = [{ tgt: fill(-1), dur: 0.15 }, { tgt: fill(1), dur: 0.15 }, { tgt: tgt, dur: 0.1 }];
+    else ph = [{ tgt: cur.map(function (v, i) { return v + 0.8 * (tgt[i] - v); }), dur: 0.1 }];
+    var prev = cur, moved = 0;
+    ph.forEach(function (p) { p.tgt.forEach(function (v, i) { if (Math.abs(v - prev[i]) > 0.3) moved++; }); prev = p.tgt; });
+    var patch = { inkPat: pat, inkMode: mode, inkE: s.inkE + moved, inkN: s.inkN + 1, inkEl: 0 };
+    if (this.reduce) { patch.ink = ph[ph.length - 1].tgt; patch.inkPh = []; } else patch.inkPh = ph;
+    this.setState(patch);
+  }
+
+  inv3(m) {
+    var a = m[0][0], b = m[0][1], c = m[0][2], d = m[1][0], e = m[1][1], f = m[1][2], g = m[2][0], h = m[2][1], k = m[2][2];
+    var A = e * k - f * h, B = -(d * k - f * g), C = d * h - e * g, det = a * A + b * B + c * C;
+    return [[A / det, -(b * k - c * h) / det, (b * f - c * e) / det], [B / det, (a * k - c * g) / det, -(a * f - c * d) / det], [C / det, -(a * h - b * g) / det, (a * e - b * d) / det]];
+  }
+  mul(m, v) { return [m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2], m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2], m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2]]; }
+  rgbM(prim, w) {
+    var c = prim.map(function (p) { return [p[0] / p[1], 1, (1 - p[0] - p[1]) / p[1]]; });
+    var A = [[c[0][0], c[1][0], c[2][0]], [1, 1, 1], [c[0][2], c[1][2], c[2][2]]];
+    var S = this.mul(this.inv3(A), [w[0] / w[1], 1, (1 - w[0] - w[1]) / w[1]]);
+    return [[A[0][0] * S[0], A[0][1] * S[1], A[0][2] * S[2]], [S[0], S[1], S[2]], [A[2][0] * S[0], A[2][1] * S[1], A[2][2] * S[2]]];
   }
 
   rnd() { this._s = (this._s * 1664525 + 1013904223) % 4294967296; return this._s / 4294967296; }
@@ -456,6 +785,7 @@ class Component extends DCLogic {
           while (rep.length && rep[0][2] < t - 0.6) rep.shift();
           patch.rep = rep; patch.lastScan = t - ((t - s.lastScan) % scanP);
         }
+        var ip = self.inkStep(s, dt); if (ip) { for (var kk in ip) patch[kk] = ip[kk]; }
         self.setState(patch);
       }
       self._raf = requestAnimationFrame(loop);
@@ -701,7 +1031,7 @@ class Component extends DCLogic {
       holdC: dropL > 0.05 ? '#B04A0C' : '#0A4F70',
       stats: [
         { k: 'Blur when the eye tracks the motion', v: Math.round(blurW / 900 * 70) + ' mm', sub: 'Ball moves at ' + Math.round(speed / 900 * 70 * 10) / 10 + ' cm/s on a 7 cm wide screen · each frame held ' + (1000 / hz).toFixed(1) + ' ms', c: '#0F2A3A' },
-        { k: '120 Hz display all the time', v: Pfix.toFixed(2) + ' W', sub: 'Battery lasts about ' + (batt / (Pfix + rest)).toFixed(1) + ' h while' + C.n, c: '#0F2A3A' },
+        { k: '120 Hz display all the time', v: Pfix.toFixed(2) + ' W', sub: 'Battery lasts about ' + (batt / (Pfix + rest)).toFixed(1) + ' h while ' + C.n, c: '#0F2A3A' },
         { k: 'LTPO display at ' + ltpoHz + ' Hz', v: Pltpo.toFixed(2) + ' W', sub: 'Battery lasts about ' + (batt / (Pltpo + rest)).toFixed(1) + ' h (display saves ' + Math.round((1 - Pltpo / Pfix) * 100) + '%)', c: '#0A6A94' },
         { k: 'Pixel charge leaked per cycle', v: 'LTPS ' + Math.round(dropL * 100) + '% · oxide ' + (dropO * 100).toFixed(3) + '%', sub: 'Assuming 1 pA vs. 0.001 pA leakage and a 0.2 pF capacitor', c: '#0F2A3A' }
       ],
@@ -713,7 +1043,174 @@ class Component extends DCLogic {
       aria: 'Ball moving on a display refreshing at ' + hz + ' hertz'
     };
 
+
+    // ---------- 8. E-Ink ----------
+    var circ = function (x, y, r) { return 'M' + f1(x - r) + ',' + f1(y) + ' a' + r + ',' + r + ' 0 1,0 ' + (2 * r) + ',0 a' + r + ',' + r + ' 0 1,0 ' + (-2 * r) + ',0 '; };
+    var ideal = this.inkPat(s.inkPat), cells = [], busy = s.inkPh.length > 0, ghost = 0;
+    s.ink.forEach(function (v, i) { var gv = Math.round(40 + (v + 1) / 2 * 190); ghost += Math.abs(v - ideal[i]) / 2; cells.push({ x: f1(22 + (i % 12) * 30.5), y: f1(25 + Math.floor(i / 12) * 31.5), f: 'rgb(' + gv + ',' + gv + ',' + (gv - 6) + ')' }); });
+    ghost = ghost / s.ink.length * 100;
+    var caps = '', wdot = '', bdot = '', pads = [], offs = [[-16, -2], [-6, 3], [5, -3], [16, 2], [-11, 6], [10, 7]];
+    for (var ei = 0; ei < 12; ei++) {
+      var idx = 36 + ei, vv = s.ink[idx], ecx = 55 + ei * 72, ecy = 105;
+      caps += circ(ecx, ecy, 30);
+      offs.forEach(function (o) { wdot += circ(ecx + o[0], ecy - vv * 14 + o[1] * 0.6, 4); bdot += circ(ecx - o[0], ecy + vv * 14 - o[1] * 0.6, 4); });
+      var dd2 = busy ? s.inkPh[0].tgt[idx] - vv : 0;
+      pads.push({ x: ecx - 28, tx: ecx, c: dd2 > 0.01 ? '#B04A0C' : dd2 < -0.01 ? '#0A6A94' : '#C9D4DA', s: dd2 > 0.01 ? '+' : dd2 < -0.01 ? '−' : '0' });
+    }
+    var ek = {
+      cells: cells, rowY: f1(25 + 3 * 31.5 - 15), caps: caps, white: wdot, black: bdot, pads: pads,
+      stats: [
+        { k: 'State', v: busy ? 'Updating' : 'Holding image', sub: busy ? 'Electrodes are powered only during this period' : 'Uses no power at all; the image stays even with the battery removed', c: busy ? '#B04A0C' : '#0A6A94' },
+        { k: 'Ghosting', v: ghost.toFixed(0) + '%', sub: 'Difference from the intended image', c: ghost > 5 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Updates so far', v: s.inkN + ' ', sub: 'Capsules driven in total: ' + s.inkE + ' times; power is used only then', c: '#0F2A3A' },
+        { k: 'Power while reading the same page', v: '0 W', sub: 'Unlike LCD and OLED, which must keep redrawing the image', c: '#0F2A3A' }
+      ],
+      modes: [['partial', 'Fast (partial): no flash, but leaves ghosts'], ['full', 'Full refresh: flashes black-white, clears ghosts']].map(function (m2) { var q = pill(s.inkMode === m2[0]); return { name: m2[1], pressed: s.inkMode === m2[0] ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ inkMode: m2[0] }); } }; }),
+      pats: [['e', 'Letter E'], ['ko', 'Thai letter “Ko”'], ['smile', 'Smiley']].map(function (p2) { var q = pill(s.inkPat === p2[0]); return { name: p2[1], pressed: s.inkPat === p2[0] ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.inkGo(p2[0], self.state.inkMode); } }; }),
+      notes: [
+        { t: 'Reflects light like paper and is clear in sunlight; in the dark it uses a front light that shines onto the screen surface, not straight into the eyes.' },
+        { t: 'It holds an image without power, so e-readers last weeks on a charge, and it is used for shop price labels that can be updated remotely.' },
+        { t: 'The particles must physically move through fluid, so an update takes on the order of a hundred milliseconds or more, which does not suit video or games.' },
+        { t: 'Colour E-Ink comes in two kinds: a colour filter over a black-and-white panel (such as Kaleido), with paler colours and lower colour resolution, or several coloured pigments in one capsule (such as Gallery), with richer colours but slower updates.' }
+      ],
+      aria: 'E-Ink screen of 12 by 7 capsules, ghosting ' + ghost.toFixed(0) + ' percent'
+    };
+
+    // ---------- 9. pens ----------
+    var kinds = {
+      emr: { n: 'EMR pen (S Pen, Wacom)', range: 15, off: 6, tilt: true, press: true, title: 'EMR: the pen needs no battery',
+        how: 'Coils under the display take turns transmitting and listening. The LC circuit in the pen resonates at f = 1/(2π√LC) and transmits back. The chip locates the pen from the signal strength in each coil, even while the pen is still hovering. Pressing the tip moves a ferrite core, changing L, so the frequency shifts and becomes the pressure value. The downside is the extra coil panel under the display, which makes the device thicker and more expensive.' },
+      aes: { n: 'Active pen (AES / MPP / USI)', range: 10, off: 0, tilt: true, press: true, title: 'Active pen: sends its own signal',
+        how: 'The pen tip emits an electrical signal much stronger than a finger’s disturbance, so the existing touch grid can pick it up even while the pen hovers. Two electrodes (the tip and a ring above it) are compared to find the tilt. Pressure is measured by a sensor in the pen and sent as digital data, so it needs a battery.' },
+      finger: { n: 'in', range: 1.5, off: 0, tilt: false, press: false, title: 'Finger: must actually touch',
+        how: 'A finger sends no signal; it only draws away part of the electric field, so the signal vanishes very quickly as the finger lifts. The screen knows only the position and contact size, not real pressure or tilt.' },
+      rubber: { n: 'Ordinary rubber-tip stylus', range: 1, off: 0, tilt: false, press: false, title: 'Rubber-tip stylus: a fake finger',
+        how: 'The conductive rubber tip connects to your hand, so it acts like a finger with a big tip. The tip must be wide enough for the touch grid to detect, so it cannot write finely, and it has no hover, pressure or tilt.' }
+    };
+    var K = kinds[s.pen], hh = s.ph, tiltD = K.tilt ? s.tilt : 0, tr = tiltD * Math.PI / 180, depth = 1.2;
+    var ex = K.off * Math.sin(tr), ez = depth + hh + K.off * Math.cos(tr);
+    var lines = []; for (var lx = -48; lx <= 48; lx += 4) lines.push(lx);
+    var sig = lines.map(function (x) { return ez / Math.pow((x - ex) * (x - ex) + ez * ez, 1.5); });
+    var sref = 1 / (depth * depth), thr = 1 / Math.pow(depth + K.range + K.off, 2);
+    var mi = 0; sig.forEach(function (v, i) { if (v > sig[mi]) mi = i; });
+    var detected2 = sig[mi] > thr;
+    var rawX = lines[mi];
+    if (mi > 0 && mi < sig.length - 1) { var den = sig[mi - 1] - 2 * sig[mi] + sig[mi + 1]; if (den !== 0) rawX += 4 * 0.5 * (sig[mi - 1] - sig[mi + 1]) / den; }
+    var corrX = K.tilt ? rawX - 0.97 * K.off * Math.sin(tr) : rawX;
+    var lg = function (v) { return Math.max(0, Math.min(1, (Math.log10(v / sref) + 3) / 3)); };
+    var bars = '', coils = '', grid2 = '';
+    lines.forEach(function (x, i) { var X = 450 + x * 8, hgt = 50 * lg(sig[i]); bars += 'M' + f1(X - 5) + ',305 v' + f1(-hgt) + ' h10 v' + f1(hgt) + ' z '; coils += 'M' + f1(X - 4) + ',229 h8 v8 h-8 z '; grid2 += circ(X, 206, 2); });
+    var penBody = s.pen === 'finger' ? [{ d: 'M-16,-4 a16,16 0 0,1 32,0 v-170 h-32 z', f: '#E8B999' }, { d: 'M0,0', f: '#000' }, { d: 'M0,0', f: '#000' }]
+      : s.pen === 'rubber' ? [{ d: 'M-9,-2 a9,9 0 0,1 18,0 v-14 h-18 z', f: '#3A3F44' }, { d: 'M-7,-16 h14 v-150 h-14 z', f: '#9AAAB4' }, { d: 'M0,0', f: '#000' }]
+      : [{ d: 'M0,0 L-5,-14 L5,-14 Z', f: '#4A5D6A' }, { d: 'M-9,-14 h18 v-152 h-18 z', f: s.pen === 'emr' ? '#0F2A3A' : '#3F5F73' }, { d: s.pen === 'emr' ? 'M-6,-58 h12 v20 h-6 v0 h-6 z' : 'M-9,-30 h18 v5 h-18 z', f: s.pen === 'emr' ? '#B04A0C' : '#F5C77A' }];
+    var emX = 450 + ex * 8, emY = 200 - (hh + K.off * Math.cos(tr)) * 8, rings = '';
+    [16, 34, 54].forEach(function (r) { rings += circ(emX, emY, r); });
+    var contact = hh <= 0.05, fres = 500 / Math.sqrt(1 + 0.08 * s.press);
+    var pn = {
+      name: K.n, title: K.title, how: K.how,
+      state: detected2 ? (contact ? 'Touching' : 'Hovering ' + hh.toFixed(1) + ' mm') : 'Not found', stC: detected2 ? '#0A6A94' : '#B04A0C',
+      rings: rings, ringO: (s.pen === 'emr' || s.pen === 'aes') ? (detected2 ? 0.8 : 0.25) : 0,
+      grid: grid2, coils: coils, digC: '#FCE3CF', digO: s.pen === 'emr' ? 1 : 0.15,
+      tx: 450, ty: f1(200 - hh * 8), rot: tiltD, body: penBody,
+      bars: bars, thrY: f1(305 - 50 * lg(thr)), thrTY: f1(301 - 50 * lg(thr)),
+      mark: detected2 ? 'M' + f1(450 + corrX * 8) + ',226 l-7,12 h14 z' : 'M0,0',
+      stats: [
+        { k: 'State', v: detected2 ? (contact ? 'Touching' : 'hover') : 'Not found', sub: 'Detected up to about ' + K.range + ' mm above the screen (approx.)', c: detected2 ? '#0A6A94' : '#B04A0C' },
+        { k: 'Error before tilt correction', v: Math.abs(ex).toFixed(1) + ' mm', sub: s.pen === 'emr' ? 'The coil in the pen sits 6 mm above the tip, so when tilted, the signal comes from an offset point' : 'The signal comes straight from the tip', c: Math.abs(ex) > 1 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'After tilt correction', v: Math.abs(corrX).toFixed(1) + ' mm', sub: K.tilt ? 'The chip estimates tilt from the shape of the signal and shifts the point back' : 'This device does not know the tilt', c: '#0F2A3A' },
+        { k: 'Pressure', v: K.press ? (contact ? Math.round(s.press * 4095) + ' / 4096' : 'Not touching yet') : 'Not measurable', sub: s.pen === 'emr' ? 'Resonant frequency ' + fres.toFixed(1) + ' kHz (assumed f₀ = 500 kHz)' : s.pen === 'aes' ? 'A sensor in the pen sends the value as digital data' : 'Contact area can serve as a rough substitute', c: '#0F2A3A' }
+      ],
+      kinds: Object.keys(kinds).map(function (id) { var q = pill(s.pen === id); return { name: kinds[id].n, pressed: s.pen === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ pen: id }); } }; }),
+      sliders: [
+        { id: 'pn-h', name: 'Height above screen', label: hh.toFixed(1) + ' mm', min: 0, max: 20, step: 0.5, v: hh, op: 1, set: function (e) { self.setState({ ph: parseFloat(e.target.value) }); } },
+        { id: 'pn-t', name: 'Pen tilt', label: s.tilt + '°', min: 0, max: 60, step: 1, v: s.tilt, op: K.tilt ? 1 : 0.4, set: function (e) { self.setState({ tilt: parseFloat(e.target.value) }); } },
+        { id: 'pn-p', name: 'Pressure (when touching)', label: Math.round(s.press * 100) + '%', min: 0, max: 1, step: 0.01, v: s.press, op: K.press ? 1 : 0.4, set: function (e) { self.setState({ press: parseFloat(e.target.value) }); } }
+      ],
+      aria: K.n + ' height above screen ' + hh + ' mm, tilt ' + tiltD + ' degrees'
+    };
+
+    // ---------- 10. colour calibration ----------
+    var D65 = [0.3127, 0.3290], PS = [[0.64, 0.33], [0.30, 0.60], [0.15, 0.06]], PP3 = [[0.68, 0.32], [0.265, 0.69], [0.15, 0.06]], PN = [[0.685, 0.312], [0.215, 0.725], [0.14, 0.05]];
+    var MS = this.rgbM(PS, D65), MN = this.rgbM(PN, D65), MSi = this.inv3(MS), Wx = this.mul(MS, [1, 1, 1]);
+    var hsh = function (k) { var x = Math.sin(s.panel * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); };
+    var gains = [1 + (hsh(1) - 0.5) * 0.16, 1 + (hsh(2) - 0.5) * 0.1, 1 + (hsh(3) - 0.5) * 0.2], gam = 2.05 + hsh(4) * 0.4;
+    var lin = function (c) { c = c / 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+    var enc = function (v) { v = Math.max(0, Math.min(1, v)); return Math.round(255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055)); };
+    var labf = function (X) { var f = function (t) { return t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116; }; var fx = f(X[0] / Wx[0]), fy = f(X[1] / Wx[1]), fz = f(X[2] / Wx[2]); return [116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)]; };
+    var shown = function (rgb) { var L = rgb.map(lin); if (s.cmode === 'nat') return self.mul(MS, L); if (s.cmode === 'vivid') return self.mul(MN, L); return self.mul(MN, L.map(function (v, i) { return gains[i] * Math.pow(v, gam / 2.2); })); };
+    var toCss = function (X) { var r = self.mul(MSi, X); return 'rgb(' + enc(r[0]) + ',' + enc(r[1]) + ',' + enc(r[2]) + ')'; };
+    var XP = function (x) { return 40 + x * 400; }, YP = function (y) { return 350 - y * 380; };
+    var xyOf = function (X) { var t = X[0] + X[1] + X[2]; return [X[0] / t, X[1] / t]; };
+    var tri = function (P) { return 'M' + P.map(function (p) { return f1(XP(p[0])) + ',' + f1(YP(p[1])); }).join(' L') + ' Z'; };
+    var loc = [[0.1741, 0.0050], [0.1714, 0.0051], [0.1566, 0.0177], [0.1241, 0.0578], [0.0913, 0.1327], [0.0454, 0.2950], [0.0082, 0.5384], [0.0139, 0.7502], [0.0743, 0.8338], [0.1547, 0.8059], [0.2296, 0.7543], [0.3016, 0.6923], [0.3731, 0.6245], [0.4441, 0.5547], [0.5125, 0.4866], [0.5752, 0.4242], [0.6270, 0.3725], [0.6915, 0.3083], [0.7190, 0.2809], [0.7347, 0.2653]].map(function (p) { return f1(XP(p[0])) + ',' + f1(YP(p[1])); });  // CIE 1931 spectral locus, 380–700 nm
+    var axes = ''; for (var ax = 0.1; ax < 0.8; ax += 0.1) axes += 'M' + f1(XP(ax)) + ',10 V350 '; for (var ay = 0.1; ay < 0.9; ay += 0.1) axes += 'M40,' + f1(YP(ay)) + ' H370 ';
+    var tests = [['Skin', [224, 172, 140]], ['Cyan', [90, 150, 220]], ['Leaf', [60, 160, 70]], ['Red', [220, 40, 40]], ['Grey', [128, 128, 128]], ['White', [255, 255, 255]]];
+    var swl = [], cpts = [], links = '', sumDE = 0, maxDE = 0, wDisp = null;
+    tests.forEach(function (tq) {
+      var XT = self.mul(MS, tq[1].map(lin)), XD = shown(tq[1]), a1 = labf(XT), a2 = labf(XD);
+      var de = Math.sqrt(Math.pow(a1[0] - a2[0], 2) + Math.pow(a1[1] - a2[1], 2) + Math.pow(a1[2] - a2[2], 2));
+      sumDE += de; maxDE = Math.max(maxDE, de); if (tq[0] === 'White') wDisp = xyOf(XD);
+      var pT = xyOf(XT), pD = xyOf(XD), cssT = 'rgb(' + tq[1].join(',') + ')', cssD = toCss(XD);
+      swl.push({ n: tq[0], a: cssT, b: cssD, de: de.toFixed(1), c: de > 5 ? '#B04A0C' : de > 2 ? '#7E5A00' : '#0A6A94' });
+      if (tq[0] !== 'Grey') { cpts.push({ x: f1(XP(pT[0])), y: f1(YP(pT[1])), r: 4, f: '#FFFFFF' }); cpts.push({ x: f1(XP(pD[0])), y: f1(YP(pD[1])), r: 5, f: cssD }); links += 'M' + f1(XP(pT[0])) + ',' + f1(YP(pT[1])) + ' L' + f1(XP(pD[0])) + ',' + f1(YP(pD[1])) + ' '; }
+    });
+    var avgDE = sumDE / tests.length, nn = (wDisp[0] - 0.3320) / (0.1858 - wDisp[1]), cctW = 449 * nn * nn * nn + 3525 * nn * nn + 6823.3 * nn + 5520.33;
+    var area = function (P) { return Math.abs((P[1][0] - P[0][0]) * (P[2][1] - P[0][1]) - (P[2][0] - P[0][0]) * (P[1][1] - P[0][1])) / 2; };
+    var cl = {
+      axes: axes, locus: 'M' + loc.join(' L') + ' Z', native: tri(PN), p3: tri(PP3), srgb: tri(PS), links: links || 'M0,0', pts: cpts, sw: swl,
+      stats: [
+        { k: 'Average ΔE (max)', v: avgDE.toFixed(1) + ' (' + maxDE.toFixed(1) + ')', sub: avgDE < 2 ? 'Most people can barely tell the difference' : avgDE < 5 ? 'A careful observer will notice the difference' : 'Colours clearly differ from the original', c: avgDE > 5 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'White colour temperature', v: Math.round(cctW) + ' K', sub: 'D65 standard ≈ 6,500 K · lower looks yellowish, higher looks bluish', c: Math.abs(cctW - 6504) > 300 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'Panel gamut vs. sRGB', v: Math.round(area(PN) / area(PS) * 100) + '%', sub: 'Triangle area on the xy diagram (assumed OLED panel)', c: '#0F2A3A' }
+      ],
+      modes: [['raw', 'Not calibrated (straight off the line)'], ['vivid', 'Calibrated, Vivid mode: stretched to the full panel gamut'], ['nat', 'Calibrated, Natural (sRGB) mode: true to the original']].map(function (m3) { var q = pill(s.cmode === m3[0]); return { name: m3[1], pressed: s.cmode === m3[0] ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ cmode: m3[0] }); } }; }),
+      aria: 'CIE xy diagram with the panel gamut, DCI-P3 and sRGB; average colour difference ' + avgDE.toFixed(1)
+    };
+
+    // ---------- 11. privacy display ----------
+    var wideL = function (a) { return Math.pow(Math.cos(a * Math.PI / 180), 1.8); };
+    var narL = function (a) { return Math.exp(-Math.pow(a / 16.2, 1.184)); };
+    var bodyL = function (a) { return s.priv === 'max' ? narL(a) : wideL(a); };
+    var notL = function (a) { return s.priv === 'off' ? wideL(a) : narL(a); };
+    var va = s.vang, var2 = va * Math.PI / 180;
+    var fan = function (cx, half, R) { var h1 = half * Math.PI / 180; return 'M' + cx + ',196 L' + f1(cx - R * Math.sin(h1)) + ',' + f1(196 - R * Math.cos(h1)) + ' A' + R + ',' + R + ' 0 0,1 ' + f1(cx + R * Math.sin(h1)) + ',' + f1(196 - R * Math.cos(h1)) + ' Z '; };
+    var coneW = '', coneN = '', walls = '', psubs = [];
+    for (var pi2 = 0; pi2 < 8; pi2++) {
+      var px0 = 80 + pi2 * 100, pcx = px0 + 30, isN = pi2 % 2 === 1;
+      if (isN) { coneN += fan(pcx, 18, 180); walls += 'M' + (px0 - 9) + ',150 h7 v50 h-7 z M' + (px0 + 62) + ',150 h7 v50 h-7 z '; }
+      else coneW += fan(pcx, 70, 150);
+      var wOff = !isN && s.priv === 'max';
+      psubs.push({ x: px0, tx: pcx, f: isN ? '#9FD0E6' : wOff ? '#3A3F44' : '#F5C77A', n: isN ? 'N' : 'W', tc: isN ? '#9FD0E6' : wOff ? '#6B7A84' : '#F5C77A' });
+    }
+    var bV = bodyL(va), vis = function (b) { return Math.min(1, Math.pow(b, 0.6)).toFixed(2); };
+    var vXp = 450 + 170 * Math.sin(var2), vYp = 196 - 170 * Math.cos(var2);
+    var AX = function (a) { return 40 + a / 80 * 330; }, LY = function (L) { return Math.max(10, Math.min(180, 180 - (Math.log10(L * 100) + 1) / 3 * 170)); };
+    var curve = function (fn) { var o = []; for (var a3 = 0; a3 <= 80; a3 += 1) o.push(f1(AX(a3)) + ',' + f1(LY(fn(a3)))); return 'M' + o.join(' L'); };
+    var pctF = function (v) { v *= 100; return (v >= 10 ? v.toFixed(0) : v >= 1 ? v.toFixed(1) : v.toFixed(2)) + '%'; };
+    var pv = {
+      coneW: coneW, coneN: coneN, wO: s.priv === 'max' ? 0.04 : 0.28, subs: psubs, walls: walls,
+      vx: f1(vXp), vy: f1(vYp), vC: bV > 0.1 ? '#F5C77A' : bV > 0.03 ? '#C99A1E' : '#E07A5F', vTxt: 'Side viewer ' + va + '°', vtx: f1(vXp), vty: f1(Math.max(14, vYp - 14)),
+      grid: 'M40,' + f1(LY(0.1)) + ' H370 M40,' + f1(LY(0.01)) + ' H370 M' + f1(AX(45)) + ',10 V180 M' + f1(AX(60)) + ',10 V180',
+      cNorm: curve(wideL), cPriv: curve(narL), mx: f1(AX(va)),
+      ul: circ(AX(45), LY(0.035), 4) + circ(AX(60), LY(0.009), 4),
+      phones: [
+        { n: 'Holder looking straight on (0°)', nO: '1', bO: '1', tr: 'translate(0,0)', aria: 'Screen viewed from the front, clearly visible' },
+        { n: 'Side viewer at ' + va + '°', nO: vis(notL(va)), bO: vis(bV), tr: 'translate(60,0) scale(' + Math.max(0.25, Math.cos(var2)).toFixed(2) + ',1) translate(-60,0)', aria: 'Screen viewed from an angle of ' + va + ' degrees' }
+      ],
+      angTxt: va + '°',
+      stats: [
+        { k: 'Brightness seen straight on', v: '100%', c: '#0A6A94' },
+        { k: 'Side viewer sees main content', v: pctF(bV), c: bV > 0.1 ? '#B04A0C' : '#0A6A94' },
+        { k: 'Side viewer sees notification pop-ups', v: pctF(notL(va)), c: notL(va) > 0.1 ? '#B04A0C' : '#0A6A94' }
+      ],
+      modes: [['off', 'Off: both pixel types on, wide viewing angle'], ['notif', 'Hide notification pop-ups only'], ['max', 'Whole screen (Maximum Privacy Protection)']].map(function (m4) { var q = pill(s.priv === m4[0]); return { name: m4[1], pressed: s.priv === m4[0] ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ priv: m4[0] }); } }; }),
+      aria: 'Cross-section of wide- and narrow-angle pixels; side viewer at an angle of ' + va + ' degrees sees a brightness of ' + pctF(bV)
+    };
+
     return {
+      ek: ek, pn: pn, cl: cl, pv: pv,
+      newPanel: function () { self.setState({ panel: self.state.panel + 1 }); },
+      vang: s.vang, setVang: function (e) { self.setState({ vang: parseFloat(e.target.value) }); },
       px: px, rs: rs, yd: yd, steps: steps, dr: dr, wv: wv, env: env, tc: tc, rf: rf,
       newSheet: function () { self.setState({ seed: self.state.seed + 1 }); },
       dh: s.dh, setDh: function (e) { self.setState({ dh: parseFloat(e.target.value), trials: null }); },

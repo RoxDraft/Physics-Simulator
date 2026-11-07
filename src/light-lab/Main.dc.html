@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>แล็บแสงและจอภาพ</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F6F7}
+a{color:#0A6A94}a:hover{color:#074E6E}
+input[type=range]{width:100%;accent-color:#0A6A94;height:32px;margin:0;cursor:pointer}
+a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #B04A0C;outline-offset:2px}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #0F2A3A; background: #F3F6F7; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 40px) 64px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 34px">
+
+<nav aria-label="หัวข้อในแล็บแสงและจอภาพ" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="Main.dc.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #0A6A94; background: #0A6A94; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">แหล่งกำเนิดแสงและโคม LED</a>
+<a href="Display.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">จอมือถือและอุปกรณ์</a>
+<a href="Sources.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #C9D4DA; background: #FFFFFF; color: #0F2A3A; font-size: 14px; font-weight: 600; text-decoration: none">แหล่งข้อมูล</a>
+</nav>
+
+<header style="display: flex; flex-direction: column; gap: 8px; max-width: 920px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #0A6A94">LIGHT &amp; DISPLAY LAB · แสง</div>
+<h1 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; font-weight: 700">สร้างแสงอย่างไรให้สว่าง ประหยัด และสบายตา</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5D6A">หลอดไส้เผาลวดให้ร้อนจนเรืองแสง หลอดฟลูออเรสเซนต์ใช้ไอปรอทปล่อยรังสี UV ไปกระตุ้นสารเรืองแสง ส่วน LED ปล่อยแสงจากอิเล็กตรอนที่ข้ามช่องว่างพลังงานในสารกึ่งตัวนำโดยตรง วิธีสร้างแสงกำหนดว่าพลังงานไปตกที่ความยาวคลื่นไหน และเปลืองไปเป็นความร้อนเท่าไร</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">1. สเปกตรัมของแสงแต่ละแบบ เทียบกับความไวของตา</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #E3E9EC; font-size: 14px">
+<span style="font-weight: 700">{{sp.title}}</span>
+<span style="display: inline-flex; align-items: center; gap: 12px"><span style="display: inline-flex; align-items: center; gap: 6px"><svg width="22" height="10" aria-hidden="true"><line x1="2" y1="5" x2="20" y2="5" stroke="#0F2A3A" stroke-width="3"></line></svg>พลังงานแสงที่ปล่อย</span><span style="display: inline-flex; align-items: center; gap: 6px"><svg width="22" height="10" aria-hidden="true"><line x1="2" y1="5" x2="20" y2="5" stroke="#B04A0C" stroke-width="2" stroke-dasharray="4 3"></line></svg>ความไวของตา V(λ)</span></span>
+</div>
+<svg viewBox="0 0 900 300" style="display: block; width: 100%; height: auto; background: #FBFCFD" role="img" aria-label="{{sp.aria}}">
+<defs><linearGradient id="vis" x1="0" x2="1"><stop offset="0" stop-color="#7A00FF"></stop><stop offset="0.15" stop-color="#2050FF"></stop><stop offset="0.3" stop-color="#00C0FF"></stop><stop offset="0.45" stop-color="#20D040"></stop><stop offset="0.6" stop-color="#FFE000"></stop><stop offset="0.75" stop-color="#FF8000"></stop><stop offset="1" stop-color="#C00000"></stop></linearGradient></defs>
+<rect x="{{sp.vx0}}" y="20" width="{{sp.vw}}" height="230" fill="url(#vis)" opacity="0.13"></rect>
+<line x1="50" y1="250" x2="880" y2="250" stroke="#9AAAB4"></line>
+<sc-for list="{{sp.ticks}}" as="t" hint-placeholder-count="6">
+<line x1="{{t.x}}" y1="250" x2="{{t.x}}" y2="256" stroke="#9AAAB4"></line>
+<text x="{{t.x}}" y="272" font-size="11" text-anchor="middle" fill="#4A5D6A">{{t.v}}</text>
+</sc-for>
+<text x="880" y="292" font-size="11" text-anchor="end" fill="#4A5D6A">ความยาวคลื่น (นาโนเมตร)</text>
+<text x="{{sp.uvx}}" y="40" font-size="12" text-anchor="middle" fill="#5B4FC4" font-weight="600">UV</text>
+<text x="{{sp.visx}}" y="40" font-size="12" text-anchor="middle" fill="#0F2A3A" font-weight="600">แสงที่ตามองเห็น</text>
+<text x="{{sp.irx}}" y="40" font-size="12" text-anchor="middle" fill="#7E3407" font-weight="600">อินฟราเรด (ความร้อน)</text>
+<path d="{{sp.fill}}" fill="{{sp.swatch}}" opacity="0.35"></path>
+<path d="{{sp.line}}" fill="none" stroke="#0F2A3A" stroke-width="2.5"></path>
+<path d="{{sp.v}}" fill="none" stroke="#B04A0C" stroke-width="2" stroke-dasharray="5 4"></path>
+</svg>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-weight: 700">ไฟฟ้า 100 วัตต์ที่ป้อนเข้าหลอดกลายเป็นอะไรบ้าง</span>
+<div style="display: flex; height: 34px; border-radius: 8px; overflow: hidden; font-size: 12px; font-weight: 600">
+<sc-for list="{{sp.split}}" as="b" hint-placeholder-count="3">
+<div style="width: {{b.w}}; background: {{b.c}}; color: {{b.fg}}; display: flex; align-items: center; justify-content: center; white-space: nowrap; overflow: hidden">{{b.t}}</div>
+</sc-for>
+</div>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">{{sp.splitNote}}</span>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600">แหล่งกำเนิดแสง</span>
+<div role="group" aria-label="แหล่งกำเนิดแสง" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{sp.srcs}}" as="p" hint-placeholder-count="7">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="flex: 1 1 120px; min-height: 44px; padding: 4px 10px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; line-height: 1.3">{{p.name}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px; opacity: {{sp.tOp}}">
+<div style="display: flex; justify-content: space-between"><label for="s-T" style="font-size: 14px; font-weight: 600">อุณหภูมิไส้หลอด</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94">{{sp.Ttxt}}</span></div>
+<input id="s-T" type="range" min="1800" max="3600" step="50" value="{{T}}" onChange="{{setT}}">
+</div>
+<div style="display: flex; align-items: center; gap: 14px; padding-top: 4px">
+<div style="width: 64px; height: 64px; border-radius: 50%; background: {{sp.swatch}}; box-shadow: 0 0 24px {{sp.swatch}}; border: 1px solid #D5DEE3; flex: 0 0 auto"></div>
+<div style="display: flex; flex-direction: column; gap: 2px; font-size: 14px"><span>สีของแสงที่ตาเห็น</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px">{{sp.cct}}</span></div>
+</div>
+<sc-for list="{{sp.stats}}" as="r" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #E3E9EC; padding-top: 6px"><span>{{r.k}}</span><span style="font-family: 'IBM Plex Mono', monospace; color: {{r.c}}; text-align: right">{{r.v}}</span></div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">{{sp.howTitle}}</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">{{sp.how}}</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.8; color: #B9D3DF">ลูเมน = 683 × ∫ V(λ)·P(λ) dλ<br>อุณหภูมิสีคำนวณจากสเปกตรัมจริง (CIE 1931 + McCamy)</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">2. ออกแบบโคม LED: หรี่ได้ เปลี่ยนสีได้ ไม่กระพริบ</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #4A5D6A; max-width: 960px">โคมรุ่นใหม่มี LED สองชุด ชุดหนึ่งแสงอุ่น (สีส้ม 2200 K) อีกชุดแสงเย็น (สีขาวฟ้า 6500 K) ผสมสัดส่วนกันเพื่อได้สีกลาง ๆ ทุกค่า ส่วนความสว่างคุมด้วยวงจรขับ (driver) ซึ่งเป็นตัวตัดสินว่าโคมจะกระพริบหรือไม่ ไฟบ้านไทยเป็นไฟสลับ 50 Hz ถ้าวงจรขับกรองไม่ดี แสงจะกระเพื่อม 100 ครั้งต่อวินาที ตาอาจไม่เห็นตรง ๆ แต่สมองรับรู้ได้ และทำให้ปวดหัวหรือตาล้าในบางคน</p>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow: hidden">
+<svg viewBox="0 0 320 260" style="display: block; width: 100%; height: auto; background: #2B3B45" role="img" aria-label="{{lp.aria}}">
+<path d="M100,46 L220,46 L300,220 L20,220 Z" fill="{{lp.col}}" opacity="{{lp.cone}}"></path>
+<rect x="110" y="30" width="100" height="18" rx="6" fill="#D5DEE3"></rect>
+<rect x="118" y="46" width="84" height="5" fill="{{lp.col}}"></rect>
+<line x1="160" y1="0" x2="160" y2="30" stroke="#9AAAB4" stroke-width="2"></line>
+<rect x="40" y="220" width="240" height="12" fill="#8A6D3B"></rect>
+<rect x="60" y="232" width="10" height="28" fill="#8A6D3B"></rect><rect x="250" y="232" width="10" height="28" fill="#8A6D3B"></rect>
+<rect x="120" y="212" width="80" height="8" fill="#F3F6F7" opacity="{{lp.paper}}"></rect>
+<text x="160" y="250" font-size="12" text-anchor="middle" fill="#FFFFFF" font-weight="700">{{lp.lux}}</text>
+</svg>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 14px">ความสว่างของแสงตามเวลา (20 มิลลิวินาที)</span>
+<svg viewBox="0 0 360 170" style="display: block; width: 100%; height: auto" role="img" aria-label="{{lp.waveAria}}">
+<line x1="30" y1="150" x2="350" y2="150" stroke="#9AAAB4"></line>
+<line x1="30" y1="10" x2="30" y2="150" stroke="#9AAAB4"></line>
+<line x1="30" y1="{{lp.avgY}}" x2="350" y2="{{lp.avgY}}" stroke="#9AAAB4" stroke-dasharray="3 3"></line>
+<path d="{{lp.wave}}" fill="none" stroke="#B04A0C" stroke-width="2"></path>
+<text x="26" y="16" font-size="10" text-anchor="end" fill="#4A5D6A">100%</text>
+<text x="26" y="154" font-size="10" text-anchor="end" fill="#4A5D6A">0</text>
+<text x="350" y="166" font-size="10" text-anchor="end" fill="#4A5D6A">20 ms</text>
+</svg>
+<span style="font-size: 13px; color: {{lp.flickC}}; font-weight: 600">{{lp.flickTxt}}</span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<div style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 14px">เทียบเกณฑ์ IEEE 1789 (การกระพริบที่เสี่ยงต่ำ)</span>
+<svg viewBox="0 0 360 200" style="display: block; width: 100%; height: auto" role="img" aria-label="กราฟเกณฑ์การกระพริบ IEEE 1789 กับโคมนี้">
+<path d="{{lp.safeArea}}" fill="#DDEFF6"></path>
+<path d="{{lp.limit}}" fill="none" stroke="#0A6A94" stroke-width="2"></path>
+<line x1="40" y1="170" x2="350" y2="170" stroke="#9AAAB4"></line>
+<line x1="40" y1="10" x2="40" y2="170" stroke="#9AAAB4"></line>
+<sc-for list="{{lp.fTicks}}" as="t" hint-placeholder-count="5">
+<text x="{{t.x}}" y="184" font-size="10" text-anchor="middle" fill="#4A5D6A">{{t.v}}</text>
+</sc-for>
+<sc-for list="{{lp.mTicks}}" as="t" hint-placeholder-count="4">
+<text x="36" y="{{t.y}}" dy="3" font-size="10" text-anchor="end" fill="#4A5D6A">{{t.v}}</text>
+</sc-for>
+<text x="350" y="198" font-size="10" text-anchor="end" fill="#4A5D6A">ความถี่ (Hz)</text>
+<text x="44" y="20" font-size="10" fill="#4A5D6A">% การกระเพื่อม</text>
+<text x="300" y="60" font-size="10" text-anchor="middle" fill="#0A4F70">เกิน 1250 Hz</text>
+<text x="300" y="72" font-size="10" text-anchor="middle" fill="#0A4F70">ยกเว้น</text>
+<circle cx="{{lp.px}}" cy="{{lp.py}}" r="7" fill="{{lp.pc}}" stroke="#FFFFFF" stroke-width="2"></circle>
+</svg>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 14px">โบกมือใต้โคม: เห็นภาพซ้อนหรือไม่</span>
+<svg viewBox="0 0 320 120" style="display: block; width: 100%; height: auto; background: #1B2A33; border-radius: 8px" role="img" aria-label="{{lp.phAria}}">
+<path d="{{lp.phantom}}" fill="none" stroke="{{lp.col}}" stroke-width="10" stroke-linecap="butt"></path>
+</svg>
+<span style="font-size: 13px; line-height: 1.6; color: #4A5D6A">ภาพนี้คือปลายนิ้วที่เคลื่อนผ่านสายตาเร็ว 3 เมตรต่อวินาทีในเวลา 40 มิลลิวินาที ถ้าแสงดับเป็นช่วง ๆ ตาจะเห็นนิ้วเป็นจุดซ้อน ๆ (stroboscopic effect) อันตรายกับเครื่องจักรหมุนในโรงงาน เพราะอาจดูเหมือนหยุดนิ่ง</span>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+<sc-for list="{{lp.stats}}" as="r" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 13px; font-weight: 600; color: #4A5D6A">{{r.k}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; color: {{r.c}}">{{r.v}}</div>
+<div style="font-size: 13px; line-height: 1.5; color: #4A5D6A">{{r.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{lp.sliders}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px; opacity: {{x.op}}">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{d2w}}" onChange="{{toggleD2w}}" style="width: 20px; height: 20px; accent-color: #0A6A94">หรี่แล้วอุ่นขึ้นเอง (dim-to-warm แบบหลอดไส้)</label>
+<span style="font-size: 14px; font-weight: 600">วิธีหรี่ไฟของวงจรขับ</span>
+<div role="group" aria-label="วิธีหรี่ไฟ" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{lp.methods}}" as="p" hint-placeholder-count="4">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 4px 12px; border-radius: 10px; border: 1.5px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.35">{{p.name}}</button>
+</sc-for>
+</div>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{cheap}}" onChange="{{toggleCheap}}" style="width: 20px; height: 20px; accent-color: #0A6A94">วงจรขับราคาถูก ตัวเก็บประจุกรองไฟเล็ก</label>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">หลักการ</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.8">% กระเพื่อม = (สูงสุด − ต่ำสุด) / (สูงสุด + ต่ำสุด)<br>IEEE 1789: ต่ำกว่า 90 Hz ≤ 0.025·f · 90–1250 Hz ≤ 0.08·f<br>ความสว่างบนโต๊ะ ≈ Φ / (π·h²)</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #B9D3DF">PWM คือการเปิด-ปิด LED เร็ว ๆ แล้วปรับสัดส่วนเวลาที่เปิด ถ้าความถี่สูงพอ (หลายพัน Hz ขึ้นไป) ตาและสมองไม่รับรู้ ส่วนการลดกระแสตรง (constant current) ไม่ดับเลย สบายตาที่สุด และ LED ยังประหยัดขึ้นเล็กน้อยตอนกระแสต่ำ</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700">3. ความสว่างเท่ากัน ค่าไฟต่างกันแค่ไหน</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; overflow-x: auto">
+<div role="table" aria-label="เปรียบเทียบหลอดไฟ" style="min-width: 640px; display: flex; flex-direction: column; font-size: 14px">
+<div role="row" style="display: grid; grid-template-columns: 1.5fr repeat(5, minmax(0, 1fr)) 1.6fr; gap: 8px; padding: 10px 16px; background: #F3F6F7; font-weight: 700"><span role="columnheader">หลอด</span><span role="columnheader">ลูเมน/วัตต์</span><span role="columnheader">ใช้ไฟ</span><span role="columnheader">ความร้อน</span><span role="columnheader">อายุ</span><span role="columnheader">CO₂/ปี</span><span role="columnheader">ค่าใช้จ่ายรวม</span></div>
+<sc-for list="{{en.rows}}" as="r" hint-placeholder-count="5">
+<div role="row" style="display: grid; grid-template-columns: 1.5fr repeat(5, minmax(0, 1fr)) 1.6fr; gap: 8px; padding: 10px 16px; border-top: 1px solid #E3E9EC; align-items: center">
+<span role="cell" style="font-weight: 700">{{r.n}}</span>
+<span role="cell" style="font-family: 'IBM Plex Mono', monospace">{{r.eff}}</span>
+<span role="cell" style="font-family: 'IBM Plex Mono', monospace">{{r.w}}</span>
+<span role="cell" style="font-family: 'IBM Plex Mono', monospace">{{r.heat}}</span>
+<span role="cell" style="font-family: 'IBM Plex Mono', monospace">{{r.life}}</span>
+<span role="cell" style="font-family: 'IBM Plex Mono', monospace">{{r.co2}}</span>
+<span role="cell" style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'IBM Plex Mono', monospace">{{r.cost}}</span><span style="display: block; height: 8px; border-radius: 4px; width: {{r.bar}}; background: {{r.c}}"></span></span>
+</div>
+</sc-for>
+</div>
+<p style="margin: 0; padding: 12px 16px; font-size: 13px; line-height: 1.6; color: #4A5D6A; border-top: 1px solid #E3E9EC">{{en.note}}</p>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D5DEE3; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{en.sliders}}" as="x" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><label for="{{x.id}}" style="font-size: 14px; font-weight: 600">{{x.name}}</label><span style="font-family: 'IBM Plex Mono', monospace; color: #0A6A94; white-space: nowrap">{{x.label}}</span></div>
+<input id="{{x.id}}" type="range" min="{{x.min}}" max="{{x.max}}" step="{{x.step}}" value="{{x.v}}" onChange="{{x.set}}">
+</div>
+</sc-for>
+</div>
+<div style="background: #0F2A3A; color: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #9FD0E6">ทำไม LED ประหยัดกว่า</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #D9E8EF">หลอดไส้ปล่อยพลังงานส่วนใหญ่เป็นอินฟราเรดที่ตามองไม่เห็น หลอดฟลูออเรสเซนต์เสียพลังงานตอนแปลงรังสี UV เป็นแสงขาว และมีปรอท จึงกำลังถูกเลิกใช้ทั่วโลกตามอนุสัญญามินามาตะ (หลอดตะเกียบภายในปี 2025 หลอดยาวภายในปี 2027) ส่วน LED ปล่อยแสงในช่วงที่ตามองเห็นเกือบทั้งหมด ความร้อนที่เหลือระบายผ่านแผ่นอะลูมิเนียมด้านหลัง ไม่ได้พุ่งใส่เราแบบหลอดไส้</p>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":2700}}'>
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    this.reduce = reduce;
+    this.state = {
+      src: 'inc', T: 2700,
+      lum: 0.6, cct: 4000, d2w: false, method: 'ccr', cheap: false,
+      lm: 800, hrs: 6, price: 4.2, years: 10, tick: 0
+    };
+    this._cache = {};
+  }
+
+  // ----- colour science helpers -----
+  g2(x, mu, s1, s2) { var s = x < mu ? s1 : s2; return Math.exp(-0.5 * ((x - mu) / s) * ((x - mu) / s)); }
+  cmf(l) {
+    var g = this.g2;
+    return [1.056 * g(l, 599.8, 37.9, 31.0) + 0.362 * g(l, 442.0, 16.0, 26.7) - 0.065 * g(l, 501.1, 20.4, 26.2),
+      0.821 * g(l, 568.8, 46.9, 40.5) + 0.286 * g(l, 530.9, 16.3, 31.1),
+      1.217 * g(l, 437.0, 11.8, 36.0) + 0.681 * g(l, 459.0, 26.0, 13.8)];
+  }
+  gs(l, mu, s) { return Math.exp(-0.5 * ((l - mu) / s) * ((l - mu) / s)); }
+  planck(l, T) { return Math.pow(l, -5) / (Math.exp(1.4388e7 / (l * T)) - 1); }
+  led(b, y, r) { var self = this; return function (l) { return b * self.gs(l, 450, 10) + y * self.gs(l, 560, 50) + r * self.gs(l, 615, 35); }; }
+
+  spdFor(id, T) {
+    var self = this;
+    if (id === 'inc') return function (l) { return self.planck(l, T); };
+    if (id === 'hal') return function (l) { return self.planck(l, 3050); };
+    if (id === 'sun') return function (l) { return self.planck(l, 5778); };
+    if (id === 'fl') return function (l) { var g = self.gs.bind(self); return 0.15 * g(l, 405, 3) + 0.5 * g(l, 436, 3) + 0.25 * g(l, 487, 4) + g(l, 545, 4) + 0.2 * g(l, 587, 4) + 0.85 * g(l, 611, 3) + 0.2 * g(l, 630, 5) + 0.05 * g(l, 550, 120); };
+    if (id === 'ledw') return this.led(0.17, 0.48, 0.62);
+    if (id === 'ledc') return this.led(1.42, 0.74, 0.06);
+    return function (l) { var g = self.gs.bind(self); return 0.55 * g(l, 460, 10) + 0.75 * g(l, 530, 14) + 0.75 * g(l, 625, 9); };
+  }
+
+  analyse(S, full) {
+    var X = 0, Y = 0, Z = 0, tot = 0, vis = 0, uv = 0;
+    var lo = full ? 300 : 380, hi = full ? 2500 : 780;
+    for (var l = lo; l <= hi; l += 5) {
+      var s = S(l), c = this.cmf(l); X += c[0] * s; Y += c[1] * s; Z += c[2] * s; tot += s;
+      if (l >= 380 && l <= 780) vis += s; else if (l < 380) uv += s;
+    }
+    var x = X / (X + Y + Z), y = Y / (X + Y + Z), n = (x - 0.3320) / (0.1858 - y);
+    var cct = 449 * n * n * n + 3525 * n * n + 6823.3 * n + 5520.33;
+    // XYZ → linear sRGB → display colour
+    var Xn = x / y, Zn = (1 - x - y) / y;
+    var r = 3.2406 * Xn - 1.5372 - 0.4986 * Zn, g = -0.9689 * Xn + 1.8758 + 0.0415 * Zn, b = 0.0557 * Xn - 0.2040 + 1.0570 * Zn;
+    var m = Math.max(r, g, b); r = Math.max(0, r / m); g = Math.max(0, g / m); b = Math.max(0, b / m);
+    var gam = function (u) { return Math.round(255 * (u <= 0.0031308 ? 12.92 * u : 1.055 * Math.pow(u, 1 / 2.4) - 0.055)); };
+    return { cct: cct, ler: 683 * Y / tot, vis: vis / tot, uv: uv / tot, x: x, y: y, rgb: 'rgb(' + gam(r) + ',' + gam(g) + ',' + gam(b) + ')' };
+  }
+
+  // two-channel LED mix: lumen fraction of the cool channel that hits a target CCT
+  mix(target) {
+    var key = Math.round(target);
+    if (this._cache[key]) return this._cache[key];
+    var W = this.led(0.08, 0.3, 0.8), C = this.led(1.42, 0.74, 0.06), self = this;
+    var lmW = this.analyse(W, false), lmC = this.analyse(C, false);
+    // normalise each channel to equal luminous output
+    var yW = 0, yC = 0; for (var l = 380; l <= 780; l += 5) { var c = this.cmf(l)[1]; yW += c * W(l); yC += c * C(l); }
+    var lo = 0, hi = 1, res = null;
+    for (var i = 0; i < 22; i++) {
+      var f = (lo + hi) / 2, S = function (l) { return (1 - f) * W(l) / yW + f * C(l) / yC; };
+      res = this.analyse(S, false); res.f = f;
+      if (res.cct < target) lo = f; else hi = f;
+    }
+    this._cache[key] = res;
+    return res;
+  }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var f1 = function (v) { return (+v).toFixed(1); };
+    var pill = function (on) { return on ? { bg: '#0A6A94', fg: '#FFFFFF', border: '#0A6A94' } : { bg: '#FFFFFF', fg: '#0F2A3A', border: '#C9D4DA' }; };
+
+    // ---------- 1. spectra ----------
+    var info = {
+      inc: { n: 'หลอดไส้', eta: 0.9, how: 'กระแสไฟฟ้าทำให้ลวดทังสเตนร้อนจนเรืองแสงตามกฎการแผ่รังสีของวัตถุดำ ยิ่งร้อนแสงยิ่งขาวและมีสัดส่วนที่ตามองเห็นมากขึ้น แต่ทังสเตนหลอมที่ราว 3,400 °C หลอดจึงต้องทำงานที่ราว 2,700 K ซึ่งพลังงานเกือบทั้งหมดเป็นอินฟราเรด', life: 1000 },
+      hal: { n: 'หลอดฮาโลเจน', eta: 0.9, how: 'หลอดไส้ที่ใส่ก๊าซฮาโลเจน ทำให้ทังสเตนที่ระเหยกลับมาเกาะไส้ จึงร้อนได้มากขึ้นเล็กน้อย (ราว 3,000 K) แสงขาวกว่าหลอดไส้ แต่ยังเป็นความร้อนเกือบทั้งหมด', life: 2000 },
+      fl: { n: 'ฟลูออเรสเซนต์', eta: 0.26, how: 'ไฟฟ้าวิ่งผ่านไอปรอทในหลอด ปล่อยรังสี UV ความยาวคลื่น 254 นาโนเมตร แล้วสารเรืองแสงที่เคลือบผิวหลอดแปลง UV เป็นแสงขาวที่มีหลายเส้นสี (เส้นแหลมในกราฟ) การแปลงนี้เสียพลังงานไปมาก', life: 15000 },
+      ledw: { n: 'LED แสงอุ่น', eta: 0.42, how: 'ชิป InGaN ปล่อยแสงสีน้ำเงิน 450 นาโนเมตร บางส่วนถูกสารเรืองแสงเปลี่ยนเป็นเหลืองและแดง ผสมกันเป็นแสงขาว LED แสงอุ่นใช้สารเรืองแสงสีแดงมากขึ้น จึงเสียพลังงานตอนแปลงสีมากกว่าแสงเย็นเล็กน้อย', life: 25000 },
+      ledc: { n: 'LED แสงเย็น', eta: 0.45, how: 'ชิป InGaN สีน้ำเงินกับสารเรืองแสงสีเหลือง (YAG:Ce) เป็นแสงขาวที่มีประสิทธิภาพสูงที่สุดแบบหนึ่ง ยอดสีน้ำเงินที่สูงทำให้แสงดูเย็นและกระตุ้นความตื่นตัว ไม่เหมาะเปิดก่อนนอน', life: 25000 },
+      rgb: { n: 'LED สามสี (RGB)', eta: 0.3, how: 'ใช้ชิปแดง เขียว น้ำเงินผสมกันโดยตรงเหมือนพิกเซลบนจอ ปรับสีได้ทุกสี แต่ LED สีเขียวยังมีประสิทธิภาพต่ำ (green gap) และแสงขาวจากสามเส้นแคบ ๆ ทำให้สีของวัตถุบางอย่างผิดเพี้ยน', life: 25000 },
+      sun: { n: 'แสงอาทิตย์', eta: 0, how: 'ผิวดวงอาทิตย์ร้อนราว 5,800 K แผ่รังสีกระจายทุกสี ยอดของสเปกตรัมตกในช่วงที่ตามองเห็นพอดี ตาของเราวิวัฒนาการมาให้ไวที่สุดในช่วงนี้', life: 0 }
+    };
+    var I = info[s.src], S = this.spdFor(s.src, s.T), A = this.analyse(S, true);
+    var lam0 = 300, lam1 = 2000, X = function (l) { return 50 + 830 * (l - lam0) / (lam1 - lam0); };
+    var maxS = 0, pts = [];
+    for (var l = lam0; l <= lam1; l += 5) maxS = Math.max(maxS, S(l));
+    for (var l2 = lam0; l2 <= lam1; l2 += 5) pts.push(f1(X(l2)) + ',' + f1(250 - 200 * S(l2) / maxS));
+    var vpts = []; for (var l3 = 380; l3 <= 780; l3 += 5) vpts.push(f1(X(l3)) + ',' + f1(250 - 200 * this.cmf(l3)[1]));
+    var visFrac = A.vis, lampEff = A.ler * I.eta;
+    var lightW = 100 * I.eta * visFrac, irW = 100 * I.eta * (1 - visFrac - A.uv), heatW = 100 - lightW - Math.max(0, irW);
+    var split = s.src === 'sun' ? [{ w: '100%', c: '#F5C77A', fg: '#0F2A3A', t: 'ดวงอาทิตย์ไม่ใช้ไฟฟ้า: แสงที่มองเห็น ' + Math.round(visFrac * 100) + '% ของพลังงานแผ่รังสี' }] : [
+      { w: Math.max(0, lightW).toFixed(1) + '%', c: '#F5C77A', fg: '#0F2A3A', t: lightW > 8 ? 'แสงที่มองเห็น ' + lightW.toFixed(0) + ' W' : '' },
+      { w: Math.max(0, irW).toFixed(1) + '%', c: '#E07A5F', fg: '#FFFFFF', t: irW > 8 ? 'อินฟราเรด ' + irW.toFixed(0) + ' W' : '' },
+      { w: Math.max(0, heatW).toFixed(1) + '%', c: '#9AAAB4', fg: '#FFFFFF', t: heatW > 8 ? 'ความร้อนในหลอด/วงจร ' + heatW.toFixed(0) + ' W' : '' }
+    ];
+    var sp = {
+      title: I.n + (s.src === 'inc' ? ' ' + s.T + ' K' : ''),
+      vx0: f1(X(380)), vw: f1(X(780) - X(380)), uvx: f1(X(340)), visx: f1(X(580)), irx: f1(X(1300)),
+      ticks: [300, 500, 780, 1000, 1500, 2000].map(function (v) { return { x: f1(X(v)), v: v }; }),
+      line: 'M' + pts.join(' L'), fill: 'M' + f1(X(lam0)) + ',250 L' + pts.join(' L') + ' L' + f1(X(lam1)) + ',250 Z', v: 'M' + vpts.join(' L'),
+      swatch: A.rgb, cct: Math.round(A.cct / 10) * 10 + ' K',
+      Ttxt: s.T + ' K (' + (s.T - 273) + ' °C)', tOp: s.src === 'inc' ? 1 : 0.4,
+      split: split,
+      splitNote: s.src === 'sun' ? 'ความร้อนจากแดดส่วนใหญ่มาจากอินฟราเรดและแสงที่มองเห็นรวมกัน' : 'คิดจากสเปกตรัมในกราฟ และสัดส่วนไฟฟ้าที่กลายเป็นรังสี (หลอดไส้ราว 90% ฟลูออเรสเซนต์ราว 26% LED ราว 42–45%) ที่เหลือเป็นความร้อนในตัวหลอดและวงจร',
+      stats: [
+        { k: 'พลังงานรังสีที่อยู่ในช่วงมองเห็น', v: Math.round(visFrac * 100) + '%', c: '#0F2A3A' },
+        { k: 'ลูเมนต่อวัตต์ของรังสี (LER)', v: Math.round(A.ler) + ' lm/W', c: '#0F2A3A' },
+        { k: 'ลูเมนต่อวัตต์ไฟฟ้า (ประมาณ)', v: s.src === 'sun' ? '–' : Math.round(lampEff) + ' lm/W', c: lampEff > 80 ? '#0A6A94' : '#B04A0C' },
+        { k: 'อายุการใช้งานทั่วไป', v: I.life ? I.life.toLocaleString('en-US') + ' ชม.' : '–', c: '#0F2A3A' }
+      ],
+      srcs: ['inc', 'hal', 'fl', 'ledw', 'ledc', 'rgb', 'sun'].map(function (id) { var q = pill(s.src === id); return { name: info[id].n, pressed: s.src === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ src: id }); } }; }),
+      howTitle: 'สร้างแสงอย่างไร: ' + I.n, how: I.how,
+      aria: 'สเปกตรัมของ' + I.n + ' อุณหภูมิสี ' + Math.round(A.cct) + ' เคลวิน'
+    };
+
+    // ---------- 2. LED lamp ----------
+    var lum = s.lum, target = s.d2w ? 2200 + (3000 - 2200) * Math.sqrt(lum) : s.cct;
+    var M = this.mix(target), Phi = 1000 * lum;
+    var ripple = s.cheap ? 0.35 : 0.02;
+    var meth = { pwm120: { f: 120, n: 'PWM 120 Hz (เปิด-ปิดช้า)' }, pwm1k: { f: 1000, n: 'PWM 1 kHz' }, pwm25k: { f: 25000, n: 'PWM 25 kHz (เร็วมาก)' }, ccr: { f: 0, n: 'ลดกระแสตรง (constant current) ไม่ดับเลย' } };
+    var Mh = meth[s.method], pwm = Mh.f > 0 && lum < 0.999;
+    var out = function (t) {   // t in seconds; returns 0..1 (relative to full output)
+      var rip = 1 + ripple * Math.sin(2 * Math.PI * 100 * t);
+      if (pwm) { var ph = (t * Mh.f) % 1; return ph < lum ? Math.min(1, rip) : 0; }
+      return Math.min(1, lum * rip);
+    };
+    var wpts = [], mx = 0, mn = 9, n = 1200;
+    for (var i = 0; i <= n; i++) { var t = 0.02 * i / n, v = out(t); mx = Math.max(mx, v); mn = Math.min(mn, v); wpts.push(f1(30 + 320 * i / n) + ',' + f1(150 - 135 * v)); }
+    if (pwm) { mx = Math.min(1, 1 + ripple); mn = 0; }
+    var mod = mx + mn > 0 ? (mx - mn) / (mx + mn) * 100 : 0;
+    var fFl = pwm ? Mh.f : 100;
+    var lim = fFl > 1250 ? Infinity : fFl < 90 ? 0.025 * fFl : 0.08 * fFl;
+    var ok = mod <= lim || mod < 0.5;
+    var LX = function (f) { return 40 + 310 * (Math.log10(f) - 1) / (Math.log10(30000) - 1); }, LY = function (m) { return 170 - 160 * (Math.log10(Math.max(0.1, m)) + 1) / 3; };
+    var limPts = [], area = [];
+    for (var lf = 1; lf <= Math.log10(1250) + 1e-9; lf += 0.02) { var fq = Math.pow(10, lf), lm = fq < 90 ? 0.025 * fq : 0.08 * fq; limPts.push(f1(LX(fq)) + ',' + f1(LY(Math.min(100, lm)))); }
+    var safeArea = 'M' + f1(LX(10)) + ',170 L' + limPts.join(' L') + ' L' + f1(LX(1250)) + ',' + f1(LY(100)) + ' L' + f1(LX(30000)) + ',' + f1(LY(100)) + ' L' + f1(LX(30000)) + ',170 Z';
+    // phantom array: finger moving across 40 ms
+    var segs = '', on = false, x0 = 0, ppm = 290 / 0.04;
+    var period = pwm ? 1 / Mh.f : 0;
+    if (pwm && period * ppm < 1.2) segs = 'M15,60 L305,60';
+    else {
+      var steps = 1600;
+      for (var k = 0; k <= steps; k++) { var tt = 0.04 * k / steps, xv = 15 + 290 * k / steps, onNow = out(tt) > 0.02; if (onNow && !on) { x0 = xv; on = true; } if ((!onNow || k === steps) && on) { segs += 'M' + f1(x0) + ',60 L' + f1(Math.max(xv, x0 + 1)) + ',60 '; on = false; } }
+    }
+    var ledEff0 = 135, eff = pwm || Mh.f > 0 ? ledEff0 : ledEff0 * (1 + 0.15 * (1 - lum));   // lower current = less droop
+    var drv = 0.88, P = Phi / eff / drv + 0.3;
+    var lux = Phi / (Math.PI * 1.5 * 1.5);
+    var sliders = [
+      { id: 'l-b', name: 'ความสว่าง', label: Math.round(lum * 100) + '% · ' + Math.round(Phi) + ' lm', min: 0.01, max: 1, step: 0.01, v: lum, op: 1, set: function (e) { self.setState({ lum: parseFloat(e.target.value) }); } },
+      { id: 'l-c', name: 'อุณหภูมิสี', label: s.d2w ? 'อัตโนมัติ ' + Math.round(target) + ' K' : s.cct + ' K', min: 2200, max: 6500, step: 100, v: s.cct, op: s.d2w ? 0.4 : 1, set: function (e) { self.setState({ cct: parseFloat(e.target.value), d2w: false }); } }
+    ];
+    var lp = {
+      col: M.rgb, cone: (0.25 + 0.65 * lum).toFixed(2), paper: (0.4 + 0.6 * lum).toFixed(2), lux: '≈ ' + Math.round(lux) + ' ลักซ์บนโต๊ะ',
+      wave: 'M' + wpts.join(' L'), avgY: f1(150 - 135 * lum),
+      flickTxt: mod < 0.5 ? 'แสงนิ่ง ไม่กระเพื่อม' : 'กระเพื่อม ' + mod.toFixed(0) + '% ที่ ' + fFl.toLocaleString('en-US') + ' Hz · ' + (ok ? 'อยู่ในเกณฑ์เสี่ยงต่ำ' : 'เกินเกณฑ์เสี่ยงต่ำ'),
+      flickC: ok ? '#0A4F70' : '#B04A0C',
+      safeArea: safeArea, limit: 'M' + limPts.join(' L'),
+      fTicks: [10, 100, 1000, 10000].map(function (f) { return { x: f1(LX(f)), v: f >= 1000 ? f / 1000 + 'k' : f }; }),
+      mTicks: [0.1, 1, 10, 100].map(function (m) { return { y: f1(LY(m)), v: m + '%' }; }),
+      px: f1(LX(Math.min(30000, fFl))), py: f1(LY(Math.max(0.1, mod))), pc: ok ? '#0A6A94' : '#B04A0C',
+      phantom: segs || 'M0,0',
+      stats: [
+        { k: 'กำลังไฟฟ้า', v: P.toFixed(1) + ' W', sub: 'รวมวงจรขับ ประสิทธิภาพ 88%', c: '#0F2A3A' },
+        { k: 'ประสิทธิภาพทั้งโคม', v: Math.round(Phi / P) + ' lm/W', sub: Mh.f === 0 ? 'ลดกระแสแล้ว LED ร้อนน้อยลง ประสิทธิภาพขึ้นเล็กน้อย' : 'PWM ใช้กระแสสูงสุดตลอดช่วงที่เปิด', c: '#0F2A3A' },
+        { k: 'สัดส่วน LED แสงเย็น', v: Math.round(M.f * 100) + '%', sub: 'ที่เหลือเป็น LED แสงอุ่น ผสมให้ได้ ' + Math.round(M.cct) + ' K', c: '#0F2A3A' },
+        { k: 'ความสว่างบนโต๊ะ', v: Math.round(lux) + ' lx', sub: 'โคมสูง 1.5 ม. งานอ่านหนังสือควรได้ราว 300–500 lx', c: lux < 300 ? '#B04A0C' : '#0F2A3A' },
+        { k: 'การกระเพื่อมของแสง', v: mod.toFixed(1) + '%', sub: isFinite(lim) ? 'เกณฑ์เสี่ยงต่ำที่ ' + fFl.toLocaleString('en-US') + ' Hz: ≤ ' + lim.toFixed(1) + '%' : 'ความถี่เกิน 1,250 Hz ไม่มีข้อจำกัด', c: ok ? '#0F2A3A' : '#B04A0C' }
+      ],
+      sliders: sliders,
+      methods: Object.keys(meth).map(function (id) { var q = pill(s.method === id); return { name: meth[id].n, pressed: s.method === id ? 'true' : 'false', bg: q.bg, fg: q.fg, border: q.border, pick: function () { self.setState({ method: id }); } }; }),
+      aria: 'โคม LED ความสว่าง ' + Math.round(Phi) + ' ลูเมน อุณหภูมิสี ' + Math.round(M.cct) + ' เคลวิน',
+      waveAria: 'กราฟความสว่างตามเวลา กระเพื่อม ' + mod.toFixed(0) + ' เปอร์เซ็นต์', phAria: ok ? 'ภาพนิ้วเคลื่อนเป็นเส้นต่อเนื่อง' : 'ภาพนิ้วเคลื่อนเป็นจุดซ้อน'
+    };
+
+    // ---------- 3. energy ----------
+    var lamps = [
+      { n: 'หลอดไส้', eff: 14, life: 1000, price: 20, c: '#B04A0C' },
+      { n: 'หลอดฮาโลเจน', eff: 20, life: 2000, price: 60, c: '#E07A5F' },
+      { n: 'หลอดตะเกียบ (CFL)', eff: 60, life: 8000, price: 80, c: '#C99A1E' },
+      { n: 'ฟลูออเรสเซนต์หลอดยาว', eff: 85, life: 15000, price: 60, c: '#9AAAB4' },
+      { n: 'LED', eff: 130, life: 25000, price: 90, c: '#0A6A94' }
+    ];
+    var hoursTot = s.hrs * 365 * s.years;
+    var rows = lamps.map(function (L) {
+      var W = s.lm / L.eff, kwhY = W * s.hrs * 365 / 1000, nLamps = Math.ceil(hoursTot / L.life), cost = kwhY * s.years * s.price + nLamps * L.price;
+      return { L: L, W: W, kwhY: kwhY, n: nLamps, cost: cost };
+    });
+    var cmax = Math.max.apply(null, rows.map(function (r) { return r.cost; }));
+    var led = rows[4], inc = rows[0];
+    var en = {
+      rows: rows.map(function (r) { return { n: r.L.n, eff: r.L.eff, w: r.W.toFixed(1) + ' W', heat: Math.max(0, r.W - s.lm / 300).toFixed(1) + ' W', life: (r.L.life / 1000) + 'k ชม.', co2: Math.round(r.kwhY * 0.5) + ' กก.', cost: Math.round(r.cost).toLocaleString('en-US') + ' บาท', bar: (r.cost / cmax * 100).toFixed(1) + '%', c: r.L.c }; }),
+      note: 'ความสว่าง ' + s.lm + ' ลูเมนเท่ากันทุกหลอด เปิดวันละ ' + s.hrs + ' ชม. นาน ' + s.years + ' ปี (' + hoursTot.toLocaleString('en-US') + ' ชม.) ค่าใช้จ่ายรวมคือค่าไฟ + ค่าหลอดที่ต้องเปลี่ยน LED ประหยัดกว่าหลอดไส้ ' + Math.round(inc.cost - led.cost).toLocaleString('en-US') + ' บาท และใช้หลอดแค่ ' + led.n + ' หลอด แทน ' + inc.n + ' หลอด · ราคาหลอดและค่า CO₂ 0.5 กก./หน่วยเป็นค่าสมมติ',
+      sliders: [
+        { id: 'e-l', name: 'ความสว่างที่ต้องการ', label: s.lm + ' lm', min: 200, max: 3000, step: 50, v: s.lm, set: function (e) { self.setState({ lm: parseFloat(e.target.value) }); } },
+        { id: 'e-h', name: 'เปิดวันละ', label: s.hrs + ' ชม.', min: 1, max: 24, step: 1, v: s.hrs, set: function (e) { self.setState({ hrs: parseFloat(e.target.value) }); } },
+        { id: 'e-p', name: 'ค่าไฟต่อหน่วย (สมมติ)', label: s.price.toFixed(2) + ' บาท', min: 2, max: 8, step: 0.1, v: s.price, set: function (e) { self.setState({ price: parseFloat(e.target.value) }); } },
+        { id: 'e-y', name: 'ระยะเวลา', label: s.years + ' ปี', min: 1, max: 20, step: 1, v: s.years, set: function (e) { self.setState({ years: parseFloat(e.target.value) }); } }
+      ]
+    };
+
+    return {
+      sp: sp, lp: lp, en: en, T: s.T, d2w: s.d2w, cheap: s.cheap,
+      setT: function (e) { self.setState({ T: parseFloat(e.target.value), src: 'inc' }); },
+      toggleD2w: function () { self.setState({ d2w: !self.state.d2w }); },
+      toggleCheap: function () { self.setState({ cheap: !self.state.cheap }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
